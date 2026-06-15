@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle || !m_Instance) return;
 
-		vkDestroySurfaceKHR(m_Instance, m_Handle, nullptr);
+		vkDestroySurfaceKHR(m_Instance, m_Handle, GetAllocator());
 	}
 
 	void Surface::SetInstance(VkInstance instance)

@@ -5,6 +5,7 @@
 */
 
 #pragma once
+#include "Memory/Core.h"
 #include "Log/Log.h"
 #include "Debugger/Profiler/Profiler.h"
 #include "MetaProperty.h"

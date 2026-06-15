@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroySampler(m_Device, m_Handle, nullptr);
+		vkDestroySampler(m_Device, m_Handle, GetAllocator());
 	}
 
 	void Sampler::CreateSampler(VkDevice device, const VkSamplerCreateInfo& info)
@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateSampler(device, &info, nullptr, &m_Handle))
+		VK_CHECK(vkCreateSampler(device, &info, GetAllocator(), &m_Handle))
 	}
 }
 

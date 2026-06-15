@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroySwapchainKHR(m_Device, m_Handle, nullptr);
+		vkDestroySwapchainKHR(m_Device, m_Handle, GetAllocator());
 	}
 
 	void SwapChain::CreateSwapchain(VkDevice device, const VkSwapchainCreateInfoKHR& createInfo)
@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateSwapchainKHR(m_Device, &createInfo, nullptr, &m_Handle))
+		VK_CHECK(vkCreateSwapchainKHR(m_Device, &createInfo, GetAllocator(), &m_Handle))
 	}
 
 	std::vector<VkImage> SwapChain::GetSwapchainImages(uint32_t imageCount) const

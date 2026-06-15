@@ -30,8 +30,6 @@ project "Runtime"
 	{
 		-- Define Runtime Assets Folder.
 		'RUNTIME_ASSETS_PATH=std::string("%{wks.location}/Runtime/assets/")',
-
-		platform.GetProfileFeatures(),
 	}
 
 	-- The Solution Additional Include Folder.
@@ -157,6 +155,7 @@ project "Runtime"
 		defines
 		{
 			"NEPTUNE_DEBUG",                   -- Debug Symbol.
+			platform.GetProfileFeatures(),
 		}
 
 		runtime "Debug"

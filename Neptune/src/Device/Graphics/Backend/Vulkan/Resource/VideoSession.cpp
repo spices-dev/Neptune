@@ -106,6 +106,9 @@ namespace Neptune::Vulkan::Resource {
 
 		DEBUGUTILS_SETOBJECTNAME(m_Session, "VideoSession")
 
+		VkPhysicalDeviceMemoryProperties memProperties;
+		vkGetPhysicalDeviceMemoryProperties(GetContext().Get<IPhysicalDevice>()->Handle(), &memProperties);
+		
 		uint32_t memoryRequirementsCount = 0;
 		VK_CHECK(GetContext().Get<IFunctions>()->vkGetVideoSessionMemoryRequirementsKHR(GetContext().Get<IDevice>()->Handle(), Handle(), &memoryRequirementsCount, NULL))
 
@@ -133,7 +136,7 @@ namespace Neptune::Vulkan::Resource {
 
             VkBindVideoSessionMemoryInfoKHR&               sessionBindMemory = sessionBindMemorys[i];
             sessionBindMemory.sType                      = VK_STRUCTURE_TYPE_BIND_VIDEO_SESSION_MEMORY_INFO_KHR;
-            sessionBindMemory.memory                     = m_Session.AllocateMemory(memInfo);
+            sessionBindMemory.memory                     = m_Session.AllocateMemory(memInfo, memProperties.memoryTypes[memoryTypeIndex].propertyFlags);
             sessionBindMemory.memoryBindIndex            = memoryRequirements[i].memoryBindIndex;
             sessionBindMemory.memoryOffset               = 0;
             sessionBindMemory.memorySize                 = memoryRequirements[i].memoryRequirements.size;

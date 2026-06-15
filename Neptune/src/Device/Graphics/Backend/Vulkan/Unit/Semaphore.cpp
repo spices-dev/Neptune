@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroySemaphore(m_Device, m_Handle, nullptr);
+		vkDestroySemaphore(m_Device, m_Handle, GetAllocator());
 	}
 
 	void Semaphore::CreateSemaphore(VkDevice device, const VkSemaphoreCreateInfo& info)
@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateSemaphore(device, &info, nullptr, &m_Handle))
+		VK_CHECK(vkCreateSemaphore(device, &info, GetAllocator(), &m_Handle))
 	}
 }
 

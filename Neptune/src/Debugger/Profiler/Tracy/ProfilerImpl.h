@@ -6,7 +6,7 @@
 
 #pragma once
 
-#ifdef NP_PLATFORM_WINDOWS
+#ifdef NP_PROFILE_TRACY
 
 #include <tracy/Tracy.hpp>
 #include <common/TracySystem.hpp>

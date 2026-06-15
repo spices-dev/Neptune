@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroyImageView(m_Device, m_Handle, nullptr);
+		vkDestroyImageView(m_Device, m_Handle, GetAllocator());
 	}
 
 	void ImageView::CreateImageView(VkDevice device, const VkImageViewCreateInfo& info)
@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateImageView(m_Device, &info, nullptr, &m_Handle))
+		VK_CHECK(vkCreateImageView(m_Device, &info, GetAllocator(), &m_Handle))
 	}
 }
 

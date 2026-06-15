@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroyQueryPool(m_Device, m_Handle, nullptr);
+		vkDestroyQueryPool(m_Device, m_Handle, GetAllocator());
 	}
 
 	void QueryPool::CreateQueryPool(VkDevice device, const VkQueryPoolCreateInfo& info)
@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateQueryPool(device, &info, nullptr, &m_Handle))
+		VK_CHECK(vkCreateQueryPool(device, &info, GetAllocator(), &m_Handle))
 	}
 
 	std::vector<uint64_t> QueryPool::GetQueryPoolResult(uint32_t first, uint32_t count, uint32_t stride) const

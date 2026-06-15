@@ -6,7 +6,7 @@
 
 #include "Pchheader.h"
 
-#ifdef NP_PLATFORM_WINDOWS
+#ifdef NP_PROFILE_TRACY
 
 #include "ProfilerImpl.h"
 

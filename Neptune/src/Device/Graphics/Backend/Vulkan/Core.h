@@ -9,6 +9,7 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "Core/Core.h"
+#include "Memory.h"
 #include "Render/Frontend/Core.h"
 
 #include <vulkan/vulkan.h>

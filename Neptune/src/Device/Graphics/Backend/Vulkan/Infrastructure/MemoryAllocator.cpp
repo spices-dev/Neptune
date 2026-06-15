@@ -14,9 +14,92 @@
 #include "Instance.h"
 #include "PhysicalDevice.h"
 #include "Device.h"
+#include "Core/Memory/Enum.h"
 
 namespace Neptune::Vulkan {
 
+	namespace {
+		
+		/**
+		* @brief vmaAllocateDeviceMemoryFunction Callback on AllocMemory.
+		* 
+		* @param[in] allocator VmaAllocator.
+		* @param[in] memoryType VkPhysicalDeviceMemoryProperties::memoryTypes
+		* @param[in] memory VkDeviceMemory.
+		* @param[in] size VkDeviceSize.
+		* @param[in] pUserData MemoryAllocator.
+		*/
+		void vmaAllocateDeviceMemoryFunction(
+			VmaAllocator      allocator,
+			uint32_t          memoryType,
+			VkDeviceMemory    memory,
+			VkDeviceSize      size,
+			void*             pUserData
+		){
+			auto self = static_cast<MemoryAllocator*>(pUserData);
+			
+			auto flags = self->GetProps().memoryTypes[memoryType].propertyFlags;
+			
+			auto type = MemoryEnum::Other;
+			
+			if (flags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) {
+				if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) {
+					type = MemoryEnum::Shared;
+				} else {
+					type = MemoryEnum::Device;
+				}
+			}
+			else if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) {
+				type = MemoryEnum::HostDevice;
+			}
+			else {
+				type = MemoryEnum::Other;
+			}
+			
+			NEPTUNE_PROFILE_ALLOC_N(memory, size, ToString(type))
+		}
+		
+		/**
+		* @brief vmaFreeDeviceMemoryFunction Callback on FreeMemory.
+		* 
+		* @param[in] allocator VmaAllocator.
+		* @param[in] memoryType VkPhysicalDeviceMemoryProperties::memoryTypes
+		* @param[in] memory VkDeviceMemory.
+		* @param[in] size VkDeviceSize.
+		* @param[in] pUserData MemoryAllocator.
+		*/
+		void vmaFreeDeviceMemoryFunction(
+			VmaAllocator      allocator,
+			uint32_t          memoryType,
+			VkDeviceMemory    memory,
+			VkDeviceSize      size,
+			void*             pUserData
+		){
+			auto self = static_cast<MemoryAllocator*>(pUserData);
+			
+			auto flags = self->GetProps().memoryTypes[memoryType].propertyFlags;
+			
+			auto type = MemoryEnum::Other;
+			
+			if (flags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) {
+				if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) {
+					type = MemoryEnum::Shared;
+				} else {
+					type = MemoryEnum::Device;
+				}
+			}
+			else if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) {
+				type = MemoryEnum::HostDevice;
+			}
+			else {
+				type = MemoryEnum::Other;
+			}
+			
+			NEPTUNE_PROFILE_FREE_N(memory, ToString(type))
+		}
+		
+	}
+	
 	MemoryAllocator::MemoryAllocator(Context& context, EInfrastructure e)
 		: Infrastructure(context, e)
 	{
@@ -53,7 +136,21 @@ namespace Neptune::Vulkan {
 												VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT |
 												VMA_ALLOCATION_CREATE_HOST_ACCESS_RANDOM_BIT           ;
 
+#ifdef NEPTUNE_DEBUG
+		
+		VmaDeviceMemoryCallbacks                deviceMemoryCallbacks{};
+		deviceMemoryCallbacks.pfnAllocate     = vmaAllocateDeviceMemoryFunction;
+		deviceMemoryCallbacks.pfnFree         = vmaFreeDeviceMemoryFunction;
+		deviceMemoryCallbacks.pUserData       = this;
+		
+		createInfo.pDeviceMemoryCallbacks     = &deviceMemoryCallbacks;
+		createInfo.pAllocationCallbacks       = GetAllocator();
+		
+#endif
+		
 		VK_CHECK(vmaCreateAllocator(&createInfo, &m_Handle))
+		
+		vkGetPhysicalDeviceMemoryProperties(GetContext().Get<IPhysicalDevice>()->Handle(), &m_MemProps);
 	}
 }
 

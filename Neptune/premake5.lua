@@ -57,7 +57,6 @@ project "Neptune"
 
 		platform.GetComputeFeatures(compiler.GetToolset()),
 		platform.GetGraphicsFeatures(),
-		platform.GetProfileFeatures(),
 	}
 
 	-- The Solution Additional Include Folder.
@@ -242,6 +241,7 @@ project "Neptune"
 		defines 
 		{
 			"NEPTUNE_DEBUG",                 -- Debug Symbol.
+			platform.GetProfileFeatures(),
 		}
 
 		-- Debug Specific Solution Dependency

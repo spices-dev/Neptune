@@ -21,11 +21,11 @@ namespace Neptune::Vulkan::Unit {
 
 		if (auto* p = std::get_if<vkAlloc>(&m_Alloc))
 		{
-			vkDestroyImage(p->device, m_Handle, nullptr);
+			vkDestroyImage(p->device, m_Handle, GetAllocator());
 
 			if (p->memory)
 			{
-				vkFreeMemory(p->device, p->memory, nullptr);
+				FreeMemory(p->device, p->memory, GetAllocator(), m_Flags);
 			}
 		}
 		else if (auto* p = std::get_if<vmaAlloc>(&m_Alloc))
@@ -47,7 +47,9 @@ namespace Neptune::Vulkan::Unit {
 		vkAlloc alloc{};
 		alloc.device = device;
 
-		VK_CHECK(vkCreateImage(device, &info, nullptr, &m_Handle));
+		m_Flags = properties;
+		
+		VK_CHECK(vkCreateImage(device, &info, GetAllocator(), &m_Handle))
 
 		VkMemoryRequirements memRequirements;
 		vkGetImageMemoryRequirements(device, m_Handle, &memRequirements);
@@ -68,7 +70,7 @@ namespace Neptune::Vulkan::Unit {
 			}
 		}
 
-		VK_CHECK(vkAllocateMemory(device, &allocInfo, nullptr, &alloc.memory))
+		AllocateMemory(device, &allocInfo, GetAllocator(), &alloc.memory, properties);
 
 		VK_CHECK(vkBindImageMemory(device, m_Handle, alloc.memory, 0))
 
@@ -84,6 +86,8 @@ namespace Neptune::Vulkan::Unit {
 		vmaAlloc alloc{};
 		alloc.vma = vma;
 
+		m_Flags = properties;
+		
 		VmaAllocationCreateInfo        allocInfo{};
 		allocInfo.usage              = VMA_MEMORY_USAGE_AUTO;
 

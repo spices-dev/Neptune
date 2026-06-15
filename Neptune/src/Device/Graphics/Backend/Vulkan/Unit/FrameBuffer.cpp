@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroyFramebuffer(m_Device, m_Handle, nullptr);
+		vkDestroyFramebuffer(m_Device, m_Handle, GetAllocator());
 	}
 
 	void FrameBuffer::CreateFrameBuffer(VkDevice device, const VkFramebufferCreateInfo& info)
@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateFramebuffer(device, &info, nullptr, &m_Handle))
+		VK_CHECK(vkCreateFramebuffer(device, &info, GetAllocator(), &m_Handle))
 	}
 }
 

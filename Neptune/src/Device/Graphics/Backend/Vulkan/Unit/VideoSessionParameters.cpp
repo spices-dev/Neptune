@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroyVideoSessionParametersKHR(m_Device, m_Handle, nullptr);
+		vkDestroyVideoSessionParametersKHR(m_Device, m_Handle, GetAllocator());
 	}
 
 	void VideoSessionParameters::SetFunctor(PFN_vkCreateVideoSessionParametersKHR create, PFN_vkDestroyVideoSessionParametersKHR destroy, PFN_vkUpdateVideoSessionParametersKHR update)
@@ -38,7 +38,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateVideoSessionParametersKHR(m_Device, &createInfo, nullptr, &m_Handle))
+		VK_CHECK(vkCreateVideoSessionParametersKHR(m_Device, &createInfo, GetAllocator(), &m_Handle))
 	}
 
 	void VideoSessionParameters::UpdateVideoSessionParameters(VkDevice device, const VkVideoSessionParametersUpdateInfoKHR& updateInfo) const

@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroyFence(m_Device, m_Handle, nullptr);
+		vkDestroyFence(m_Device, m_Handle, GetAllocator());
 	}
 
 	void Fence::CreateFence(VkDevice device, const VkFenceCreateInfo& info)
@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateFence(device, &info, nullptr, &m_Handle))
+		VK_CHECK(vkCreateFence(device, &info, GetAllocator(), &m_Handle))
 	}
 
 	void Fence::Wait() const

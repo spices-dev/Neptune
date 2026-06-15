@@ -126,7 +126,7 @@ namespace Neptune::imgui {
 		init_info.ImageCount                          = MaxFrameInFlight;
 		init_info.PipelineInfoMain.MSAASamples        = std::any_cast<VkSampleCountFlagBits>         (infrastructure.at("MSAASamples"));
 		init_info.UseDynamicRendering                 = false;
-		init_info.Allocator                           = VK_NULL_HANDLE;
+		init_info.Allocator                           = std::any_cast<const VkAllocationCallbacks*>  (infrastructure.at("Allocator"));
 		init_info.CheckVkResultFn                     = std::any_cast<void(*)(VkResult)>             (infrastructure.at("CheckVkResultFn"));
 
 		ImGui_ImplVulkan_Init(&init_info);

@@ -71,6 +71,13 @@ namespace Neptune::Vulkan {
 		*/
 		const VmaAllocator& Handle() const { return m_Handle; }
 
+		/**
+		* @brief Get VkPhysicalDeviceMemoryProperties.
+		*
+		* @return Returns VkPhysicalDeviceMemoryProperties.
+		*/
+		const VkPhysicalDeviceMemoryProperties& GetProps() const { return m_MemProps; }
+		
 	private:
 
 		/**
@@ -80,8 +87,8 @@ namespace Neptune::Vulkan {
 
 	private:
 
-		VmaAllocator m_Handle = nullptr;  // @brief This VmaAllocator.
-
+		VmaAllocator m_Handle = nullptr;               // @brief This VmaAllocator.
+		VkPhysicalDeviceMemoryProperties m_MemProps;   // @brief This VkPhysicalDeviceMemoryProperties.
 	};
 
 }

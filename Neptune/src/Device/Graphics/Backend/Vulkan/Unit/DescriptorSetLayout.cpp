@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroyDescriptorSetLayout(m_Device, m_Handle, nullptr);
+		vkDestroyDescriptorSetLayout(m_Device, m_Handle, GetAllocator());
 	}
 
 	void DescriptorSetLayout::CreateDescriptorSetLayout(VkDevice device, const VkDescriptorSetLayoutCreateInfo& info)
@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateDescriptorSetLayout(m_Device, &info, nullptr, &m_Handle))
+		VK_CHECK(vkCreateDescriptorSetLayout(m_Device, &info, GetAllocator(), &m_Handle))
 	}
 }
 

@@ -30,8 +30,6 @@ project "Editor"
 	{
 		-- Define Editor Assets Folder.
 		'EDITOR_ASSETS_PATH=std::string("%{wks.location}/Editor/assets/")',
-
-		platform.GetProfileFeatures(),
 	}
 
 	-- The Solution Additional Include Folder.
@@ -157,6 +155,7 @@ project "Editor"
 		defines
 		{
 			"NEPTUNE_DEBUG",                   -- Debug Symbol.
+			platform.GetProfileFeatures(),
 		}
 
 		runtime "Debug"

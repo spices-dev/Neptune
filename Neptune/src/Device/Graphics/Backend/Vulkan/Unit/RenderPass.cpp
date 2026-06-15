@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroyRenderPass(m_Device, m_Handle, nullptr);
+		vkDestroyRenderPass(m_Device, m_Handle, GetAllocator());
 	}
 
 	void RenderPass::CreateRenderPass(VkDevice device, const VkRenderPassCreateInfo& info)
@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateRenderPass(device, &info, nullptr, &m_Handle))
+		VK_CHECK(vkCreateRenderPass(device, &info, GetAllocator(), &m_Handle))
 	}
 }
 

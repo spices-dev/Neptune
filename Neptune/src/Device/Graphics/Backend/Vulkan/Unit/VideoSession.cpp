@@ -18,11 +18,11 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroyVideoSessionKHR(m_Device, m_Handle, nullptr);
+		vkDestroyVideoSessionKHR(m_Device, m_Handle, GetAllocator());
 
 		for (int i = 0 ; i < m_Memories.size(); i++)
 		{
-			vkFreeMemory(m_Device, m_Memories[i], nullptr);
+			FreeMemory(m_Device, m_Memories[i], GetAllocator(), m_Flags);
 		}
 	}
 
@@ -43,16 +43,18 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateVideoSessionKHR(m_Device, &createInfo, nullptr, &m_Handle))
+		VK_CHECK(vkCreateVideoSessionKHR(m_Device, &createInfo, GetAllocator(), &m_Handle))
 	}
 
-	VkDeviceMemory VideoSession::AllocateMemory(const VkMemoryAllocateInfo& info)
+	VkDeviceMemory VideoSession::AllocateMemory(const VkMemoryAllocateInfo& info, VkMemoryPropertyFlags flags)
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		VkDeviceMemory memory = VK_NULL_HANDLE;
 
-		VK_CHECK(vkAllocateMemory(m_Device, &info, nullptr, &memory))
+		m_Flags = flags;
+		
+		Vulkan::AllocateMemory(m_Device, &info, GetAllocator(), &memory, flags);
 
 		m_Memories.emplace_back(memory);
 

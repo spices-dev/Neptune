@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroySamplerYcbcrConversion(m_Device, m_Handle, nullptr);
+		vkDestroySamplerYcbcrConversion(m_Device, m_Handle, GetAllocator());
 	}
 
 	void SamplerYcbcrConversion::CreateSamplerYcbcrConversion(VkDevice device, const VkSamplerYcbcrConversionCreateInfo& info)
@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateSamplerYcbcrConversion(device, &info, nullptr, &m_Handle))
+		VK_CHECK(vkCreateSamplerYcbcrConversion(device, &info, GetAllocator(), &m_Handle))
 	}
 
 }

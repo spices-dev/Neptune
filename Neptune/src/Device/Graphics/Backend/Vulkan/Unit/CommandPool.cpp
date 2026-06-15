@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroyCommandPool(m_Device, m_Handle, nullptr);
+		vkDestroyCommandPool(m_Device, m_Handle, GetAllocator());
 	}
 
 	void CommandPool::CreateCommandPool(VkDevice device, const VkCommandPoolCreateInfo& info)
@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateCommandPool(device, &info, nullptr, &m_Handle))
+		VK_CHECK(vkCreateCommandPool(device, &info, GetAllocator(), &m_Handle))
 	}
 }
 

@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroyDescriptorPool(m_Device, m_Handle, nullptr);
+		vkDestroyDescriptorPool(m_Device, m_Handle, GetAllocator());
 	}
 
 	void DescriptorPool::CreateDescriptorPool(VkDevice device, const VkDescriptorPoolCreateInfo& info)
@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateDescriptorPool(device, &info, nullptr, &m_Handle))
+		VK_CHECK(vkCreateDescriptorPool(device, &info, GetAllocator(), &m_Handle))
 	}
 }
 

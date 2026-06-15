@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroyShaderModule(m_Device, m_Handle, nullptr);
+		vkDestroyShaderModule(m_Device, m_Handle, GetAllocator());
 	}
 
 	void Shader::CreateShader(VkDevice device, const VkShaderModuleCreateInfo& info)
@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateShaderModule(device, &info, nullptr, &m_Handle))
+		VK_CHECK(vkCreateShaderModule(device, &info, GetAllocator(), &m_Handle))
 	}
 
 }

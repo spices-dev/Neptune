@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroyPipelineLayout(m_Device, m_Handle, nullptr);
+		vkDestroyPipelineLayout(m_Device, m_Handle, GetAllocator());
 	}
 
 	void PipelineLayout::CreatePipelineLayout(VkDevice device, const VkPipelineLayoutCreateInfo& info)
@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreatePipelineLayout(device, &info, nullptr, &m_Handle))
+		VK_CHECK(vkCreatePipelineLayout(device, &info, GetAllocator(), &m_Handle))
 	}
 
 }

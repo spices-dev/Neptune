@@ -60,10 +60,11 @@ namespace Neptune::Vulkan::Unit {
 		* @brief Allocate Memory.
 		*
 		* @param[in] info VkMemoryAllocateInfo.
+		* @param[in] flags VkMemoryPropertyFlags.
 		* 
 		* @return Returns VkDeviceMemory.
 		*/
-		VkDeviceMemory AllocateMemory(const VkMemoryAllocateInfo& info);
+		VkDeviceMemory AllocateMemory(const VkMemoryAllocateInfo& info, VkMemoryPropertyFlags flags);
 
 		/**
 		* @brief Bind VideoSession Memory.
@@ -79,6 +80,7 @@ namespace Neptune::Vulkan::Unit {
 		PFN_vkCreateVideoSessionKHR           vkCreateVideoSessionKHR = VK_NULL_HANDLE;         // @brief PFN_vkCreateVideoSessionKHR.
 		PFN_vkDestroyVideoSessionKHR          vkDestroyVideoSessionKHR = VK_NULL_HANDLE;        // @brief PFN_vkDestroyVideoSessionKHR.
 		PFN_vkBindVideoSessionMemoryKHR       vkBindVideoSessionMemoryKHR = VK_NULL_HANDLE;     // @brief PFN_vkBindVideoSessionMemoryKHR.
+		VkMemoryPropertyFlags                 m_Flags;                                          // @brief VkMemoryPropertyFlags.
 	};
 }
 

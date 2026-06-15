@@ -27,7 +27,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroyOpticalFlowSessionNV(m_Device, m_Handle, nullptr);
+		vkDestroyOpticalFlowSessionNV(m_Device, m_Handle, GetAllocator());
 	}
 
 	void OpticalFlowSession::CreateOpticalFlowSession(VkDevice device, const VkOpticalFlowSessionCreateInfoNV& info)
@@ -38,7 +38,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateOpticalFlowSessionNV(m_Device, &info, nullptr, &m_Handle))
+		VK_CHECK(vkCreateOpticalFlowSessionNV(m_Device, &info, GetAllocator(), &m_Handle))
 	}
 
 	void OpticalFlowSession::BindOpticalFlowSessionImage(VkOpticalFlowSessionBindingPointNV bindPoint, VkImageView view, VkImageLayout layout) const

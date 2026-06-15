@@ -123,6 +123,7 @@ namespace Neptune::Vulkan {
 		infrastructure["GraphicQueue"]          = m_Context->Get<IGraphicQueue>()->Handle();
 		infrastructure["DescriptorPool"]        = m_Context->Get<IDescriptorPool>()->Handle();
 		infrastructure["MSAASamples"]           = VK_SAMPLE_COUNT_1_BIT;
+		infrastructure["Allocator"]             = static_cast<const VkAllocationCallbacks*>(GetAllocator());
 		infrastructure["CheckVkResultFn"]       = +[](VkResult result) { std::invoke(HandleResultDelegate::GetHandler(), result); };
 
 		return infrastructure;

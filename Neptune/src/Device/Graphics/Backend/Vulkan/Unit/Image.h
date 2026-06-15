@@ -76,6 +76,7 @@ namespace Neptune::Vulkan::Unit {
 		};
 
 		std::variant<std::monostate, vkAlloc, vmaAlloc> m_Alloc{ std::monostate{} };     // @brief Alloc data.
+		VkMemoryPropertyFlags m_Flags;                                                   // @brief Buffer Memory Flags.
 	};
 }
 

@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroyInstance(m_Handle, nullptr);
+		vkDestroyInstance(m_Handle, GetAllocator());
 	}
 
 	void Instance::CreateInstance(const VkInstanceCreateInfo& createInfo)
@@ -27,7 +27,7 @@ namespace Neptune::Vulkan::Unit {
 
 		assert(!m_Handle);
 
-		VK_CHECK(vkCreateInstance(&createInfo, nullptr, &m_Handle))
+		VK_CHECK(vkCreateInstance(&createInfo, GetAllocator(), &m_Handle))
 	}
 }
 

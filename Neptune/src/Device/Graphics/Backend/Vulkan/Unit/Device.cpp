@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroyDevice(m_Handle, nullptr);
+		vkDestroyDevice(m_Handle, GetAllocator());
 	}
 
 	void Device::CreateDevice(VkPhysicalDevice physicalDevice, const VkDeviceCreateInfo* createInfo)
@@ -27,7 +27,7 @@ namespace Neptune::Vulkan::Unit {
 
 		assert(physicalDevice && createInfo && !m_Handle);
 
-		VK_CHECK(vkCreateDevice(physicalDevice, createInfo, nullptr, &m_Handle))
+		VK_CHECK(vkCreateDevice(physicalDevice, createInfo, GetAllocator(), &m_Handle))
 	}
 
 	VkQueue Device::GetDeviceQueue(uint32_t queueFamilyIndex, uint32_t queueIndex) const
