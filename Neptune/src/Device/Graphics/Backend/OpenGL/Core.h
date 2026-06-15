@@ -8,6 +8,8 @@
 
 #ifdef NP_GRAPHICS_OPENGL
 
+#define NP_GRAPHICS_OPENGL_CORE
+
 #include "Core/Core.h"
 #include "Render/Frontend/Core.h"
 

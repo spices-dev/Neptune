@@ -8,6 +8,8 @@
 
 #ifdef NP_GRAPHICS_WEBGPU
 
+#define NP_GRAPHICS_WEBGPU_CORE
+
 #include "Core/Core.h"
 #include "Render/Frontend/Core.h"
 #include "Window/Core.h"

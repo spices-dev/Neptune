@@ -8,6 +8,8 @@
 
 #ifdef NP_GRAPHICS_VULKAN
 
+#define NP_GRAPHICS_VULKAN_CORE
+
 #include "Core/Core.h"
 #include "Memory.h"
 #include "Render/Frontend/Core.h"

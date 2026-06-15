@@ -1,6 +1,6 @@
 /**
-* @file ProfilerImpl.h file.
-* @brief The ProfilerImpl Class Definitions.
+* @file ProfilerImplC.h file.
+* @brief The ProfilerImplC Class Definitions.
 * @author Spices.
 */
 
@@ -12,16 +12,6 @@
 #include <common/TracySystem.hpp>
 
 namespace Neptune::Tracy {
-
-	/**
-	* @brief Tracy Profiler Implementation
-	*/
-	class ProfilerImpl
-	{
-	public:
-
-		ProfilerImpl();
-	};
 
 #define NEPTUNE_PROFILE_FRAME                                             FrameMark;
 #define NEPTUNE_PROFILE_ZONE                                              ZoneScopedS(20);
@@ -152,7 +142,7 @@ namespace Neptune::Tracy {
 */
 
 /**
-* @brief Disable the built in crash handling.
+* @brief Disable the build in crash handling.
 *
 * #define TRACY_NO_CRASH_HANDLER
 */

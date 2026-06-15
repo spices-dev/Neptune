@@ -8,6 +8,8 @@
 
 #ifdef NP_GRAPHICS_DIRECT3D11
 
+#define NP_GRAPHICS_DIRECT3D11_CORE
+
 #include "Core/Core.h"
 #include "Version.h"
 #include "Render/Frontend/Core.h"

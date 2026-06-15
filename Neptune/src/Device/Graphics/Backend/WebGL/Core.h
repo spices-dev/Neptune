@@ -8,6 +8,8 @@
 
 #ifdef NP_GRAPHICS_WEBGL
 
+#define NP_GRAPHICS_WEBGL_CORE
+
 #include "Core/Core.h"
 #include "Render/Frontend/Core.h"
 

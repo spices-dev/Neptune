@@ -1,13 +1,13 @@
 /**
-* @file Profiler.h file.
-* @brief The Profiler Class Definitions.
+* @file ProfilerC.h file.
+* @brief The ProfilerC Class Definitions.
 * @author Spices.
 */
 
 #pragma once
 
 #ifdef NP_PROFILE_TRACY
-#include "Debugger/Profiler/Tracy/ProfilerImpl.h"
+#include "Debugger/Profiler/Tracy/ProfilerImplC.h"
 #else
 
 /**
@@ -67,7 +67,7 @@
 #define NEPTUNE_PROFILE_MARK(text)
 
 /**
-* @brief Mark a image.
+* @brief Mark an image.
 *
 * @param[in] image Image data pointer.
 */
