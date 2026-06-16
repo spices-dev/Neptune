@@ -5,51 +5,74 @@
 -- Define module
 local module = {}
 
-module.toolset = ""
-
--- @brief Set Clang.
-module.SetClang = function()
-	module.toolset = "clang"
-end
-
--- @brief Get Toolset.
---
--- @return Returns Toolset.
-module.GetToolset = function()
-	return module.toolset
-end
-
 -- @brief module Initialize.
 module.Initialize = function()
 
     -- Configuration: MSVC
 	filter { "toolset:msc" }
-        buildoptions { "/wd4838" }                 -- Disable Warning: 4838
 
 		-- MSVC Specific Solution Macro Definitions.
 		defines 
 		{
-			"NP_COMPILER_MSVC",                    -- Compiler: MSVC.
+			"NP_COMPILER_MSVC",                            -- Compiler: MSVC.
+		}
+
+		-- MSVC Specific Solution build options
+		buildoptions 
+		{ 
+			"/wd4838",                                     -- Disable Warning: 4838
+			"/utf-8",                                      -- Using utf-8 encode
 		}
 
 	-- Configuration: GCC
     filter { "toolset:gcc" }
-        buildoptions { "-Wno-narrowing" }          -- Disable Warning: 4838
-
+        
 		-- GCC Specific Solution Macro Definitions.
 		defines 
 		{
-			"NP_COMPILER_GCC",                     -- Compiler: GCC.
+			"NP_COMPILER_GCC",                             -- Compiler: GCC.
 		}
+
+		-- GCC Specific Solution build options
+		buildoptions 
+		{ 
+			"-Wno-narrowing"                               -- Disable Warning: 4838
+		}          
 
 	-- Configuration: Clang
 	filter { "toolset:clang" }
-        buildoptions { "-Wno-narrowing" }          -- Disable Warning: 4838
-
+		
 		-- Clang Specific Solution Macro Definitions.
 		defines 
 		{
-			"NP_COMPILER_CLANG",                   -- Compiler: Clang.
+			"NP_COMPILER_CLANG",                          -- Compiler: Clang.
+		}
+
+		-- Clang Specific Solution pre build options
+		prebuildcommands 
+		{
+        	"{MKDIR} build/compile_commands"
+    	}
+
+		-- Clang Specific Solution build options
+		buildoptions 
+		{ 
+			"-Wno-narrowing",                             -- Disable Warning: 4838
+		}
+
+	-- Configuration: Emcc Em++
+	filter { "toolset:emcc" }
+        
+		-- Emcc Specific Solution Macro Definitions.
+		defines 
+		{
+			"NP_COMPILER_EMCC",                           -- Compiler: Emcc.
+		}
+
+		-- Emcc Specific Solution build options
+		buildoptions 
+		{ 
+			"-Wno-narrowing",                             -- Disable Warning: 4838
 		}
 
 end

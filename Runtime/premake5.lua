@@ -75,9 +75,7 @@ project "Runtime"
 
 		-- The Solution build options
 		buildoptions 
-		{ 
-			"/utf-8",                             -- Using utf-8 encode
-		}
+		{}
 
 	-- Platform: Emscripten
 	filter "system:emscripten"

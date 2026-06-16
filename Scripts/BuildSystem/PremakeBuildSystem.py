@@ -90,7 +90,9 @@ class PremakeBuildSystem(BuildSystem):
             args.append("--cc=msc-v145")
         elif self.toolset == "clang":
             args.append("--cc=clang")
-        elif self.platform != "emscripten":
+        elif self.toolset == "emcc":
+            args.append("--cc=emcc")
+        else:
             print("Not support toolset.")
             sys.exit(1)
 

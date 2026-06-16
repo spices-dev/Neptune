@@ -6,15 +6,15 @@
 local module = {}
 
 -- @brief Get Compute Feature Lists.
--- 
--- @param[in] toolset ToolSet.
 --
 -- @return Returns Compute Feature Lists.
-module.GetComputeFeatures = function(toolset)
+module.GetComputeFeatures = function()
 
     local list = {}
 
-    if os.target() == "windows" and toolset == "clang" then
+    local isClang = (_OPTIONS["cc"] == "clang") or (_OPTIONS["cc"] == "clang++")
+
+    if os.target() == "windows" and isClang then
         table.insert(list, "NP_COMPUTE_SYCL")
     end
 

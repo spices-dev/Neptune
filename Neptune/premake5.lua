@@ -55,7 +55,7 @@ project "Neptune"
 		-- Define Engine Extent Processes Folder.
 		--'NEPTUNE_EXTENT_PROCESS_PATH=std::string("' .. path.translate(os.getcwd(), "/") .. '/../vendor/")',
 
-		platform.GetComputeFeatures(compiler.GetToolset()),
+		platform.GetComputeFeatures(),
 		platform.GetGraphicsFeatures(),
 	}
 
@@ -159,13 +159,11 @@ project "Neptune"
 			"tracy",                                                   -- Dependency: tracy
 			"shaderc",                                                 -- Dependency：shaderc 
 		}
-
+    
 		-- The Solution build options
 		buildoptions 
-		{ 
-			"/utf-8",                             -- Using utf-8 encode
-		}
-    
+		{}
+
         -- Configuration: Debug
         filter {"system:windows", "configurations:Debug"}
 

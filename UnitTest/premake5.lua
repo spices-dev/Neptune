@@ -29,7 +29,7 @@ project "UnitTest"
 	defines
 	{
 		-- UnitTest needs test features directly
-		platform.GetComputeFeatures(compiler.GetToolset()),
+		platform.GetComputeFeatures(),
 		platform.GetGraphicsFeatures(),
 	}
 
@@ -78,9 +78,7 @@ project "UnitTest"
 
 		-- The Solution build options
 		buildoptions 
-		{ 
-			"/utf-8",                             -- Using utf-8 encode
-		}
+		{}
 
 	-- Platform: Emscripten
 	filter "system:emscripten"

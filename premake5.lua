@@ -17,7 +17,6 @@ workspace "Neptune"
 		"Release",
 	}
 
-	compiler.SetClang()
 	compiler.Initialize()
 
 	-- Web App
@@ -27,7 +26,6 @@ workspace "Neptune"
 	-- Windows App
 	filter "system:windows"
 		architecture "x64"                    -- Architecture x64
-		toolset(compiler.GetToolset())        -- Toolset: Clang
 
 -- Building Output Folder.
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
