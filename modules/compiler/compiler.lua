@@ -48,12 +48,6 @@ module.Initialize = function()
 			"NP_COMPILER_CLANG",                          -- Compiler: Clang.
 		}
 
-		-- Clang Specific Solution pre build options
-		prebuildcommands 
-		{
-        	"{MKDIR} build/compile_commands"
-    	}
-
 		-- Clang Specific Solution build options
 		buildoptions 
 		{ 

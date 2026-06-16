@@ -136,7 +136,7 @@ namespace Neptune::Render::Common {
     private:
 
         MetaProperty(TEST)
-        [[no_unique_address]] std::conditional_t<
+        NO_UNIQUE_ADDRESS std::conditional_t<
             static_cast<uint8_t>(E::Count) == 0,
             std::monostate,
             std::array<SP<Infrastructure<E>>, static_cast<uint8_t>(E::Count)>
