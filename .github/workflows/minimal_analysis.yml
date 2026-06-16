@@ -1,0 +1,86 @@
+# @file minimal_analysis.yml
+# @brief This file is the configuration for the Minimal Analysis in GitHub.
+# @author Spices.
+
+# configuration name
+name: Minimal Analysis
+
+# workflow trigger
+on:
+  
+  # On Pushed
+  push:
+    branches: [ "main" ]
+  
+  # On Pull Request
+  pull_request:
+    branches: [ "main" ]
+
+# workflow jobs
+jobs:
+  
+  # Analysis Job
+  minimal_analysis:
+
+    # Platform: Ubuntu
+    runs-on: ubuntu-latest
+
+    # Analysis Steps
+    steps:
+
+      # Checkout recursive
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # Install dependency
+      - name: Install compiledb and jq
+        run: | 
+          pip install compiledb
+          sudo apt-get update && sudo apt-get install -y jq
+
+      # ============ Windows ============
+
+      # Generate Windows Makefiles
+      - name: Generate Windows Makefiles
+        shell: bash
+        working-directory: ./Scripts/BuildEntry/Windows/
+        run: bash ./generate.sh
+
+      # Generate Windows compile_commands.json
+      - name: Generate Windows compile_commands.json
+        working-directory: ./Scripts/Analysis/
+        run: bash ./generate_compile_commands.sh --platform windows
+
+      # ============ Emscripten ============
+
+      # Generate Emscripten Makefiles
+      - name: Generate Emscripten Makefiles
+        shell: bash
+        working-directory: ./Scripts/BuildEntry/Wasm/
+        run: bash ./generate.sh
+
+      # Generate Emscripten compile_commands.json
+      - name: Generate Emscripten compile_commands.json
+        working-directory: ./Scripts/Analysis/
+        run: bash ./generate_compile_commands.sh --platform emscripten
+
+      # ============ Merge ============
+
+      # Merge compile_commands.json files
+      - name: Merge compile_commands.json
+        working-directory: ./
+        run: |
+          jq -s 'add' compile_commands_windows.json compile_commands_emscripten.json > compile_commands.json
+          echo "Merged compile_commands.json contains $(jq '. | length' compile_commands.json) entries"
+
+      # ============ SonarQube ============
+
+      # SonarQube Analysis
+      - name: Run SonarQube Analysis
+        run: |
+          sonar-scanner \
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }}
