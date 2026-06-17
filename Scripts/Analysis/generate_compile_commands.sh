@@ -77,7 +77,7 @@ for dir in $SUBDIRS; do
 
         # generate compile_commands
         set +e
-        make -n -k 2>/dev/null | compiledb -o "../compile_commands_${dir}_${PLATFORM}.json" /dev/stdin
+        make -n -k 2>/dev/null | compiledb -o "../compile_commands_${dir}_${PLATFORM}.json"
         # this report link error
         #compiledb -o "../compile_commands_${dir}_${PLATFORM}.json" make -n -k
         set -e

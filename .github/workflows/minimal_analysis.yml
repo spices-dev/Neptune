@@ -25,6 +25,9 @@ jobs:
     # Platform: Ubuntu
     runs-on: ubuntu-latest
 
+    # Return false in error
+    continue-on-error: false
+
     # Analysis Steps
     steps:
 
@@ -78,9 +81,12 @@ jobs:
       # ============ SonarQube ============
 
       # SonarQube Analysis
-      - name: Run SonarQube Analysis
-        run: |
-          sonar-scanner \
-            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
-            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
-            -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+      - name: Run SonarQube Cloud Analysis
+        uses: SonarSource/sonarqube-scan-action@v4
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.organization=${{ secrets.SONAR_ORGINALIZE_KEY }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
