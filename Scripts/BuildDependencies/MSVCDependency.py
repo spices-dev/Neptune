@@ -7,7 +7,7 @@
 from Scripts.BuildSystem.Dependency import Dependency
 import os
 import subprocess
-import winreg
+import sys
 
 class MSVCDependency(Dependency):
     """
@@ -143,6 +143,12 @@ class MSVCDependency(Dependency):
         @brief Try to locate Visual Studio installation and VC tools path.
         """
         # Try via registry first
+
+        if sys.platform != 'win32':
+            return
+
+        import winreg
+
         try:
             with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,
                                 r"SOFTWARE\Microsoft\VisualStudio\SxS\VS7") as key:
