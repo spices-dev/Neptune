@@ -27,4 +27,9 @@ namespace Neptune {
 
         S_EventCallback = callback;
     }
+
+    std::ostream& operator<<(std::ostream& os, const Event& e)
+    {
+        return os << e.ToString();
+    }
 }

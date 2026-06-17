@@ -198,7 +198,7 @@ namespace Neptune {
         template<typename T>
         void OnComponentDetached(Entity* entity, T& component) const;
 
-    protected:
+    private:
 
         /**
         * @brief Mutex for world.

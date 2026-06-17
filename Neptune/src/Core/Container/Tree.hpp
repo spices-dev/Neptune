@@ -6,6 +6,7 @@
 
 #pragma once
 #include "Core/Core.h"
+#include "Core/Concept.h"
 
 #include <memory>
 #include <queue>
@@ -36,7 +37,7 @@ namespace Neptune::Container {
         * @param[in] args T construct params.
         */
         template<typename ...Args>
-        Tree(Args&&... args)
+        explicit Tree(std::in_place_t, Args&&... args)
             : m_Data{ std::forward<Args>(args)... }
         {}
 
@@ -57,7 +58,7 @@ namespace Neptune::Container {
         {
             std::unique_lock lock(m_Mutex);
             
-            m_Child.push_back(std::make_unique<Tree>(std::forward<Args>(args)...));
+            m_Child.push_back(std::make_unique<Tree>(std::in_place, std::forward<Args>(args)...));
 
             return m_Child.back().get();
         }
@@ -87,7 +88,10 @@ namespace Neptune::Container {
         {
             std::shared_lock lock(m_Mutex);
             
-            auto visitor = std::bind(std::forward<F>(fn), std::placeholders::_1, std::placeholders::_2, std::forward<Args>(args)...);
+            auto visitor = [&]<typename T0, typename T1>(T0&& data, T1&& depth) {
+                
+                return std::invoke(std::forward<F>(fn), std::forward<T0>(data), std::forward<T1>(depth), std::forward<Args>(args)...);
+            };
             
             ViewDSFImpl(visitor, 0);
         }
@@ -103,7 +107,10 @@ namespace Neptune::Container {
         {
             std::shared_lock lock(m_Mutex);
             
-            auto visitor = std::bind(std::forward<F>(fn), std::placeholders::_1, std::placeholders::_2, std::forward<Args>(args)...);
+            auto visitor = [&]<typename T0, typename T1>(T0&& data, T1&& depth) {
+                
+                return std::invoke(std::forward<F>(fn), std::forward<T0>(data), std::forward<T1>(depth), std::forward<Args>(args)...);
+            };
             
             ViewWSFImpl(visitor);
         }

@@ -23,13 +23,13 @@ namespace Neptune {
     {
         NEPTUNE_PROFILE_ZONE
 
-        return Transform::GetRotationMatrix(m_Model.rotation);
+        return Transform::GetRotationMatrix(GetModel().rotation);
     }
 
     void TransformComponent::CalMatrix()
     {
         NEPTUNE_PROFILE_ZONE
 
-        m_ModelMatrix = m_Model.ToMatrix();
+        m_ModelMatrix = GetModel().ToMatrix();
     }
 }

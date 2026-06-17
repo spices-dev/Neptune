@@ -26,7 +26,7 @@ namespace Neptune {
     * @tparam T2 Another Class.
     */
     template<typename T1, typename T2>
-    concept IsSame = std::is_same_v<T1, T2>;
+    concept IsSame = std::same_as<T1, T2>;
     
     /**
     * @brief Concept: Is Convertible to.

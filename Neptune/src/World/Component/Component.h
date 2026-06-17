@@ -8,6 +8,7 @@
 #include "Core/Core.h"
 #include "Core/NonCopyable.h"
 #include "Core/Event/Event.h"
+#include "Core/Concept.h"
 
 namespace Neptune {
 
@@ -30,6 +31,7 @@ namespace Neptune {
         * @brief Constructor Function.
         */
         template<typename T1>
+        requires (!IsSame<std::decay_t<T1>, Component>)
         explicit Component(T1&& t) : m_Model(t) {}
 
         /**
@@ -71,7 +73,7 @@ namespace Neptune {
         template<typename T1>
         void SetModel(T1&& t) { m_Model = t; }
 
-    protected:
+    private:
 
         T m_Model;              // @brief This component's data model.
 

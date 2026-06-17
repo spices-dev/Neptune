@@ -46,7 +46,7 @@ namespace Neptune {
         * 
         * @param[in] position The entity's world position.
         */
-        void SetPosition(const glm::vec3& position) { m_Model.position = position; CalMatrix(); }
+        void SetPosition(const glm::vec3& position) { GetModel().position = position; CalMatrix(); }
 
         /**
         * @brief Set the rotation this component handled.
@@ -54,7 +54,7 @@ namespace Neptune {
         * 
         * @param[in] rotation The entity's world rotation.
         */
-        void SetRotation(const glm::vec3& rotation) { m_Model.rotation = rotation; CalMatrix(); }
+        void SetRotation(const glm::vec3& rotation) { GetModel().rotation = rotation; CalMatrix(); }
 
         /**
         * @brief Set the scale this component handled.
@@ -62,7 +62,7 @@ namespace Neptune {
         * 
         * @param[in] scale The entity's world scale.
         */
-        void SetScale(const glm::vec3& scale) { m_Model.scale = scale; CalMatrix(); }
+        void SetScale(const glm::vec3& scale) { GetModel().scale = scale; CalMatrix(); }
 
         /**
         * @brief Add the position to this component handled.
@@ -70,7 +70,7 @@ namespace Neptune {
         * 
         * @param[in] position The entity's world position.
         */
-        void AddPosition(const glm::vec3& position) { m_Model.position += position; CalMatrix(); }
+        void AddPosition(const glm::vec3& position) { GetModel().position += position; CalMatrix(); }
 
         /**
         * @brief Add the rotation to this component handled.
@@ -78,7 +78,7 @@ namespace Neptune {
         * 
         * @param[in] rotation The entity's world rotation.
         */
-        void AddRotation(const glm::vec3& rotation) { m_Model.rotation += rotation; CalMatrix(); }
+        void AddRotation(const glm::vec3& rotation) { GetModel().rotation += rotation; CalMatrix(); }
 
         /**
         * @brief Add the scale to this component handled.
@@ -86,7 +86,7 @@ namespace Neptune {
         * 
         * @param[in] scale The entity's world scale.
         */
-        void AddScale(const glm::vec3& scale) { m_Model.scale += scale; CalMatrix(); }
+        void AddScale(const glm::vec3& scale) { GetModel().scale += scale; CalMatrix(); }
 
         /**
         * @brief Get the modelMatrix variable.
@@ -107,21 +107,21 @@ namespace Neptune {
         * 
         * @return Returns the position variable.
         */
-        const glm::vec3& GetPosition() const { return m_Model.position; }
+        const glm::vec3& GetPosition() const { return GetModel().position; }
 
         /**
         * @brief Get the rotation variable.
         * 
         * @return Returns the rotation variable.
         */
-        const glm::vec3& GetRotation() const { return m_Model.rotation; }
+        const glm::vec3& GetRotation() const { return GetModel().rotation; }
 
         /**
         * @brief Get the scale variable.
         * 
         * @return Returns the scale variable.
         */
-        const glm::vec3& GetScale() const { return m_Model.scale; }
+        const glm::vec3& GetScale() const { return GetModel().scale; }
 
         /**
         * @brief Get WorldMarkFlags this frame.
@@ -162,6 +162,6 @@ namespace Neptune {
 
         glm::mat4 m_ModelMatrix = glm::mat4(1.0f);   // @brief The modelMatrix this component handled.
 
-        Container::BitSet<TransformComponentBits> m_Marker = Clean;  // @brief World State this frame.
+        Container::BitSet<TransformComponentBits> m_Marker{ Clean };  // @brief World State this frame.
     };
 }

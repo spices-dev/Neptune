@@ -26,7 +26,7 @@ namespace Neptune {
         * 
         * @param[in] uuid Use given uuid as UUID.
         */
-        UUID(uint64_t uuid);
+        explicit UUID(uint64_t uuid);
 
         /**
         * @brief Destructor Function.

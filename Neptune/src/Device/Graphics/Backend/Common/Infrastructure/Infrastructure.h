@@ -34,8 +34,6 @@ namespace Neptune::Render::Common {
         */
         ~Infrastructure() override = default;
 
-    public:
-
         /**
         * @brief Turn EInfrastructure to string.
         * 
@@ -63,7 +61,7 @@ namespace Neptune::Render::Common {
         */
         const E& GetEInfrastructure() const { return m_EInfrastructure; }
 
-    protected:
+    private:
 
         E m_EInfrastructure; // @brief This EInfrastructure.
 

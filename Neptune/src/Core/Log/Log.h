@@ -31,8 +31,6 @@ namespace Neptune {
         */
         static void Reset();
 
-    public:
-
         /**
         * @brief Constructor Function.
         */
@@ -62,7 +60,14 @@ namespace Neptune {
         */
         bool IsInitialized() const { return m_IsInitialized; }
 
-    protected:
+        /**
+        * @brief Set Initialized state.
+        * 
+        * @param[in] isInitialized .
+        */
+        void SetInitialized(bool isInitialized) { m_IsInitialized = isInitialized; }
+        
+    private:
 
         /**
         * @brief Boolean of Initialize state.

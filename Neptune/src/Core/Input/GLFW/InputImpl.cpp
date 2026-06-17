@@ -46,7 +46,9 @@ namespace Neptune::GLFW {
         const auto window = static_cast<GLFWwindow*>(Window::Instance().NativeWindow());
 
         // Query GLFW Window Cursor Position.
-        double xPos, yPos;
+        double xPos;
+        double yPos;
+        
         glfwGetCursorPos(window, &xPos, &yPos);
 
         return { static_cast<float>(xPos), static_cast<float>(yPos) };

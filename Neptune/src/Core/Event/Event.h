@@ -174,6 +174,11 @@ namespace Detail {
         static void SetEventCallbackFn(const EventCallbackFn& callback);
 
         /**
+        * @brief Serialize Event Type.
+        */
+        friend std::ostream& operator<<(std::ostream& os, const Event& e);
+        
+        /**
         * @brief True if this event is handled.
         */
         bool Handled = false;
@@ -203,7 +208,7 @@ namespace Detail {
         * 
         * @param[in] event Specific Event reference.
         */
-        EventDispatcher(Event& event)
+        explicit EventDispatcher(Event& event)
             : m_Event(event)
         {}
 
@@ -241,11 +246,4 @@ namespace Detail {
         Event& m_Event;
     };
 
-    /**
-    * @brief Serialize Event Type.
-    */
-    inline std::ostream& operator<<(std::ostream& os, const Event& e)
-    {
-        return os << e.ToString();
-    }
 }

@@ -42,14 +42,14 @@ namespace Neptune {
         m_ClientLogger = std::make_shared<spdlog::logger>("Game", begin(sinks), end(sinks));
         m_ClientLogger->set_level(spdlog::level::trace);
 
-        m_IsInitialized = true;
+        SetInitialized(true);
     }
 
     LogImpl::~LogImpl ()
     {
         NEPTUNE_PROFILE_ZONE
 
-        m_IsInitialized = false;
+        SetInitialized(false);
 
         m_CoreLogger.reset();
         m_ClientLogger.reset();

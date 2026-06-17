@@ -90,7 +90,7 @@ namespace Neptune::Container {
 
 		if (IsEmpty())
 		{
-			m_NotEmpty.wait(lock, [&]() { return !IsEmpty(); });
+			m_NotEmpty.wait(lock, [this]() { return !IsEmpty(); });
 		}
 
 		auto ptr = m_Queue.front();

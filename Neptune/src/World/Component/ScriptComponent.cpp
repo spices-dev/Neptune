@@ -15,35 +15,35 @@ namespace Neptune {
     {
         NEPTUNE_PROFILE_ZONE
 
-        if (m_Model.contains(script->GetFileString()))
+        if (GetModel().contains(script->GetFileString()))
         {
             NEPTUNE_CORE_WARN("Script is existing on component.")
             return;
         }
 
         script->OnAttached();
-        m_Model[script->GetFileString()] = script;
+        GetModel()[script->GetFileString()] = script;
     }
 
     void ScriptComponent::RemoveScript(const std::string& name)
     {
         NEPTUNE_PROFILE_ZONE
 
-        if (!m_Model.contains(name))
+        if (!GetModel().contains(name))
         {
             NEPTUNE_CORE_WARN("Script is not existing on component.")
             return;
         }
 
-        m_Model[name]->OnDetached();
-        m_Model.erase(name);
+        GetModel()[name]->OnDetached();
+        GetModel().erase(name);
     }
     
     void ScriptComponent::OnTick() const
     {
         NEPTUNE_PROFILE_ZONE
 
-        for (const auto& script : m_Model | std::views::values)
+        for (const auto& script : GetModel() | std::views::values)
         {
             script->OnTick();
         }
@@ -53,7 +53,7 @@ namespace Neptune {
     {
         NEPTUNE_PROFILE_ZONE
 
-        for (const auto& script : m_Model | std::views::values)
+        for (const auto& script : GetModel() | std::views::values)
         {
             script->OnEvent(e);
         }
@@ -63,7 +63,7 @@ namespace Neptune {
     {
         NEPTUNE_PROFILE_ZONE
 
-        for (const auto& script : m_Model | std::views::values)
+        for (const auto& script : GetModel() | std::views::values)
         {
             script->OnDetached();
         }

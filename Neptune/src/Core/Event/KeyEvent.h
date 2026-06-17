@@ -43,10 +43,12 @@ namespace Neptune {
         * 
         * @param[in] keycode Input KeyCode.
         */
-        KeyEvent(KeyCode keycode)
+        explicit KeyEvent(KeyCode keycode)
             : m_KeyCode(keycode)
         {}
 
+    private:
+        
         /**
         * @brief Input KeyCode.
         */
@@ -66,7 +68,7 @@ namespace Neptune {
         * @param[in] keycode Input KeyCode.
         * @param[in] repeatCount Input Key repeat count.
         */
-        KeyPressedEvent(KeyCode keycode, int repeatCount)
+        explicit KeyPressedEvent(KeyCode keycode, int repeatCount)
             : KeyEvent(keycode)
             , m_RepeatCount(repeatCount)
         {}
@@ -93,7 +95,7 @@ namespace Neptune {
             NEPTUNE_PROFILE_ZONE
 
             std::stringstream ss;
-            ss << "KeyPressedEvent: " << Key::ToString(m_KeyCode) << " (" << m_RepeatCount << " repeats)";
+            ss << "KeyPressedEvent: " << Key::ToString(GetKeyCode()) << " (" << m_RepeatCount << " repeats)";
 
             return ss.str();
         }
@@ -123,7 +125,7 @@ namespace Neptune {
         * 
         * @param[in] keycode Input KeyCode.
         */
-        KeyReleasedEvent(KeyCode keycode)
+        explicit KeyReleasedEvent(KeyCode keycode)
             : KeyEvent(keycode)
         {}
 
@@ -142,7 +144,7 @@ namespace Neptune {
             NEPTUNE_PROFILE_ZONE
 
             std::stringstream ss;
-            ss << "KeyReleasedEvent: " << Key::ToString(m_KeyCode);
+            ss << "KeyReleasedEvent: " << Key::ToString(GetKeyCode());
 
             return ss.str();
         }
@@ -165,7 +167,7 @@ namespace Neptune {
         * 
         * @param[in] keycode Input KeyCode.
         */
-        KeyTypedEvent(KeyCode keycode)
+        explicit KeyTypedEvent(KeyCode keycode)
             : KeyEvent(keycode)
         {}
 
@@ -184,7 +186,7 @@ namespace Neptune {
             NEPTUNE_PROFILE_ZONE
 
             std::stringstream ss;
-            ss << "KeyTypedEvent: " << Key::ToString(m_KeyCode);
+            ss << "KeyTypedEvent: " << Key::ToString(GetKeyCode());
 
             return ss.str();
         }

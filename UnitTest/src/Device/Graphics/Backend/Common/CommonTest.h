@@ -49,7 +49,7 @@ namespace Neptune::Render::Common::Test {
 
 		NEPTUNE_TEST_PROFILE_FUNCTION
 
-		Unit<void*, 0>{};
+		Unit<void*, 0> unit{};
 		
 		details::EnumTuple tuple;
 		

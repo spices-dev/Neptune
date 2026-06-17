@@ -20,22 +20,24 @@ namespace Neptune::Direct3D12 {
     {
         NEPTUNE_PROFILE_ZONE
 
-        switch (m_EInfrastructure)
+	    using enum EInfrastructure;
+	    
+        switch (GetEInfrastructure())
         {
-            case EInfrastructure::DebugUtilsObject:                   return "DebugUtilsObject";
-            case EInfrastructure::Factory:                            return "Factory";
-            case EInfrastructure::Device:                             return "Device";
-            case EInfrastructure::GraphicQueue:                       return "GraphicQueue";
-            case EInfrastructure::ComputeQueue:                       return "ComputeQueue";
-            case EInfrastructure::SwapChain:                          return "SwapChain";
-            case EInfrastructure::GraphicFence:                       return "GraphicFence";
-            case EInfrastructure::ComputeFence:                       return "ComputeFence";
-            case EInfrastructure::GraphicCommandList:                 return "GraphicCommandList";
-            case EInfrastructure::ComputeCommandList:                 return "ComputeCommandList";
-            case EInfrastructure::RTVDescriptorHeap:                  return "RTVDescriptorHeap";
-            case EInfrastructure::DSVDescriptorHeap:                  return "DSVDescriptorHeap";
-            case EInfrastructure::SRVDescriptorHeap:                  return "SRVDescriptorHeap";
-            case EInfrastructure::UAVDescriptorHeap:                  return "UAVDescriptorHeap";
+            case DebugUtilsObject:                   return "DebugUtilsObject";
+            case Factory:                            return "Factory";
+            case Device:                             return "Device";
+            case GraphicQueue:                       return "GraphicQueue";
+            case ComputeQueue:                       return "ComputeQueue";
+            case SwapChain:                          return "SwapChain";
+            case GraphicFence:                       return "GraphicFence";
+            case ComputeFence:                       return "ComputeFence";
+            case GraphicCommandList:                 return "GraphicCommandList";
+            case ComputeCommandList:                 return "ComputeCommandList";
+            case RTVDescriptorHeap:                  return "RTVDescriptorHeap";
+            case DSVDescriptorHeap:                  return "DSVDescriptorHeap";
+            case SRVDescriptorHeap:                  return "SRVDescriptorHeap";
+            case UAVDescriptorHeap:                  return "UAVDescriptorHeap";
 
             default:                                                  return "NonNamed";
         }

@@ -26,8 +26,6 @@ namespace Neptune {
         template<typename T>
         static void Dispatch(Event& event, T* instance);
 
-    public:
-
         /**
         * @brief Constructor Function.
         */

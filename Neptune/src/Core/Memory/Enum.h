@@ -34,13 +34,15 @@ namespace Neptune {
     {
         NEPTUNE_PROFILE_ZONE
         
+        using enum MemoryEnum;
+        
         switch (memory)
         {
-            case MemoryEnum::Host:            return "Host";
-            case MemoryEnum::Device:          return "Device";
-            case MemoryEnum::HostDevice:      return "Host Device";
-            case MemoryEnum::Shared:          return "Shared";
-            case MemoryEnum::Other:           return "Other";
+            case Host:            return "Host";
+            case Device:          return "Device";
+            case HostDevice:      return "Host Device";
+            case Shared:          return "Shared";
+            case Other:           return "Other";
             default:                          return "Unknown";
         }
     }

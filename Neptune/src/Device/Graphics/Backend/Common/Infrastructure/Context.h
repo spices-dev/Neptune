@@ -50,7 +50,7 @@ namespace Neptune::Render::Common {
     {
         NEPTUNE_PROFILE_ZONE
         
-        if constexpr (requires(Args... args) {
+        if constexpr (requires(Args&&... args) {
             { T::Create(std::forward<Args>(args)...) } -> IsSame<SP<T>>;
         })
         {

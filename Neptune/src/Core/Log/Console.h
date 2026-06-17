@@ -64,14 +64,12 @@ namespace Neptune {
         */
         static std::shared_ptr<Console> Registry(const std::string& name);
 
-    public:
-
         /**
         * @brief Constructor Function.
         * 
         * @param[in] maxInfos Maximum Num of Information.
         */
-        Console(uint32_t maxInfos = 50);
+        explicit Console(uint32_t maxInfos = 50);
 
         /**
         * @brief Destructor Function.
@@ -112,7 +110,7 @@ namespace Neptune {
         */
         void flush_() override { Clear(); }
 
-    protected:
+    private:
 
         uint32_t m_MaxInfos;     // @brief Maximum Num of Information's.
         InfoData m_InfoData;     // @brief Console Information.

@@ -20,11 +20,13 @@ namespace Neptune::OpenGL {
     {
         NEPTUNE_PROFILE_ZONE
 
-        switch (m_EInfrastructure)
+	    using enum EInfrastructure;
+		
+        switch (GetEInfrastructure())
         {
-            case EInfrastructure::WindowContext:                      return "WindowContext";
-            case EInfrastructure::DebugUtilsObject:                   return "DebugUtilsObject";
-            case EInfrastructure::GraphicFence:                       return "GraphicFence";
+            case WindowContext:                      return "WindowContext";
+            case DebugUtilsObject:                   return "DebugUtilsObject";
+            case GraphicFence:                       return "GraphicFence";
 
             default:                                                  return "NonNamed";
         }

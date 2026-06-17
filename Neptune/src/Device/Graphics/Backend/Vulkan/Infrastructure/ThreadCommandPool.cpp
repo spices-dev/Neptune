@@ -58,15 +58,19 @@ namespace Neptune::Vulkan {
 			*/
 			const std::optional<UUID>& Id(EInfrastructure e) const
 			{
+				static constexpr std::optional<UUID> nullopt = std::nullopt; 
+				
+				using enum EInfrastructure;
+				
 				switch (e)
 				{
-					case EInfrastructure::GraphicThreadCommandPool:     return m_GraphicId;
-					case EInfrastructure::ComputeThreadCommandPool:     return m_ComputeId;
-					case EInfrastructure::TransferThreadCommandPool:    return m_TransferId;
-					case EInfrastructure::VideoEncodeThreadCommandPool: return m_VideoEncodeId;
-					case EInfrastructure::VideoDecodeThreadCommandPool: return m_VideoDecodeId;
-					case EInfrastructure::OpticalFlowThreadCommandPool: return m_OpticalFlowId;
-					default: return std::nullopt;
+					case GraphicThreadCommandPool:     return m_GraphicId;
+					case ComputeThreadCommandPool:     return m_ComputeId;
+					case TransferThreadCommandPool:    return m_TransferId;
+					case VideoEncodeThreadCommandPool: return m_VideoEncodeId;
+					case VideoDecodeThreadCommandPool: return m_VideoDecodeId;
+					case OpticalFlowThreadCommandPool: return m_OpticalFlowId;
+					default: return nullopt;
 				}
 			}
 
@@ -78,14 +82,16 @@ namespace Neptune::Vulkan {
 			*/
 			void SetId(const UUID& id, EInfrastructure e)
 			{
+				using enum EInfrastructure;
+				
 				switch (e)
 				{
-					case EInfrastructure::GraphicThreadCommandPool:     m_GraphicId     = id; return;
-					case EInfrastructure::ComputeThreadCommandPool:     m_ComputeId     = id; return;
-					case EInfrastructure::TransferThreadCommandPool:    m_TransferId    = id; return;
-					case EInfrastructure::VideoEncodeThreadCommandPool: m_VideoEncodeId = id; return;
-					case EInfrastructure::VideoDecodeThreadCommandPool: m_VideoDecodeId = id; return;
-					case EInfrastructure::OpticalFlowThreadCommandPool: m_OpticalFlowId = id; return;
+					case GraphicThreadCommandPool:     m_GraphicId     = id; return;
+					case ComputeThreadCommandPool:     m_ComputeId     = id; return;
+					case TransferThreadCommandPool:    m_TransferId    = id; return;
+					case VideoEncodeThreadCommandPool: m_VideoEncodeId = id; return;
+					case VideoDecodeThreadCommandPool: m_VideoDecodeId = id; return;
+					case OpticalFlowThreadCommandPool: m_OpticalFlowId = id; return;
 					default: return;
 				}
 			}
@@ -177,14 +183,16 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 
+		using enum EInfrastructure;
+		
 		switch (GetEInfrastructure())
 		{
-			case EInfrastructure::GraphicThreadCommandPool:		return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().graphic.value();
-			case EInfrastructure::ComputeThreadCommandPool:     return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().compute.value();
-			case EInfrastructure::TransferThreadCommandPool:    return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().transfer.value();
-			case EInfrastructure::VideoEncodeThreadCommandPool: return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().videoEncode.value();
-			case EInfrastructure::VideoDecodeThreadCommandPool: return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().videoDecode.value();
-			case EInfrastructure::OpticalFlowThreadCommandPool: return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().opticalFlow.value();
+			case GraphicThreadCommandPool:		return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().graphic.value();
+			case ComputeThreadCommandPool:     return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().compute.value();
+			case TransferThreadCommandPool:    return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().transfer.value();
+			case VideoEncodeThreadCommandPool: return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().videoEncode.value();
+			case VideoDecodeThreadCommandPool: return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().videoDecode.value();
+			case OpticalFlowThreadCommandPool: return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().opticalFlow.value();
 			default: return 0;
 		}
 	}

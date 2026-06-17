@@ -196,6 +196,8 @@ namespace Neptune {
         MouseButtonEvent(MouseCode button)
             : m_Button(button)
         {}
+        
+    private:
 
         /**
         * @brief Input Mouse Button.
@@ -234,7 +236,7 @@ namespace Neptune {
             NEPTUNE_PROFILE_ZONE
 
             std::stringstream ss;
-            ss << "MouseButtonPressedEvent: " << Mouse::ToString(m_Button);
+            ss << "MouseButtonPressedEvent: " << Mouse::ToString(GetMouseButton());
 
             return ss.str();
         }
@@ -276,7 +278,7 @@ namespace Neptune {
             NEPTUNE_PROFILE_ZONE
 
             std::stringstream ss;
-            ss << "MouseButtonReleasedEvent: " << Mouse::ToString(m_Button);
+            ss << "MouseButtonReleasedEvent: " << Mouse::ToString(GetMouseButton());
 
             return ss.str();
         }

@@ -20,50 +20,52 @@ namespace Neptune::Vulkan {
     {
         NEPTUNE_PROFILE_ZONE
 
-        switch (m_EInfrastructure)
+	    using enum EInfrastructure;
+		
+        switch (GetEInfrastructure())
         {
-            case EInfrastructure::Instance:                           return "Instance";
-            case EInfrastructure::Functions:                          return "Functions";
-            case EInfrastructure::DebugUtilsObject:                   return "DebugUtilsObject";
-            case EInfrastructure::Surface:                            return "Surface";
-            case EInfrastructure::PhysicalDevice:                     return "PhysicalDevice";
-            case EInfrastructure::Device:                             return "Device";
+            case Instance:                           return "Instance";
+            case Functions:                          return "Functions";
+            case DebugUtilsObject:                   return "DebugUtilsObject";
+            case Surface:                            return "Surface";
+            case PhysicalDevice:                     return "PhysicalDevice";
+            case Device:                             return "Device";
                                                                       
-            case EInfrastructure::GraphicQueue:                       return "GraphicQueue";
-            case EInfrastructure::PresentQueue:                       return "PresentQueue";
-            case EInfrastructure::ComputeQueue:                       return "ComputeQueue";
+            case GraphicQueue:                       return "GraphicQueue";
+            case PresentQueue:                       return "PresentQueue";
+            case ComputeQueue:                       return "ComputeQueue";
                                                                       
-            case EInfrastructure::GraphicThreadQueue:                 return "GraphicThreadQueue";
-            case EInfrastructure::ComputeThreadQueue:                 return "ComputeThreadQueue";
-            case EInfrastructure::TransferThreadQueue:                return "TransferThreadQueue";
-            case EInfrastructure::VideoEncodeThreadQueue:             return "VideoEncodeThreadQueue";
-            case EInfrastructure::VideoDecodeThreadQueue:             return "VideoDecodeThreadQueue";
-            case EInfrastructure::OpticalFlowThreadQueue:             return "OpticalFlowThreadQueue";
+            case GraphicThreadQueue:                 return "GraphicThreadQueue";
+            case ComputeThreadQueue:                 return "ComputeThreadQueue";
+            case TransferThreadQueue:                return "TransferThreadQueue";
+            case VideoEncodeThreadQueue:             return "VideoEncodeThreadQueue";
+            case VideoDecodeThreadQueue:             return "VideoDecodeThreadQueue";
+            case OpticalFlowThreadQueue:             return "OpticalFlowThreadQueue";
                                                                       
-            case EInfrastructure::MemoryAllocator:                    return "MemoryAllocator";
-            case EInfrastructure::SwapChain:                          return "SwapChain";
+            case MemoryAllocator:                    return "MemoryAllocator";
+            case SwapChain:                          return "SwapChain";
+                                                     
+            case GraphicImageSemaphore:              return "GraphicImageSemaphore";
+            case GraphicQueueSemaphore:              return "GraphicQueueSemaphore";
+            case GraphicFence:                       return "GraphicFence";
+                                                     
+            case ComputeQueueSemaphore:              return "ComputeQueueSemaphore";
+            case ComputeFence:                       return "ComputeFence";
+                                                     
+            case GraphicCommandPool:                 return "GraphicCommandPool";
+            case GraphicCommandBuffer:               return "GraphicCommandBuffer";
+                                                     
+            case ComputeCommandPool:                 return "ComputeCommandPool";
+            case ComputeCommandBuffer:               return "ComputeCommandBuffer";
                                                                       
-            case EInfrastructure::GraphicImageSemaphore:              return "GraphicImageSemaphore";
-            case EInfrastructure::GraphicQueueSemaphore:              return "GraphicQueueSemaphore";
-            case EInfrastructure::GraphicFence:                       return "GraphicFence";
-                                                                      
-            case EInfrastructure::ComputeQueueSemaphore:              return "ComputeQueueSemaphore";
-            case EInfrastructure::ComputeFence:                       return "ComputeFence";
-                                                                      
-            case EInfrastructure::GraphicCommandPool:                 return "GraphicCommandPool";
-            case EInfrastructure::GraphicCommandBuffer:               return "GraphicCommandBuffer";
-                                                                      
-            case EInfrastructure::ComputeCommandPool:                 return "ComputeCommandPool";
-            case EInfrastructure::ComputeCommandBuffer:               return "ComputeCommandBuffer";
-                                                                      
-            case EInfrastructure::GraphicThreadCommandPool:           return "GraphicThreadCommandPool";
-            case EInfrastructure::ComputeThreadCommandPool:           return "ComputeThreadCommandPool";
-            case EInfrastructure::TransferThreadCommandPool:          return "TransferThreadCommandPool";
-            case EInfrastructure::VideoEncodeThreadCommandPool:       return "VideoEncodeThreadCommandPool";
-            case EInfrastructure::VideoDecodeThreadCommandPool:       return "VideoDecodeThreadCommandPool";
-            case EInfrastructure::OpticalFlowThreadCommandPool:       return "OpticalFlowThreadCommandPool";
+            case GraphicThreadCommandPool:           return "GraphicThreadCommandPool";
+            case ComputeThreadCommandPool:           return "ComputeThreadCommandPool";
+            case TransferThreadCommandPool:          return "TransferThreadCommandPool";
+            case VideoEncodeThreadCommandPool:       return "VideoEncodeThreadCommandPool";
+            case VideoDecodeThreadCommandPool:       return "VideoDecodeThreadCommandPool";
+            case OpticalFlowThreadCommandPool:       return "OpticalFlowThreadCommandPool";
 
-            case EInfrastructure::DescriptorPool:                     return "DescriptorPool";
+            case DescriptorPool:                     return "DescriptorPool";
 
             default:                                                  return "NonNamed";
         }

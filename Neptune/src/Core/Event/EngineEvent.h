@@ -36,7 +36,7 @@ namespace Neptune {
         * 
         * @param[in] flag Input EngineEventBit.
         */
-        EngineEvent(const Container::BitSet<EngineEventBit>& flag)
+        explicit EngineEvent(const Container::BitSet<EngineEventBit>& flag)
             : m_Flag(flag)
         {}
 

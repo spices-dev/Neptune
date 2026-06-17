@@ -20,7 +20,7 @@ namespace Neptune::WebGPU {
     {
         NEPTUNE_PROFILE_ZONE
 
-        switch (m_EInfrastructure)
+        switch (GetEInfrastructure())
         {
             default:                                                  return "NonNamed";
         }

@@ -49,10 +49,12 @@ namespace Neptune::Vulkan {
     {
         NEPTUNE_PROFILE_ZONE
 
+        using enum EInfrastructure;
+        
         switch (GetEInfrastructure())
 		{
-			case EInfrastructure::GraphicCommandBuffer:		return GetContext().Get<IGraphicCommandPool>()->Handle();
-			case EInfrastructure::ComputeCommandBuffer:     return GetContext().Get<IComputeCommandPool>()->Handle();
+			case GraphicCommandBuffer:		return GetContext().Get<IGraphicCommandPool>()->Handle();
+			case ComputeCommandBuffer:     return GetContext().Get<IComputeCommandPool>()->Handle();
 			default: return VK_NULL_HANDLE;
 		}
     }

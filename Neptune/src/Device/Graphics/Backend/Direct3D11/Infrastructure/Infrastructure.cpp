@@ -20,19 +20,21 @@ namespace Neptune::Direct3D11 {
     {
         NEPTUNE_PROFILE_ZONE
 
-        switch (m_EInfrastructure)
+	    using enum EInfrastructure;
+	    
+        switch (GetEInfrastructure())
         {
-            case EInfrastructure::DebugUtilsObject:                   return "DebugUtilsObject";
-            case EInfrastructure::DeviceContext:                      return "DeviceContext";
-            case EInfrastructure::Factory:                            return "Factory";
-            case EInfrastructure::Device:                             return "Device";
-            case EInfrastructure::SwapChain:                          return "SwapChain";
-            case EInfrastructure::GraphicFence:                       return "GraphicFence";
-            case EInfrastructure::ComputeFence:                       return "ComputeFence";
-            case EInfrastructure::GraphicCommandList:                 return "GraphicCommandList";
-            case EInfrastructure::ComputeCommandList:                 return "ComputeCommandList";
-            case EInfrastructure::GraphicThreadCommandList:           return "GraphicThreadCommandList";
-            case EInfrastructure::ComputeThreadCommandList:           return "ComputeThreadCommandList";
+            case DebugUtilsObject:                   return "DebugUtilsObject";
+            case DeviceContext:                      return "DeviceContext";
+            case Factory:                            return "Factory";
+            case Device:                             return "Device";
+            case SwapChain:                          return "SwapChain";
+            case GraphicFence:                       return "GraphicFence";
+            case ComputeFence:                       return "ComputeFence";
+            case GraphicCommandList:                 return "GraphicCommandList";
+            case ComputeCommandList:                 return "ComputeCommandList";
+            case GraphicThreadCommandList:           return "GraphicThreadCommandList";
+            case ComputeThreadCommandList:           return "ComputeThreadCommandList";
             default:                                                  return "NonNamed";
         }
     }

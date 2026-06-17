@@ -35,7 +35,7 @@ namespace Neptune::Container {
         /**
         * @brief Constructor Function.
         */
-        BitSet(const T& t)
+        explicit BitSet(const T& t)
         {
             Set(t, true);
         }
@@ -51,11 +51,8 @@ namespace Neptune::Container {
         * @param[in] other BitSet.
         */
         BitSet(const BitSet& other)
-        {
-            std::unique_lock lock(m_Mutex);
-
-            m_Bits = other.m_Bits;
-        }
+            : m_Bits{ other.m_Bits }
+        {}
 
         /**
         * @brief Copy Assignment Operation.
@@ -77,11 +74,8 @@ namespace Neptune::Container {
         * @param[in] other BitSet.
         */
         BitSet(BitSet&& other) noexcept
-        {
-            std::unique_lock lock(m_Mutex);
-
-            m_Bits = std::move(other.m_Bits);
-        }
+            : m_Bits{ std::move(other.m_Bits) } 
+        {}
 
         /**
         * @brief Move Assignment Operation.

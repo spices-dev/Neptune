@@ -34,9 +34,8 @@ namespace Neptune {
 		* @brief Constructor Function.
 		*/
 		Delegate_Basic()
-		{
-			m_Agents = CreateSP<Container::LinkedUnorderedMap<uint64_t, Agent>>();
-		}
+			: m_Agents { CreateSP<Container::LinkedUnorderedMap<uint64_t, Agent>>() }
+		{}
 
 		/**
 		* @brief Destructor Function.
@@ -92,7 +91,7 @@ namespace Neptune {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		uint64_t* addr = reinterpret_cast<uint64_t*>(&func);
+		auto addr = reinterpret_cast<uint64_t*>(&func);
 		
 		if (m_Agents->Contains(*addr))
 		{
@@ -111,7 +110,7 @@ namespace Neptune {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		uint64_t* addr = reinterpret_cast<uint64_t*>(&func);
+		auto addr = reinterpret_cast<uint64_t*>(&func);
 		if (!m_Agents->has_key(*addr))
 		{
 			NEPTUNE_CORE_WARN("Agent Function not bound yet.")
@@ -129,7 +128,7 @@ namespace Neptune {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		m_Agents->ForEach([&](const auto& k, const auto& v) -> bool {
+		m_Agents->ForEach([&](const auto& k, const auto& v) {
 			
 			std::invoke(v, std::forward<Args>(args)...);
 			

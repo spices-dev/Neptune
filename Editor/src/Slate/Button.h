@@ -13,12 +13,10 @@ namespace Neptune::Editor {
     {
     public:
 
-        Button(std::string slateName)
+        explicit Button(const std::string& slateName)
         {}
 
         virtual ~Button() = default;
-
-    private:
         
     };
     
