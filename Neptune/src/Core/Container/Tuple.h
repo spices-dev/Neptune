@@ -21,7 +21,7 @@ namespace Neptune::Container {
 		template<size_t... Idx, typename Tuple, typename Function>
 		void IterTuple(Tuple& tuple, Function&& fn, std::index_sequence<Idx...>)
 		{
-			(std::invoke(fn, std::get<Idx>(tuple)), ...);
+			(std::invoke(std::forward<Function>(fn), std::get<Idx>(tuple)), ...);
 		}
 
 	}
@@ -35,6 +35,6 @@ namespace Neptune::Container {
 	template<typename Tuple, typename Function>
 	void IterTuple(Tuple& tuple, Function&& fn)
 	{
-		detail::IterTuple(tuple, fn, std::make_index_sequence<std::tuple_size_v<Tuple>>());
+		detail::IterTuple(tuple, std::forward<Function>(fn), std::make_index_sequence<std::tuple_size_v<Tuple>>());
 	}
 }

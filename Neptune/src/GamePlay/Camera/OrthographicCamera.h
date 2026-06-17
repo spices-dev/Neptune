@@ -27,7 +27,7 @@ namespace Neptune {
         * @brief Constructor Function.
         * @param[in] param OrthographicParam.
         */
-        OrthographicCamera(const OrthographicParam& param);
+        explicit OrthographicCamera(const OrthographicParam& param);
 
         /**
         * @brief Destructor Function.

@@ -27,9 +27,7 @@ namespace Neptune::Container {
 		/**
 		* @brief Constructor Function.
 		*/
-		LinkedUnorderedMap()
-			: m_Size{ 0 }
-		{};
+		LinkedUnorderedMap() = default;
 
 		/**
 		* @brief Destructor Function.
@@ -137,7 +135,7 @@ namespace Neptune::Container {
 		std::list<K> m_Keys;                 // @brief The container keeps iter in order.
 		std::unordered_map<K, V> m_Map;      // @breif The container keeps quick search.
 		mutable std::shared_mutex m_Mutex;   // @brief Mutex for this container.
-		std::atomic_int m_Size;              // @brief This container size.
+		std::atomic_int m_Size = 0;          // @brief This container size.
 	};
 
 	template<typename K, typename V>
@@ -229,7 +227,7 @@ namespace Neptune::Container {
 			* 
 			* @return Retunrs True if want break this for loop.
 			*/
-			if(std::invoke(fn, key, m_Map[key])) break;
+			if(std::invoke(std::forward<F>(fn), key, m_Map[key])) break;
 		}
 	}
 

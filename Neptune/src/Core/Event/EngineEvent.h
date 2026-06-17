@@ -45,7 +45,7 @@ namespace Neptune {
         * 
         * @param[in] bit Input EngineEventBit.
         */
-        EngineEvent(EngineEventBit bit)
+        explicit EngineEvent(EngineEventBit bit)
             : m_Flag(bit)
         {
             m_Flag.Set(bit, true);

@@ -76,7 +76,7 @@ namespace Neptune::Direct3D12 {
 		*/
 		void Create(DXGI_SWAP_CHAIN_DESC1& desc, uint32_t count, HWND hwnd);
 
-	protected:
+	private:
 
 		SP<Unit::SwapChain> m_SwapChain;           // @brief This SwapChain.
 		BOOL m_AllowTearing = FALSE;               // @brief Feature of AllowTearing.

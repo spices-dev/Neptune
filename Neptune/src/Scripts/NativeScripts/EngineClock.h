@@ -27,7 +27,7 @@ namespace Neptune {
 		* 
 		* @param[in] scene Scene.
 		*/
-		EngineClock(class Scene* scene);
+		explicit EngineClock(class Scene* scene);
 		
 		/**
 		* @brief Destructor Function.

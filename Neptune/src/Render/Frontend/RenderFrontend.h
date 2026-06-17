@@ -128,7 +128,7 @@ namespace Neptune {
         * 
         * @param[in] backend RenderBackendEnum.
         */
-        RenderFrontend(RenderBackendEnum backend) : m_RenderBackendEnum(backend) {}
+        explicit RenderFrontend(RenderBackendEnum backend) : m_RenderBackendEnum(backend) {}
 
         /**
         * @brief Recreate SwapChain.

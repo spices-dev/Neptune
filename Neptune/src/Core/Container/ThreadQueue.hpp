@@ -76,7 +76,7 @@ namespace Neptune::Container {
 	{
 		std::unique_lock lock(m_Mutex);
 
-		m_Queue.push(item);
+		m_Queue.push(std::forward<T1>(item));
 		
 		++m_Count;
 

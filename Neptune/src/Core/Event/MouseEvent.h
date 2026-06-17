@@ -193,7 +193,7 @@ namespace Neptune {
         * 
         * @param[in] button Input Mouse Button.
         */
-        MouseButtonEvent(MouseCode button)
+        explicit MouseButtonEvent(MouseCode button)
             : m_Button(button)
         {}
         
@@ -217,7 +217,7 @@ namespace Neptune {
         * 
         * @param[in] button Input Mouse Button.
         */
-        MouseButtonPressedEvent(MouseCode button)
+        explicit MouseButtonPressedEvent(MouseCode button)
             : MouseButtonEvent(button)
         {}
 
@@ -259,7 +259,7 @@ namespace Neptune {
         * 
         * @param[in] button Input Mouse Button.
         */
-        MouseButtonReleasedEvent(MouseCode button)
+        explicit MouseButtonReleasedEvent(MouseCode button)
             : MouseButtonEvent(button)
         {}
 

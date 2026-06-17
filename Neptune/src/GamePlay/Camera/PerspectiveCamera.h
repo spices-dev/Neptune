@@ -28,7 +28,7 @@ namespace Neptune {
         * 
         * @param[in] param PerspectiveParam.
         */
-        PerspectiveCamera(const PerspectiveParam& param);
+        explicit PerspectiveCamera(const PerspectiveParam& param);
 
         /**
         * @brief Destructor Function.

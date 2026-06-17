@@ -30,7 +30,8 @@ namespace Neptune::Direct3D12::GLFW {
 
         auto glfwWindow = static_cast<GLFWwindow*>(window);
 
-        int w, h;
+        int w; 
+        int h;
 
         glfwGetWindowSize(glfwWindow, &w, &h);
 

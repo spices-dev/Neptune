@@ -33,9 +33,7 @@ namespace Neptune {
 		/**
 		* @brief Constructor Function.
 		*/
-		Delegate_Basic()
-			: m_Agents { CreateSP<Container::LinkedUnorderedMap<uint64_t, Agent>>() }
-		{}
+		Delegate_Basic() = default;
 
 		/**
 		* @brief Destructor Function.
@@ -83,7 +81,7 @@ namespace Neptune {
 
 	private:
 		
-		SP<Container::LinkedUnorderedMap<uint64_t, Agent>> m_Agents;  // @brief Map of Agent Function Pointer.
+		SP<Container::LinkedUnorderedMap<uint64_t, Agent>> m_Agents = CreateSP<Container::LinkedUnorderedMap<uint64_t, Agent>>();  // @brief Map of Agent Function Pointer.
 	};
 
 	template<typename ...Args>
@@ -130,7 +128,7 @@ namespace Neptune {
 
 		m_Agents->ForEach([&](const auto& k, const auto& v) {
 			
-			std::invoke(v, std::forward<Args>(args)...);
+			std::invoke(v, args...);
 			
 			return false;
 		});

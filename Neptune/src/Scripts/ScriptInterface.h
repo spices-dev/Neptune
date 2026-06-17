@@ -29,7 +29,7 @@ namespace Neptune {
         * 
         * @param[in] path script file path.
         */
-        ScriptInterface(const std::filesystem::path& path) : m_ScriptPath(path) {};
+        explicit ScriptInterface(const std::filesystem::path& path) : m_ScriptPath(path) {};
 
         /**
         * @brief Destructor Function.

@@ -27,8 +27,6 @@ namespace Neptune::Render::Common {
 
         using Context = Context<E>;
 
-    public:
-
         /**
         * @brief Destructor Function.
         */

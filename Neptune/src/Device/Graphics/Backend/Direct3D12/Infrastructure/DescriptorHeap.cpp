@@ -40,12 +40,16 @@ namespace Neptune::Direct3D12 {
 
     D3D12_DESCRIPTOR_HEAP_TYPE DescriptorHeap::GetDescriptorHeapType() const
     {
+    	NEPTUNE_PROFILE_ZONE
+    	
+    	using enum EInfrastructure;
+    	
         switch (GetEInfrastructure())
 		{
-			case EInfrastructure::RTVDescriptorHeap:		return D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
-			case EInfrastructure::DSVDescriptorHeap:        return D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
-			case EInfrastructure::SRVDescriptorHeap:        return D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-			case EInfrastructure::UAVDescriptorHeap:        return D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+			case RTVDescriptorHeap:		return D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+			case DSVDescriptorHeap:        return D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+			case SRVDescriptorHeap:        return D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+			case UAVDescriptorHeap:        return D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 			default: return D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 		}
     }
