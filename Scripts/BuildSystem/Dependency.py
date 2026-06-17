@@ -8,7 +8,6 @@ from BasicObject import BasicObject
 from pathlib import Path
 from abc import ABC, abstractmethod
 
-
 class Dependency(BasicObject, ABC):
     """
     @brief Base class for solution dependency.

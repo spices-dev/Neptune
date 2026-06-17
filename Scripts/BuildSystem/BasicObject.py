@@ -6,7 +6,6 @@
 
 import platform
 
-
 class BasicObject:
     """
     @brief Base class for all object.

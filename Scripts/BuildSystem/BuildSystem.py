@@ -10,7 +10,6 @@ from Scripts.BuildDependencies.GitDependency import GitDependency
 from pathlib import Path
 from abc import ABC, abstractmethod
 
-
 class BuildSystem(BasicObject, ABC):
     """
     @brief Base class for build systems

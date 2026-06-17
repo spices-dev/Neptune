@@ -10,10 +10,8 @@ from Scripts.BuildDependencies.PremakeDependency import PremakeDependency
 from Scripts.BuildDependencies.EmsdkDependency import EmsdkDependency
 from Scripts.BuildDependencies.GNUDependency import GNUDependency
 from Scripts.BuildDependencies.LLVMDependency import LLVMDependency
-
-if sys.platform == 'win32':
-    from Scripts.BuildDependencies.MSVCDependency import MSVCDependency
-    from Scripts.BuildDependencies.TracyDependency import TracyDependency
+from Scripts.BuildDependencies.MSVCDependency import MSVCDependency
+from Scripts.BuildDependencies.TracyDependency import TracyDependency
 
 from pathlib import Path
 import os

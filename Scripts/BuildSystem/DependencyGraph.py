@@ -8,7 +8,6 @@ from BasicObject import BasicObject
 from Dependency import Dependency
 from typing import Optional
 
-
 class DependencyGraph(BasicObject):
     """
     @brief Handles dependency checking and installation
