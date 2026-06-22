@@ -76,7 +76,7 @@ namespace Neptune::Direct3D11 {
         *
         * @return Returns Infrastructure.
         */
-        std::unordered_map<std::string, std::any> AccessInfrastructure() const override;
+        std::array<std::any, MaxAccessibleInfrastructure> AccessInfrastructure() const override;
 
         /**
         * @brief Get Context.

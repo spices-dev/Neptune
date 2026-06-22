@@ -10,6 +10,7 @@
 #include "Enum.h"
 #include "Render/Frontend/Enum.h"
 #include "Window/Enum.h"
+#include "Device/Graphics/Frontend/Core.h"
 
 #include <unordered_map>
 #include <any>
@@ -47,7 +48,7 @@ namespace Neptune {
         * 
         * @param[in] infrastructure RenderFrontend Infrastructure.
         */
-		virtual void OnInitialize(const std::unordered_map<std::string, std::any>& infrastructure) const = 0;
+		virtual void OnInitialize(const std::array<std::any, MaxAccessibleInfrastructure>& infrastructure) const = 0;
 
         /**
         * @brief Interface of ShutDown.

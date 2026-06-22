@@ -11,6 +11,7 @@
 #include "RenderBackend.h"
 #include "Device/Graphics/Frontend/RHI/RenderPass.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/InfrastructureHeader.h"
+#include "Device/Graphics/Backend/Vulkan/AInfrastructure/AccessibleInfrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderPass.h"
 #include "Render/Frontend/Pass/SlatePass.h"
 #include "Window/Window.h"
@@ -182,17 +183,17 @@ namespace Neptune::Vulkan {
 	    return m_GraphicsBackend->CreateRHI(e, payload);
     }
 	
-	std::unordered_map<std::string, std::any> RenderBackend::AccessInfrastructure() const
+	std::array<std::any, MaxAccessibleInfrastructure> RenderBackend::AccessInfrastructure() const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		auto infrastructure = m_GraphicsBackend->AccessInfrastructure();
+		auto context = AContext(m_GraphicsBackend->AccessInfrastructure());
 
-		auto pass = std::dynamic_pointer_cast<Render::SlatePass>(m_RenderPasses.back());
+    	auto pass = std::dynamic_pointer_cast<Render::SlatePass>(m_RenderPasses.back());
     	
-		infrastructure["RenderPass"] = pass->GetRenderPass()->GetRHIImpl<RenderPass>()->Handle();
+    	context.Registry<ASwapChainRenderPass>(pass->GetRenderPass()->GetRHIImpl<RenderPass>()->Handle());
 
-		return infrastructure;
+		return context.GetInfrastructures();
 	}
 
 	void RenderBackend::RecreateSwapChain() const

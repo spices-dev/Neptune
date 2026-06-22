@@ -10,6 +10,7 @@
 
 #include "GraphicsBackend.h"
 #include "Infrastructure/InfrastructureHeader.h"
+#include "AInfrastructure/AccessibleInfrastructure.h"
 #include "RHI/RHIHeader.h"
 #include "World/Scene/Scene.h"
 #include "Data/Clock.h"
@@ -70,17 +71,17 @@ namespace Neptune::WebGPU {
 		}
 	}
 
-    std::unordered_map<std::string, std::any> GraphicsBackend::AccessInfrastructure() const
+    std::array<std::any, MaxAccessibleInfrastructure> GraphicsBackend::AccessInfrastructure() const
 	{
         NEPTUNE_PROFILE_ZONE
 
-		std::unordered_map<std::string, std::any> infrastructure;
+        AContext context;
 
-        infrastructure["Device"]                     = m_Context->Get<IDevice>()->Handle();
-        infrastructure["RTVFormat"]                  = WGPUTextureFormat_RGBA8Unorm;
-        infrastructure["DSVFormat"]                  = WGPUTextureFormat_Undefined;
+        context.Registry<ADevice>(m_Context->Get<IDevice>()->Handle());
+        context.Registry<ARTVFormat>(WGPUTextureFormat_RGBA8Unorm);
+        context.Registry<ADSVFormat>(WGPUTextureFormat_Undefined);
         
-		return infrastructure;
+        return context.GetInfrastructures();
 	}
 
 /*    void RenderBackend::RenderFrame()

@@ -85,7 +85,7 @@ namespace Neptune::WebGPU {
         *
         * @return Returns Infrastructure.
         */
-        std::unordered_map<std::string, std::any> AccessInfrastructure() const override;
+        std::array<std::any, MaxAccessibleInfrastructure> AccessInfrastructure() const override;
 
     private:
 

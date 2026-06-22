@@ -72,4 +72,16 @@ namespace Neptune::Render::Common {
         IsEnum<decltype(T::E)>;
     };
     
+    /**
+    * @brief Concept: Is AInfrastructure.
+    * 
+    * @tparam T .
+    */
+    template<typename T>
+    concept IsAInfrastructure = requires(T t) {
+        typename T::T;
+        t.E;
+        IsEnum<decltype(T::E)>;
+    };
+    
 }

@@ -12,6 +12,7 @@
 #include "Device/Graphics/Frontend/GraphicsFrontend.h"
 #include "Infrastructure/Enum.h"
 #include "Device/Graphics/Backend/Common/Concept.h"
+#include "Device/Graphics/Frontend/Core.h"
 
 namespace Neptune::Render::Common {
     
@@ -76,7 +77,7 @@ namespace Neptune::Vulkan {
         *
         * @return Returns Infrastructure.
         */
-        std::unordered_map<std::string, std::any> AccessInfrastructure() const override;
+        std::array<std::any, MaxAccessibleInfrastructure> AccessInfrastructure() const override;
 
         /**
         * @brief Get Context.

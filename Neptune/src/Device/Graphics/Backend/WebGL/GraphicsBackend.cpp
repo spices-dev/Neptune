@@ -10,6 +10,7 @@
 
 #include "GraphicsBackend.h"
 #include "Infrastructure/InfrastructureHeader.h"
+#include "AInfrastructure/AccessibleInfrastructure.h"
 #include "RHI/RHIHeader.h"
 #include "Window/Window.h"
 #include "World/Scene/Scene.h"
@@ -58,13 +59,13 @@ namespace Neptune::WebGL {
 		}
 	}
 
-    std::unordered_map<std::string, std::any> GraphicsBackend::AccessInfrastructure() const
+    std::array<std::any, MaxAccessibleInfrastructure> GraphicsBackend::AccessInfrastructure() const
 	{
         NEPTUNE_PROFILE_ZONE
 
-		std::unordered_map<std::string, std::any> infrastructure;
+        AContext context;
 
-		return infrastructure;
+		return context.GetInfrastructures();
 	}
 }
 

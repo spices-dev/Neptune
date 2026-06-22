@@ -10,6 +10,7 @@
 
 #include "GraphicsBackend.h"
 #include "Infrastructure/InfrastructureHeader.h"
+#include "AInfrastructure/AccessibleInfrastructure.h"
 #include "RHI/RHIHeader.h"
 #include "Converter.h"
 #include "Window/Window.h"
@@ -110,23 +111,23 @@ namespace Neptune::Vulkan {
 		}
 	}
 
-	std::unordered_map<std::string, std::any> GraphicsBackend::AccessInfrastructure() const
+	std::array<std::any, MaxAccessibleInfrastructure> GraphicsBackend::AccessInfrastructure() const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		std::unordered_map<std::string, std::any> infrastructure;
+		AContext context;
 
-		infrastructure["Instance"]              = m_Context->Get<IInstance>()->Handle();
-		infrastructure["PhysicalDevice"]        = m_Context->Get<IPhysicalDevice>()->Handle();
-		infrastructure["Device"]                = m_Context->Get<IDevice>()->Handle();
-		infrastructure["GraphicQueueFamily"]    = m_Context->Get<IPhysicalDevice>()->GetQueueFamilies().graphic.value();
-		infrastructure["GraphicQueue"]          = m_Context->Get<IGraphicQueue>()->Handle();
-		infrastructure["DescriptorPool"]        = m_Context->Get<IDescriptorPool>()->Handle();
-		infrastructure["MSAASamples"]           = VK_SAMPLE_COUNT_1_BIT;
-		infrastructure["Allocator"]             = static_cast<const VkAllocationCallbacks*>(GetAllocator());
-		infrastructure["CheckVkResultFn"]       = +[](VkResult result) { std::invoke(HandleResultDelegate::GetHandler(), result); };
+		context.Registry<AInstance>(m_Context->Get<IInstance>()->Handle());
+		context.Registry<APhysicalDevice>(m_Context->Get<IPhysicalDevice>()->Handle());
+		context.Registry<ADevice>(m_Context->Get<IDevice>()->Handle());
+		context.Registry<AGraphicQueueFamily>(m_Context->Get<IPhysicalDevice>()->GetQueueFamilies().graphic.value());
+		context.Registry<AGraphicQueue>(m_Context->Get<IGraphicQueue>()->Handle());
+		context.Registry<ADescriptorPool>(m_Context->Get<IDescriptorPool>()->Handle());
+		context.Registry<AMSAASamples>(VK_SAMPLE_COUNT_1_BIT);
+		context.Registry<AAllocator>(GetAllocator());
+		context.Registry<ACheckResultFn>(+[](VkResult result) { std::invoke(HandleResultDelegate::GetHandler(), result); });
 
-		return infrastructure;
+		return context.GetInfrastructures();
 	}
 
 }

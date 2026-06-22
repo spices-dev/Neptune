@@ -10,6 +10,7 @@
 
 #include "GraphicsBackend.h"
 #include "Infrastructure/InfrastructureHeader.h"
+#include "AInfrastructure/AccessibleInfrastructure.h"
 #include "RHI/RHIHeader.h"
 
 namespace Neptune::Direct3D12 {
@@ -85,21 +86,21 @@ namespace Neptune::Direct3D12 {
 		}
 	}
 
-    std::unordered_map<std::string, std::any> GraphicsBackend::AccessInfrastructure() const
+    std::array<std::any, MaxAccessibleInfrastructure> GraphicsBackend::AccessInfrastructure() const
     {
         NEPTUNE_PROFILE_ZONE
 
-        std::unordered_map<std::string, std::any> infrastructure;
+    	AContext context;
 
-        infrastructure["Device"]                     = static_cast<ID3D12Device*>(m_Context->Get<IDevice>()->Handle());
-		infrastructure["CommandQueue"]               = static_cast<ID3D12CommandQueue*>(m_Context->Get<IGraphicQueue>()->Handle());
-		infrastructure["RTVFormat"]                  = DXGI_FORMAT_B8G8R8A8_UNORM;
-		infrastructure["DSVFormat"]                  = DXGI_FORMAT_B8G8R8A8_UNORM;
-		infrastructure["SRVDescriptorHeap"]          = static_cast<ID3D12DescriptorHeap*>(m_Context->Get<ISRVDescriptorHeap>()->Handle());
-        infrastructure["SRVCPUHandle"]               = m_Context->Get<ISRVDescriptorHeap>()->Handle()->GetCPUDescriptorHandleForHeapStart();
-        infrastructure["SRVGPUHandle"]               = m_Context->Get<ISRVDescriptorHeap>()->Handle()->GetGPUDescriptorHandleForHeapStart();
+        context.Registry<ADevice>(m_Context->Get<IDevice>()->Handle());
+		context.Registry<ACommandQueue>(m_Context->Get<IGraphicQueue>()->Handle());
+		context.Registry<ARTVFormat>(DXGI_FORMAT_B8G8R8A8_UNORM);
+		context.Registry<ADSVFormat>(DXGI_FORMAT_B8G8R8A8_UNORM);
+		context.Registry<ASRVDescriptorHeap>(m_Context->Get<ISRVDescriptorHeap>()->Handle());
+        context.Registry<ASRVCPUHandle>(m_Context->Get<ISRVDescriptorHeap>()->Handle()->GetCPUDescriptorHandleForHeapStart());
+        context.Registry<ASRVGPUHandle>(m_Context->Get<ISRVDescriptorHeap>()->Handle()->GetGPUDescriptorHandleForHeapStart());
 
-        return infrastructure;
+        return context.GetInfrastructures();
     }
 }
 

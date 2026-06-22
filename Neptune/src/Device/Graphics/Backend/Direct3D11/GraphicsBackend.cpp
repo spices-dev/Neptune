@@ -10,6 +10,7 @@
 
 #include "GraphicsBackend.h"
 #include "Infrastructure/InfrastructureHeader.h"
+#include "AInfrastructure/AccessibleInfrastructure.h"
 #include "RHI/RHIHeader.h"
 
 namespace Neptune::Direct3D11 {
@@ -78,16 +79,16 @@ namespace Neptune::Direct3D11 {
 		}
 	}
 
-    std::unordered_map<std::string, std::any> GraphicsBackend::AccessInfrastructure() const
+    std::array<std::any, MaxAccessibleInfrastructure> GraphicsBackend::AccessInfrastructure() const
     {
         NEPTUNE_PROFILE_ZONE
 
-        std::unordered_map<std::string, std::any> infrastructure;
+        AContext context;
 
-        infrastructure["Device"]                     = static_cast<ID3D11Device*>(m_Context->Get<IDevice>()->Handle());
-        infrastructure["DeviceContext"]              = static_cast<ID3D11DeviceContext*>(m_Context->Get<IDeviceContext>()->Handle());
+        context.Registry<ADevice>(m_Context->Get<IDevice>()->Handle());
+        context.Registry<ADeviceContext>(m_Context->Get<IDeviceContext>()->Handle());
         
-        return infrastructure;
+        return context.GetInfrastructures();
     }
 }
 

@@ -6,6 +6,7 @@
 
 #pragma once
 #include "Core/Core.h"
+#include "Core.h"
 #include "Core/NonCopyable.h"
 #include "RHI/RHI.h"
 #include "Enum.h"
@@ -59,7 +60,7 @@ namespace Neptune {
         *
         * @return Returns Infrastructure.
         */
-        virtual std::unordered_map<std::string, std::any> AccessInfrastructure() const = 0;
+        virtual std::array<std::any, MaxAccessibleInfrastructure> AccessInfrastructure() const = 0;
 
     protected:
 

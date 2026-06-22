@@ -1,0 +1,37 @@
+﻿/**
+* @file AccessibleInfrastructure.h.
+* @brief The AccessibleInfrastructure Class Definitions.
+* @author Spices.
+*/
+
+#pragma once
+
+#ifdef NP_GRAPHICS_WEBGPU
+
+#include "Core/Core.h"
+#include "Device/Graphics/Backend/WebGPU/Core.h"
+#include "Device/Graphics/Backend/Common/AInfrastructure/AccessibleInfrastructure.h"
+
+namespace Neptune::WebGPU {
+
+    /**
+    * @brief Enum of Accessible Infrastructure.
+    */
+    enum class EAccessibleInfrastructure : uint8_t
+    {
+        Device = 0,             // @brief Device
+        RTVFormat,              // @brief RTVFormat
+        DSVFormat,              // @brief DSVFormat
+
+        Count
+    };
+
+    using ADevice           = Render::Common::AccessibleInfrastructure<WGPUDevice,          EAccessibleInfrastructure::Device>;
+    using ARTVFormat        = Render::Common::AccessibleInfrastructure<WGPUTextureFormat,   EAccessibleInfrastructure::RTVFormat>;
+    using ADSVFormat        = Render::Common::AccessibleInfrastructure<WGPUTextureFormat,   EAccessibleInfrastructure::DSVFormat>;
+
+    using AContext              = Render::Common::AccessibleContext<EAccessibleInfrastructure>;
+    
+}
+
+#endif
