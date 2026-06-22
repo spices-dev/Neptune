@@ -1,6 +1,6 @@
 /**
-* @file DecodePictureBuffer.h.
-* @brief The DecodePictureBuffer Class Definitions.
+* @file DescriptorSet.h.
+* @brief The DescriptorSet Class Definitions.
 * @author Spices.
 */
 

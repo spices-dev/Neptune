@@ -60,19 +60,6 @@ namespace Neptune::Render::Common {
     };
     
     /**
-    * @brief Concept: Is IInfrastructure.
-    * 
-    * @tparam T .
-    */
-    template<typename T>
-    concept IsIInfrastructure = requires(T t) {
-        typename T::T;
-        t.E;
-        IsInfrastructure<typename T::T>;
-        IsEnum<decltype(T::E)>;
-    };
-    
-    /**
     * @brief Concept: Is AInfrastructure.
     * 
     * @tparam T .
@@ -82,6 +69,17 @@ namespace Neptune::Render::Common {
         typename T::T;
         t.E;
         IsEnum<decltype(T::E)>;
+    };
+    
+    /**
+    * @brief Concept: Is IInfrastructure.
+    * 
+    * @tparam T .
+    */
+    template<typename T>
+    concept IsIInfrastructure = requires(T t) {
+        IsInfrastructure<typename T::T>;
+        IsAInfrastructure<T>;
     };
     
 }

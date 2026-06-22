@@ -13,9 +13,9 @@
 
 namespace Neptune::Vulkan {
 
-    Instance::Instance(Context& context, EInfrastructure e, const std::vector<const char*>& windodExtensions)
+    Instance::Instance(Context& context, EInfrastructure e, const std::vector<const char*>& windowExtensions)
         : Infrastructure(context, e)
-		, m_ExtensionProperties(windodExtensions)
+		, m_ExtensionProperties(windowExtensions)
     {
 		NEPTUNE_PROFILE_ZONE
 

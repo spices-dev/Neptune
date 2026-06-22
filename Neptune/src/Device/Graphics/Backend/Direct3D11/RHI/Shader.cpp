@@ -1,6 +1,6 @@
 /**
-* @file VertexBuffer.cpp.
-* @brief The VertexBuffer Class Implementation.
+* @file Shader.cpp.
+* @brief The Shader Class Implementation.
 * @author Spices.
 */
 

@@ -202,13 +202,6 @@ namespace Neptune::Render::Common {
 
         const auto position = static_cast<uint8_t>(I::E);
 
-        if (!m_Infrastructures[position])
-        {
-            NEPTUNE_CORE_ERROR("Infrastructure is not registered yet, can not be got.")
-
-            return nullptr;
-        }
-
         return static_cast<I::T*>(m_Infrastructures[position].get());
     }
 
