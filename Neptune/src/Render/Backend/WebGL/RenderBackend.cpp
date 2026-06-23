@@ -9,7 +9,7 @@
 #ifdef NP_GRAPHICS_WEBGL
 
 #include "RenderBackend.h"
-#include "Device/Graphics/Backend/Vulkan/Infrastructure/InfrastructureHeader.h"
+#include "Device/Graphics/Backend/WebGL/Infrastructure/InfrastructureHeader.h"
 #include "Window/Window.h"
 #include "World/Scene/Scene.h"
 #include "World/Component/Component.h"

@@ -9,7 +9,7 @@
 #ifdef NP_GRAPHICS_METAL
 
 #include "RenderBackend.h"
-#include "GPURuntime/Graphics/Backend/Metal/Infrastructure/InfrastructureHeader.h"
+#include "Device/Graphics/Backend/Metal/Infrastructure/InfrastructureHeader.h"
 #include "Window/Window.h"
 #include "World/Scene/Scene.h"
 #include "World/Component/Component.h"
