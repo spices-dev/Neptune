@@ -43,7 +43,7 @@ namespace Neptune {
             case HostDevice:      return "Host Device";
             case Shared:          return "Shared";
             case Other:           return "Other";
-            default:                          return "Unknown";
+            default:              return "Unknown";
         }
     }
 
