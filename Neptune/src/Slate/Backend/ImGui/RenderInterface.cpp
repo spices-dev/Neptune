@@ -71,7 +71,7 @@ namespace Neptune::imgui {
 
 #ifdef NP_GRAPHICS_OPENGL
 	
-	void OpenGLInterface::OnInitialize(const std::array<std::any, MaxAccessibleInfrastructure>& infrastructure) const
+	void OpenGLInterface::OnInitialize(const AInfrastructures& infrastructure) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -111,7 +111,7 @@ namespace Neptune::imgui {
     
 #ifdef NP_GRAPHICS_VULKAN
 	
-	void VulkanInterface::OnInitialize(const std::array<std::any, MaxAccessibleInfrastructure>& infrastructure) const
+	void VulkanInterface::OnInitialize(const AInfrastructures& infrastructure) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -175,7 +175,7 @@ namespace Neptune::imgui {
 
 #ifdef NP_GRAPHICS_DIRECT3D11
 	
-	void Direct3D11Interface::OnInitialize(const std::array<std::any, MaxAccessibleInfrastructure>& infrastructure) const
+	void Direct3D11Interface::OnInitialize(const AInfrastructures& infrastructure) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -224,7 +224,7 @@ namespace Neptune::imgui {
     
 #ifdef NP_GRAPHICS_DIRECT3D12
 	
-	void Direct3D12Interface::OnInitialize(const std::array<std::any, MaxAccessibleInfrastructure>& infrastructure) const
+	void Direct3D12Interface::OnInitialize(const AInfrastructures& infrastructure) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -286,7 +286,7 @@ namespace Neptune::imgui {
 	
 #ifdef NP_GRAPHICS_WEBGPU
 	
-	void WebGPUInterface::OnInitialize(const std::array<std::any, MaxAccessibleInfrastructure>& infrastructure) const
+	void WebGPUInterface::OnInitialize(const AInfrastructures& infrastructure) const
 	{
 		NEPTUNE_PROFILE_ZONE
 

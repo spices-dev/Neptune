@@ -7,8 +7,11 @@
 #pragma once
 #include "Core/Core.h"
 
+#include <vector>
+#include <any>
+
 namespace Neptune {
 
-	constexpr uint8_t MaxAccessibleInfrastructure = UINT8_MAX;
+	using AInfrastructures = std::vector<std::any>;
 	
 }

@@ -76,7 +76,7 @@ namespace Neptune::OpenGL {
 		}
 	}
 
-    std::array<std::any, MaxAccessibleInfrastructure> GraphicsBackend::AccessInfrastructure() const
+    AInfrastructures GraphicsBackend::AccessInfrastructure() const
 	{
         NEPTUNE_PROFILE_ZONE
 

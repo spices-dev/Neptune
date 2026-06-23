@@ -43,16 +43,24 @@ namespace Neptune::Render::Common {
         /**
         * @brief Constructor Function.
         */
-        AccessibleContext() = default;
+        AccessibleContext()
+        {
+            if constexpr (static_cast<uint8_t>(E::Count) != 0)
+            {
+                m_Infrastructures = std::vector<std::any>(static_cast<uint8_t>(E::Count));
+            }
+        }
 
         /**
         * @brief Constructor Function.
         * 
         * @param[in] infrastructures AccessibleInfrastructures.
         */
-        AccessibleContext(const std::array<std::any, MaxAccessibleInfrastructure>& infrastructures)
+        AccessibleContext(const AInfrastructures& infrastructures)
             : m_Infrastructures(infrastructures)
-        {}
+        {
+            assert(infrastructures.size() == static_cast<uint8_t>(E::Count));
+        }
         
         /**
         * @brief Destructor Function.
@@ -85,7 +93,7 @@ namespace Neptune::Render::Common {
         * 
         * @return Returns All AccessibleInfrastructure.
         */
-        const std::array<std::any, MaxAccessibleInfrastructure>& GetInfrastructures() const
+        const AInfrastructures& GetInfrastructures() const
         {
             if constexpr (static_cast<uint8_t>(E::Count) == 0)
             {
@@ -103,7 +111,7 @@ namespace Neptune::Render::Common {
         NO_UNIQUE_ADDRESS std::conditional_t<
             static_cast<uint8_t>(E::Count) == 0,
             std::monostate,
-            std::array<std::any, MaxAccessibleInfrastructure>
+            AInfrastructures
         > m_Infrastructures;                   // @brief Container of AccessibleInfrastructure.
 
     };

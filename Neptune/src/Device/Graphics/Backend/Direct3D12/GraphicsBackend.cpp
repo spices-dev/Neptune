@@ -86,7 +86,7 @@ namespace Neptune::Direct3D12 {
 		}
 	}
 
-    std::array<std::any, MaxAccessibleInfrastructure> GraphicsBackend::AccessInfrastructure() const
+    AInfrastructures GraphicsBackend::AccessInfrastructure() const
     {
         NEPTUNE_PROFILE_ZONE
 

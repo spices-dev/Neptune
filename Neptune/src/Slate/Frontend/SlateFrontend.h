@@ -48,7 +48,7 @@ namespace Neptune {
         * 
         * @param[in] infrastructure RenderFrontend Infrastructure.
         */
-		virtual void OnInitialize(const std::array<std::any, MaxAccessibleInfrastructure>& infrastructure) const = 0;
+		virtual void OnInitialize(const AInfrastructures& infrastructure) const = 0;
 
         /**
         * @brief Interface of ShutDown.

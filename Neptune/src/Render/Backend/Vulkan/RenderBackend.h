@@ -81,7 +81,7 @@ namespace Neptune::Vulkan {
         *
         * @return Returns Infrastructure.
         */
-        std::array<std::any, MaxAccessibleInfrastructure> AccessInfrastructure() const override;
+        AInfrastructures AccessInfrastructure() const override;
 
     private:
 

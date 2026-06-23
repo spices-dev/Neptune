@@ -92,7 +92,7 @@ namespace Neptune {
         *
         * @return Returns Infrastructure.
         */
-        virtual std::array<std::any, MaxAccessibleInfrastructure> AccessInfrastructure() const = 0;
+        virtual AInfrastructures AccessInfrastructure() const = 0;
 
         /**
         * @brief Render a frame.

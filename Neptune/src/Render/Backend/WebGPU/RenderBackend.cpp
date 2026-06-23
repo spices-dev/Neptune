@@ -99,7 +99,7 @@ namespace Neptune::WebGPU {
         return m_GraphicsBackend->CreateRHI(e, payload);
 	}
 
-    std::array<std::any, MaxAccessibleInfrastructure> RenderBackend::AccessInfrastructure() const
+    AInfrastructures RenderBackend::AccessInfrastructure() const
 	{
         NEPTUNE_PROFILE_ZONE
         

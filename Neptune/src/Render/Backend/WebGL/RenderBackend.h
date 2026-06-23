@@ -81,7 +81,7 @@ namespace Neptune::WebGL {
         *
         * @return Returns Infrastructure.
         */
-        std::array<std::any, MaxAccessibleInfrastructure> AccessInfrastructure() const override;
+        AInfrastructures AccessInfrastructure() const override;
 
     private:
 

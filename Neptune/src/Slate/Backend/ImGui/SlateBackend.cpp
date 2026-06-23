@@ -25,7 +25,7 @@ namespace Neptune::imgui {
         , m_WindowImplement(windowImpl)
     {}
 
-    void SlateBackend::OnInitialize(const std::array<std::any, MaxAccessibleInfrastructure>& infrastructure) const
+    void SlateBackend::OnInitialize(const AInfrastructures& infrastructure) const
     {
         NEPTUNE_PROFILE_ZONE
         
