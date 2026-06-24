@@ -44,7 +44,7 @@ module.GetGraphicsFeatures = function()
         table.insert(list, "NP_GRAPHICS_DIRECT3D12")
     end
 
-    if os.target() == "macos" then
+    if os.target() == "macosx" then
         table.insert(list, "NP_GRAPHICS_METAL")
     end
 

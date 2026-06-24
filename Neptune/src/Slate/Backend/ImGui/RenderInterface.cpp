@@ -290,7 +290,7 @@ namespace Neptune::imgui {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		using namespace Direct3D12;
+		using namespace WebGPU;
 
 		using enum EAccessibleInfrastructure;
 
@@ -298,7 +298,7 @@ namespace Neptune::imgui {
 		
 		ImGui_ImplWGPU_InitInfo                      init_info{};
 		init_info.Device                           = context.Get<ADevice>();
-		init_info.NumFramesInFlight                = MaxFrameInFlight;
+		init_info.NumFramesInFlight                = Neptune::MaxFrameInFlight;
 		init_info.RenderTargetFormat               = context.Get<ARTVFormat>();
 		init_info.DepthStencilFormat               = context.Get<ADSVFormat>();
 		
