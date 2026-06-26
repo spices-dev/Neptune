@@ -9,7 +9,7 @@ local module = {}
 module.Initialize = function()
 
     -- Configuration: MSVC
-	filter { "toolset:msc" }
+	filter { "toolset:msc*" }
 
 		-- MSVC Specific Solution Macro Definitions.
 		defines 

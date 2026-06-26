@@ -41,7 +41,7 @@ class PremakeBuildSystem(BuildSystem):
 
         if self.toolset == "gcc":
             self.dependencyGraph.add_node(GNUDependency())
-        elif self.toolset == "vs":
+        elif self.toolset == "msvc":
             self.dependencyGraph.add_node(MSVCDependency())
         elif self.toolset == "clang":
             self.dependencyGraph.add_node(LLVMDependency())
