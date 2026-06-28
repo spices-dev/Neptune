@@ -216,18 +216,41 @@ namespace Neptune::Vulkan {
 
             if (faultCounts.vendorBinarySize > 0) 
             {
-                FILE* fp = nullptr;
-            	auto err = fopen_s(&fp, "DeviceLostDump.bin", "wb");
-            	if (err == 0 && fp != nullptr)
-            	{
-            		fwrite(vendorBinary.data(), 1, faultCounts.vendorBinarySize, fp);
-            		fclose(fp);
-            		NEPTUNE_CORE_ERROR("Device Lost Vendor binary crash dump saved to DeviceLostDump.bin")
+				try
+				{
+					std::filesystem::path dumpPath = "DeviceLostDump.bin";
+
+					std::ofstream file(dumpPath, std::ios::binary);
+
+					if (file.is_open())
+					{
+						file.write(reinterpret_cast<const char*>(vendorBinary.data()), static_cast<std::streamsize>(faultCounts.vendorBinarySize));
+						file.close();
+
+						std::stringstream ss;
+						ss << "Device Lost Vendor binary crash dump saved to " << dumpPath.string();
+
+						NEPTUNE_CORE_ERROR(ss.str())
+					}
+					else
+					{
+						NEPTUNE_CORE_ERROR("Failed to open device lost dump file")
+					}
 				}
-	            else
-	            {
-	            	NEPTUNE_CORE_ERROR("Failed to save device lost dump file")
-	            }
+				catch (const std::filesystem::filesystem_error& e)
+				{
+					std::stringstream ss;
+					ss << "Filesystem error saving device lost dump: " << e.what();
+
+					NEPTUNE_CORE_ERROR(ss.str())
+				}
+				catch (const std::exception& e)
+				{
+					std::stringstream ss;
+					ss << "Unexpected error saving device lost dump: " << e.what();
+
+					NEPTUNE_CORE_ERROR(ss.str())
+				}
             }
 
             NEPTUNE_CORE_ERROR(ss.str())

@@ -23,9 +23,9 @@ namespace Neptune::Render::Common {
     {
     public:
 
-        using ContextAccessor = ContextAccessor<E>;
+        using ContextAccessor = Neptune::Render::Common::ContextAccessor<E>;
 
-        using Context = Context<E>;
+        using Context = Neptune::Render::Common::Context<E>;
 
         /**
         * @brief Destructor Function.
