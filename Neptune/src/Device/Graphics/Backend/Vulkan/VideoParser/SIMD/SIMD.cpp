@@ -4,19 +4,14 @@
 
 #include "SIMD.h"
 
-#if defined(__aarch64__)
-
+#ifdef _MSC_VER
+#include <intrin.h>
+#elif defined(__aarch64__)
 #include <asm/hwcap.h>
 #include <sys/auxv.h>
-
-#elif defined(_M_X64)
-
-#include <iostream>
-#include <vector>
-#include <bitset>
-#include <array>
-#include <string>
-#include <intrin.h>
+#else
+#include <cpuid.h>
+#endif
 
 namespace Neptune::Vulkan {
 
@@ -107,8 +102,6 @@ namespace Neptune::Vulkan {
     };
 
     const InstructionSet::InstructionSet_Internal InstructionSet::CPU_Rep;
-
-#endif
 
     SIMD_ISA GetSIMD()
     {

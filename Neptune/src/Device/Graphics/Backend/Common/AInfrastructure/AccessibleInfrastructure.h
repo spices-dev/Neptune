@@ -86,7 +86,7 @@ namespace Neptune::Render::Common {
         */
         template<IsAInfrastructure A>
         requires IsNotEmptyEnum<E>
-        const A::T& Get();
+        typename A::T Get();
 
         /**
         * @brief Get All AccessibleInfrastructure.
@@ -135,7 +135,7 @@ namespace Neptune::Render::Common {
     template<typename E> requires IsEnum<E>
     template<IsAInfrastructure A>
     requires IsNotEmptyEnum<E>
-    const A::T& AccessibleContext<E>::Get()
+    typename A::T AccessibleContext<E>::Get()
     {
         NEPTUNE_PROFILE_ZONE
 
