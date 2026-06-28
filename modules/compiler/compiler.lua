@@ -69,6 +69,12 @@ module.Initialize = function()
 			"-Wno-narrowing",                             -- Disable Warning: 4838
 		}
 
+		-- The Solution make settings
+		makesettings 
+		{
+            "LINKCMD = $(file > $(OBJDIR)objects.rsp,$(OBJECTS)) emar rcs $(TARGET) @$(OBJDIR)objects.rsp"   -- Enable response file
+        }
+
 end
 
 return module

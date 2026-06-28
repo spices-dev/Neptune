@@ -226,12 +226,6 @@ project "Neptune"
     		"-mbulk-memory",                               -- Enable bulk-memory
 		}
 
-		-- The Solution make settings
-		makesettings 
-		{
-            "LINKCMD = $(file > $(OBJDIR)objects.rsp,$(OBJECTS)) emar rcs $(TARGET) @$(OBJDIR)objects.rsp"   -- Enable response file
-        }
-
 	-- Configuration: Debug
 	filter "configurations:Debug"
 

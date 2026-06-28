@@ -59,7 +59,7 @@ module.GetProfileFeatures = function()
 
     local list = {}
 
-    if os.target() == "windows" then
+    if os.target() ~= "emscripten" then
         table.insert(list, "NP_PROFILE_TRACY")
         table.insert(list, "TRACY_ENABLE")                -- tracy Feature Enable.
         table.insert(list, "TRACY_ON_DEMAND")             -- Used if want profile on demand.

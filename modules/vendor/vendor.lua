@@ -31,7 +31,7 @@ end
 
 -- Includes
 local includes                        = {
-    ["Neptune"]                       = solution_root .. "/Neptune/src",                                              -- Include: Neptune
+    ["Neptune"]                       = solution_root .. "/Neptune/src",                                               -- Include: Neptune
     ["NeptuneShader"]                 = solution_root .. "/Neptune/assets/Shaders/src",                                -- Include: NeptuneShader
     ["emscripten"]                    = GetEmsdkPath() .. "/upstream/emscripten/cache/sysroot/include/",               -- Include: emscripten
     ["emscripten_glfw"]               = solution_root .. "/Neptune/vendor/emscripten-glfw/",                           -- Include: emscripten-glfw
@@ -89,7 +89,7 @@ module.nugets                          = {
 }
 
 -- Desktop Third Party Projects
-module.third_party_projects_desktos   = {
+module.third_party_projects_desktops  = {
 	["GLFW"]                          = solution_root .. "/Neptune/vendor/GLFW",          -- Dependency: GLFW
 	["Glad"]                          = solution_root .. "/Neptune/vendor/Glad",          -- Dependency: Glad
 	["tracy"]                         = solution_root .. "/Neptune/vendor/tracy",         -- Dependency: tracy
@@ -110,7 +110,7 @@ module.LoadThirdPartyProjects = function()
     -- Project Dependencies.
     group "Dependencies"
     if os.target() ~= "emscripten" then
-        for name, path in pairs(module.third_party_projects_desktos) do
+        for name, path in pairs(module.third_party_projects_desktops) do
             include(path)
         end
     end
