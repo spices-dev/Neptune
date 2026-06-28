@@ -4,11 +4,13 @@
 
 #include "SIMD.h"
 
-#ifdef _MSC_VER
-#include <intrin.h>
-#elif defined(__aarch64__)
+/*#if defined(__aarch64__)
 #include <asm/hwcap.h>
 #include <sys/auxv.h>
+#endif*/
+
+#ifdef NP_COMPILER_MSVC
+#include <intrin.h>
 #else
 #include <cpuid.h>
 #endif
@@ -68,7 +70,9 @@ namespace Neptune::Vulkan {
                 f_7_EBX_{ 0 },
                 f_7_ECX_{ 0 }
             {
-                //int cpuInfo[4] = {-1};
+
+#ifdef NP_COMPILER_MSVC
+
                 std::array<int, 4> cpui;
 
                 // Calling __cpuid with 0x0 as the function_id argument
@@ -91,6 +95,30 @@ namespace Neptune::Vulkan {
                     f_7_EBX_ = cpui[1];
                     f_7_ECX_ = cpui[2];
                 }
+
+#else
+                std::array<uint32_t, 4> cpui;
+
+                if (__get_cpuid(0, &cpui[0], &cpui[1], &cpui[2], &cpui[3])) {
+                    nIds_ = cpui[0];
+                }
+
+                if (nIds_ >= 1) {
+                    if (__get_cpuid(1, &cpui[0], &cpui[1], &cpui[2], &cpui[3])) {
+                        f_1_ECX_ = cpui[2];
+                        f_1_EDX_ = cpui[3];
+                    }
+                }
+
+                if (nIds_ >= 7) {
+                    if (__get_cpuid_count(7, 0, &cpui[0], &cpui[1], &cpui[2], &cpui[3])) {
+                        f_7_EBX_ = cpui[1];
+                        f_7_ECX_ = cpui[2];
+                    }
+                }
+
+#endif
+
             };
 
             int nIds_;
