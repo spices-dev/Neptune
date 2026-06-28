@@ -34,3 +34,6 @@
 [submodule "Neptune/vendor/glm"]
 	path = Neptune/vendor/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "Neptune/vendor/vma"]
+	path = Neptune/vendor/vma
+	url = https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator.git

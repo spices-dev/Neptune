@@ -74,6 +74,7 @@ local includes                        = {
     ["GLFW"]                          = solution_root .. "/Neptune/vendor/GLFW/include",                               -- Include: GLFW
     ["VulkanSDK"]                     = GetVulkanSDKPath(),                                                            -- Include: VulkanSDK
     ["glm"]                           = solution_root .. "/Neptune/vendor/glm",                                        -- Include: glm
+    ["vma"]                           = solution_root .. "/Neptune/vendor/vma/include",                                -- Include: vma
     ["Glad"]                          = solution_root .. "/Neptune/vendor/Glad/include",                               -- Include: Glad
     ["stb_image"]                     = solution_root .. "/Neptune/vendor/stb_image",                                  -- Include: stb_image
     ["ImGui"]                         = solution_root .. "/Neptune/vendor/imgui",                                      -- Include: ImGui

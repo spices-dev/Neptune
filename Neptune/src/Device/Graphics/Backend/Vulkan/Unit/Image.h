@@ -11,7 +11,7 @@
 #include "Core/Core.h"
 #include "Unit.h"
 
-#include <vma/vk_mem_alloc.h>
+#include <vk_mem_alloc.h>
 #include <variant>
 
 namespace Neptune::Vulkan::Unit {

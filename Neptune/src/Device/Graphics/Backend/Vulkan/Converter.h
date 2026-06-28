@@ -13,7 +13,7 @@
 #include "Resource/Mesh/Mesh.h"
 #include "Resource/Shader/Shader.h"
 
-#include <vma/vk_mem_alloc.h>
+#include <vk_mem_alloc.h>
 
 namespace Neptune::Vulkan {
 

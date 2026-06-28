@@ -65,6 +65,7 @@ project "Neptune"
 		"src",                                                     -- Neptune Source Folder.
 		"%{vendor.includes.NeptuneShader}",                        -- Neptune Shader Source Folder.
 		"%{vendor.includes.glm}",                                  -- Library: glm Source Folder.
+		"%{vendor.includes.vma}",                                  -- Library: vma Source Folder.
 		"%{vendor.includes.stb_image}",                            -- Library: stb_image Source Folder.
 		"%{vendor.includes.ImGui}",                                -- Library: ImGui Source Folder.
 		"%{vendor.includes.entt}",                                 -- Library: entt Source Folder.
