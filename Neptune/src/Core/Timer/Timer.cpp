@@ -13,16 +13,16 @@ namespace Neptune {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		m_StartTime = std::chrono::high_resolution_clock::now();
+		m_StartTime = std::chrono::steady_clock::now();
 		
-		m_LastTime  = std::chrono::high_resolution_clock::now();
+		m_LastTime  = std::chrono::steady_clock::now();
 	}
 
 	void Timer::Flush()
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		const auto nowTime = std::chrono::high_resolution_clock::now();
+		const auto nowTime = std::chrono::steady_clock::now();
 
 		m_SegmentTime = std::chrono::duration<float, std::chrono::seconds::period>(nowTime - m_LastTime).count();
 
