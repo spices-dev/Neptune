@@ -7,10 +7,8 @@ import sys
 
 from BuildSystem import BuildSystem
 from Scripts.BuildDependencies.PremakeDependency import PremakeDependency
-from Scripts.BuildDependencies.EmsdkDependency import EmsdkDependency
 from Scripts.BuildDependencies.GNUDependency import GNUDependency
 from Scripts.BuildDependencies.LLVMDependency import LLVMDependency
-from Scripts.BuildDependencies.MSVCDependency import MSVCDependency
 from Scripts.BuildDependencies.TracyDependency import TracyDependency
 
 from pathlib import Path
@@ -33,6 +31,7 @@ class PremakeBuildSystem(BuildSystem):
         self.dependencyGraph.add_node(PremakeDependency())
 
         if self.platform == "emscripten":
+            from Scripts.BuildDependencies.EmsdkDependency import EmsdkDependency
             self.dependencyGraph.add_node(EmsdkDependency())
             self.dependencyGraph.add_node(GNUDependency())
 
@@ -42,6 +41,7 @@ class PremakeBuildSystem(BuildSystem):
         if self.toolset == "gcc":
             self.dependencyGraph.add_node(GNUDependency())
         elif self.toolset == "msvc":
+            from Scripts.BuildDependencies.MSVCDependency import MSVCDependency
             self.dependencyGraph.add_node(MSVCDependency())
         elif self.toolset == "clang":
             self.dependencyGraph.add_node(LLVMDependency())

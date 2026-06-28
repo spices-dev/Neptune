@@ -92,8 +92,8 @@ action:
         gcc             GNU GCC
         msvc            Visual Studio MSVC
         clang           LLVM Clang
-    
-                        if platform == emscripten, please do not pass value, for emscripten use it's own compiler(emcc em++)
+        emcc            Emscriptrn emcc/em++
+        acpp            AdaptiveCpp acpp
 
     --behave
         generate        Generate solution files
