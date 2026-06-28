@@ -31,3 +31,6 @@
 [submodule "Neptune/vendor/shaderc"]
 	path = Neptune/vendor/shaderc
 	url = https://github.com/spices-lib/shaderc.git
+[submodule "Neptune/vendor/glm"]
+	path = Neptune/vendor/glm
+	url = https://github.com/g-truc/glm.git
