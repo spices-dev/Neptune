@@ -12,21 +12,56 @@ local solution_root = _MAIN_SCRIPT_DIR
 --
 -- @return Returns Vulkan SDK Path.
 local GetVulkanSDKPath = function()
-    return "C:/VulkanSDK/1.4.321.1/Include"
+
+    -- Search in Env first.
+    local sdk_path = os.getenv("VULKAN_SDK") or ""
+    local include_dir = (os.target() == "windows") and "Include" or "include"
+
+    if sdk_path ~= "" then
+        return sdk_path .. "/" .. include_dir
+    end
+
+    local version = "1.4.321.1"
+
+    -- Default Vulkan Path.
+    local default_paths = {
+        windows = "C:/VulkanSDK/" .. version .. "/Include",
+        linux   = os.getenv("HOME") .. "/VulkanSDK/" .. version .. "/x86_64/include",
+        macosx  = ""
+    }
+
+    return default_paths[os.target()] or ""
+
 end
 
 -- @brief Get Emsdk Path.
 --
 -- @return Returns Emsdk Path.
 local GetEmsdkPath = function()
-    return "C:/emsdk"
+
+    local paths = {
+        windows = "C:/emsdk",
+        linux   = "",
+        macosx  = ""
+    }
+
+    return paths[os.target()] or ""
+
 end
 
 -- @brief Get AdaptiveCpp Path.
 --
 -- @return Returns AdaptiveCpp Path.
 local GetAdaptiveCppPath = function()
-    return "C:/AdaptiveCpp"
+
+    local paths = {
+        windows = "C:/AdaptiveCpp",
+        linux   = "",
+        macosx  = ""
+    }
+
+    return paths[os.target()] or ""
+
 end
 
 -- Includes
