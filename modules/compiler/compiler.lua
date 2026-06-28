@@ -11,6 +11,14 @@ module.Initialize = function()
     -- Configuration: MSVC
 	filter { "toolset:msc*" }
 
+											  -- tracy use __FILE__ in constexpr, but MSVC do not support it by default.
+											  -- There are two way to handle with that:
+											  -- 1.Use a complex format of __LINE__:
+											  --   #define _DBJ_CONCATENATE_(a, b) a ## b
+											  --   #define _DBJ_CONCATENATE(a, b)  _DBJ_CONCATENATE_(a, b)
+                                              --   #define CONSTEXPR_LINE long(_DBJ_CONCATENATE(__LINE__,U)) 
+		editAndContinue "Off"				  -- 2.Use DebugInfoFormat: Zi (Program Database).
+
 		-- MSVC Specific Solution Macro Definitions.
 		defines 
 		{

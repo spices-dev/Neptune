@@ -94,15 +94,7 @@ project "Neptune"
 
 	-- Platform: Windows
 	filter "system:windows"
-		systemversion   "latest"              -- Use Lastest WindowSDK
-
-											  -- tracy use __FILE__ in constexpr, but MSVC do not support it by default.
-											  -- There are two way to handle with that:
-											  -- 1.Use a complex format of __LINE__:
-											  --   #define _DBJ_CONCATENATE_(a, b) a ## b
-											  --   #define _DBJ_CONCATENATE(a, b)  _DBJ_CONCATENATE_(a, b)
-                                              --   #define CONSTEXPR_LINE long(_DBJ_CONCATENATE(__LINE__,U)) 
-		editAndContinue "Off"				  -- 2.Use DebugInfoFormat: Zi (Program Database).
+		systemversion "latest"                                         -- Use Lastest WindowSDK
 
 		-- The Solution Additional Include Folder.
 		includedirs
@@ -186,15 +178,7 @@ project "Neptune"
 
 	-- Platform: Emscripten
 	filter "system:emscripten"
-		systemversion   "latest"              -- Use Lastest WindowSDK
-
-											-- tracy use __FILE__ in constexpr, but MSVC do not support it by default.
-											-- There are two way to handle with that:
-											-- 1.Use a complex format of __LINE__:
-											--   #define _DBJ_CONCATENATE_(a, b) a ## b
-											--   #define _DBJ_CONCATENATE(a, b)  _DBJ_CONCATENATE_(a, b)
-											--   #define CONSTEXPR_LINE long(_DBJ_CONCATENATE(__LINE__,U)) 
-		editAndContinue "Off"				-- 2.Use DebugInfoFormat: Zi (Program Database).
+		systemversion "latest"                                         -- Use Lastest SystemVersion
 
 		-- The Solution Additional Include Folder.
 		includedirs

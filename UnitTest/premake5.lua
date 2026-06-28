@@ -59,8 +59,7 @@ project "UnitTest"
 
 	-- Platform: Windows
 	filter "system:windows"
-		systemversion "latest"                 -- Use Lastest WindowSDK
-		editAndContinue "Off"				   -- Use DebugInfoFormat: Zi (Program Database).
+		systemversion "latest"                                         -- Use Latest WindowSDK
 		
 		-- The Solution Additional Include Folder.
 		includedirs
@@ -82,8 +81,7 @@ project "UnitTest"
 
 	-- Platform: Emscripten
 	filter "system:emscripten"
-		systemversion   "latest"              -- Use Lastest WindowSDK
-		editAndContinue "Off"                 -- Use DebugInfoFormat: Zi (Program Database).
+		systemversion "latest"                                         -- Use Latest SystemVersion
 
 		-- The Solution Additional Include Folder.
 		includedirs

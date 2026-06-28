@@ -56,8 +56,7 @@ project "Runtime"
 
 	-- Platform: Windows
 	filter "system:windows"
-		systemversion "latest"                 -- Use Latest WindowSDK
-		editAndContinue "Off"                  -- Use DebugInfoFormat: Zi (Program Database).
+		systemversion "latest"                                         -- Use Latest WindowSDK
 
 		-- The Solution Additional Include Folder.
 		includedirs
@@ -79,8 +78,7 @@ project "Runtime"
 
 	-- Platform: Emscripten
 	filter "system:emscripten"
-		systemversion   "latest"              -- Use Latest WindowSDK
-		editAndContinue "Off"                 -- Use DebugInfoFormat: Zi (Program Database).
+		systemversion "latest"                                         -- Use Latest SystemVersion
 
 		-- The Solution Additional Include Folder.
 		includedirs
