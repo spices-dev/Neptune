@@ -18,6 +18,7 @@ workspace "Neptune"
 	}
 
 	compiler.Initialize()
+	platform.Initialize()
 
 	-- Web App
 	filter "system:emscripten"

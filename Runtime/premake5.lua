@@ -45,8 +45,7 @@ project "Runtime"
 	-- In Visual Studio, it only works when generated a new solution, remember update solution will not works.
     -- In Rider, it will not work, needs to add environment variables manually in project configurations setting.
 	debugenvs 
-	{
-	}
+	{}
 
 	-- The Solution Dependency
 	links
@@ -56,7 +55,6 @@ project "Runtime"
 
 	-- Platform: Windows
 	filter "system:windows"
-		systemversion "latest"                                         -- Use Latest WindowSDK
 
 		-- The Solution Additional Include Folder.
 		includedirs
@@ -64,13 +62,22 @@ project "Runtime"
 
 		-- Windows Specific Solution Macro Definitions.
 		defines
-		{
-			-- Use winsock2.h instead of winsock.h.
-			"WIN32_LEAN_AND_MEAN",
+		{}
 
-			-- Define Platform : Windows.
-			"NP_PLATFORM_WINDOWS"
-		}
+		-- The Solution build options
+		buildoptions 
+		{}
+
+	-- Platform: Linux
+	filter "system:linux"
+
+		-- The Solution Additional Include Folder.
+		includedirs
+		{}
+
+		-- Windows Specific Solution Macro Definitions.
+		defines
+		{}
 
 		-- The Solution build options
 		buildoptions 
@@ -78,7 +85,6 @@ project "Runtime"
 
 	-- Platform: Emscripten
 	filter "system:emscripten"
-		systemversion "latest"                                         -- Use Latest SystemVersion
 
 		-- The Solution Additional Include Folder.
 		includedirs
@@ -88,10 +94,7 @@ project "Runtime"
 
 		-- Emscripten Specific Solution Macro Definitions.
 		defines
-		{
-			-- Define Platform : Emscripten.
-			"NP_PLATFORM_EMSCRIPTEN"
-		}
+		{}
 
 		-- Emscripten Specific Solution Dependency.
 		links
@@ -150,12 +153,8 @@ project "Runtime"
 		-- Debug Specific Solution Macro Definitions.
 		defines
 		{
-			"NEPTUNE_DEBUG",                   -- Debug Symbol.
 			platform.GetProfileFeatures(),
 		}
-
-		runtime "Debug"
-		symbols "On"
 
 		-- Platform: Emscripten
 		filter {"configurations:Debug", "system:emscripten"}
@@ -176,12 +175,7 @@ project "Runtime"
 
 		-- Release Specific Solution Macro Definitions.
 		defines
-		{
-			"NEPTUNE_RELEASE",                 -- Release Symbol.
-		}
-
-		runtime "Release"
-		optimize "On"
+		{}
 
 		-- Platform: Emscripten
 		filter {"configurations:Release", "system:emscripten"}

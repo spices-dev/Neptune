@@ -71,4 +71,94 @@ module.GetProfileFeatures = function()
 
 end
 
+-- @brief module Initialize.
+module.Initialize = function()
+
+    -- Platform: Windows
+    filter "system:windows"
+
+        -- Use Lastest WindowSDK
+		systemversion "latest"
+
+        -- Windows Specific Solution Macro Definitions.
+        defines
+		{
+			-- Use winsock2.h instead of winsock.h.
+			"WIN32_LEAN_AND_MEAN",
+
+			-- Use M_PI Macro.
+			"_USE_MATH_DEFINES",
+
+			-- NO MIN MAX Macro
+			"NOMINMAX",
+			
+			-- Define Platform: Windows.
+			"NP_PLATFORM_WINDOWS"
+		}
+
+    -- Platform: Linux
+	filter "system:linux"
+
+        -- Use Lastest SystemVersion
+		systemversion "latest"
+
+        -- Windows Specific Solution Macro Definitions.
+		defines
+		{
+			-- Define Platform: Linux.
+			"NP_PLATFORM_LINUX"
+		}
+
+    -- Platform: MacOS
+	filter "system:macosx"
+
+        -- Use Lastest SystemVersion
+		systemversion "latest"
+
+        -- Windows Specific Solution Macro Definitions.
+		defines
+		{
+			-- Define Platform: MacOS.
+			"NP_PLATFORM_MACOS"
+		}
+
+    -- Platform: Emscripten
+	filter "system:emscripten"
+
+        -- Use Lastest SystemVersion
+		systemversion "latest"
+
+        -- Emscripten Specific Solution Macro Definitions.
+		defines
+		{
+			-- Define Platform: Emscripten.
+			"NP_PLATFORM_EMSCRIPTEN"
+		}
+
+    -- Configuration: Debug
+	filter "configurations:Debug"
+
+		-- Debug Specific Solution Macro Definitions.
+		defines 
+		{
+			"NEPTUNE_DEBUG",  -- Debug Symbol.
+		}
+
+        runtime "Debug"
+		symbols "On"
+
+    -- Configuration: Release.
+	filter "configurations:Release"
+
+		-- Release Specific Solution Macro Definitions.
+		defines 
+		{
+			"NEPTUNE_RELEASE",  -- Release Symbol.
+		}
+
+		runtime "Release"
+		optimize "On"
+
+end
+
 return module

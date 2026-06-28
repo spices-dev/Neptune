@@ -28,7 +28,7 @@ namespace Neptune::Render::Common {
     {
     public:
 
-        using Context = Context<E>;
+        using Context = Neptune::Render::Common::Context<E>;
 
     public:
 

@@ -1,4 +1,4 @@
--- @file dependency.lua.
+-- @file vendor.lua.
 -- @brief Defines all Solutions Dependencies.
 -- @author Spices.
 
@@ -64,6 +64,24 @@ local GetAdaptiveCppPath = function()
 
 end
 
+-- @brief Get Sub Vendor Libraries.
+--
+-- @return Returns Sub Vendor Libraries.
+local GetSubVendorLibraries = function()
+
+    local current_dir = debug.getinfo(1, "S").source:sub(2):match("(.*/)") or "./"
+
+    local sub_vendor  = {
+        windows       = current_dir .. "windows.lua",
+        linux         = current_dir .. "linux.lua",
+        macosx        = current_dir .. "macos.lua",
+        emscripten    = current_dir .. "emscripten.lua",
+    }
+
+    return loadfile(sub_vendor[os.target()])().GetLibraries(module.includes) or {}
+
+end
+
 -- Includes
 local includes                        = {
     ["Neptune"]                       = solution_root .. "/Neptune/src",                                               -- Include: Neptune
@@ -95,49 +113,29 @@ local includes                        = {
 }
 module.includes                       = includes
 
--- Library Directories Folder
-local library_dir                      = {
-    ["VulkanSDK"]                      = includes.VulkanSDK .. "/../Lib",                                              -- Library Directries: VulkanSDK Folder
-    ["VulkanSDKDLL"]                   = includes.VulkanSDK .. "/../Bin",                                              -- Library Directries: VulkanSDK dll Folder
-    ["WinPixEventRuntime"]             = includes.WinPixEventRuntime .. "/../bin/x64",                                 -- Library Directries: WinPixEventRuntime Folder
-}
-module.library_dir                     = library_dir
-    
 -- Library Directories
-module.libraries                       = {
-    ["VulkanSDK"]                      = library_dir.VulkanSDK .. "/vulkan-1.lib",                                     -- Library Directries: VulkanSDK
-    ["dxgi"]                           = "dxgi.lib",                                                                   -- Library Directries: dxgi
-    ["d3d11"]                          = "d3d11.lib",                                                                  -- Library Directries: d3d11
-    ["d3d12"]                          = "d3d12.lib",                                                                  -- Library Directries: d3d12
-    ["WinPixEventRuntime"]             = library_dir.WinPixEventRuntime .. "/WinPixEventRuntime.lib",                  -- Library Directries: WinPixEventRuntime
-    
-    ["shaderc_debug"]                  = library_dir.VulkanSDK .. "/shaderc_sharedd.lib",                              -- Library Directries: shaderc_debug
-    ["shaderc_utils_debug"]            = library_dir.VulkanSDK .. "/shaderc_utild.lib",                                -- Library Directries: shaderc_utils_debug
-    
-    ["shaderc_release"]                = library_dir.VulkanSDK .. "/shaderc_shared.lib",                               -- Library Directries: shaderc_release
-    ["shaderc_utils_release"]          = library_dir.VulkanSDK .. "/shaderc_util.lib",                                 -- Library Directries: shaderc_utils_release
-}
+module.libraries                      = GetSubVendorLibraries()
 
 -- Nuget Dependencies
-module.nugets                          = {
-    ["DirectX12AgilitySDK"]            = "Microsoft.Direct3D.D3D12:1.618.5",                                           -- Nugets package: Direct3D12
-    ["WinPixEventRuntime"]             = "WinPixEventRuntime:1.0.240308001",                                           -- Nugets package: WinPixEventRuntime
+module.nugets                         = {
+    ["DirectX12AgilitySDK"]           = "Microsoft.Direct3D.D3D12:1.618.5",                                            -- Nugets package: Direct3D12
+    ["WinPixEventRuntime"]            = "WinPixEventRuntime:1.0.240308001",                                            -- Nugets package: WinPixEventRuntime
 }
 
 -- Desktop Third Party Projects
 module.third_party_projects_desktops  = {
-	["GLFW"]                          = solution_root .. "/Neptune/vendor/GLFW",          -- Dependency: GLFW
-	["Glad"]                          = solution_root .. "/Neptune/vendor/Glad",          -- Dependency: Glad
-	["tracy"]                         = solution_root .. "/Neptune/vendor/tracy",         -- Dependency: tracy
-    ["shaderc"]                       = solution_root .. "/Neptune/vendor/shaderc",       -- Dependency: shaderc
+	["GLFW"]                          = solution_root .. "/Neptune/vendor/GLFW",                                       -- Dependency: GLFW
+	["Glad"]                          = solution_root .. "/Neptune/vendor/Glad",                                       -- Dependency: Glad
+	["tracy"]                         = solution_root .. "/Neptune/vendor/tracy",                                      -- Dependency: tracy
+    ["shaderc"]                       = solution_root .. "/Neptune/vendor/shaderc",                                    -- Dependency: shaderc
 }
 
 -- Third Party Projects
-module.third_party_projects          = {
-	["imgui"]                        = solution_root .. "/Neptune/vendor/imgui",         -- Dependency: imgui
-	["yaml-cpp"]                     = solution_root .. "/Neptune/vendor/yaml-cpp",      -- Dependency: yaml-cpp
-	["implot"]                       = solution_root .. "/Neptune/vendor/implot",        -- Dependency: implot
-    ["googletest"]                   = solution_root .. "/UnitTest/vendor/googletest",   -- Dependency: googletest
+module.third_party_projects           = {
+	["imgui"]                         = solution_root .. "/Neptune/vendor/imgui",                                      -- Dependency: imgui
+	["yaml-cpp"]                      = solution_root .. "/Neptune/vendor/yaml-cpp",                                   -- Dependency: yaml-cpp
+	["implot"]                        = solution_root .. "/Neptune/vendor/implot",                                     -- Dependency: implot
+    ["googletest"]                    = solution_root .. "/UnitTest/vendor/googletest",                                -- Dependency: googletest
 }
 
 -- @brief Load Third Party Projects.

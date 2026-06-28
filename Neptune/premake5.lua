@@ -81,8 +81,8 @@ project "Neptune"
 	-- The Solution Dependency
 	links
 	{
-		"yaml-cpp",                           -- Dependency: yaml-cpp
-		"implot",                             -- Dependency: implot
+		"yaml-cpp",                                                -- Dependency: yaml-cpp
+		"implot",                                                  -- Dependency: implot
 	}
 
 	-- Library: std_image is included this solution, do not use PreCompiler Header.
@@ -95,7 +95,6 @@ project "Neptune"
 
 	-- Platform: Windows
 	filter "system:windows"
-		systemversion "latest"                                         -- Use Lastest WindowSDK
 
 		-- The Solution Additional Include Folder.
 		includedirs
@@ -113,25 +112,13 @@ project "Neptune"
 
 		-- Windows Specific Solution Macro Definitions.
 		defines
-		{
-			-- Use winsock2.h instead of winsock.h.
-			"WIN32_LEAN_AND_MEAN",
-
-			-- Use M_PI Macro.
-			"_USE_MATH_DEFINES",
-
-			-- NO MIN MAX Macro
-			"NOMINMAX",
-			
-			-- Define Platform : Windows.
-			"NP_PLATFORM_WINDOWS"
-		}
+		{}
 
 		-- Windows nuget packages.
 		nuget
 		{
-			"%{vendor.nugets.DirectX12AgilitySDK}",      -- Dependency: Direct3D12
-			"%{vendor.nugets.WinPixEventRuntime}",       -- Dependency: WinPixEventRuntime
+			"%{vendor.nugets.DirectX12AgilitySDK}",                    -- Dependency: Direct3D12
+			"%{vendor.nugets.WinPixEventRuntime}",                     -- Dependency: WinPixEventRuntime
 		}
 
 		-- Windows Specific Solution Dependency.
@@ -164,7 +151,7 @@ project "Neptune"
             links
             {
                 "%{vendor.libraries.shaderc_debug}",               -- Dependency: shaderc_debug
-                "%{vendor.libraries.shaderc_utils_debug}",         -- Dependency: shaderc_utils_debug
+                "%{vendor.libraries.shaderc_util_debug}",          -- Dependency: shaderc_utils_debug
             }
         
         -- Configuration: Release
@@ -174,12 +161,49 @@ project "Neptune"
             links
             {
                 "%{vendor.libraries.shaderc_release}",             -- Dependency: shaderc_release
-                "%{vendor.libraries.shaderc_utils_release}",       -- Dependency: shaderc_utils_release
+                "%{vendor.libraries.shaderc_util_release}",        -- Dependency: shaderc_utils_release
             }
+
+	-- Platform: Linux
+	filter "system:linux"
+
+		-- The Solution Additional Include Folder.
+		includedirs
+		{
+            "%{vendor.includes.shaderc}",                              -- Library: shaderc Source Folder.
+            "%{vendor.includes.shaderc}/libshaderc/include",           -- Library: shaderc libshaderc Source Folder.
+            "%{vendor.includes.shaderc}/libshaderc_util/include",      -- Library: shaderc libshaderc_util Source Folder.
+            "%{vendor.includes.glslang}",                              -- Library: glslang Source Folder.
+			"%{vendor.includes.GLFW}",                                 -- Library: GLFW Source Folder.
+			"%{vendor.includes.VulkanSDK}",                            -- Library: VulkanSDK Source Folder.
+			"%{vendor.includes.Glad}",                                 -- Library: Glad Source Folder.
+		}
+
+		-- Windows Specific Solution Macro Definitions.
+		defines
+		{}
+
+		-- Windows Specific Solution Dependency.
+		links
+		{
+			"%{vendor.libraries.VulkanSDK}",                           -- Dependency: VulkanSDK
+			
+			"ImGui_Vulkan",                                            -- Dependency: imgui
+			"ImGui_OpenGL",                                            -- Dependency: imgui
+			"GLFW",                                                    -- Dependency: GLFW
+			"Glad",                                                    -- Dependency: Glad
+			"tracy",                                                   -- Dependency: tracy
+			"shaderc",                                                 -- Dependency：shaderc
+			"%{vendor.libraries.shaderc}",                             -- Dependency: shaderc_debug
+			"%{vendor.libraries.shaderc_util}",                        -- Dependency: shaderc_utils_debug
+		}
+    
+		-- The Solution build options
+		buildoptions 
+		{}
 
 	-- Platform: Emscripten
 	filter "system:emscripten"
-		systemversion "latest"                                         -- Use Lastest SystemVersion
 
 		-- The Solution Additional Include Folder.
 		includedirs
@@ -192,10 +216,7 @@ project "Neptune"
 
 		-- Emscripten Specific Solution Macro Definitions.
 		defines
-		{
-			-- Define Platform : Emscripten.
-			"NP_PLATFORM_EMSCRIPTEN"
-		}
+		{}
 
 		-- Emscripten Specific Solution Dependency.
 		links
@@ -217,29 +238,20 @@ project "Neptune"
 		-- Debug Specific Solution Macro Definitions.
 		defines 
 		{
-			"NEPTUNE_DEBUG",                 -- Debug Symbol.
 			platform.GetProfileFeatures(),
 		}
 
 		-- Debug Specific Solution Dependency
 		links
 		{}
-
-		runtime "Debug"
-		symbols "On"
 		
 	-- Configuration: Release.
 	filter "configurations:Release"
 
 		-- Release Specific Solution Macro Definitions.
 		defines 
-		{
-			"NEPTUNE_RELEASE",               -- Release Symbol.
-		}
+		{}
 
 		-- Release Specific Solution Dependency
 		links
 		{}
-
-		runtime "Release"
-		optimize "On"
