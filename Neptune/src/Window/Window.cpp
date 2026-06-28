@@ -7,11 +7,11 @@
 #include "Pchheader.h"
 #include "Window.h"
 
-#ifdef NP_PLATFORM_EMSCRIPTEN
+#ifdef NP_WINDOW_EMSCRIPTENGLFW
 #include "Window/EmscriptenGLFW/WindowImpl.h"
 #endif
 
-#ifndef NP_PLATFORM_EMSCRIPTEN
+#ifdef NP_WINDOW_GLFW
 #include "Window/GLFW/WindowImpl.h"
 #endif
 
@@ -28,7 +28,7 @@ namespace Neptune {
 
         switch (implement)
         {
-#ifdef NP_PLATFORM_EMSCRIPTEN
+#ifdef NP_WINDOW_EMSCRIPTENGLFW
             case WindowImplement::emscripten_glfw:
             {
                 S_Instance = CreateUP<EmscriptenGLFW::WindowImpl>(initInfo, implement, backend);
@@ -36,7 +36,7 @@ namespace Neptune {
             }
 #endif
 
-#ifndef NP_PLATFORM_EMSCRIPTEN
+#ifdef NP_WINDOW_GLFW
             case WindowImplement::GLFW:
             {
                 S_Instance = CreateUP<GLFW::WindowImpl>(initInfo, implement, backend);

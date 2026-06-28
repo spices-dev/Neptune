@@ -6,7 +6,7 @@
 
 #pragma once
 
-#ifndef NP_PLATFORM_EMSCRIPTEN
+#ifdef NP_WINDOW_GLFW
 
 #include "Core/Core.h"
 #include "Window/Window.h"

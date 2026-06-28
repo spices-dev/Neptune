@@ -6,7 +6,7 @@
 
 #pragma once
 
-#ifdef NP_PLATFORM_EMSCRIPTEN
+#ifdef NP_WINDOW_EMSCRIPTENGLFW
 
 #include "Core/Core.h"
 #include "Render/Frontend/Enum.h"

@@ -57,6 +57,7 @@ project "Neptune"
 
 		platform.GetComputeFeatures(),
 		platform.GetGraphicsFeatures(),
+		platform.GetWindowFeatures(),
 	}
 
 	-- The Solution Additional Include Folder.

@@ -6,7 +6,7 @@
 
 #include "Pchheader.h"
 
-#ifdef NP_PLATFORM_EMSCRIPTEN
+#ifdef NP_WINDOW_EMSCRIPTENGLFW
 
 #include "RenderBackendInterface.h"
 #include "Window/Core.h"
