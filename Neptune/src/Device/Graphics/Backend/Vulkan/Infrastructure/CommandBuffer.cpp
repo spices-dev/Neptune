@@ -51,11 +51,13 @@ namespace Neptune::Vulkan {
 
         using enum EInfrastructure;
         
+        static VkCommandPool null = VK_NULL_HANDLE;
+
         switch (GetEInfrastructure())
 		{
 			case GraphicCommandBuffer:		return GetContext().Get<IGraphicCommandPool>()->Handle();
-			case ComputeCommandBuffer:     return GetContext().Get<IComputeCommandPool>()->Handle();
-			default: return VK_NULL_HANDLE;
+			case ComputeCommandBuffer:      return GetContext().Get<IComputeCommandPool>()->Handle();
+			default: return null;
 		}
     }
 

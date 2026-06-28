@@ -47,7 +47,7 @@ namespace Neptune {
 		* 
 		* @return Returns true if bind successfully.
 		*/
-		bool Bind(std::function<void(Args...)> func);
+		bool Bind(const Agent& func);
 
 		/**
 		* @brief UnBind Function pointer from delegate.
@@ -56,7 +56,7 @@ namespace Neptune {
 		* 
 		* @return Returns true if unbind successfully.
 		*/
-		bool UnBind(std::function<void(Args...)> func);
+		bool UnBind(const Agent& func);
 
 		/**
 		* @brief Get size of Agents.
@@ -85,11 +85,11 @@ namespace Neptune {
 	};
 
 	template<typename ...Args>
-	inline bool Delegate_Basic<Args...>::Bind(std::function<void(Args...)> func)
+	inline bool Delegate_Basic<Args...>::Bind(const Agent& func)
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		auto addr = reinterpret_cast<uint64_t*>(&func);
+		auto addr = reinterpret_cast<const uint64_t*>(&func);
 		
 		if (m_Agents->Contains(*addr))
 		{
@@ -104,11 +104,11 @@ namespace Neptune {
 	}
 
 	template<typename ...Args>
-	inline bool Delegate_Basic<Args...>::UnBind(std::function<void(Args...)> func)
+	inline bool Delegate_Basic<Args...>::UnBind(const Agent& func)
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		auto addr = reinterpret_cast<uint64_t*>(&func);
+		auto addr = reinterpret_cast<const uint64_t*>(&func);
 		if (!m_Agents->has_key(*addr))
 		{
 			NEPTUNE_CORE_WARN("Agent Function not bound yet.")

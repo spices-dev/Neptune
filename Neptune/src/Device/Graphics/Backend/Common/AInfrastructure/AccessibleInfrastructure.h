@@ -95,9 +95,13 @@ namespace Neptune::Render::Common {
         */
         const AInfrastructures& GetInfrastructures() const
         {
+            NEPTUNE_PROFILE_ZONE
+
+            static AInfrastructures null = {};
+
             if constexpr (static_cast<uint8_t>(E::Count) == 0)
             {
-                return {};
+                return null;
             }
             else
             {

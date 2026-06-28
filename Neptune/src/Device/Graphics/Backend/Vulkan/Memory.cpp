@@ -90,7 +90,7 @@ namespace Neptune::Vulkan {
 #ifdef NP_PLATFORM_WINDOWS
 						auto* p = _aligned_realloc(pOriginal, size, alignment);
 #else
-						auto* p = aligned_alloc(alignment, size)
+						auto* p = aligned_alloc(alignment, size);
 						free(pOriginal);
 #endif
 
