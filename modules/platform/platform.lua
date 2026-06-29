@@ -59,13 +59,11 @@ module.GetProfileFeatures = function()
 
     local list = {}
 
-    if os.target() ~= "emscripten" then
-        table.insert(list, "NP_PROFILE_TRACY")
-        table.insert(list, "TRACY_ENABLE")                 -- tracy Feature Enable.
-        table.insert(list, "TRACY_ON_DEMAND")              -- Used if want profile on demand.
-        table.insert(list, "TRACY_FIBERS")                 -- Enable fiber thread.
-        table.insert(list, "TRACY_IMPORT")                 -- Multi dll.
-    end
+    table.insert(list, "NP_PROFILE_TRACY")
+    table.insert(list, "TRACY_ENABLE")                 -- tracy Feature Enable.
+    table.insert(list, "TRACY_ON_DEMAND")              -- Used if want profile on demand.
+    table.insert(list, "TRACY_FIBERS")                 -- Enable fiber thread.
+    table.insert(list, "TRACY_IMPORT")                 -- Multi dll.
 
     return list
 

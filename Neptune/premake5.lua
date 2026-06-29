@@ -180,11 +180,11 @@ project "Neptune"
 			"%{vendor.includes.Glad}",                                 -- Library: Glad Source Folder.
 		}
 
-		-- Windows Specific Solution Macro Definitions.
+		-- Linux Specific Solution Macro Definitions.
 		defines
 		{}
 
-		-- Windows Specific Solution Dependency.
+		-- Linux Specific Solution Dependency.
 		links
 		{
 			"%{vendor.libraries.VulkanSDK}",                           -- Dependency: VulkanSDK
@@ -219,19 +219,22 @@ project "Neptune"
 		defines
 		{}
 
-		-- Emscripten Specific Solution Dependency.
+		-- Emscripten Specific Solution Dependency(emscripten require must link in .wasm project).
 		links
 		{
-			--"ImGui_WebGPU",                              -- Dependency: imgui(emscripten require must link in .wasm project)
+			--"ImGui_WebGPU",                              -- Dependency: imgui
+			--"tracy",                                     -- Dependency: tracy
 		}
 
 		-- The Solution build options
 		buildoptions
+		{}
+
+		-- The Solution make settings
+		makesettings 
 		{
-			"-pthread",                                    -- Enable pthread
-			"-matomics",                                   -- Enable atomics
-    		"-mbulk-memory",                               -- Enable bulk-memory
-		}
+            "LINKCMD = $(file > $(OBJDIR)objects.rsp,$(OBJECTS)) emar rcs $(TARGET) @$(OBJDIR)objects.rsp"   -- Enable response file
+        }
 
 	-- Configuration: Debug
 	filter "configurations:Debug"

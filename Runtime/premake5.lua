@@ -75,7 +75,7 @@ project "Runtime"
 		includedirs
 		{}
 
-		-- Windows Specific Solution Macro Definitions.
+		-- Linux Specific Solution Macro Definitions.
 		defines
 		{}
 
@@ -88,9 +88,7 @@ project "Runtime"
 
 		-- The Solution Additional Include Folder.
 		includedirs
-		{
-			"%{vendor.includes.emscripten}",                           -- Library: emscripten Header Folder.
-		}
+		{}
 
 		-- Emscripten Specific Solution Macro Definitions.
 		defines
@@ -99,7 +97,8 @@ project "Runtime"
 		-- Emscripten Specific Solution Dependency.
 		links
 		{
-		    "ImGui_WebGPU",                               -- Dependency: imgui
+			"ImGui_WebGPU",                               -- Dependency: imgui
+			"tracy",                                      -- Dependency: tracy
 		}
 
 		-- The Solution link options
@@ -130,11 +129,7 @@ project "Runtime"
 
 		-- The Solution build options
 		buildoptions
-		{
-			"-pthread",                                                                   -- Enable pthread
-			"-matomics",                                                                  -- Enable atomics
-    		"-mbulk-memory",                                                              -- Enable bulk-memory
-		}
+		{}
 
 		-- Configuration: Debug
 		filter {"system:emscripten", "configurations:Debug"}

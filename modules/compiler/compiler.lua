@@ -75,13 +75,10 @@ module.Initialize = function()
 		buildoptions 
 		{ 
 			"-Wno-narrowing",                             -- Disable Warning: 4838
+			"-pthread",                                   -- Enable pthread
+			"-matomics",                                  -- Enable atomics
+    		"-mbulk-memory",                              -- Enable bulk-memory
 		}
-
-		-- The Solution make settings
-		makesettings 
-		{
-            "LINKCMD = $(file > $(OBJDIR)objects.rsp,$(OBJECTS)) emar rcs $(TARGET) @$(OBJDIR)objects.rsp"   -- Enable response file
-        }
 
 end
 

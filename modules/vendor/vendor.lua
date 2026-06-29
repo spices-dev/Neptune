@@ -126,7 +126,6 @@ module.nugets                         = {
 module.third_party_projects_desktops  = {
 	["GLFW"]                          = solution_root .. "/Neptune/vendor/GLFW",                                       -- Dependency: GLFW
 	["Glad"]                          = solution_root .. "/Neptune/vendor/Glad",                                       -- Dependency: Glad
-	["tracy"]                         = solution_root .. "/Neptune/vendor/tracy",                                      -- Dependency: tracy
     ["shaderc"]                       = solution_root .. "/Neptune/vendor/shaderc",                                    -- Dependency: shaderc
 }
 
@@ -135,6 +134,7 @@ module.third_party_projects           = {
 	["imgui"]                         = solution_root .. "/Neptune/vendor/imgui",                                      -- Dependency: imgui
 	["yaml-cpp"]                      = solution_root .. "/Neptune/vendor/yaml-cpp",                                   -- Dependency: yaml-cpp
 	["implot"]                        = solution_root .. "/Neptune/vendor/implot",                                     -- Dependency: implot
+    ["tracy"]                         = solution_root .. "/Neptune/vendor/tracy",                                      -- Dependency: tracy
     ["googletest"]                    = solution_root .. "/UnitTest/vendor/googletest",                                -- Dependency: googletest
 }
 
