@@ -242,7 +242,7 @@ project "Neptune"
 		-- Debug Specific Solution Macro Definitions.
 		defines 
 		{
-			platform.GetProfileFeatures(),
+			platform.GetProfilerFeatures(),
 		}
 
 		-- Debug Specific Solution Dependency

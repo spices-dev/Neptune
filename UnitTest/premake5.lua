@@ -28,7 +28,8 @@ project "UnitTest"
 	-- Macros Definitions
 	defines
 	{
-		-- UnitTest needs test features directly
+		"NP_PROFILE_INSTRUMENTOR",                                 -- Profiler: Instrumentor.
+
 		platform.GetComputeFeatures(),
 		platform.GetGraphicsFeatures(),
 	}

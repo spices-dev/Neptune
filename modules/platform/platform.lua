@@ -52,18 +52,18 @@ module.GetGraphicsFeatures = function()
 
 end
 
--- @brief Get Profile Feature Lists.
+-- @brief Get Profiler Feature Lists.
 -- 
--- @return Returns Profile Feature Lists.
-module.GetProfileFeatures = function()
+-- @return Returns Profiler Feature Lists.
+module.GetProfilerFeatures = function()
 
     local list = {}
 
-    table.insert(list, "NP_PROFILE_TRACY")
-    table.insert(list, "TRACY_ENABLE")                 -- tracy Feature Enable.
-    table.insert(list, "TRACY_ON_DEMAND")              -- Used if want profile on demand.
-    table.insert(list, "TRACY_FIBERS")                 -- Enable fiber thread.
-    table.insert(list, "TRACY_IMPORT")                 -- Multi dll.
+    table.insert(list, "NP_PROFILE_TRACY")                 -- Profiler: tracy
+    table.insert(list, "TRACY_ENABLE")                     -- tracy Feature Enable.
+    table.insert(list, "TRACY_ON_DEMAND")                  -- Used if want profile on demand.
+    table.insert(list, "TRACY_FIBERS")                     -- Enable fiber thread.
+    table.insert(list, "TRACY_IMPORT")                     -- Multi dll.
 
     return list
 

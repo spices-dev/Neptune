@@ -148,7 +148,7 @@ project "Runtime"
 		-- Debug Specific Solution Macro Definitions.
 		defines
 		{
-			platform.GetProfileFeatures(),
+			platform.GetProfilerFeatures(),
 		}
 
 		-- Platform: Emscripten

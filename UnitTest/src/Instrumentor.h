@@ -6,6 +6,8 @@
 
 #pragma once
 
+#ifdef NP_PROFILE_INSTRUMENTOR
+
 #include <Core/Core.h>
 
 #include <algorithm>
@@ -231,8 +233,6 @@ namespace Neptune::Test {
 	}
 }
 
-#define NEPTUNE_PROFILE 1
-#if NEPTUNE_PROFILE
 // Resolve which function signature macro will be used. Note that this only
 // is resolved when the (pre)compiler starts, so the syntax highlighting
 // could mark the wrong one in your editor!
@@ -262,8 +262,8 @@ namespace Neptune::Test {
 #define NEPTUNE_TEST_PROFILE_SCOPE(name)                     NEPTUNE_TEST_PROFILE_SCOPE_LINE(name, __LINE__)
 #define NEPTUNE_TEST_PROFILE_FUNCTION                        NEPTUNE_TEST_PROFILE_SCOPE(NEPTUEN_FUNC_SIG)
 			  
-#else		  
-			  
+#else
+
 #define NEPTUNE_TEST_PROFILE_BEGIN_SESSION(name, filepath)
 #define NEPTUNE_TEST_PROFILE_END_SESSION
 #define NEPTUNE_TEST_PROFILE_SCOPE(name)

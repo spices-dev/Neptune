@@ -148,7 +148,7 @@ project "Editor"
 		-- Debug Specific Solution Macro Definitions.
 		defines
 		{
-			platform.GetProfileFeatures(),
+			platform.GetProfilerFeatures(),
 		}
 
 		-- Platform: Emscripten
