@@ -19,7 +19,7 @@ module.GetLibraries = function(includes)
     local libraries                   = {
         ["VulkanSDK"]                 = library_dir.VulkanSDK .. "/libvulkan.so",                                     -- Library Directries: VulkanSDK
         ["shaderc"]                   = library_dir.VulkanSDK .. "/libshaderc.a",                                     -- Library Directries: shaderc
-        ["shaderc_util"]             = library_dir.VulkanSDK .. "/libshaderc_util.a",                                 -- Library Directries: shaderc_util
+        ["shaderc_util"]              = library_dir.VulkanSDK .. "/libshaderc_util.a",                                -- Library Directries: shaderc_util
     }
 
     return libraries

@@ -88,11 +88,32 @@ module.GetWindowFeatures = function()
 
 end
 
+-- @brief Get Sub Platform Executable LinkOptions.
+-- 
+-- @return Returns Sub Platform Executable LinkOptions.
+module.GetExecutableLinkOptions = function()
+
+    local current_dir = debug.getinfo(1, "S").source:sub(2):match("(.*/)") or "./"
+
+    local sub_platform  = {
+        windows         = current_dir .. "null.lua",
+        linux           = current_dir .. "null.lua",
+        macosx          = current_dir .. "null.lua",
+        emscripten      = current_dir .. "emscripten.lua",
+    }
+
+    return loadfile(sub_platform[os.target()])().GetExecutableLinkOptions() or {}
+
+end
+
 -- @brief module Initialize.
 module.Initialize = function()
 
     -- Platform: Windows
     filter "system:windows"
+
+        -- Architecture x64
+        architecture "x64"
 
         -- Use Lastest WindowSDK
 		systemversion "latest"
@@ -141,6 +162,9 @@ module.Initialize = function()
 
     -- Platform: Emscripten
 	filter "system:emscripten"
+
+        -- Architecture wasm64
+        architecture "wasm64"
 
         -- Use Lastest SystemVersion
 		systemversion "latest"

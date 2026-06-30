@@ -17,7 +17,7 @@ project "Neptune"
 	-- Enable Multi Processor Compile
 	multiprocessorcompile "On"
 
-	pchheader "Pchheader.h"          -- PreCompiler Header File.
+	pchheader "src/Pchheader.h"      -- PreCompiler Header File.
 	pchsource "src/Pchheader.cpp"    -- PreCompiler Cpp File.
 
 	-- The Solution Files.

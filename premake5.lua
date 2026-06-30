@@ -20,14 +20,6 @@ workspace "Neptune"
 	compiler.Initialize()
 	platform.Initialize()
 
-	-- Web App
-	filter "system:emscripten"
-		architecture "wasm64"                 -- Architecture wasm64
-
-	-- Windows App
-	filter "system:windows"
-		architecture "x64"                    -- Architecture x64
-
 -- Building Output Folder.
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
