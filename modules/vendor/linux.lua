@@ -5,21 +5,30 @@
 -- Define module
 local module = {}
 
--- @brief Get Linux Libraries.
+-- @brief Get Linux LibraryDirs.
 --
 -- @param[in] includes Solution Includes.
 --
--- @return Returns Linux Libraries.
-module.GetLibraries = function(includes)
+-- @return Returns Linux LibraryDirs.
+module.GetLibraryDirs = function(includes)
 
     local library_dir                 = {
         ["VulkanSDK"]                 = includes.VulkanSDK .. "/../lib",                                              -- Library Directries: VulkanSDK Folder
     }
 
+    return library_dir
+
+end
+
+-- @brief Get Linux Libraries.
+--
+-- @return Returns Linux Libraries.
+module.GetLibraries = function()
+
     local libraries                   = {
-        ["VulkanSDK"]                 = library_dir.VulkanSDK .. "/libvulkan.so",                                     -- Library Directries: VulkanSDK
-        ["shaderc"]                   = library_dir.VulkanSDK .. "/libshaderc.a",                                     -- Library Directries: shaderc
-        ["shaderc_util"]              = library_dir.VulkanSDK .. "/libshaderc_util.a",                                -- Library Directries: shaderc_util
+        ["vulkan"]                    = "vulkan",                                                                     -- Library: vulkan
+        ["shaderc"]                   = "shaderc",                                                                    -- Library: shaderc
+        ["shaderc_util"]              = "shaderc_util",                                                               -- Library: shaderc_util
     }
 
     return libraries

@@ -137,6 +137,9 @@ module.Initialize = function()
     -- Platform: Linux
 	filter "system:linux"
 
+        -- Architecture x86_64
+        architecture "x86_64"
+
         -- Use Lastest SystemVersion
 		systemversion "latest"
 

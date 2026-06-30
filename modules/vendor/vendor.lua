@@ -8,6 +8,17 @@ local module = {}
 -- Solution Root
 local solution_root = _MAIN_SCRIPT_DIR
 
+-- Current Folder Directory
+local current_dir = debug.getinfo(1, "S").source:sub(2):match("(.*/)") or "./"
+
+-- Sub Vendor Scripts
+local sub_vendor  = {
+    windows       = current_dir .. "windows.lua",
+    linux         = current_dir .. "linux.lua",
+    macosx        = current_dir .. "macos.lua",
+    emscripten    = current_dir .. "emscripten.lua",
+}
+
 -- @brief Get Vulkan SDK Path.
 --
 -- @return Returns Vulkan SDK Path.
@@ -64,21 +75,21 @@ local GetAdaptiveCppPath = function()
 
 end
 
+-- @brief Get Sub Vendor LibraryDirs.
+--
+-- @return Returns Sub Vendor LibraryDirs.
+local GetSubVendorLibraryDirs = function()
+
+    return loadfile(sub_vendor[os.target()])().GetLibraryDirs(module.includes) or {}
+
+end
+
 -- @brief Get Sub Vendor Libraries.
 --
 -- @return Returns Sub Vendor Libraries.
 local GetSubVendorLibraries = function()
 
-    local current_dir = debug.getinfo(1, "S").source:sub(2):match("(.*/)") or "./"
-
-    local sub_vendor  = {
-        windows       = current_dir .. "windows.lua",
-        linux         = current_dir .. "linux.lua",
-        macosx        = current_dir .. "macos.lua",
-        emscripten    = current_dir .. "emscripten.lua",
-    }
-
-    return loadfile(sub_vendor[os.target()])().GetLibraries(module.includes) or {}
+    return loadfile(sub_vendor[os.target()])().GetLibraries() or {}
 
 end
 
@@ -112,6 +123,9 @@ local includes                        = {
     ["googlemock"]                    = solution_root .. "/UnitTest/vendor/googletest/googlemock/include",             -- Include: googlemock
 }
 module.includes                       = includes
+
+-- Library Directories
+module.library_dirs                   = GetSubVendorLibraryDirs()
 
 -- Library Directories
 module.libraries                      = GetSubVendorLibraries()

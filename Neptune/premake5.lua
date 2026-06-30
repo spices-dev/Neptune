@@ -111,6 +111,13 @@ project "Neptune"
 			"%{vendor.includes.AdaptiveCpp}",                          -- Library: AdaptiveCpp Source Folder.
 		}
 
+		-- The Solution Additional Library Folder.
+		libdirs
+		{
+			"%{vendor.library_dirs.VulkanSDK}",                        -- Library: VulkanSDK.
+			"%{vendor.library_dirs.WinPixEventRuntime}",               -- Library: WinPixEventRuntime.
+		}
+
 		-- Windows Specific Solution Macro Definitions.
 		defines
 		{}
@@ -125,7 +132,7 @@ project "Neptune"
 		-- Windows Specific Solution Dependency.
 		links
 		{
-			"%{vendor.libraries.VulkanSDK}",                           -- Dependency: VulkanSDK
+			"%{vendor.libraries.vulkan}",                              -- Dependency: vulkan
 			"%{vendor.libraries.dxgi}",                                -- Dependency: dxgi
 			"%{vendor.libraries.d3d11}",                               -- Dependency: d3d11
 			"%{vendor.libraries.d3d12}",                               -- Dependency: d3d12
@@ -180,6 +187,12 @@ project "Neptune"
 			"%{vendor.includes.Glad}",                                 -- Library: Glad Source Folder.
 		}
 
+		-- The Solution Additional Library Folder.
+		libdirs
+		{
+			"%{vendor.library_dirs.VulkanSDK}",                        -- Library: VulkanSDK.
+		}
+
 		-- Linux Specific Solution Macro Definitions.
 		defines
 		{}
@@ -187,7 +200,7 @@ project "Neptune"
 		-- Linux Specific Solution Dependency.
 		links
 		{
-			"%{vendor.libraries.VulkanSDK}",                           -- Dependency: VulkanSDK
+			"%{vendor.libraries.vulkan}",                              -- Dependency: vulkan
 			
 			"ImGui_Vulkan",                                            -- Dependency: imgui
 			"ImGui_OpenGL",                                            -- Dependency: imgui
@@ -214,6 +227,10 @@ project "Neptune"
 			"%{vendor.includes.emscripten_glfw}/external",             -- Library: emscripten_glfw Header Folder.
 			"%{vendor.includes.emdawnwebgpu}",                         -- Library: emdawnwebgpu Header Folder.
 		}
+
+		-- The Solution Additional Library Folder.
+		libdirs
+		{}
 
 		-- Emscripten Specific Solution Macro Definitions.
 		defines

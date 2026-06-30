@@ -54,9 +54,7 @@ namespace Neptune {
 
 #ifdef NP_PLATFORM_EMSCRIPTEN
         Window::Create(WindowInfo{1920, 1080, "Neptune"}, WindowImplement::emscripten_glfw, RenderBackendEnum::WebGPU);
-#endif
-
-#ifdef NP_PLATFORM_WINDOWS
+#else
         Window::Create(WindowInfo{ 1920, 1080, "Neptune" }, WindowImplement::GLFW, RenderBackendEnum::Vulkan);
 #endif
 
