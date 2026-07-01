@@ -11,7 +11,7 @@
 #include "Enum.h"
 #include "Render/Frontend/Enum.h"
 
-#include <glm/glm.hpp>
+#include <glm/ext/vector_int2.hpp>
 
 namespace Neptune {
 

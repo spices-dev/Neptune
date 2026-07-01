@@ -12,15 +12,18 @@
 #include "Device/Graphics/Backend/Direct3D12/Core.h"
 #include "Device/Graphics/Backend/Common/Unit/Unit.h"
 
-#include <entt.hpp>
-
 namespace Neptune::Direct3D12::Unit {
+
+	namespace detail {
+	
+		constexpr uint32_t ignore = 0;
+	}
 
 	using namespace Render::Common;
 
 	template<typename T>
-	requires IsUnit<Render::Common::Unit<T, entt::type_hash<T>::value()>>
-	using Unit = Render::Common::Unit<T, entt::type_hash<T>::value()>;
+	requires IsUnit<Render::Common::Unit<T, detail::ignore>>
+	using Unit = Render::Common::Unit<T, detail::ignore>;
 }
 
 #endif

@@ -11,8 +11,6 @@
 #include "Debugger/Profiler/ProfilerC.h"
 #include "MetaProperty.h"
 
-#include <forward_list>
-
 namespace Neptune {
 
 #define NONE_COPY(T)                    \

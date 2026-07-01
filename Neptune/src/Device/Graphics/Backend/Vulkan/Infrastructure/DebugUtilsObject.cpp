@@ -18,15 +18,13 @@ namespace Neptune::Vulkan {
         : Infrastructure(context, e)
     {}
 
-	void DebugUtilsObject::BeginLabel(VkCommandBuffer cmdBuffer, const std::string& caption, glm::vec4 color) const
+	void DebugUtilsObject::BeginLabel(VkCommandBuffer cmdBuffer, const std::string& caption) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		VkDebugUtilsLabelEXT             labelInfo{};
 		labelInfo.sType                = VK_STRUCTURE_TYPE_DEBUG_UTILS_LABEL_EXT;
 		labelInfo.pLabelName           = caption.c_str();
-
-		memcpy(labelInfo.color, &color[0], sizeof(float) * 4);
 
 		GetContext().Get<IFunctions>()->vkCmdBeginDebugUtilsLabelEXT(cmdBuffer, &labelInfo);
 	}
@@ -38,7 +36,7 @@ namespace Neptune::Vulkan {
 		GetContext().Get<IFunctions>()->vkCmdEndDebugUtilsLabelEXT(cmdBuffer);
 	}
 
-	void DebugUtilsObject::InsertLabel(VkCommandBuffer cmdBuffer, const std::string& caption, glm::vec4 color) const
+	void DebugUtilsObject::InsertLabel(VkCommandBuffer cmdBuffer, const std::string& caption) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -46,20 +44,16 @@ namespace Neptune::Vulkan {
 		labelInfo.sType            = VK_STRUCTURE_TYPE_DEBUG_UTILS_LABEL_EXT;
 		labelInfo.pLabelName       = caption.c_str();
 
-		memcpy(labelInfo.color, &color[0], sizeof(float) * 4);
-
 		GetContext().Get<IFunctions>()->vkCmdInsertDebugUtilsLabelEXT(cmdBuffer, &labelInfo);
 	}
 
-	void DebugUtilsObject::BeginQueueLabel(VkQueue queue, const std::string& caption, glm::vec4 color) const
+	void DebugUtilsObject::BeginQueueLabel(VkQueue queue, const std::string& caption) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		VkDebugUtilsLabelEXT        labelInfo{};
 		labelInfo.sType           = VK_STRUCTURE_TYPE_DEBUG_UTILS_LABEL_EXT;
 		labelInfo.pLabelName      = caption.c_str();
-
-		memcpy(labelInfo.color, &color[0], sizeof(float) * 4);
 
 		GetContext().Get<IFunctions>()->vkQueueBeginDebugUtilsLabelEXT(queue, &labelInfo);
 	}
@@ -71,15 +65,13 @@ namespace Neptune::Vulkan {
 		GetContext().Get<IFunctions>()->vkQueueEndDebugUtilsLabelEXT(queue);
 	}
 
-	void DebugUtilsObject::InsertQueueLabel(VkQueue queue, const std::string& caption, glm::vec4 color) const
+	void DebugUtilsObject::InsertQueueLabel(VkQueue queue, const std::string& caption) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		VkDebugUtilsLabelEXT        labelInfo{};
 		labelInfo.sType           = VK_STRUCTURE_TYPE_DEBUG_UTILS_LABEL_EXT;
 		labelInfo.pLabelName      = caption.c_str();
-
-		memcpy(labelInfo.color, &color[0], sizeof(float) * 4);
 
 		GetContext().Get<IFunctions>()->vkQueueInsertDebugUtilsLabelEXT(queue, &labelInfo);
 	}

@@ -15,7 +15,7 @@
 
 #include <vector>
 #include <any>
-#include <glm/glm.hpp>
+#include <glm/ext/vector_float2.hpp>
 
 namespace Neptune {
 

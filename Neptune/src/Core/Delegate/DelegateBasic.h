@@ -8,8 +8,6 @@
 #include "Core/Core.h"
 #include "Core/Container/LinkedUnorderedMap.h"
 
-#include <functional>
-
 namespace Neptune {
 
 	/**

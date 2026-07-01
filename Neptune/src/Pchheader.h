@@ -31,3 +31,8 @@
 #include <mutex>
 #include <ranges>
 #include <bitset>
+
+// Log
+#include "Core/Log/Log.h"
+// Profiler
+#include "Debugger/Profiler/ProfilerC.h"

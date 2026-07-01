@@ -13,9 +13,6 @@
 #include "Functions.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/Device.h"
 
-#include <glm/glm.hpp>
-#include <vector>
-
 namespace Neptune::Vulkan {
 
 	using IDebugUtilsObject = IInfrastructure<class DebugUtilsObject, EInfrastructure::DebugUtilsObject>;
@@ -46,9 +43,8 @@ namespace Neptune::Vulkan {
 		* 
 		* @param[in] cmdBuffer VkCommandBuffer.
 		* @param[in] caption Label String.
-		* @param[in] color Label Color.
 		*/
-		void BeginLabel(VkCommandBuffer cmdBuffer, const std::string& caption, glm::vec4 color = glm::vec4(1.0f)) const;
+		void BeginLabel(VkCommandBuffer cmdBuffer, const std::string& caption) const;
 
 		/**
 		* @brief End CommandBuffer Label.
@@ -62,18 +58,16 @@ namespace Neptune::Vulkan {
 		*
 		* @param[in] cmdBuffer VkCommandBuffer.
 		* @param[in] caption Label String.
-		* @param[in] color Label Color.
 		*/
-		void InsertLabel(VkCommandBuffer cmdBuffer, const std::string& caption, glm::vec4 color = glm::vec4(1.0f)) const;
+		void InsertLabel(VkCommandBuffer cmdBuffer, const std::string& caption) const;
 
 		/**
 		* @brief Begin Queue Label.
 		*
 		* @param[in] queue VkQueue.
 		* @param[in] caption Label String.
-		* @param[in] color Label Color.
 		*/
-		void BeginQueueLabel(VkQueue queue, const std::string& caption, glm::vec4 color = glm::vec4(1.0f)) const;
+		void BeginQueueLabel(VkQueue queue, const std::string& caption) const;
 
 		/**
 		* @brief End Queue Label.
@@ -87,9 +81,8 @@ namespace Neptune::Vulkan {
 		*
 		* @param[in] queue VkQueue.
 		* @param[in] caption Label String.
-		* @param[in] color Label Color.
 		*/
-		void InsertQueueLabel(VkQueue queue, const std::string& caption, glm::vec4 color = glm::vec4(1.0f)) const;
+		void InsertQueueLabel(VkQueue queue, const std::string& caption) const;
 
 		/**
 		* @brief Set Unit Name.

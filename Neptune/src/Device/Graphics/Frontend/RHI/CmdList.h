@@ -8,7 +8,7 @@
 #include "Core/Core.h"
 #include "RHI.h"
 
-#include <glm/glm.hpp>
+#include <glm/ext/vector_float2.hpp>
 
 namespace Neptune::Data {
 
