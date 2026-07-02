@@ -31,6 +31,7 @@
 #include <mutex>
 #include <ranges>
 #include <bitset>
+#include <cstring>
 
 // Log
 #include "Core/Log/Log.h"
