@@ -44,6 +44,7 @@ class PremakeBuildSystem(BuildSystem):
             from Scripts.BuildDependencies.MSVCDependency import MSVCDependency
             self.dependencyGraph.add_node(MSVCDependency())
         elif self.toolset == "clang":
+            self.dependencyGraph.add_node(GNUDependency())
             self.dependencyGraph.add_node(LLVMDependency())
 
     def _generate(self) -> bool:

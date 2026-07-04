@@ -10,6 +10,13 @@
 
 #include "Core.h"
 
+extern "C" {
+
+	DLL_EXPORT extern const UINT D3D12SDKVersion = DIRECT3D12_VERSION;    // @brief Agility SDK defined d3d12 runtime version.
+
+	DLL_EXPORT extern const char* D3D12SDKPath = DIRECT3D12_DLL_PATH;     // @brief Agility SDK searched d3d12 dll path.
+}
+
 namespace Neptune::Direct3D12 {
 
 	namespace {

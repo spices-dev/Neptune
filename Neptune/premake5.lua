@@ -107,6 +107,7 @@ project "Neptune"
 			"%{vendor.includes.GLFW}",                                 -- Library: GLFW Source Folder.
 			"%{vendor.includes.VulkanSDK}",                            -- Library: VulkanSDK Source Folder.
 			"%{vendor.includes.Glad}",                                 -- Library: Glad Source Folder.
+			"%{vendor.includes.DirectX12AgilitySDK}",                  -- Library: DirectX12AgilitySDK Source Folder.
 			"%{vendor.includes.WinPixEventRuntime}",                   -- Library: WinPixEventRuntime Source Folder.
 			"%{vendor.includes.AdaptiveCpp}",                          -- Library: AdaptiveCpp Source Folder.
 		}

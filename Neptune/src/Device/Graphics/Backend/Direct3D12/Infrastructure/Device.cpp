@@ -77,23 +77,39 @@ namespace Neptune::Direct3D12 {
 
 #ifdef NEPTUNE_DEBUG
 
-		Unit::InfoQueue infoQueue;
+		{
+			Unit::DebugDevice debug;
 
-		infoQueue.CreateInfoQueue(m_Device.GetHandle());
+			debug.CreateDebugDevice(m_Device.GetHandle());
 
-		infoQueue.GetHandle()->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);
-		infoQueue.GetHandle()->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING, true);
-		infoQueue.GetHandle()->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);
+			D3D12_DEBUG_DEVICE_GPU_BASED_VALIDATION_SETTINGS validationSettings = {};
 
-		DWORD cookie = 0;
-		
-		DIRECT3D12_CHECK(infoQueue.GetHandle()->RegisterMessageCallback(
-			DebugCallback, 
-			D3D12_MESSAGE_CALLBACK_FLAG_NONE,
-			nullptr,
-			&cookie
-		))
-		
+			DIRECT3D12_CHECK(debug.GetHandle()->SetDebugParameter(
+				D3D12_DEBUG_DEVICE_PARAMETER_GPU_BASED_VALIDATION_SETTINGS,
+				&validationSettings,
+				sizeof(validationSettings)
+			))
+		}
+
+		{
+			Unit::InfoQueue infoQueue;
+
+			infoQueue.CreateInfoQueue(m_Device.GetHandle());
+
+			infoQueue.GetHandle()->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);
+			infoQueue.GetHandle()->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING, true);
+			infoQueue.GetHandle()->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);
+
+			DWORD cookie = 0;
+
+			DIRECT3D12_CHECK(infoQueue.GetHandle()->RegisterMessageCallback(
+				DebugCallback,
+				D3D12_MESSAGE_CALLBACK_FLAG_NONE,
+				nullptr,
+				&cookie
+			))
+		}
+
 #endif
 		
     	DXGI_ADAPTER_DESC3 desc{};
