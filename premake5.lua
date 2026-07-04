@@ -2,7 +2,7 @@
 -- @brief Defines all Solutions Building.
 -- @author Spices.
 
-local solution = require "solution"
+solution       = require "solution"
 compiler       = require "compiler"
 vendor         = require "vendor"
 platform       = require "platform"

@@ -50,11 +50,8 @@ project "UnitTest"
 	debugenvs 
 	{}
 
-	-- The Solution Dependency
-	uses
-	{
-		"Neptune",                             -- Dependency: Neptune
-	}
+	-- The Solution Inherit from
+	solution.Uses("Neptune")                   -- Dependency: Neptune
 
 	-- The Solution Dependency
 	links

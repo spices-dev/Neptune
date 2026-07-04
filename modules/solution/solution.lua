@@ -8,6 +8,17 @@ local module = {}
 -- Solution Root
 local solution_root = _MAIN_SCRIPT_DIR
 
+-- @brief Use project and link it.
+--
+-- @param[in] project Inherited.
+module.Uses = function(project)
+
+    uses(project)
+
+	links(project)
+
+end
+
 -- Projects
 module.projects             = {
 	["Neptune"]             = solution_root .. "/Neptune",            -- Project: Neptune

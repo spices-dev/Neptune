@@ -226,7 +226,6 @@ project "Neptune"
 
         links
 		{
-			"Neptune",                                                     -- Dependency: Neptune(to user)
 			"yaml-cpp",                                                    -- Dependency: yaml-cpp
 			"implot",                                                      -- Dependency: implot
 		}
