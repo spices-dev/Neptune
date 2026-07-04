@@ -38,6 +38,20 @@ namespace Neptune::Direct3D12 {
         DEBUGUTILS_SETOBJECTNAME(m_DescriptorHeap, ToString())
     }
 
+	D3D12_CPU_DESCRIPTOR_HANDLE DescriptorHeap::GetCPUDescriptorHandleForHeapStart() const
+    {
+    	NEPTUNE_PROFILE_ZONE
+    	
+    	return m_DescriptorHeap.GetCPUDescriptorHandleForHeapStart();
+    }
+	
+	D3D12_GPU_DESCRIPTOR_HANDLE DescriptorHeap::GetGPUDescriptorHandleForHeapStart() const
+    {
+    	NEPTUNE_PROFILE_ZONE
+    	
+		return m_DescriptorHeap.GetGPUDescriptorHandleForHeapStart();
+    }
+	
     D3D12_DESCRIPTOR_HEAP_TYPE DescriptorHeap::GetDescriptorHeapType() const
     {
     	NEPTUNE_PROFILE_ZONE
@@ -46,7 +60,7 @@ namespace Neptune::Direct3D12 {
     	
         switch (GetEInfrastructure())
 		{
-			case RTVDescriptorHeap:		return D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+			case RTVDescriptorHeap:		   return D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 			case DSVDescriptorHeap:        return D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 			case SRVDescriptorHeap:        return D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 			case UAVDescriptorHeap:        return D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;

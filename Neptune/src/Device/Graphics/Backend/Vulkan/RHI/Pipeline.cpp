@@ -152,7 +152,7 @@ namespace Neptune::Vulkan {
 
 		m_PipelineLayout.CreatePipelineLayout(GetContext().Get<IDevice>()->Handle(), info);
 
-		DEBUGUTILS_SETOBJECTNAME(m_PipelineLayout, "PipelineLayout");
+		DEBUGUTILS_SETOBJECTNAME(m_PipelineLayout, "PipelineLayout")
 	}
 
 	void Pipeline::SetCullMode(CullMode mode)
@@ -212,7 +212,7 @@ namespace Neptune::Vulkan {
 
 		m_Pipeline.CreateGraphicPipeline(GetContext().Get<IDevice>()->Handle(), info);
 
-		DEBUGUTILS_SETOBJECTNAME(m_Pipeline, "GraphicPipeline");
+		DEBUGUTILS_SETOBJECTNAME(m_Pipeline, "GraphicPipeline")
 
 		m_BindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
 	}

@@ -94,9 +94,19 @@ namespace Neptune::Direct3D12 {
 		const char* label = "";
 		switch (result)
 		{
+
+#ifdef D3D12_ERROR_ADAPTER_NOT_FOUND
 			case D3D12_ERROR_ADAPTER_NOT_FOUND:                          label = "Cached PSO was created on a different adapter and cannot be reused";                       break;
+#endif
+			
+#ifdef D3D12_ERROR_DRIVER_VERSION_MISMATCH
 			case D3D12_ERROR_DRIVER_VERSION_MISMATCH:                    label = "Cached PSO was created on a different driver version and cannot be reused";                break;
+#endif
+			
+#ifdef D3D12_ERROR_INVALID_REDIST
 			case D3D12_ERROR_INVALID_REDIST:                             label = "Invalid Redist";                                                                           break;
+#endif
+
 			case E_FAIL:												 label = "Generic failure";                                                                          break;
 			case E_INVALIDARG:											 label = "Invalid parameter passed to function";                                                     break;
 			case E_OUTOFMEMORY:                                          label = "Out of Memory";                                                                            break;

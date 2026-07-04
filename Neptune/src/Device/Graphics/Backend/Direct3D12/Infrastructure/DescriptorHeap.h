@@ -47,6 +47,20 @@ namespace Neptune::Direct3D12 {
 		*/
 		const Unit::DescriptorHeap::Handle& Handle() const { return m_DescriptorHeap.GetHandle(); }
 
+		/**
+		* @brief Get D3D12_CPU_DESCRIPTOR_HANDLE.
+		*
+		* @return Returns D3D12_CPU_DESCRIPTOR_HANDLE.
+		*/
+		D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandleForHeapStart() const;
+		
+		/**
+		* @brief Get D3D12_GPU_DESCRIPTOR_HANDLE.
+		*
+		* @return Returns D3D12_GPU_DESCRIPTOR_HANDLE.
+		*/
+		D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandleForHeapStart() const;
+		
 	private:
 
 		/**

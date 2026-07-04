@@ -6,8 +6,8 @@
 
 #include <Core/MetaProperty.h>
 
-#ifdef MetaProperty(...)
-#undef MetaProperty(...)
+#ifdef MetaProperty
+#undef MetaProperty
 #define MetaProperty(...) public:
 #endif
 

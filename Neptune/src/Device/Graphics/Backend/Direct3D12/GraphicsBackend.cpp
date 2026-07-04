@@ -97,8 +97,8 @@ namespace Neptune::Direct3D12 {
 		context.Registry<ARTVFormat>(DXGI_FORMAT_B8G8R8A8_UNORM);
 		context.Registry<ADSVFormat>(DXGI_FORMAT_B8G8R8A8_UNORM);
 		context.Registry<ASRVDescriptorHeap>(m_Context->Get<ISRVDescriptorHeap>()->Handle());
-        context.Registry<ASRVCPUHandle>(m_Context->Get<ISRVDescriptorHeap>()->Handle()->GetCPUDescriptorHandleForHeapStart());
-        context.Registry<ASRVGPUHandle>(m_Context->Get<ISRVDescriptorHeap>()->Handle()->GetGPUDescriptorHandleForHeapStart());
+        context.Registry<ASRVCPUHandle>(m_Context->Get<ISRVDescriptorHeap>()->GetCPUDescriptorHandleForHeapStart());
+        context.Registry<ASRVGPUHandle>(m_Context->Get<ISRVDescriptorHeap>()->GetGPUDescriptorHandleForHeapStart());
 
         return context.GetInfrastructures();
     }

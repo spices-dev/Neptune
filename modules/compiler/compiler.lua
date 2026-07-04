@@ -44,8 +44,9 @@ module.Initialize = function()
 		-- GCC Specific Solution build options
 		buildoptions 
 		{ 
-			"-Wno-narrowing"                               -- Disable Warning: 4838
-		}          
+			"-Wno-narrowing",                              -- Disable Warning: 4838
+			"-fpch-preprocess",                            -- GCC pch flags
+		}
 
 	-- Configuration: Clang
 	filter { "toolset:clang" }

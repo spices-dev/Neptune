@@ -28,6 +28,46 @@ namespace Neptune::Direct3D12::Unit {
 		DIRECT3D12_CHECK(device->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&m_Handle)))
 	}
 
+	D3D12_CPU_DESCRIPTOR_HANDLE DescriptorHeap::GetCPUDescriptorHandleForHeapStart() const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+#ifdef _MSC_VER
+		
+		return m_Handle->GetCPUDescriptorHandleForHeapStart();
+		
+#else
+		
+		D3D12_CPU_DESCRIPTOR_HANDLE handle;
+		
+		m_Handle->GetCPUDescriptorHandleForHeapStart(&handle);
+		
+		return handle;
+		
+#endif
+		
+	}
+	
+	D3D12_GPU_DESCRIPTOR_HANDLE DescriptorHeap::GetGPUDescriptorHandleForHeapStart() const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+#ifdef _MSC_VER
+		
+		return m_Handle->GetGPUDescriptorHandleForHeapStart();
+		
+#else
+		
+		D3D12_GPU_DESCRIPTOR_HANDLE handle;
+		
+		m_Handle->GetGPUDescriptorHandleForHeapStart(&handle);
+
+		return handle;
+		
+#endif
+		
+	};
+	
 }
 
 #endif
