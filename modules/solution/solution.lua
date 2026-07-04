@@ -1,5 +1,5 @@
--- @file project.lua.
--- @brief Defines all Solutions Projects.
+-- @file solution.lua.
+-- @brief Defines all Solutions.
 -- @author Spices.
 
 -- Define module
@@ -16,8 +16,8 @@ module.projects             = {
     ["UnitTest"]            = solution_root .. "/UnitTest",           -- Project: UnitTest
 }
 
--- @brief module Load.
-module.Load = function()
+-- @brief Load all Projects.
+module.LoadProjects = function()
 
     for name, path in pairs(module.projects) do
         include(path)

@@ -81,10 +81,7 @@ project "Neptune"
 
 	-- The Solution Dependency
 	links
-	{
-		"yaml-cpp",                                                -- Dependency: yaml-cpp
-		"implot",                                                  -- Dependency: implot
-	}
+	{}
 
 	-- Library: std_image is included this solution, do not use PreCompiler Header.
 	filter "files:vendor/stb_image/**.cpp"
@@ -112,12 +109,9 @@ project "Neptune"
 			"%{vendor.includes.AdaptiveCpp}",                          -- Library: AdaptiveCpp Source Folder.
 		}
 
-		-- The Solution Additional Library Folder.
+		-- Windows Specific Additional Library Folder.
 		libdirs
-		{
-			"%{vendor.library_dirs.VulkanSDK}",                        -- Library: VulkanSDK.
-			"%{vendor.library_dirs.WinPixEventRuntime}",               -- Library: WinPixEventRuntime.
-		}
+		{}
 
 		-- Windows Specific Solution Macro Definitions.
 		defines
@@ -132,46 +126,11 @@ project "Neptune"
 
 		-- Windows Specific Solution Dependency.
 		links
-		{
-			"%{vendor.libraries.vulkan}",                              -- Dependency: vulkan
-			"%{vendor.libraries.dxgi}",                                -- Dependency: dxgi
-			"%{vendor.libraries.d3d11}",                               -- Dependency: d3d11
-			"%{vendor.libraries.d3d12}",                               -- Dependency: d3d12
-			"%{vendor.libraries.WinPixEventRuntime}",                  -- Dependency: WinPixEventRuntime
-			
-			"ImGui_Vulkan",                                            -- Dependency: imgui
-			"ImGui_OpenGL",                                            -- Dependency: imgui
-			"ImGui_Direct3D11",                                        -- Dependency: imgui
-			"ImGui_Direct3D12",                                        -- Dependency: imgui
-			"GLFW",                                                    -- Dependency: GLFW
-			"Glad",                                                    -- Dependency: Glad
-			"tracy",                                                   -- Dependency: tracy
-			"shaderc",                                                 -- Dependency：shaderc 
-		}
-    
+		{}
+
 		-- The Solution build options
 		buildoptions 
 		{}
-
-        -- Configuration: Debug
-        filter {"system:windows", "configurations:Debug"}
-
-            -- Debug Specific Solution Dependency
-            links
-            {
-                "%{vendor.libraries.shaderc_debug}",               -- Dependency: shaderc_debug
-                "%{vendor.libraries.shaderc_util_debug}",          -- Dependency: shaderc_utils_debug
-            }
-        
-        -- Configuration: Release
-        filter {"system:windows", "configurations:Release"}
-
-            -- Release Specific Solution Dependency
-            links
-            {
-                "%{vendor.libraries.shaderc_release}",             -- Dependency: shaderc_release
-                "%{vendor.libraries.shaderc_util_release}",        -- Dependency: shaderc_utils_release
-            }
 
 	-- Platform: Linux
 	filter "system:linux"
@@ -188,11 +147,9 @@ project "Neptune"
 			"%{vendor.includes.Glad}",                                 -- Library: Glad Source Folder.
 		}
 
-		-- The Solution Additional Library Folder.
+		-- Linux Specific Additional Library Folder.
 		libdirs
-		{
-			"%{vendor.library_dirs.VulkanSDK}",                        -- Library: VulkanSDK.
-		}
+		{}
 
 		-- Linux Specific Solution Macro Definitions.
 		defines
@@ -200,19 +157,8 @@ project "Neptune"
 
 		-- Linux Specific Solution Dependency.
 		links
-		{
-			"%{vendor.libraries.vulkan}",                              -- Dependency: vulkan
-			
-			"ImGui_Vulkan",                                            -- Dependency: imgui
-			"ImGui_OpenGL",                                            -- Dependency: imgui
-			"GLFW",                                                    -- Dependency: GLFW
-			"Glad",                                                    -- Dependency: Glad
-			"tracy",                                                   -- Dependency: tracy
-			"shaderc",                                                 -- Dependency：shaderc
-			"%{vendor.libraries.shaderc}",                             -- Dependency: shaderc_debug
-			"%{vendor.libraries.shaderc_util}",                        -- Dependency: shaderc_utils_debug
-		}
-    
+		{}
+
 		-- The Solution build options
 		buildoptions 
 		{}
@@ -237,12 +183,9 @@ project "Neptune"
 		defines
 		{}
 
-		-- Emscripten Specific Solution Dependency(emscripten require must link in .wasm project).
+		-- Emscripten Specific Solution Dependency.
 		links
-		{
-			--"ImGui_WebGPU",                              -- Dependency: imgui
-			--"tracy",                                     -- Dependency: tracy
-		}
+		{}
 
 		-- The Solution build options
 		buildoptions
@@ -258,7 +201,7 @@ project "Neptune"
 	filter "configurations:Debug"
 
 		-- Debug Specific Solution Macro Definitions.
-		defines 
+		defines
 		{
 			platform.GetProfilerFeatures(),
 		}
@@ -277,3 +220,97 @@ project "Neptune"
 		-- Release Specific Solution Dependency
 		links
 		{}
+
+	-- Public Config
+	usage "PUBLIC"
+
+        links
+		{
+			"Neptune",                                                     -- Dependency: Neptune(to user)
+			"yaml-cpp",                                                    -- Dependency: yaml-cpp
+			"implot",                                                      -- Dependency: implot
+		}
+
+		-- Platform: Windows
+		filter "system:windows"
+
+			-- Windows Specific Library Folder.
+			libdirs
+			{
+				"%{vendor.library_dirs.VulkanSDK}",                        -- Library: VulkanSDK.
+				"%{vendor.library_dirs.WinPixEventRuntime}",               -- Library: WinPixEventRuntime.
+			}
+
+			-- Windows Specific Solution Dependency.
+			links
+			{
+				"%{vendor.libraries.vulkan}",                              -- Dependency: vulkan
+				"%{vendor.libraries.dxgi}",                                -- Dependency: dxgi
+				"%{vendor.libraries.d3d11}",                               -- Dependency: d3d11
+				"%{vendor.libraries.d3d12}",                               -- Dependency: d3d12
+				"%{vendor.libraries.WinPixEventRuntime}",                  -- Dependency: WinPixEventRuntime
+				
+				"ImGui_Vulkan",                                            -- Dependency: imgui
+				"ImGui_OpenGL",                                            -- Dependency: imgui
+				"ImGui_Direct3D11",                                        -- Dependency: imgui
+				"ImGui_Direct3D12",                                        -- Dependency: imgui
+				"GLFW",                                                    -- Dependency: GLFW
+				"gdi32",                                                   -- Dependency: Windows GDI (Graphics Device Interface)
+				"Glad",                                                    -- Dependency: Glad
+				"tracy",                                                   -- Dependency: tracy
+				"shaderc",                                                 -- Dependency：shaderc 
+			}
+
+			-- Configuration: Debug
+			filter {"system:windows", "configurations:Debug"}
+
+				-- Debug Specific Solution Dependency
+				links
+				{
+					"%{vendor.libraries.shaderc_debug}",                   -- Dependency: shaderc_debug
+					"%{vendor.libraries.shaderc_util_debug}",              -- Dependency: shaderc_utils_debug
+				}
+        
+			-- Configuration: Release
+			filter {"system:windows", "configurations:Release"}
+
+				-- Release Specific Solution Dependency
+				links
+				{
+					"%{vendor.libraries.shaderc_release}",                 -- Dependency: shaderc_release
+					"%{vendor.libraries.shaderc_util_release}",            -- Dependency: shaderc_utils_release
+				}
+
+		-- Platform: Linux
+		filter "system:linux"
+
+			-- Linux Specific Additional Library Folder.
+			libdirs
+			{
+				"%{vendor.library_dirs.VulkanSDK}",                        -- Library: VulkanSDK.
+			}
+
+			-- Linux Specific Solution Dependency.
+			links
+			{
+				"%{vendor.libraries.vulkan}",                              -- Dependency: vulkan
+				
+				"ImGui_Vulkan",                                            -- Dependency: imgui
+				"ImGui_OpenGL",                                            -- Dependency: imgui
+				"GLFW",                                                    -- Dependency: GLFW
+				"Glad",                                                    -- Dependency: Glad
+				"tracy",                                                   -- Dependency: tracy
+				"shaderc",                                                 -- Dependency：shaderc
+				"%{vendor.libraries.shaderc}",                             -- Dependency: shaderc_debug
+				"%{vendor.libraries.shaderc_util}",                        -- Dependency: shaderc_utils_debug
+			}
+
+		-- Platform: Emscripten
+		filter "system:emscripten"
+
+			-- Emscripten Specific Solution Dependency.
+			links
+			{
+				"ImGui_WebGPU",                                            -- Dependency: imgui
+				"tracy",                                                   -- Dependency: tracy
+			}

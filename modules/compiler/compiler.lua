@@ -80,6 +80,8 @@ module.Initialize = function()
     		"-mbulk-memory",                              -- Enable bulk-memory
 		}
 
+	filter {}
+
 end
 
 return module

@@ -51,9 +51,14 @@ project "UnitTest"
 	{}
 
 	-- The Solution Dependency
-	links
+	uses
 	{
 		"Neptune",                             -- Dependency: Neptune
+	}
+
+	-- The Solution Dependency
+	links
+	{
 		"googlemock",                          -- Dependency: googlemock
 	}
 
@@ -112,10 +117,7 @@ project "UnitTest"
 
 		-- Emscripten Specific Solution Dependency.
 		links
-		{
-			"ImGui_WebGPU",                               -- Dependency: imgui
-			"tracy",                                      -- Dependency: tracy
-		}
+		{}
 
 		-- The Solution link options
 		linkoptions

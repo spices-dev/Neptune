@@ -48,7 +48,7 @@ project "Runtime"
 	{}
 
 	-- The Solution Dependency
-	links
+	uses
 	{
 		"Neptune",                             -- Dependency: Neptune
 	}
@@ -108,10 +108,7 @@ project "Runtime"
 
 		-- Emscripten Specific Solution Dependency.
 		links
-		{
-			"ImGui_WebGPU",                               -- Dependency: imgui
-			"tracy",                                      -- Dependency: tracy
-		}
+		{}
 
 		-- The Solution link options
 		linkoptions
