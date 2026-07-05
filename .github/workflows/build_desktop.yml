@@ -25,8 +25,8 @@ jobs:
     # Strategy
     strategy:
 
-      # Error and Continue
-      fail-fast: false 
+      # Block Error
+      fail-fast: true 
 
       # Matrix Strategy
       matrix:
