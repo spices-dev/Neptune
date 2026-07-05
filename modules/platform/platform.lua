@@ -52,7 +52,12 @@ module.GetGraphicsFeatures = function()
 
     if os.target() == "windows" then
         table.insert(list, "NP_GRAPHICS_DIRECT3D11")       -- Graphics: Direct3D11
-        table.insert(list, "NP_GRAPHICS_DIRECT3D12")       -- Graphics: Direct3D12
+
+        -- GCC is not working well with d3d12
+        -- TODO: use DirectX-Headers instead of nuget
+        if _OPTIONS["cc"] ~= "gcc" then
+            table.insert(list, "NP_GRAPHICS_DIRECT3D12")   -- Graphics: Direct3D12
+        end
     end
 
     if os.target() == "macosx" then

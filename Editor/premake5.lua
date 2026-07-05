@@ -161,4 +161,6 @@ solution.DefineCppExecutable("Editor", function()
 				--	or 'cp -rf "%{cfg.targetdir}/." "%{wks.location}/Nepnep/public/wasm/Release/"'
 			}
 
+	filter {}
+
 end)

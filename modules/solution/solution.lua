@@ -29,7 +29,7 @@ local TemplateDefineProject = function(config)
             language "C++"                       -- Use C++.
             cppdialect "C++20"                   -- Use C++20.
         elseif config.language == "C" then
-            language "C"                         -- Use C++.
+            language "C"                         -- Use C.
         end
 
         -- Building Output Folder.
@@ -99,11 +99,17 @@ module.DefineCppExecutable = function(name, callback)
         language = "C++",
         callback = function()
 
-            links(platform.GetExecutableLinks())
-
-            linkoptions(platform.GetExecutableLinkOptions())
-
             callback()
+
+            -- Private Config
+            usage "PRIVATE"
+
+                -- Reset filter
+                filter {}
+
+                links(platform.GetExecutableLinks())
+
+                linkoptions(platform.GetExecutableLinkOptions())
 
         end
     })

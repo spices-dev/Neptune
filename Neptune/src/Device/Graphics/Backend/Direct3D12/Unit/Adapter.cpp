@@ -31,7 +31,8 @@ namespace Neptune::Direct3D12::Unit {
 		for (UINT i = 0; factory->EnumAdapterByGpuPreference(i, DXGI_GPU_PREFERENCE_HIGH_PERFORMANCE, IID_PPV_ARGS(&adapter)) != DXGI_ERROR_NOT_FOUND; ++i)
 		{
 			// Pick the first adapter that supports the minimum feature level.
-			auto result = D3D12CreateDevice(adapter, MinimumLevel, __uuidof(ID3D12Device), nullptr);
+			ID3D12Device* device = nullptr;
+			auto result = D3D12CreateDevice(adapter, MinimumLevel, IID_PPV_ARGS(&device));
 
 			if (FAILED(result))
 			{

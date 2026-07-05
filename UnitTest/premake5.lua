@@ -167,5 +167,7 @@ solution.DefineCppExecutable("UnitTest", function()
 				--os.host() == "windows" and 'xcopy /Y /I "%{cfg.targetdir}\\" "%{wks.location}/Nepnep/public/wasm/Release\\"'
 				--	or 'cp -rf "%{cfg.targetdir}/." "%{wks.location}/Nepnep/public/wasm/Release/"'
 			}
+
+	filter {}
 		
 end)

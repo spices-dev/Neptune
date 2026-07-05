@@ -41,7 +41,7 @@ namespace Neptune::Vulkan {
 		createInfo.imageExtent                 = property.surfaceSize;
 		createInfo.imageArrayLayers            = 1;
 		createInfo.imageUsage                  = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | 
-												 VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;     // @brief StreamLine Required
+												 VK_IMAGE_USAGE_TRANSFER_DST_BIT;     // @brief StreamLine Required
 
 		uint32_t queueFamilyIndices[2] = 
 		{ 

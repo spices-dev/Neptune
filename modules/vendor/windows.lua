@@ -30,6 +30,7 @@ module.GetLibraries = function()
         ["vulkan"]                    = "vulkan-1",                                                                   -- Library: vulkan
         ["dxgi"]                      = "dxgi",                                                                       -- Library: dxgi
         ["d3d11"]                     = "d3d11",                                                                      -- Library: d3d11
+        ["d3dcompiler"]               = "d3dcompiler",                                                                -- Library: d3dcompiler
         ["d3d12"]                     = "d3d12",                                                                      -- Library: d3d12
         ["WinPixEventRuntime"]        = "WinPixEventRuntime",                                                         -- Library: WinPixEventRuntime
 

@@ -233,6 +233,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 				"%{vendor.libraries.vulkan}",                              -- Dependency: vulkan
 				"%{vendor.libraries.dxgi}",                                -- Dependency: dxgi
 				"%{vendor.libraries.d3d11}",                               -- Dependency: d3d11
+				"%{vendor.libraries.d3dcompiler}",                         -- Dependency: d3dcompiler
 				"%{vendor.libraries.d3d12}",                               -- Dependency: d3d12
 				"%{vendor.libraries.WinPixEventRuntime}",                  -- Dependency: WinPixEventRuntime
 				
@@ -253,7 +254,6 @@ solution.DefineCppStaticLibrary("Neptune", function()
 				links
 				{
 					"%{vendor.libraries.shaderc_debug}",                   -- Dependency: shaderc_debug
-					"%{vendor.libraries.shaderc_util_debug}",              -- Dependency: shaderc_utils_debug
 				}
         
 			-- Configuration: Release
@@ -263,7 +263,6 @@ solution.DefineCppStaticLibrary("Neptune", function()
 				links
 				{
 					"%{vendor.libraries.shaderc_release}",                 -- Dependency: shaderc_release
-					"%{vendor.libraries.shaderc_util_release}",            -- Dependency: shaderc_utils_release
 				}
 
 		-- Platform: Linux
@@ -287,7 +286,6 @@ solution.DefineCppStaticLibrary("Neptune", function()
 				"tracy",                                                   -- Dependency: tracy
 				"shaderc",                                                 -- Dependency：shaderc
 				"%{vendor.libraries.shaderc}",                             -- Dependency: shaderc_debug
-				"%{vendor.libraries.shaderc_util}",                        -- Dependency: shaderc_utils_debug
 			}
 
 		-- Platform: Emscripten
@@ -299,5 +297,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 				"ImGui_WebGPU",                                            -- Dependency: imgui
 				"tracy",                                                   -- Dependency: tracy
 			}
+
+	filter {}
 
 end)
