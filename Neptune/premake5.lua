@@ -241,7 +241,6 @@ solution.DefineCppStaticLibrary("Neptune", function()
 				"ImGui_Direct3D11",                                        -- Dependency: imgui
 				"ImGui_Direct3D12",                                        -- Dependency: imgui
 				"GLFW",                                                    -- Dependency: GLFW
-				"gdi32",                                                   -- Dependency: Windows GDI (Graphics Device Interface)
 				"Glad",                                                    -- Dependency: Glad
 				"tracy",                                                   -- Dependency: tracy
 				"shaderc",                                                 -- Dependency：shaderc 

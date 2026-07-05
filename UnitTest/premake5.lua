@@ -57,11 +57,13 @@ solution.DefineCppExecutable("UnitTest", function()
 		defines
 		{}
 
+		-- Windows Specific Solution Dependency.
+		links
+		{}
+
 		-- The Solution link options
 		linkoptions
-		{
-			platform.GetExecutableLinkOptions()
-		}
+		{}
 
 		-- The Solution build options
 		buildoptions 
@@ -78,11 +80,13 @@ solution.DefineCppExecutable("UnitTest", function()
 		defines
 		{}
 
+		-- Linux Specific Solution Dependency.
+		links
+		{}
+		
 		-- The Solution link options
 		linkoptions
-		{
-			platform.GetExecutableLinkOptions()
-		}
+		{}
 
 		-- The Solution build options
 		buildoptions 
@@ -105,9 +109,7 @@ solution.DefineCppExecutable("UnitTest", function()
 
 		-- The Solution link options
 		linkoptions
-		{
-			platform.GetExecutableLinkOptions()
-		}
+		{}
 
 		-- The Solution build options
 		buildoptions

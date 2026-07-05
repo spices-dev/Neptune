@@ -48,11 +48,13 @@ solution.DefineCppExecutable("Editor", function()
 		defines
 		{}
 
+		-- Windows Specific Solution Dependency.
+		links
+		{}
+
 		-- The Solution link options
 		linkoptions
-		{
-			platform.GetExecutableLinkOptions()
-		}
+		{}
 
 		-- The Solution build options
 		buildoptions 
@@ -69,11 +71,13 @@ solution.DefineCppExecutable("Editor", function()
 		defines
 		{}
 
+		-- Linux Specific Solution Dependency.
+		links
+		{}
+
 		-- The Solution link options
 		linkoptions
-		{
-			platform.GetExecutableLinkOptions()
-		}
+		{}
 
 		-- The Solution build options
 		buildoptions 
@@ -96,9 +100,7 @@ solution.DefineCppExecutable("Editor", function()
 
 		-- The Solution link options
 		linkoptions
-		{
-			platform.GetExecutableLinkOptions()
-		}
+		{}
 
 		-- The Solution build options
 		buildoptions

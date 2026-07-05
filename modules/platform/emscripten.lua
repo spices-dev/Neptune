@@ -38,4 +38,16 @@ module.GetExecutableLinkOptions = function()
 
 end
 
+-- @brief Get Emscripten Executable Links.
+--
+-- @return Returns Emscripten Executable Links.
+module.GetExecutableLinks = function()
+
+    local links = {
+    }
+
+    return links
+
+end
+
 return module

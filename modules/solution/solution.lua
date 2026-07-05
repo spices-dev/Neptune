@@ -19,7 +19,7 @@ local TemplateDefineProject = function(config)
     project(config.name)
 
         -- Kind Config.
-        kind (config.kind)
+        kind(config.kind)
 
         -- Use Runtime Library: MDD.
         staticruntime "Off"
@@ -97,7 +97,15 @@ module.DefineCppExecutable = function(name, callback)
         name     = name,
         kind     = "ConsoleApp",
         language = "C++",
-        callback = callback
+        callback = function()
+
+            links(platform.GetExecutableLinks())
+
+            linkoptions(platform.GetExecutableLinkOptions())
+
+            callback()
+
+        end
     })
 
 end

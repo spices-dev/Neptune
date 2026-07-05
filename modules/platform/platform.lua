@@ -5,6 +5,17 @@
 -- Define module
 local module = {}
 
+-- Current Directory
+local current_dir = debug.getinfo(1, "S").source:sub(2):match("(.*/)") or "./"
+
+-- Sub Platform Scripts
+local sub_platform  = {
+    windows         = current_dir .. "windows.lua",
+    linux           = current_dir .. "linux.lua",
+    macosx          = current_dir .. "macos.lua",
+    emscripten      = current_dir .. "emscripten.lua",
+}
+
 -- @brief Get Compute Feature Lists.
 --
 -- @return Returns Compute Feature Lists.
@@ -93,16 +104,16 @@ end
 -- @return Returns Sub Platform Executable LinkOptions.
 module.GetExecutableLinkOptions = function()
 
-    local current_dir = debug.getinfo(1, "S").source:sub(2):match("(.*/)") or "./"
-
-    local sub_platform  = {
-        windows         = current_dir .. "null.lua",
-        linux           = current_dir .. "null.lua",
-        macosx          = current_dir .. "null.lua",
-        emscripten      = current_dir .. "emscripten.lua",
-    }
-
     return loadfile(sub_platform[os.target()])().GetExecutableLinkOptions() or {}
+
+end
+
+-- @brief Get Sub Platform Executable Links.
+-- 
+-- @return Returns Sub Platform Executable Links.
+module.GetExecutableLinks = function()
+
+    return loadfile(sub_platform[os.target()])().GetExecutableLinks() or {}
 
 end
 
