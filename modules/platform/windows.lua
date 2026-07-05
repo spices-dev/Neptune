@@ -54,6 +54,7 @@ module.GetExecutableLinks = function()
         table.insert(links, "dbghelp")                               -- Dependency: DbgHelp
     end
 
+    -- Noto: needs to be the last links.
     if _OPTIONS["cc"] == "gcc" then
         table.insert(links, "mingw32")                               -- Dependency: MinGW 32-bit Runtime
         table.insert(links, "mingwex")                               -- Dependency: MinGW Extended Runtime Library

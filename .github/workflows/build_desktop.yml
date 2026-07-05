@@ -1,0 +1,114 @@
+# @file build_desktop.yml
+# @brief Solution Desktop build Action in GitHub.
+# @author Spices.
+
+# configuration name
+name: Build Desktop
+
+# workflow trigger
+on:
+  
+  # On Pushed
+  push:
+    branches: [ "main" ]
+  
+  # On Pull Request
+  pull_request:
+    branches: [ "main" ]
+
+# workflow jobs
+jobs:
+  
+  # Build Job
+  build:
+
+    # Strategy
+    strategy:
+
+      # Error and Continue
+      fail-fast: false 
+
+      # Matrix Strategy
+      matrix:
+
+        # Platform: Windows / Linux / MacOS
+        os: [windows-latest, ubuntu-latest] # , macos-latest
+
+        # Toolset
+        toolchain: [gcc, clang]
+
+        # Build Mode
+        build_type: [Debug, Release]
+
+        # Include
+        include:
+
+          # Windows
+          - os: windows-latest
+            script_entry: Windows
+            system: windows
+            architecture: x86_64
+
+          # Linux
+          - os: ubuntu-latest
+            script_entry: Linux
+            system: linux
+            architecture: x86_64
+
+    # Platform
+    runs-on: ${{ matrix.os }}
+
+    # Pipeline Name
+    name: Build (${{ matrix.build_type }}-${{ matrix.system }}-${{ matrix.architecture }}-${{ matrix.toolchain }})
+
+    # Environment Variable
+    env:
+
+      # Clange Toolset Version
+      CLANG_VERSION: "22.1.7"
+
+      # GCC Toolset Version
+      GCC_VERSION: "16.1.0"
+
+    # Build Steps
+    steps:
+
+      # Checkout recursive
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # ============ Toolset and env ============
+
+      - name: Compute lowercase build type
+        shell: bash
+        run: |
+          echo "BUILD_TYPE_LOWER=$(echo '${{ matrix.build_type }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
+
+      # ============ Build ============
+
+      # Build Solution (Windows)
+      - name: Build Solution (Windows)
+        if: matrix.system == 'windows'
+        shell: cmd
+        working-directory: ./Scripts/BuildEntry/${{ matrix.script_entry }}/
+        run: build_${{ env.BUILD_TYPE_LOWER }}_${{ matrix.toolchain }}.bat
+
+      # Build Solution (Linux)
+      - name: Build Solution (Linux)
+        if: matrix.system == 'linux'
+        shell: bash
+        working-directory: ./Scripts/BuildEntry/${{ matrix.script_entry }}/
+        run: bash ./build_${{ env.BUILD_TYPE_LOWER }}_${{ matrix.toolchain }}.sh
+
+      # ============ Upload Artifact ============
+
+      # Upload Build Artifact
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.build_type }}-${{ matrix.system }}-${{ matrix.architecture }}-${{ matrix.toolchain }}
+          path: ./bin/${{ matrix.build_type }}-${{ matrix.system }}-${{ matrix.architecture }}/Editor
+          retention-days: 7
+          if-no-files-found: warn

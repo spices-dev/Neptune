@@ -41,8 +41,14 @@ local TemplateDefineProject = function(config)
         -- Enable Multi Processor Compile
         multiprocessorcompile "On"
 
+        -- Reset filter
+        filter {}
+
         -- Execute Project specific configs
         config.callback()
+
+        -- Reset filter
+        filter {}
 
 end
 
@@ -110,6 +116,9 @@ module.DefineCppExecutable = function(name, callback)
                 links(platform.GetExecutableLinks())
 
                 linkoptions(platform.GetExecutableLinkOptions())
+
+                -- Reset filter
+                filter {}
 
         end
     })
