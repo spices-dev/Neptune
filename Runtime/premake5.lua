@@ -2,20 +2,7 @@
 -- @brief Defines details of the Runtime Solution Building.
 -- @author Spices.
 
-project "Runtime"
-	kind "ConsoleApp"           -- Use executeable program.
-	language "C++"				-- Use C++.
-	cppdialect "C++20"			-- Use C++20.
-	staticruntime "On"			-- Use Runtime Library: MTD.
-
-	-- Building Output Folder.
-	targetdir("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
-
-	-- Building Object Folder.
-	objdir("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
-
-	-- Enable Multi Processor Compile
-	multiprocessorcompile "On"
+solution.DefineCppExecutable("Runtime", function()
 
 	-- The Solution Files.
 	files
@@ -171,3 +158,5 @@ project "Runtime"
 				--os.host() == "windows" and 'xcopy /Y /I "%{cfg.targetdir}\\" "%{wks.location}/Nepnep/public/wasm/Release\\"'
 				--	or 'cp -rf "%{cfg.targetdir}/." "%{wks.location}/Nepnep/public/wasm/Release/"'
 			}
+
+end)

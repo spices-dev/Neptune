@@ -1,11 +1,6 @@
-project "Glad"
-    kind "StaticLib"
-    language "C"
-    staticruntime "On"
-    systemversion "latest"
+solution.DefineCStaticLibrary("Glad", function()
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+    systemversion "latest"
 
 	files
 	{
@@ -26,3 +21,5 @@ project "Glad"
 	filter "configurations:Release"
 		runtime "Release"
 		optimize "On"
+
+end)

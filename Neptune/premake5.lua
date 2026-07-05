@@ -2,20 +2,7 @@
 -- @brief Defines details of the Neptune Solution Building.
 -- @author Spices.
 
-project "Neptune"
-	kind "StaticLib"          -- Use Lib as Dependency.
-	language "C++"            -- Use C++.
-	cppdialect "C++20"        -- Use C++20.
-	staticruntime "On"        -- Use Runtime Library: MTD.
-
-	-- Building Output Folder.
-	targetdir("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
-
-	-- Building Object Folder.
-	objdir("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
-
-	-- Enable Multi Processor Compile
-	multiprocessorcompile "On"
+solution.DefineCppStaticLibrary("Neptune", function()
 
 	pchheader "Pchheader.h"          -- PreCompiler Header File.
 	pchsource "src/Pchheader.cpp"    -- PreCompiler Cpp File.
@@ -313,3 +300,5 @@ project "Neptune"
 				"ImGui_WebGPU",                                            -- Dependency: imgui
 				"tracy",                                                   -- Dependency: tracy
 			}
+
+end)

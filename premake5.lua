@@ -20,9 +20,6 @@ workspace "Neptune"
 	compiler.Initialize()
 	platform.Initialize()
 
--- Building Output Folder.
-outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
-
 solution.LoadProjects()
 
 vendor.LoadThirdPartyProjects()
