@@ -26,7 +26,7 @@ module.GetComputeFeatures = function()
     local isClang = (_OPTIONS["cc"] == "clang") or (_OPTIONS["cc"] == "clang++")
 
     if os.target() == "windows" and isClang then
-        table.insert(list, "NP_COMPUTE_SYCL")              -- Compute: SYCL
+      --table.insert(list, "NP_COMPUTE_SYCL")              -- Compute: SYCL
     end
 
     return list
