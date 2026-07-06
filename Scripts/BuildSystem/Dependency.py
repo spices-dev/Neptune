@@ -30,6 +30,13 @@ class Dependency(BasicObject, ABC):
         self.scriptDirectory = Path(__file__).parent
         self.solutionDirectory = self.scriptDirectory.parent.parent
 
+    def add_dependency(self, dependency):
+        """
+        @brief Add a dependency.
+        @param[in] dependency .
+        """
+        self.dependencies.add(dependency)
+
     def check(self) -> bool:
         """
         @brief Check whether this dependency is existing.
