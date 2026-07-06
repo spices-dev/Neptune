@@ -39,9 +39,10 @@ class BuildSystem(BasicObject, ABC):
         self.__execute_dependency()
         self.clean()
         print("Generating Solution........................")
-        if self._generate():
+        result = self._generate()
+        if result:
             print("Run Over..............................")
-        return True
+        return result
 
     def build(self, config: str = "debug") -> bool:
         """
@@ -51,9 +52,10 @@ class BuildSystem(BasicObject, ABC):
         """
         self.generate()
         print("Building Solution........................")
-        if self._build(config):
+        result = self._build(config)
+        if result:
             print("Run Over..............................")
-        return True
+        return result
 
     def clean(self) -> bool:
         """
@@ -61,9 +63,10 @@ class BuildSystem(BasicObject, ABC):
         @return Returns true if clean succeed.
         """
         print("Clean Solution........................")
-        if self._clean():
+        result = self._clean()
+        if result:
             print("Run Over..............................")
-        return True
+        return result
 
     def __execute_dependency(self):
         """
