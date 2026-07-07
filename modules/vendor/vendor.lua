@@ -119,7 +119,7 @@ local includes                        = {
     ["glslang"]                       = GetVulkanSDKPath() ..  "/glslang",                                                          -- Include: glslang
     ["DirectX12AgilitySDK"]           = solution_root .. "/Neptune/vendor/Microsoft.Direct3D.D3D12/build/native/include",           -- Include: DirectX12AgilitySDK
     ["DirectX_Headers"]               = solution_root .. "/Neptune/vendor/DirectX-Headers/include",                                 -- Include: DirectX-Headers
-    ["WinPixEventRuntime"]            = solution_root .. "/packages/WinPixEventRuntime.1.0.240308001/include",                      -- Include: WinPixEventRuntime
+    ["WinPixEventRuntime"]            = solution_root .. "/Neptune/vendor/PixEvents/include",                                       -- Include: WinPixEventRuntime
     ["AdaptiveCpp"]                   = GetAdaptiveCppPath() .. "/include",                                                         -- Include: AdaptiveCpp
     ["googletest"]                    = solution_root .. "/UnitTest/vendor/googletest/googletest/include",                          -- Include: googletest
     ["googlemock"]                    = solution_root .. "/UnitTest/vendor/googletest/googlemock/include",                          -- Include: googlemock
@@ -134,7 +134,6 @@ module.libraries                      = GetSubVendorLibraries()
 
 -- Nuget Dependencies
 module.nugets                         = {
-    ["WinPixEventRuntime"]            = "WinPixEventRuntime:1.0.240308001",                                            -- Nugets package: WinPixEventRuntime
 }
 
 -- Desktop Third Party Projects

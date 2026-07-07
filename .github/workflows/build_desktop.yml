@@ -78,6 +78,7 @@ jobs:
 
       # ============ Toolset and env ============
 
+      # Install Vulkan SDK
       - name: Install Vulkan SDK
         uses: jakoch/install-vulkan-sdk-action@v1
         with:
@@ -86,6 +87,14 @@ jobs:
           cache: true
           stripdown: true
 
+      # Install Linux X11 Library
+      - name: Install Linux X11 Library
+        if: matrix.system == 'linux'
+        run: |
+          sudo apt update
+          sudo apt install libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev
+
+      # Compute lowercase build type
       - name: Compute lowercase build type
         shell: bash
         run: |

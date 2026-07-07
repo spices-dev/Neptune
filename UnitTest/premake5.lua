@@ -46,10 +46,22 @@ solution.DefineCppExecutable("UnitTest", function()
 		"googlemock",                          -- Dependency: googlemock
 	}
 
+	-- Configuration: Dlls.
+	filter "files:**.dll"
+
+		-- Build Action: Copy
+        buildaction "Copy"
+
 	-- Platform: Windows
 	filter "system:windows"
 		
-		-- The Solution Additional Include Folder.
+		-- Windows Specific DLLs.
+		files 
+		{ 
+			"%{vendor.library_dirs.WinPixEventRuntime}/%{vendor.libraries.WinPixEventRuntime}.dll",          -- DLL: WinPixEventRuntime
+		}
+
+		-- Windows Specific Additional Include Folder.
 		includedirs
 		{}
 
@@ -72,7 +84,11 @@ solution.DefineCppExecutable("UnitTest", function()
 	-- Platform: Linux
 	filter "system:linux"
 
-		-- The Solution Additional Include Folder.
+		-- Linux Specific DLLs.
+		files 
+		{}
+
+		-- Windows Specific Additional Include Folder.
 		includedirs
 		{}
 
@@ -95,7 +111,11 @@ solution.DefineCppExecutable("UnitTest", function()
 	-- Platform: Emscripten
 	filter "system:emscripten"
 
-		-- The Solution Additional Include Folder.
+		-- Emscripten Specific DLLs.
+		files 
+		{}
+
+		-- Emscripten Specific Additional Include Folder.
 		includedirs
 		{}
 

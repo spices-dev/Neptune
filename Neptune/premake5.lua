@@ -106,9 +106,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 
 		-- Windows nuget packages.
 		nuget
-		{
-			"%{vendor.nugets.WinPixEventRuntime}",                     -- Dependency: WinPixEventRuntime
-		}
+		{}
 
 		-- Windows Specific Solution Dependency.
 		links

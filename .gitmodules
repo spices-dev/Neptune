@@ -43,3 +43,6 @@
 [submodule "Neptune/vendor/DirectX-Headers"]
 	path = Neptune/vendor/DirectX-Headers
 	url = https://github.com/microsoft/DirectX-Headers.git
+[submodule "Neptune/vendor/PixEvents"]
+	path = Neptune/vendor/PixEvents
+	url = https://github.com/spices-lib/PixEvents.git

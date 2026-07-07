@@ -14,7 +14,7 @@ module.GetLibraryDirs = function(includes)
 
     local library_dir                 = {
         ["VulkanSDK"]                 = includes.VulkanSDK .. "/../Lib",                                              -- Library Directries: VulkanSDK Folder
-        ["WinPixEventRuntime"]        = includes.WinPixEventRuntime .. "/../bin/x64",                                 -- Library Directries: WinPixEventRuntime Folder
+        ["WinPixEventRuntime"]        = includes.WinPixEventRuntime .. "/../lib/x64",                                 -- Library Directries: WinPixEventRuntime Folder
     }
 
     return library_dir
