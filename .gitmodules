@@ -37,3 +37,9 @@
 [submodule "Neptune/vendor/vma"]
 	path = Neptune/vendor/vma
 	url = https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator.git
+[submodule "Neptune/vendor/Microsoft.Direct3D.D3D12"]
+	path = Neptune/vendor/Microsoft.Direct3D.D3D12
+	url = https://github.com/spices-lib/Microsoft.Direct3D.D3D12.git
+[submodule "Neptune/vendor/DirectX-Headers"]
+	path = Neptune/vendor/DirectX-Headers
+	url = https://github.com/microsoft/DirectX-Headers.git

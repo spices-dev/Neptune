@@ -8,7 +8,8 @@
 
 #ifdef NP_GRAPHICS_DIRECT3D12
 
-#include <d3d12.h>
+#include <directx/d3d12.h>
+#include <dxguids/dxguids.h>
 #include <dxgi1_6.h>
 
 namespace Neptune::Direct3D12 {

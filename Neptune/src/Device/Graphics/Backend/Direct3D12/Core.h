@@ -32,9 +32,9 @@ namespace Neptune::Direct3D12 {
 		D3D_FEATURE_LEVEL_12_2,
 	};
 
-	#define DIRECT3D12_VERSION 618                 // @brief Same as nuget pack version
+	#define DIRECT3D12_VERSION 619                 // @brief Same as nuget pack version
 
-	#define DIRECT3D12_DLL_PATH "./D3D12/"         // @brief D3D12Core.dll Path
+	#define DIRECT3D12_DLL_PATH "./"               // @brief D3D12Core.dll Path
 
 	/**
 	* @brief Result Delegate Class.

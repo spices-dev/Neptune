@@ -117,7 +117,8 @@ local includes                        = {
     ["IconFontCppHeaders"]            = solution_root .. "/Neptune/vendor/IconFontCppHeaders",                                      -- Include: IconFontCppHeaders
     ["shaderc"]                       = solution_root .. "/Neptune/vendor/shaderc",                                                 -- Include: shaderc
     ["glslang"]                       = GetVulkanSDKPath() ..  "/glslang",                                                          -- Include: glslang
-    ["DirectX12AgilitySDK"]           = solution_root .. "/packages/Microsoft.Direct3D.D3D12.1.618.5/build/native/include",         -- Include: DirectX12AgilitySDK
+    ["DirectX12AgilitySDK"]           = solution_root .. "/Neptune/vendor/Microsoft.Direct3D.D3D12/build/native/include",           -- Include: DirectX12AgilitySDK
+    ["DirectX_Headers"]               = solution_root .. "/Neptune/vendor/DirectX-Headers/include",                                 -- Include: DirectX-Headers
     ["WinPixEventRuntime"]            = solution_root .. "/packages/WinPixEventRuntime.1.0.240308001/include",                      -- Include: WinPixEventRuntime
     ["AdaptiveCpp"]                   = GetAdaptiveCppPath() .. "/include",                                                         -- Include: AdaptiveCpp
     ["googletest"]                    = solution_root .. "/UnitTest/vendor/googletest/googletest/include",                          -- Include: googletest
@@ -133,7 +134,6 @@ module.libraries                      = GetSubVendorLibraries()
 
 -- Nuget Dependencies
 module.nugets                         = {
-    ["DirectX12AgilitySDK"]           = "Microsoft.Direct3D.D3D12:1.618.5",                                            -- Nugets package: Direct3D12
     ["WinPixEventRuntime"]            = "WinPixEventRuntime:1.0.240308001",                                            -- Nugets package: WinPixEventRuntime
 }
 
