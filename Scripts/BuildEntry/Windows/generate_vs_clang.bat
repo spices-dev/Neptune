@@ -6,4 +6,4 @@ cd "../../BuildSystem"
 REM Build with configure
 call python SolutionBuilder.py --build_system=premake --platform=windows --ide=vs --toolset=clang --behave=generate
 
-#PAUSE
+REM PAUSE
