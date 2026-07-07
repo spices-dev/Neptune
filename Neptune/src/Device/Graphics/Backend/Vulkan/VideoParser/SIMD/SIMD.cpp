@@ -21,6 +21,7 @@ namespace Neptune::Vulkan {
     
         int count_trailing_zeros(unsigned long long resmask)
         {
+        #ifdef _MSC_VER
         #ifdef _WIN64
             unsigned long offset = 0;
             const unsigned char dummyIsNonZero = _BitScanForward64(&offset, resmask); // resmask can't be 0 in this if
@@ -33,6 +34,7 @@ namespace Neptune::Vulkan {
             else {
                 _BitScanForward(&offset, (unsigned long)resmask); // resmask can't be 0 in this if
             }
+        #endif
         #else
             int offset = __builtin_ctzll(resmask);
         #endif

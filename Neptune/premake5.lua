@@ -112,9 +112,15 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		links
 		{}
 
-		-- The Solution build options
+		-- Windows Specific build options
 		buildoptions 
 		{}
+
+		-- Windows Specific make settings
+		makesettings 
+		{
+            "LINKCMD = $(file > $(OBJDIR)objects.rsp,$(OBJECTS)) $(AR) rcs $(TARGET) @$(OBJDIR)objects.rsp"    -- Enable response file
+        }
 
 	-- Platform: Linux
 	filter "system:linux"
@@ -143,9 +149,15 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		links
 		{}
 
-		-- The Solution build options
+		-- Linux Specific build options
 		buildoptions 
 		{}
+
+		-- Linux Specific make settings
+		makesettings 
+		{
+            "LINKCMD = $(file > $(OBJDIR)objects.rsp,$(OBJECTS)) $(AR) rcs $(TARGET) @$(OBJDIR)objects.rsp"     -- Enable response file
+        }
 
 	-- Platform: Emscripten
 	filter "system:emscripten"
@@ -171,14 +183,14 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		links
 		{}
 
-		-- The Solution build options
+		-- Emscripten Specific build options
 		buildoptions
 		{}
 
-		-- The Solution make settings
+		-- Emscripten Specific make settings
 		makesettings 
 		{
-            "LINKCMD = $(file > $(OBJDIR)objects.rsp,$(OBJECTS)) emar rcs $(TARGET) @$(OBJDIR)objects.rsp"   -- Enable response file
+            "LINKCMD = $(file > $(OBJDIR)objects.rsp,$(OBJECTS)) emar rcs $(TARGET) @$(OBJDIR)objects.rsp"       -- Enable response file
         }
 
 	-- Configuration: Debug
