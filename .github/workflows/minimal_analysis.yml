@@ -61,7 +61,7 @@ jobs:
       # Generate Emscripten Makefiles
       - name: Generate Emscripten Makefiles
         shell: bash
-        working-directory: ./Scripts/BuildEntry/Wasm/
+        working-directory: ./Scripts/BuildEntry/Emscripten/
         run: bash ./generate.sh
 
       # Generate Emscripten compile_commands.json

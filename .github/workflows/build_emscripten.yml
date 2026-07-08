@@ -53,9 +53,6 @@ jobs:
     # Pipeline Name
     name: Build (${{ matrix.build_type }}-${{ matrix.platform }}-${{ matrix.architecture }}-${{ matrix.toolchain }})
 
-    # Environment Variable
-    env:
-
     # Build Steps
     steps:
 
