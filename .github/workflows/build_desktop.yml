@@ -46,20 +46,20 @@ jobs:
           # Windows
           - os: windows-latest
             script_entry: Windows
-            system: windows
+            platform: windows
             architecture: x86_64
 
           # Linux
           - os: ubuntu-latest
             script_entry: Linux
-            system: linux
+            platform: linux
             architecture: x86_64
 
     # Platform
     runs-on: ${{ matrix.os }}
 
     # Pipeline Name
-    name: Build (${{ matrix.build_type }}-${{ matrix.system }}-${{ matrix.architecture }}-${{ matrix.toolchain }})
+    name: Build (${{ matrix.build_type }}-${{ matrix.platform }}-${{ matrix.architecture }}-${{ matrix.toolchain }})
 
     # Environment Variable
     env:
@@ -89,7 +89,7 @@ jobs:
 
       # Install Linux X11 Library
       - name: Install Linux X11 Library
-        if: matrix.system == 'linux'
+        if: matrix.platform == 'linux'
         run: |
           sudo apt update
           sudo apt install libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev
@@ -104,14 +104,14 @@ jobs:
 
       # Build Solution (Windows)
       - name: Build Solution (Windows)
-        if: matrix.system == 'windows'
+        if: matrix.platform == 'windows'
         shell: cmd
         working-directory: ./Scripts/BuildEntry/${{ matrix.script_entry }}/
         run: build_${{ env.BUILD_TYPE_LOWER }}_${{ matrix.toolchain }}.bat
 
       # Build Solution (Linux)
       - name: Build Solution (Linux)
-        if: matrix.system == 'linux'
+        if: matrix.platform == 'linux'
         shell: bash
         working-directory: ./Scripts/BuildEntry/${{ matrix.script_entry }}/
         run: bash ./build_${{ env.BUILD_TYPE_LOWER }}_${{ matrix.toolchain }}.sh
@@ -122,7 +122,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.build_type }}-${{ matrix.system }}-${{ matrix.architecture }}-${{ matrix.toolchain }}
-          path: ./bin/${{ matrix.build_type }}-${{ matrix.system }}-${{ matrix.architecture }}/Editor
+          name: ${{ matrix.build_type }}-${{ matrix.platform }}-${{ matrix.architecture }}-${{ matrix.toolchain }}
+          path: ./bin/${{ matrix.build_type }}-${{ matrix.platform }}-${{ matrix.architecture }}/Editor
           retention-days: 7
           if-no-files-found: warn
