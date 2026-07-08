@@ -115,8 +115,6 @@ local includes                        = {
     ["ImGuizmo"]                      = solution_root .. "/Neptune/vendor/ImGuizmo",                                                -- Include: ImGuizmo
     ["tracy"]                         = solution_root .. "/Neptune/vendor/tracy/public",                                            -- Include: tracy
     ["IconFontCppHeaders"]            = solution_root .. "/Neptune/vendor/IconFontCppHeaders",                                      -- Include: IconFontCppHeaders
-    ["shaderc"]                       = solution_root .. "/Neptune/vendor/shaderc",                                                 -- Include: shaderc
-    ["glslang"]                       = GetVulkanSDKPath() ..  "/glslang",                                                          -- Include: glslang
     ["DirectX12AgilitySDK"]           = solution_root .. "/Neptune/vendor/Microsoft.Direct3D.D3D12/build/native/include",           -- Include: DirectX12AgilitySDK
     ["DirectX_Headers"]               = solution_root .. "/Neptune/vendor/DirectX-Headers/include",                                 -- Include: DirectX-Headers
     ["WinPixEventRuntime"]            = solution_root .. "/Neptune/vendor/PixEvents/include",                                       -- Include: WinPixEventRuntime
@@ -140,7 +138,6 @@ module.nugets                         = {
 module.third_party_projects_desktops  = {
 	["GLFW"]                          = solution_root .. "/Neptune/vendor/GLFW",                                       -- Dependency: GLFW
 	["Glad"]                          = solution_root .. "/Neptune/vendor/Glad",                                       -- Dependency: Glad
-    ["shaderc"]                       = solution_root .. "/Neptune/vendor/shaderc",                                    -- Dependency: shaderc
 }
 
 -- Third Party Projects

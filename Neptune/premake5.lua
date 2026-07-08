@@ -84,10 +84,6 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		-- The Solution Additional Include Folder.
 		includedirs
 		{
-            "%{vendor.includes.shaderc}",                              -- Library: shaderc Source Folder.
-            "%{vendor.includes.shaderc}/libshaderc/include",           -- Library: shaderc libshaderc Source Folder.
-            "%{vendor.includes.shaderc}/libshaderc_util/include",      -- Library: shaderc libshaderc_util Source Folder.
-            "%{vendor.includes.glslang}",                              -- Library: glslang Source Folder.
 			"%{vendor.includes.GLFW}",                                 -- Library: GLFW Source Folder.
 			"%{vendor.includes.VulkanSDK}",                            -- Library: VulkanSDK Source Folder.
 			"%{vendor.includes.Glad}",                                 -- Library: Glad Source Folder.
@@ -128,10 +124,6 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		-- The Solution Additional Include Folder.
 		includedirs
 		{
-            "%{vendor.includes.shaderc}",                              -- Library: shaderc Source Folder.
-            "%{vendor.includes.shaderc}/libshaderc/include",           -- Library: shaderc libshaderc Source Folder.
-            "%{vendor.includes.shaderc}/libshaderc_util/include",      -- Library: shaderc libshaderc_util Source Folder.
-            "%{vendor.includes.glslang}",                              -- Library: glslang Source Folder.
 			"%{vendor.includes.GLFW}",                                 -- Library: GLFW Source Folder.
 			"%{vendor.includes.VulkanSDK}",                            -- Library: VulkanSDK Source Folder.
 			"%{vendor.includes.Glad}",                                 -- Library: Glad Source Folder.
@@ -253,7 +245,6 @@ solution.DefineCppStaticLibrary("Neptune", function()
 				"GLFW",                                                    -- Dependency: GLFW
 				"Glad",                                                    -- Dependency: Glad
 				"tracy",                                                   -- Dependency: tracy
-				"shaderc",                                                 -- Dependency：shaderc 
 			}
 
 			-- Configuration: Debug
@@ -261,18 +252,14 @@ solution.DefineCppStaticLibrary("Neptune", function()
 
 				-- Debug Specific Solution Dependency
 				links
-				{
-					"%{vendor.libraries.shaderc_debug}",                   -- Dependency: shaderc_debug
-				}
+				{}
         
 			-- Configuration: Release
 			filter {"system:windows", "configurations:Release"}
 
 				-- Release Specific Solution Dependency
 				links
-				{
-					"%{vendor.libraries.shaderc_release}",                 -- Dependency: shaderc_release
-				}
+				{}
 
 		-- Platform: Linux
 		filter "system:linux"
@@ -293,8 +280,6 @@ solution.DefineCppStaticLibrary("Neptune", function()
 				"GLFW",                                                    -- Dependency: GLFW
 				"Glad",                                                    -- Dependency: Glad
 				"tracy",                                                   -- Dependency: tracy
-				"shaderc",                                                 -- Dependency：shaderc
-				"%{vendor.libraries.shaderc}",                             -- Dependency: shaderc_debug
 			}
 
 		-- Platform: Emscripten

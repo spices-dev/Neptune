@@ -33,12 +33,6 @@ module.GetLibraries = function()
         ["d3dcompiler"]               = "d3dcompiler",                                                                -- Library: d3dcompiler
         ["d3d12"]                     = "d3d12",                                                                      -- Library: d3d12
         ["WinPixEventRuntime"]        = "WinPixEventRuntime",                                                         -- Library: WinPixEventRuntime
-
-        ["shaderc_debug"]             = "shaderc_sharedd",                                                            -- Library: shaderc_debug
-        ["shaderc_util_debug"]        = "shaderc_utild",                                                              -- Library: shaderc_util_debug
-
-        ["shaderc_release"]           = "shaderc_shared",                                                             -- Library: shaderc_release
-        ["shaderc_util_release"]      = "shaderc_util",                                                               -- Library: shaderc_util_release
     }
 
     return libraries

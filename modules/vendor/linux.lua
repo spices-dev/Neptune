@@ -27,8 +27,6 @@ module.GetLibraries = function()
 
     local libraries                   = {
         ["vulkan"]                    = "vulkan",                                                                     -- Library: vulkan
-        ["shaderc"]                   = "shaderc",                                                                    -- Library: shaderc
-        ["shaderc_util"]              = "shaderc_util",                                                               -- Library: shaderc_util
     }
 
     return libraries
