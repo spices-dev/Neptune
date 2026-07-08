@@ -120,7 +120,7 @@ jobs:
 
       # Upload Build Artifact
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.build_type }}-${{ matrix.platform }}-${{ matrix.architecture }}-${{ matrix.toolchain }}
           path: ./bin/${{ matrix.build_type }}-${{ matrix.platform }}-${{ matrix.architecture }}/Editor
