@@ -16,13 +16,13 @@
 
 namespace Neptune::Direct3D11 {
 
-	SP<SwapChain> SwapChain::Create(Context& context, EInfrastructure e, uint32_t count, WindowImplement implement, void* window)
+	UP<SwapChain> SwapChain::Create(Context& context, EInfrastructure e, uint32_t count, WindowImplement implement, void* window)
     {
         NEPTUNE_PROFILE_ZONE
 
         switch (implement)
         {
-            case WindowImplement::GLFW: return CreateSP<GLFW::SwapChain>(context, e, count, window);
+            case WindowImplement::GLFW: return CreateUP<GLFW::SwapChain>(context, e, count, window);
             default:
             {
                 NEPTUNE_CORE_ERROR("SwapChain Create with WindowImplement that not supported.")

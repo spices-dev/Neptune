@@ -14,13 +14,13 @@
 
 namespace Neptune::Vulkan {
 
-    SP<Surface> Surface::Create(Context& context, EInfrastructure e, WindowImplement implement, void* window)
+    UP<Surface> Surface::Create(Context& context, EInfrastructure e, WindowImplement implement, void* window)
     {
         NEPTUNE_PROFILE_ZONE
 
         switch (implement)
         {
-            case WindowImplement::GLFW: return CreateSP<GLFW::Surface>(context, e, window);
+            case WindowImplement::GLFW: return CreateUP<GLFW::Surface>(context, e, window);
             default:
             {
                 NEPTUNE_CORE_ERROR("Surface Create with WindowImplement that not supported.")

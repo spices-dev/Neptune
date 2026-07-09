@@ -46,12 +46,12 @@ namespace Neptune::Render::Common {
     * @return Returns Infrastructure.
     */
     template<IsInfrastructure T, typename... Args>
-    static SP<T> InfrastructureFactory(Args&&... args)
+    static UP<T> InfrastructureFactory(Args&&... args)
     {
         NEPTUNE_PROFILE_ZONE
         
         if constexpr (requires(Args&&... args) {
-            { T::Create(std::forward<Args>(args)...) } -> IsSame<SP<T>>;
+            { T::Create(std::forward<Args>(args)...) } -> IsSame<UP<T>>;
         })
         {
             // Factory Version
@@ -60,7 +60,7 @@ namespace Neptune::Render::Common {
         else
         {
             // Directory Version
-            return CreateSP<T>(std::forward<Args>(args)...);
+            return CreateUP<T>(std::forward<Args>(args)...);
         }
     }
     
@@ -139,7 +139,7 @@ namespace Neptune::Render::Common {
         NO_UNIQUE_ADDRESS std::conditional_t<
             static_cast<uint8_t>(E::Count) == 0,
             std::monostate,
-            std::array<SP<Infrastructure<E>>, static_cast<uint8_t>(E::Count)>
+            std::array<UP<Infrastructure<E>>, static_cast<uint8_t>(E::Count)>
         > m_Infrastructures;                   // @brief Container of Infrastructure.
 
     };

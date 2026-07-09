@@ -34,7 +34,7 @@ namespace Neptune::Direct3D11 {
 		* @param[in] implement WindowImplement.
 		* @param[in] window Native Window.
 		*/
-		static SP<SwapChain> Create(Context& context, EInfrastructure e, uint32_t count, WindowImplement implement, void* window);
+		static UP<SwapChain> Create(Context& context, EInfrastructure e, uint32_t count, WindowImplement implement, void* window);
 
 	public:
 

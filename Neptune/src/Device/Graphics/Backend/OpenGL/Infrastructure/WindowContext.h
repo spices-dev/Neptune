@@ -32,7 +32,7 @@ namespace Neptune::OpenGL {
         * @param[in] implement WindowImplement.
         * @param[in] window Window.
         */
-        static SP<WindowContext> Create(Context& context, EInfrastructure e, WindowImplement implement, void* window = nullptr);
+        static UP<WindowContext> Create(Context& context, EInfrastructure e, WindowImplement implement, void* window = nullptr);
 
     public:
 

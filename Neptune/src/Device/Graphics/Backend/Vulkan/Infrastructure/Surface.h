@@ -33,7 +33,7 @@ namespace Neptune::Vulkan {
 		* @param[in] implement WindowImplement.
 		* @param[in] window Native Window.
 		*/
-		static SP<Surface> Create(Context& context, EInfrastructure e, WindowImplement implement, void* window);
+		static UP<Surface> Create(Context& context, EInfrastructure e, WindowImplement implement, void* window);
 
 	public:
 
