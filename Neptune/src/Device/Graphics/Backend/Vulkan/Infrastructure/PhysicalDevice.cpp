@@ -287,14 +287,26 @@ namespace Neptune::Vulkan {
 		{
 			case VK_VIDEO_CODEC_OPERATION_ENCODE_H264_BIT_KHR:
 			{
-				decodeCapabilities.pNext        = &encodeH264Capabilities;
+				encodeCapabilities.pNext        = &encodeH264Capabilities;
 				capabilities.pNext              = &encodeCapabilities;
 				break;
 			}
 			case VK_VIDEO_CODEC_OPERATION_ENCODE_H265_BIT_KHR:
 			{
-				decodeCapabilities.pNext        = &encodeH265Capabilities;
+				encodeCapabilities.pNext        = &encodeH265Capabilities;
 				capabilities.pNext              = &encodeCapabilities;
+				break;
+			}
+			case VK_VIDEO_CODEC_OPERATION_ENCODE_AV1_BIT_KHR:
+			{
+				encodeCapabilities.pNext        = &encodeAV1Capabilities;
+				capabilities.pNext              = &encodeCapabilities;
+				break;
+			}
+			case VK_VIDEO_CODEC_OPERATION_DECODE_VP9_BIT_KHR:
+			{
+				decodeCapabilities.pNext        = &decodeVP9Capabilities;
+				capabilities.pNext              = &decodeCapabilities;
 				break;
 			}
 			case VK_VIDEO_CODEC_OPERATION_DECODE_H264_BIT_KHR:
@@ -312,18 +324,6 @@ namespace Neptune::Vulkan {
 			case VK_VIDEO_CODEC_OPERATION_DECODE_AV1_BIT_KHR:
 			{
 				decodeCapabilities.pNext        = &decodeAV1Capabilities;
-				capabilities.pNext              = &decodeCapabilities;
-				break;
-			}
-			case VK_VIDEO_CODEC_OPERATION_ENCODE_AV1_BIT_KHR:
-			{
-				decodeCapabilities.pNext        = &encodeAV1Capabilities;
-				capabilities.pNext              = &encodeCapabilities;
-				break;
-			}
-			case VK_VIDEO_CODEC_OPERATION_DECODE_VP9_BIT_KHR:
-			{
-				decodeCapabilities.pNext        = &decodeVP9Capabilities;
 				capabilities.pNext              = &decodeCapabilities;
 				break;
 			}

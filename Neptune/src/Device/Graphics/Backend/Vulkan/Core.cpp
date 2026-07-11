@@ -51,8 +51,12 @@ namespace Neptune::Vulkan {
 
 		if (pCallbackData->cmdBufLabelCount != 0)
 		{
-			ss << "\n		CmdLabelName: " <<
-			pCallbackData->pCmdBufLabels->pLabelName;
+			ss << "\n		CmdLabelName: ";
+
+			for (int i = 0; i < pCallbackData->cmdBufLabelCount; ++i)
+			{
+				ss << "[" << pCallbackData->pCmdBufLabels[i].pLabelName << "] ";
+			}
 		}
 
 		ss <<

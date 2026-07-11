@@ -94,7 +94,7 @@ namespace Neptune::Vulkan::Resource {
 
 		m_DescriptorSet.AllocateDescriptorSet(GetContext().Get<IDevice>()->Handle(), allocInfo);
 
-		DEBUGUTILS_SETOBJECTNAME(m_DescriptorSet, "DescriptorSet");
+		DEBUGUTILS_SETOBJECTNAME(m_DescriptorSet, "DescriptorSet")
 	}
 
 	void DescriptorSet::UpdateDescriptorSet()
@@ -107,7 +107,7 @@ namespace Neptune::Vulkan::Resource {
 
 			VkWriteDescriptorSet              write{};
 			write.sType                     = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-			write.dstBinding                = i;
+			write.dstBinding                = binding.binding.binding;
 			write.dstSet                    = m_DescriptorSet.GetHandle();
 			write.descriptorType            = binding.binding.descriptorType;
 
