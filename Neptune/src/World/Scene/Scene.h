@@ -175,10 +175,8 @@ namespace Neptune {
 
         /**
         * @brief Create empty entity with uuid.
-        * 
-        * @param[in] uuid UUID.
         */
-        Entity CreateEmpty(UUID uuid);
+        Entity CreateEmpty();
 
         /**
         * @brief Called On any Component Attached to this scene.

@@ -34,7 +34,7 @@ namespace Neptune {
     {
         NEPTUNE_PROFILE_ZONE
 
-        Entity entity = CreateEmpty(uuid);
+        Entity entity = CreateEmpty();
 
         entity.AddComponent<Component<UUID>>(uuid);
         entity.AddComponent<TagComponent>(name);
@@ -59,7 +59,7 @@ namespace Neptune {
         return { id, this };
     }
 
-    Entity Scene::CreateEmpty(const UUID uuid)
+    Entity Scene::CreateEmpty()
     {
         NEPTUNE_PROFILE_ZONE
 

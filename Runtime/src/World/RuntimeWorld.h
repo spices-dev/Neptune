@@ -30,12 +30,12 @@ namespace Neptune::Runtime {
         /**
         * @brief Interface of World attached to Application.
         */
-        void OnAttached() override {}
+        void OnAttached() override;
 
         /**
         * @brief Interface of World detached to Application.
         */
-        void OnDetached() override {}
+        void OnDetached() override;
 
         /**
         * @brief Interface of On Layout.
