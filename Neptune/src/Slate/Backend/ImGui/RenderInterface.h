@@ -19,6 +19,11 @@ namespace Neptune::imgui {
     public:
 
         /**
+        * @brief Destructor Function.
+        */
+        virtual ~RenderInterface() = default;
+
+        /**
         * @brief Interface of Initialize.
         * 
         * @param[in] infrastructure RenderFrontend Infrastructure.
@@ -64,7 +69,7 @@ namespace Neptune::imgui {
         /**
         * @brief Destructor Function.
         */
-        ~OpenGLInterface() = default;
+        ~OpenGLInterface() override = default;
 
         /**
         * @brief Interface of Initialize.
@@ -106,7 +111,7 @@ namespace Neptune::imgui {
         /**
         * @brief Destructor Function.
         */
-        ~VulkanInterface() = default;
+        ~VulkanInterface() override = default;
         
         /**
         * @brief Interface of Initialize.
@@ -148,7 +153,7 @@ namespace Neptune::imgui {
         /**
         * @brief Destructor Function.
         */
-        ~Direct3D11Interface() = default;
+        ~Direct3D11Interface() override = default;
 
         /**
         * @brief Interface of Initialize.
@@ -190,7 +195,7 @@ namespace Neptune::imgui {
         /**
         * @brief Destructor Function.
         */
-        ~Direct3D12Interface() = default;
+        ~Direct3D12Interface() override = default;
 
         /**
         * @brief Interface of Initialize.
@@ -232,7 +237,7 @@ namespace Neptune::imgui {
         /**
         * @brief Destructor Function.
         */
-        ~WebGPUInterface() = default;
+        ~WebGPUInterface() override = default;
 
         /**
         * @brief Interface of Initialize.

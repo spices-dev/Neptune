@@ -243,7 +243,7 @@ namespace Neptune::imgui {
 		init_info.RTVFormat                         = context.Get<ARTVFormat>();
 		init_info.DSVFormat                         = context.Get<ADSVFormat>();      
 		init_info.SrvDescriptorHeap                 = context.Get<ASRVDescriptorHeap>();
-		init_info.SrvDescriptorAllocFn              = [](ImGui_ImplDX12_InitInfo*, D3D12_CPU_DESCRIPTOR_HANDLE* OCPUHandle, D3D12_GPU_DESCRIPTOR_HANDLE* OGPUHandle){};
+		init_info.SrvDescriptorAllocFn              = [](ImGui_ImplDX12_InitInfo*, D3D12_CPU_DESCRIPTOR_HANDLE* , D3D12_GPU_DESCRIPTOR_HANDLE* ){};
 		init_info.SrvDescriptorFreeFn               = [](ImGui_ImplDX12_InitInfo*, D3D12_CPU_DESCRIPTOR_HANDLE, D3D12_GPU_DESCRIPTOR_HANDLE){};
 		init_info.LegacySingleSrvCpuDescriptor      = CPUHandle;
 		init_info.LegacySingleSrvGpuDescriptor      = GPUHandle;

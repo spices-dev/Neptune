@@ -39,7 +39,7 @@ namespace Neptune {
         *
         * @return Returns Render Frontend pointer.
         */
-        static SP<RenderFrontend> Create(RenderBackendEnum backend);
+        static UP<RenderFrontend> Create(RenderBackendEnum backend);
 
     public:
 

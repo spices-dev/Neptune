@@ -34,7 +34,7 @@ namespace Neptune {
         * 
         * @return Returns Slate Frontend pointer.
         */
-        static SP<SlateFrontend> Create(SlateBackendEnum slateBackend, RenderBackendEnum renderBackend, WindowImplement windowImpl);
+        static UP<SlateFrontend> Create(SlateBackendEnum slateBackend, RenderBackendEnum renderBackend, WindowImplement windowImpl);
 
 	public:
 

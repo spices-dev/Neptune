@@ -28,7 +28,7 @@ namespace Neptune::WebGPU {
     {
         NEPTUNE_PROFILE_ZONE
 
-        m_Context = CreateSP<Context>();
+        m_Context = CreateUP<Context>();
         
         m_Context->Registry<IInstance>();
         m_Context->Registry<IDebugUtilsObject>();

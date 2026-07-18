@@ -92,7 +92,7 @@ namespace Neptune::WebGPU {
 
     private:
 
-        SP<Context> m_Context; // @brief This Context.
+        UP<Context> m_Context; // @brief This Context.
     };
 }
 

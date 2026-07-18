@@ -14,10 +14,15 @@
 #include "Core/Event/EngineEvent.h"
 #include "Slate/Frontend/SlateFrontend.h"
 
-#include <ranges>
-
 namespace Neptune {
-    
+
+    LogicalSystem::LogicalSystem(SystemManager* manager)
+        : System(ESystem::Logical, manager)
+        , EventListener(EventType::Count)
+    {}
+
+    LogicalSystem::~LogicalSystem() = default;
+
     void LogicalSystem::OnSystemInitialize()
     {
         NEPTUNE_PROFILE_ZONE

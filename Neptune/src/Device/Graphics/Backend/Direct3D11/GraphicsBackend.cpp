@@ -27,7 +27,7 @@ namespace Neptune::Direct3D11 {
     {
         NEPTUNE_PROFILE_ZONE
 
-        m_Context = CreateSP<Context>();
+        m_Context = CreateUP<Context>();
 
         m_Context->Registry<IDebugUtilsObject>();
         m_Context->Registry<IDeviceContext>();

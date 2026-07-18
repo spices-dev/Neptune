@@ -14,6 +14,13 @@
 
 namespace Neptune {
 
+    RenderSystem::RenderSystem(SystemManager* manager)
+        : System(ESystem::Render, manager)
+        , EventListener(EventType::Count)
+    {}
+
+    RenderSystem::~RenderSystem() = default;
+
     void RenderSystem::OnSystemInitialize()
     {
         NEPTUNE_PROFILE_ZONE

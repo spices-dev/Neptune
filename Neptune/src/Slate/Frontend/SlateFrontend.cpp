@@ -10,15 +10,15 @@
 
 namespace Neptune {
 
-	SP<SlateFrontend> SlateFrontend::Create(SlateBackendEnum slateBackend, RenderBackendEnum renderBackend, WindowImplement windowImpl)
+	UP<SlateFrontend> SlateFrontend::Create(SlateBackendEnum slateBackend, RenderBackendEnum renderBackend, WindowImplement windowImpl)
 	{
         NEPTUNE_PROFILE_ZONE
 
-		SP<SlateFrontend> sp = nullptr;
+		UP<SlateFrontend> sp = nullptr;
 
 		switch (slateBackend)
 		{
-            case SlateBackendEnum::ImGui: sp = CreateSP<imgui::SlateBackend>(renderBackend, windowImpl); break;
+            case SlateBackendEnum::ImGui: sp = CreateUP<imgui::SlateBackend>(renderBackend, windowImpl); break;
             default:
             {
                 NEPTUNE_CORE_CRITICAL("Not Supported Slate Backend.")

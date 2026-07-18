@@ -45,40 +45,40 @@
 
 namespace Neptune {
 
-    SP<RenderFrontend> RenderFrontend::Create(RenderBackendEnum backend)
+    UP<RenderFrontend> RenderFrontend::Create(RenderBackendEnum backend)
     {
         NEPTUNE_PROFILE_ZONE
 
-        SP<RenderFrontend> sp = nullptr;
+        UP<RenderFrontend> sp = nullptr;
 
         switch(backend)
         {
 #ifdef NP_GRAPHICS_DIRECT3D11
-            case RenderBackendEnum::Direct3D11: sp = CreateSP<Direct3D11::RenderBackend>(); break;
+            case RenderBackendEnum::Direct3D11: sp = CreateUP<Direct3D11::RenderBackend>(); break;
 #endif
             
 #ifdef NP_GRAPHICS_DIRECT3D12
-            case RenderBackendEnum::Direct3D12: sp = CreateSP<Direct3D12::RenderBackend>(); break;
+            case RenderBackendEnum::Direct3D12: sp = CreateUP<Direct3D12::RenderBackend>(); break;
 #endif
 
 #ifdef NP_GRAPHICS_METAL
-            case RenderBackendEnum::Metal: sp = CreateSP<Metal::RenderBackend>(); break;
+            case RenderBackendEnum::Metal: sp = CreateUP<Metal::RenderBackend>(); break;
 #endif
 
 #ifdef NP_GRAPHICS_WEBGL
-            case RenderBackendEnum::WebGL:  sp = CreateSP<WebGL::RenderBackend>();  break;
+            case RenderBackendEnum::WebGL:  sp = CreateUP<WebGL::RenderBackend>();  break;
 #endif
             
 #ifdef NP_GRAPHICS_WEBGPU
-            case RenderBackendEnum::WebGPU: sp = CreateSP<WebGPU::RenderBackend>(); break;
+            case RenderBackendEnum::WebGPU: sp = CreateUP<WebGPU::RenderBackend>(); break;
 #endif
             
 #ifdef NP_GRAPHICS_OPENGL
-            case RenderBackendEnum::OpenGL: sp = CreateSP<OpenGL::RenderBackend>(); break;
+            case RenderBackendEnum::OpenGL: sp = CreateUP<OpenGL::RenderBackend>(); break;
 #endif
             
 #ifdef NP_GRAPHICS_VULKAN
-            case RenderBackendEnum::Vulkan: sp = CreateSP<Vulkan::RenderBackend>(); break;
+            case RenderBackendEnum::Vulkan: sp = CreateUP<Vulkan::RenderBackend>(); break;
 #endif
             
             default:

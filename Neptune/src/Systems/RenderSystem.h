@@ -26,15 +26,12 @@ namespace Neptune {
         * 
         * @param[in] manager SystemManager.
         */
-        explicit RenderSystem(SystemManager* manager)
-            : System(ESystem::Render, manager)
-            , EventListener(EventType::Count) 
-        {}
+        explicit RenderSystem(SystemManager* manager);
 
         /**
         * @brief Destructor Function.
         */
-        ~RenderSystem() override = default;
+        ~RenderSystem() override;
 
         /**
         * @brief Interface of system initialize.
@@ -63,7 +60,7 @@ namespace Neptune {
         *
         * @return Returns RenderFrontend.
         */
-        SP<RenderFrontend> GetRenderFrontend() const { return m_RenderFrontend; }
+        RenderFrontend* GetRenderFrontend() const { return m_RenderFrontend.get(); }
 
     private:
 
@@ -96,6 +93,6 @@ namespace Neptune {
 
     private:
 
-        SP<RenderFrontend> m_RenderFrontend;    // @brief Render Frontend.
+        UP<RenderFrontend> m_RenderFrontend;    // @brief Render Frontend.
     };
 }

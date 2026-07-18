@@ -29,7 +29,7 @@ namespace Neptune::WebGL {
     {
         NEPTUNE_PROFILE_ZONE
 
-        m_Context = CreateSP<Context>();
+        m_Context = CreateUP<Context>();
     }
 
     void GraphicsBackend::OnShutDown()

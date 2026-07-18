@@ -26,15 +26,12 @@ namespace Neptune {
         * 
         * @param[in] manager SystemManager.
         */
-        explicit LogicalSystem(SystemManager* manager) 
-            : System(ESystem::Logical, manager)
-            , EventListener(EventType::Count) 
-        {}
+        explicit LogicalSystem(SystemManager* manager);
 
         /**
         * @brief Destructor Function.
         */
-        ~LogicalSystem() override = default;
+        ~LogicalSystem();
 
         /**
         * @brief Interface of system initialize.
@@ -71,7 +68,7 @@ namespace Neptune {
         
     private:
 
-        SP<SlateFrontend> m_SlateFrontend;    // @brief Slate Frontend.
+        UP<SlateFrontend> m_SlateFrontend;    // @brief Slate Frontend.
 
     };
 }

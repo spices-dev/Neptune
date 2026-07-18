@@ -28,7 +28,7 @@ namespace Neptune::OpenGL {
     {
         NEPTUNE_PROFILE_ZONE
 
-        m_Context = CreateSP<Context>();
+        m_Context = CreateUP<Context>();
 
         m_Context->Registry<IWindowContext>(window ? window->Implement() : WindowImplement::Default, window ? window->NativeWindow() : nullptr);
         m_Context->Registry<IDebugUtilsObject>();
