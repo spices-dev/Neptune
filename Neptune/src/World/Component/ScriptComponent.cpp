@@ -22,6 +22,7 @@ namespace Neptune {
         }
 
         script->OnAttached();
+
         GetModel()[script->GetFileString()] = script;
     }
 
@@ -36,6 +37,7 @@ namespace Neptune {
         }
 
         GetModel()[name]->OnDetached();
+
         GetModel().erase(name);
     }
     

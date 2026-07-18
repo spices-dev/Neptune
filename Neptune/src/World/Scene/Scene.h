@@ -230,11 +230,11 @@ namespace Neptune {
 
         const auto view = m_Registry.view<T>();
 
-        for(const auto e : view)
+        for(const auto& e : view)
         {
             const auto& comp = m_Registry.get<T>(e);
 
-            if(!std::invoke(fn, static_cast<uint32_t>(e), comp)) break;
+            if(!std::invoke(std::forward<F>(fn), static_cast<uint32_t>(e), comp)) break;
         }
     }
 
@@ -248,9 +248,10 @@ namespace Neptune {
         for(const auto range : ranges)
         {
             const auto e = static_cast<entt::entity>(range);
+
             const auto& comp = m_Registry.get<T>(e);
 
-            if (!std::invoke(fn, range, comp)) break;
+            if (!std::invoke(std::forward<F>(fn), range, comp)) break;
         }
     }
 
@@ -261,15 +262,13 @@ namespace Neptune {
 
         std::shared_lock lock(m_Mutex);
         
-        assert(ceil >= floor);
-        assert(ceil <= ranges.size() - 1);
-
-        for(int32_t i = floor; i < ceil; i++)
+        for(uint32_t i = floor; i < ceil; ++i)
         {
             const auto e = static_cast<entt::entity>(ranges[i]);
+
             const auto& comp = m_Registry.get<T>(e);
 
-            if (!std::invoke(fn, ranges[i], comp)) break;
+            if (!std::invoke(std::forward<F>(fn), ranges[i], comp)) break;
         }
     }
 
@@ -280,7 +279,7 @@ namespace Neptune {
 
         std::shared_lock lock(m_Mutex);
         
-        std::invoke(fn, m_Root);
+        std::invoke(std::forward<F>(fn), m_Root);
     }
 
     template <typename T, typename ... Args>

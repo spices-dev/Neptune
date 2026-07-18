@@ -59,6 +59,11 @@ namespace Neptune {
         virtual void OnDetached();
 
         /**
+        * @brief Interface of On Layout.
+        */
+        virtual void OnLayout() const = 0;
+        
+        /**
         * @brief Get World activate Scenes.
         * 
         * @return Returns World activate Scenes.

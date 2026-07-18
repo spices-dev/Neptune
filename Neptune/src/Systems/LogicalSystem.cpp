@@ -56,9 +56,11 @@ namespace Neptune {
         }
         
         {
+            NEPTUNE_PROFILE_ZONEN("Slate")
+            
             m_SlateFrontend->BeginFrame();
         
-            m_SlateFrontend->OnLayout();
+            world.OnLayout();
             
             m_SlateFrontend->EndFrame();
         }
@@ -91,7 +93,7 @@ namespace Neptune {
         }
     }
 
-    bool LogicalSystem::OnEngineEvent(class EngineEvent& e) const
+    bool LogicalSystem::OnEngineEvent(EngineEvent& e) const
     {
         NEPTUNE_PROFILE_ZONE
 
@@ -101,7 +103,7 @@ namespace Neptune {
 
             m_SlateFrontend->OnInitialize(renderSystem->GetRenderFrontend()->AccessInfrastructure());
             
-            renderSystem->GetRenderFrontend()->GetRenderDelegate().onDrawSlate.Bind([p = m_SlateFrontend.get()](void* payload){ p->RenderFrame(payload); });
+            renderSystem->GetRenderFrontend()->GetRenderDelegate().onDrawSlate.Bind([p = m_SlateFrontend.get()](void* payload){ p->SubmitFrameRHI(payload); });
         }
 
         if (e.Has(EngineEventBit::ShutdownSlateFrontend))

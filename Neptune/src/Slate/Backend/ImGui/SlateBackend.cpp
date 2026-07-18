@@ -116,13 +116,6 @@ namespace Neptune::imgui {
         ImGui::PopStyleColor();
         ImGui::End();
     }
-
-    void SlateBackend::OnLayout() const
-    {
-        NEPTUNE_PROFILE_ZONE
-        
-        ImGui::ShowDemoWindow();
-    }
     
     void SlateBackend::EndFrame() const
     {
@@ -131,15 +124,15 @@ namespace Neptune::imgui {
         ImGui::Render();
     }
     
-    void SlateBackend::RenderFrame(void* payload) const
+    void SlateBackend::SubmitFrameRHI(void* payload) const
     {
         NEPTUNE_PROFILE_ZONE
         
-        auto last = m_WindowInterface->Handle();
+        const auto last = m_WindowInterface->Handle();
         
-        m_RenderInterface->RenderFrame(payload);
+        m_RenderInterface->SubmitFrameRHI(payload);
         
-        auto now = m_WindowInterface->Handle();
+        const auto now = m_WindowInterface->Handle();
         
         if (last != now)
         {

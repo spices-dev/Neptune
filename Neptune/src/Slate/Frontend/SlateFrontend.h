@@ -60,26 +60,19 @@ namespace Neptune {
         */
         virtual void BeginFrame() const = 0;
 
-		/**
-	    * @brief Interface of On Layout.
-	    * 
-	    * @TODO: Remove it, for debug used.
-	    */
-		virtual void OnLayout() const = 0;
-
         /**
         * @brief Interface of End a frame.
         */
         virtual void EndFrame() const = 0;
 
 		/**
-		* @brief Interface of Render a frame.
+		* @brief Interface of Submit Frame RHI.
 		* 
 		* @param[in] payload RenderFrontend Payload.
 		* 
-		* @note Order: BeginFrame -> EndFrame -> RenderFrame
+		* @note Order: BeginFrame -> EndFrame -> SubmitFrameRHI
 		*/
-		virtual void RenderFrame(void* payload = nullptr) const = 0;
+		virtual void SubmitFrameRHI(void* payload = nullptr) const = 0;
 		
     protected:
 

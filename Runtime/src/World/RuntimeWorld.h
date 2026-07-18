@@ -37,6 +37,11 @@ namespace Neptune::Runtime {
         */
         void OnDetached() override {}
 
+        /**
+        * @brief Interface of On Layout.
+        */
+        void OnLayout() const override {}
+        
     private:
         
     };

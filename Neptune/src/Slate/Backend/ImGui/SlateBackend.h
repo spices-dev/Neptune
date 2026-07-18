@@ -50,11 +50,6 @@ namespace Neptune::imgui {
         * @brief Interface of Begin a frame.
         */
         void BeginFrame() const override;
-
-		/**
-		* @brief Interface of On Layout.
-		*/
-		void OnLayout() const override;
 		
         /**
         * @brief Interface of End a frame.
@@ -62,11 +57,11 @@ namespace Neptune::imgui {
         void EndFrame() const override;
 
 		/**
-		* @brief Interface of Render a frame.
+		* @brief Interface of Submit Frame RHI.
 		* 
 		* @param[in] payload RenderFrontend Payload.
 		*/
-		void RenderFrame(void* payload = nullptr) const override;
+		void SubmitFrameRHI(void* payload = nullptr) const override;
 
 	private:
 

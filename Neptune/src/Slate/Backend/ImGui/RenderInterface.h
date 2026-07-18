@@ -41,11 +41,11 @@ namespace Neptune::imgui {
         virtual void BeginFrame() const = 0;
         
         /**
-        * @brief Interface of Render a frame.
+        * @brief Interface of Submit Frame RHI.
         * 
         * @param[in] payload RenderFrontend Payload.
         */
-        virtual void RenderFrame(void* payload = nullptr) const = 0;
+        virtual void SubmitFrameRHI(void* payload = nullptr) const = 0;
     };
 
     /**
@@ -89,11 +89,11 @@ namespace Neptune::imgui {
         void BeginFrame() const override;
 
         /**
-        * @brief Interface of Render a frame.
+        * @brief Interface of Submit Frame RHI.
         * 
         * @param[in] payload RenderFrontend Payload.
         */
-        void RenderFrame(void* payload = nullptr) const override;
+        void SubmitFrameRHI(void* payload = nullptr) const override;
         
     };
 
@@ -131,11 +131,11 @@ namespace Neptune::imgui {
         void BeginFrame() const override;
 
         /**
-        * @brief Interface of Render a frame.
+        * @brief Interface of Submit Frame RHI.
         * 
         * @param[in] payload RenderFrontend Payload.
         */
-        void RenderFrame(void* payload = nullptr) const override;
+        void SubmitFrameRHI(void* payload = nullptr) const override;
         
     };
 
@@ -173,11 +173,11 @@ namespace Neptune::imgui {
         void BeginFrame() const override;
 
         /**
-        * @brief Interface of Render a frame.
+        * @brief Interface of Submit Frame RHI.
         * 
         * @param[in] payload RenderFrontend Payload.
         */
-        void RenderFrame(void* payload = nullptr) const override;
+        void SubmitFrameRHI(void* payload = nullptr) const override;
         
     };
     
@@ -215,11 +215,11 @@ namespace Neptune::imgui {
         void BeginFrame() const override;
 
         /**
-        * @brief Interface of Render a frame.
+        * @brief Interface of Submit Frame RHI.
         * 
         * @param[in] payload RenderFrontend Payload.
         */
-        void RenderFrame(void* payload = nullptr) const override;
+        void SubmitFrameRHI(void* payload = nullptr) const override;
         
     };
     
@@ -257,11 +257,11 @@ namespace Neptune::imgui {
         void BeginFrame() const override;
 
         /**
-        * @brief Interface of Render a frame.
+        * @brief Interface of Submit Frame RHI.
         * 
         * @param[in] payload RenderFrontend Payload.
         */
-        void RenderFrame(void* payload = nullptr) const override;
+        void SubmitFrameRHI(void* payload = nullptr) const override;
         
     };
     

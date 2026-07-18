@@ -5,6 +5,7 @@
 */
 
 #include "EditorWorld.h"
+#include "Layout.h"
 
 #include <World/Scene/Scene.h>
 #include <World/Entity/Entity.h>
@@ -33,6 +34,13 @@ namespace Neptune::Editor {
         World::OnDetached();
     }
 
+    void EditorWorld::OnLayout() const
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        Layout::OnLayout();
+    }
+    
     void EditorWorld::CreateExampleScene()
     {
         NEPTUNE_PROFILE_ZONE

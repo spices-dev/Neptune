@@ -92,7 +92,7 @@ namespace Neptune::imgui {
 		ImGui_ImplOpenGL3_NewFrame();
 	}
 
-	void OpenGLInterface::RenderFrame(void* payload) const
+	void OpenGLInterface::SubmitFrameRHI(void* payload) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
@@ -156,7 +156,7 @@ namespace Neptune::imgui {
 		ImGui_ImplVulkan_NewFrame();
 	}
 
-	void VulkanInterface::RenderFrame(void* payload) const
+	void VulkanInterface::SubmitFrameRHI(void* payload) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
@@ -205,7 +205,7 @@ namespace Neptune::imgui {
 		ImGui_ImplDX11_NewFrame();
 	}
 	
-	void Direct3D11Interface::RenderFrame(void* payload) const
+	void Direct3D11Interface::SubmitFrameRHI(void* payload) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
@@ -267,7 +267,7 @@ namespace Neptune::imgui {
 		ImGui_ImplDX12_NewFrame();
 	}
 	
-	void Direct3D12Interface::RenderFrame(void* payload) const
+	void Direct3D12Interface::SubmitFrameRHI(void* payload) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
