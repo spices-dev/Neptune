@@ -80,7 +80,7 @@ namespace Neptune::GLFW {
     private:
         
         GLFWwindow* m_Windows;             // @brief native window.
-        SP<APIInterface> m_APIInterface;   // @brief render backend interface.
+        UP<APIInterface> m_APIInterface;   // @brief render backend interface.
     };
 }
 

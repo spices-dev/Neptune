@@ -13,16 +13,16 @@ namespace Neptune {
 
     namespace {
         
-        SP<Log> s_Log = nullptr;
+        UP<Log> s_Log = nullptr;
     }
     
-    SP<Log> Log::Get()
+    const UP<Log>& Log::Get()
     {
         NEPTUNE_PROFILE_ZONE
 
         if(!s_Log)
         {
-            s_Log = CreateSP<LogImpl>();
+            s_Log = CreateUP<LogImpl>();
         }
 
         return s_Log;

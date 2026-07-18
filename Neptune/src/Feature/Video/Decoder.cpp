@@ -15,7 +15,7 @@ namespace Neptune::Video {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		m_Impl = CreateSP<RHI::Decoder>(&op);
+		m_Impl = CreateUP<RHI::Decoder>(&op);
 	}
 
 	void Decoder::PushNextFrameToRenderTarget() const

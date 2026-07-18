@@ -13,13 +13,13 @@
 
 namespace Neptune::imgui {
 
-	SP<WindowInterface> CreateWindowInterface(WindowImplement implement)
+	UP<WindowInterface> CreateWindowInterface(WindowImplement implement)
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		switch (implement)
 		{
-			case WindowImplement::GLFW: return CreateSP<GLFWInterface>();
+			case WindowImplement::GLFW: return CreateUP<GLFWInterface>();
 			default:
 			{
 				NEPTUNE_CORE_CRITICAL("Not supported WindowImplement in ImGui Slate Configuration.")

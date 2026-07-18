@@ -11,18 +11,18 @@
 
 namespace Neptune {
 
-    SP<Camera> Camera::CreatePerspective(const PerspectiveParam& param)
+    UP<Camera> Camera::CreatePerspective(const PerspectiveParam& param)
     {
         NEPTUNE_PROFILE_ZONE
 
-        return CreateSP<PerspectiveCamera>(param);
+        return CreateUP<PerspectiveCamera>(param);
     }
 
-    SP<Camera> Camera::CreateOrthographic(const OrthographicParam& param)
+    UP<Camera> Camera::CreateOrthographic(const OrthographicParam& param)
     {
         NEPTUNE_PROFILE_ZONE
 
-        return CreateSP<OrthographicCamera>(param);
+        return CreateUP<OrthographicCamera>(param);
     }
 
     const glm::mat4& Camera::GetPMatrixReverseZ()

@@ -59,7 +59,7 @@ namespace Neptune {
         * 
         * @return Returns Perspective Camera.
         */
-        static SP<Camera> CreatePerspective(const PerspectiveParam& param);
+        static UP<Camera> CreatePerspective(const PerspectiveParam& param);
 
         /**
         * @brief Create Orthographic Camera.
@@ -68,7 +68,7 @@ namespace Neptune {
         * 
         * @return Returns Orthographic Camera.
         */
-        static SP<Camera> CreateOrthographic(const OrthographicParam& param);
+        static UP<Camera> CreateOrthographic(const OrthographicParam& param);
 
     public:
 

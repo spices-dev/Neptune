@@ -35,30 +35,30 @@
 
 namespace Neptune::imgui {
 
-	SP<RenderInterface> CreateRenderInterface(RenderBackendEnum backend)
+	UP<RenderInterface> CreateRenderInterface(RenderBackendEnum backend)
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		switch (backend)
 		{
 #ifdef NP_GRAPHICS_DIRECT3D11
-			case RenderBackendEnum::Direct3D11: return CreateSP<Direct3D11Interface>();
+			case RenderBackendEnum::Direct3D11: return CreateUP<Direct3D11Interface>();
 #endif
 			
 #ifdef NP_GRAPHICS_DIRECT3D12
-			case RenderBackendEnum::Direct3D12: return CreateSP<Direct3D12Interface>();
+			case RenderBackendEnum::Direct3D12: return CreateUP<Direct3D12Interface>();
 #endif
 			
 #ifdef NP_GRAPHICS_OPENGL
-			case RenderBackendEnum::OpenGL: return CreateSP<OpenGLInterface>();
+			case RenderBackendEnum::OpenGL: return CreateUP<OpenGLInterface>();
 #endif
 			
 #ifdef NP_GRAPHICS_VULKAN
-			case RenderBackendEnum::Vulkan: return CreateSP<VulkanInterface>();
+			case RenderBackendEnum::Vulkan: return CreateUP<VulkanInterface>();
 #endif
 
 #ifdef NP_GRAPHICS_WEBGPU
-			case RenderBackendEnum::WebGPU: return CreateSP<WebGPUInterface>();
+			case RenderBackendEnum::WebGPU: return CreateUP<WebGPUInterface>();
 #endif
 			
 			default:

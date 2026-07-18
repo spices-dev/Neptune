@@ -28,7 +28,7 @@ namespace Neptune::Video {
 	{
 	public:
 
-		static SP<Demuxer> Create();
+		static UP<Demuxer> Create();
 
 	public:
 

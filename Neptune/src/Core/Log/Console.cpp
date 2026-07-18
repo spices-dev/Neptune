@@ -18,7 +18,7 @@ namespace Neptune {
         : m_MaxInfos(maxInfos)
     {}
 
-    std::shared_ptr<Console> Console::Registry(const std::string& name)
+    const SP<Console>& Console::Registry(const std::string& name)
     {
         NEPTUNE_PROFILE_ZONE
 

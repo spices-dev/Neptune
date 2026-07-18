@@ -55,7 +55,7 @@ namespace Neptune::imgui {
     * 
     * @return Returns RenderInterface.
     */
-    SP<RenderInterface> CreateRenderInterface(RenderBackendEnum backend);
+    UP<RenderInterface> CreateRenderInterface(RenderBackendEnum backend);
 
 #ifdef NP_GRAPHICS_OPENGL
     

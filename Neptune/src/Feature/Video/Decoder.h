@@ -80,7 +80,7 @@ namespace Neptune::Video {
 
 	private:
 
-		SP<RHI::Decoder> m_Impl;   // @brief This RHI Decoder.
+		UP<RHI::Decoder> m_Impl;   // @brief This RHI Decoder.
 
 	};
 

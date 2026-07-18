@@ -10,11 +10,11 @@
 
 namespace Neptune::Video {
 
-	SP<Demuxer> Demuxer::Create()
+	UP<Demuxer> Demuxer::Create()
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		return CreateSP<FFmpeg::Demuxer>();
+		return CreateUP<FFmpeg::Demuxer>();
 	}
 
 }

@@ -32,7 +32,7 @@ namespace Neptune {
 		/**
 		* @brief Destructor Function.
 		*/
-		~EngineClock() override = default;
+		~EngineClock() override;
 
 		/**
 		* @brief This interface defines to behave on specific component on attached.
@@ -48,6 +48,6 @@ namespace Neptune {
 
 		Scene* m_Scene = nullptr;            // @brief Scene.
 		Data::Clock* m_Clock = nullptr;      // @brief Clock.
-		SP<class Timer> m_Timer = nullptr;   // @brief Timer.
+		UP<class Timer> m_Timer = nullptr;   // @brief Timer.
 	};
 }

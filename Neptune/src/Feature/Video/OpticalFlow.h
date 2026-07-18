@@ -71,7 +71,7 @@ namespace Neptune::Video {
 
 	private:
 
-		SP<RHI::OpticalFlow> m_Impl;  // @brief This RHI OpticalFlow.
+		UP<RHI::OpticalFlow> m_Impl;  // @brief This RHI OpticalFlow.
 
 	};
 

@@ -70,8 +70,8 @@ namespace Neptune::imgui {
 
 	private:
 
-        SP<RenderInterface> m_RenderInterface;         // @brief render backend interface.
-        SP<WindowInterface> m_WindowInterface;         // @brief window backend interface.
+        UP<RenderInterface> m_RenderInterface;         // @brief render backend interface.
+        UP<WindowInterface> m_WindowInterface;         // @brief window backend interface.
 
         RenderBackendEnum m_RenderBackendEnum;         // @brief RenderBackendEnum.
         WindowImplement   m_WindowImplement;           // @brief WindowImplement.

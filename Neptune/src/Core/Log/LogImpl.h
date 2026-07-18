@@ -34,28 +34,28 @@ namespace Neptune {
         */
         ~LogImpl() override;
 
-        void CoreTrace   (const std::string& msg) override;
-        void CoreInfo    (const std::string& msg) override;
-        void CoreWarn    (const std::string& msg) override;
-        void CoreError   (const std::string& msg) override;
-        void CoreCritical(const std::string& msg) override;
+        void CoreTrace   (const std::string& msg) const override;
+        void CoreInfo    (const std::string& msg) const override;
+        void CoreWarn    (const std::string& msg) const override;
+        void CoreError   (const std::string& msg) const override;
+        void CoreCritical(const std::string& msg) const override;
 
-        void ClientTrace   (const std::string& msg) override;
-        void ClientInfo    (const std::string& msg) override;
-        void ClientWarn    (const std::string& msg) override;
-        void ClientError   (const std::string& msg) override;
-        void ClientCritical(const std::string& msg) override;
+        void ClientTrace   (const std::string& msg) const override;
+        void ClientInfo    (const std::string& msg) const override;
+        void ClientWarn    (const std::string& msg) const override;
+        void ClientError   (const std::string& msg) const override;
+        void ClientCritical(const std::string& msg) const override;
 
     private:
 
         /**
         * @brief Engine Stage Logger.
         */
-        std::shared_ptr<spdlog::logger> m_CoreLogger;
+        UP<spdlog::logger> m_CoreLogger;
 
         /**
         * @brief Game Stage Logger.
         */
-        std::shared_ptr<spdlog::logger> m_ClientLogger;
+        UP<spdlog::logger> m_ClientLogger;
     };
 }

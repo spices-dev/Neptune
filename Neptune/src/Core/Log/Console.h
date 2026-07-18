@@ -62,7 +62,7 @@ namespace Neptune {
         * 
         * @return Returns Registered Console form Pool.
         */
-        static std::shared_ptr<Console> Registry(const std::string& name);
+        static const SP<Console>& Registry(const std::string& name);
 
         /**
         * @brief Constructor Function.

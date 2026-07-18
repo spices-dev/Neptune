@@ -15,7 +15,7 @@ namespace Neptune::Video {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		m_Impl = CreateSP<RHI::OpticalFlow>();
+		m_Impl = CreateUP<RHI::OpticalFlow>();
 	}
 
 	void OpticalFlow::SetInputRenderTarget(const SP<RenderTarget>& renderTarget) const

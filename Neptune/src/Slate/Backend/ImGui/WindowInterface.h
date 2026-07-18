@@ -62,7 +62,7 @@ namespace Neptune::imgui {
     *
     * @return Returns WindowInterface.
     */
-    SP<WindowInterface> CreateWindowInterface(WindowImplement implement);
+    UP<WindowInterface> CreateWindowInterface(WindowImplement implement);
 
     /**
     * @brief GLFW APIInterface.

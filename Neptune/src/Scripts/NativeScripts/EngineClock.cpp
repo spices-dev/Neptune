@@ -18,6 +18,8 @@ namespace Neptune {
 		: m_Scene(scene)
 	{}
 
+	EngineClock::~EngineClock() = default;
+
 	void EngineClock::OnAttached()
 	{
 		NEPTUNE_PROFILE_ZONE
@@ -33,7 +35,7 @@ namespace Neptune {
 		
 		if (!m_Timer)
 		{
-			m_Timer = CreateSP<Timer>();
+			m_Timer = CreateUP<Timer>();
 
 			// First frame skip count.
 			return;
