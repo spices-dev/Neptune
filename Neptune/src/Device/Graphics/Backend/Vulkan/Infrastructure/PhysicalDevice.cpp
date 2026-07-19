@@ -350,7 +350,7 @@ namespace Neptune::Vulkan {
 		}
 		else
 		{
-			NEPTUNE_CORE_ERROR("Unsupported Decode Capability Flags.");
+			NEPTUNE_CORE_ERROR("Unsupported Decode Capability Flags.")
         }
 
 		// Use One DPB as dst image.
@@ -386,7 +386,7 @@ namespace Neptune::Vulkan {
 		}
 		else
 		{
-			NEPTUNE_CORE_ERROR("Surface Extent is infinality.")
+			NEPTUNE_CORE_ERROR("Surface Extent is infinity.")
 		}
 
 		uint32_t formatCount;

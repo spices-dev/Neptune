@@ -67,7 +67,7 @@ namespace Neptune::Vulkan {
 
             case DescriptorPool:                     return "DescriptorPool";
 
-            default:                                                  return "NonNamed";
+            default:                                 return "NonNamed";
         }
     }
 }

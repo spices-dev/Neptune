@@ -46,7 +46,7 @@ namespace Neptune::Vulkan {
         switch (GetEInfrastructure())
 		{
 			case GraphicCommandPool:	return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().graphic.value();
-			case ComputeCommandPool:   return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().compute.value();
+			case ComputeCommandPool:    return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().compute.value();
 			default: return 0;
 		}
     }
