@@ -41,7 +41,7 @@ namespace Neptune {
         /**
         * @brief Destructor Function.
         */
-		virtual ~SlateFrontend() = default;
+        virtual ~SlateFrontend();
 
         /**
         * @brief Interface of Initialize.
@@ -81,7 +81,7 @@ namespace Neptune {
         *
         * @param[in] backend RenderBackendEnum.
         */
-        SlateFrontend(SlateBackendEnum backend) : m_SlateBackendEnum(backend) {}
+        SlateFrontend(SlateBackendEnum backend);
 
 	private:
 

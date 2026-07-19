@@ -29,4 +29,8 @@ namespace Neptune {
         return sp;
 	}
 
+    SlateFrontend::~SlateFrontend() = default;
+
+    SlateFrontend::SlateFrontend(SlateBackendEnum backend) : m_SlateBackendEnum(backend) {}
+
 }

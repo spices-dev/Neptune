@@ -11,9 +11,7 @@
 
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui.h>
-#include <imgui.cpp>
 #include <imgui_internal.h>
-#include <imgui_widgets.cpp>
 
 namespace Neptune::imgui {
 
@@ -24,6 +22,8 @@ namespace Neptune::imgui {
         , m_RenderBackendEnum(renderBackend)
         , m_WindowImplement(windowImpl)
     {}
+
+    SlateBackend::~SlateBackend() = default;
 
     void SlateBackend::OnInitialize(const AInfrastructures& infrastructure) const
     {

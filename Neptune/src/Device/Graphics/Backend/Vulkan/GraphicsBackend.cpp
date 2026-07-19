@@ -32,6 +32,8 @@ namespace Neptune::Vulkan {
 		});
 	}
 
+	GraphicsBackend::~GraphicsBackend() = default;
+
 	void GraphicsBackend::OnInitialize(const Window* window)
 	{
 		NEPTUNE_PROFILE_ZONE

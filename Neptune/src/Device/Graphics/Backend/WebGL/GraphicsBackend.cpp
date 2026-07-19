@@ -25,6 +25,8 @@ namespace Neptune::WebGL {
         NEPTUNE_PROFILE_ZONE
     }
 
+    GraphicsBackend::~GraphicsBackend() = default;
+
     void GraphicsBackend::OnInitialize(const Window* window)
     {
         NEPTUNE_PROFILE_ZONE

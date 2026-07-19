@@ -23,6 +23,8 @@ namespace Neptune::Direct3D12 {
     	HandleResultDelegate::SetHandler([&](HRESULT result) { HandleResult(result); });
     }
 
+    GraphicsBackend::~GraphicsBackend() = default;
+
     void GraphicsBackend::OnInitialize(const Window* window)
     {
         NEPTUNE_PROFILE_ZONE

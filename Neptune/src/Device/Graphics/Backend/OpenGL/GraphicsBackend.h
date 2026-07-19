@@ -42,7 +42,7 @@ namespace Neptune::OpenGL {
         /**
         * @brief Destructor Function.
         */
-        ~GraphicsBackend() override = default;
+        ~GraphicsBackend() override;
 
         /**
         * @brief Interface of Initialize.

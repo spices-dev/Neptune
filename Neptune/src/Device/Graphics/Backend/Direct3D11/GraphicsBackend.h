@@ -42,7 +42,7 @@ namespace Neptune::Direct3D11 {
         /**
         * @brief Destructor Function.
         */
-        ~GraphicsBackend() override = default;
+        ~GraphicsBackend() override;
 
         /**
         * @brief Interface of Initialize.
