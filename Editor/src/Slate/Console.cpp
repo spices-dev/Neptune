@@ -5,16 +5,15 @@
 */
 
 #include "Console.h"
-#include "Slate/Frontend/View/Interface.h"
+
+#include <imgui.h>
 
 namespace Neptune::Editor::View {
-    
-    using namespace Neptune::View::Interface;
     
     void Console::OnSubmitRHI()
     {
         NEPTUNE_PROFILE_ZONE
         
-        ShowDemoWindow();
+        ImGui::ShowDemoWindow();
     }
 }

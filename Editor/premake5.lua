@@ -25,6 +25,7 @@ solution.DefineCppExecutable("Editor", function()
 		"%{vendor.includes.Neptune}",                              -- Neptune Source Folder.
 		"src",                                                     -- UnitTest Source Folder.
 		"%{vendor.includes.glm}",                                  -- Library: glm Source Folder.
+		"%{vendor.includes.ImGui}",                                -- Library: ImGui Source Folder.
 		"%{vendor.includes.entt}",                                 -- Library: entt Source Folder.
 		"%{vendor.includes.tracy}",                                -- Library: tracy Source Folder.
 	}

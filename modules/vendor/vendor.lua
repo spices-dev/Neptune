@@ -26,6 +26,8 @@ local GetVulkanSDKPath = function()
 
     -- Search in Env first.
     local sdk_path = os.getenv("VULKAN_SDK") or ""
+    sdk_path = sdk_path:gsub("\\", "/")
+
     local include_dir = (os.target() == "windows") and "Include" or "include"
 
     if sdk_path ~= "" then
