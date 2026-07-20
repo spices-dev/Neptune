@@ -214,6 +214,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 
         links
 		{
+			"ImGui",                                                       -- Dependency: imgui
 			"yaml-cpp",                                                    -- Dependency: yaml-cpp
 			"implot",                                                      -- Dependency: implot
 		}
@@ -238,10 +239,6 @@ solution.DefineCppStaticLibrary("Neptune", function()
 				"%{vendor.libraries.d3d12}",                               -- Dependency: d3d12
 				"%{vendor.libraries.WinPixEventRuntime}",                  -- Dependency: WinPixEventRuntime
 				
-				"ImGui_Vulkan",                                            -- Dependency: imgui
-				"ImGui_OpenGL",                                            -- Dependency: imgui
-				"ImGui_Direct3D11",                                        -- Dependency: imgui
-				"ImGui_Direct3D12",                                        -- Dependency: imgui
 				"GLFW",                                                    -- Dependency: GLFW
 				"Glad",                                                    -- Dependency: Glad
 				"tracy",                                                   -- Dependency: tracy
@@ -275,8 +272,6 @@ solution.DefineCppStaticLibrary("Neptune", function()
 			{
 				"%{vendor.libraries.vulkan}",                              -- Dependency: vulkan
 				
-				"ImGui_Vulkan",                                            -- Dependency: imgui
-				"ImGui_OpenGL",                                            -- Dependency: imgui
 				"GLFW",                                                    -- Dependency: GLFW
 				"Glad",                                                    -- Dependency: Glad
 				"tracy",                                                   -- Dependency: tracy
@@ -288,7 +283,6 @@ solution.DefineCppStaticLibrary("Neptune", function()
 			-- Emscripten Specific Solution Dependency.
 			links
 			{
-				"ImGui_WebGPU",                                            -- Dependency: imgui
 				"tracy",                                                   -- Dependency: tracy
 			}
 
