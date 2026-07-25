@@ -16,6 +16,7 @@ namespace Neptune {
 
 		class Decoder;
 	}
+	
 }
 
 namespace Neptune::Video {
@@ -37,12 +38,12 @@ namespace Neptune::Video {
 		/**
 		* @brief Destructor Function.
 		*/
-		virtual~Decoder() = default;
+		virtual ~Decoder();
 
 		/**
-		* @brief Push next frame to RT.
+		* @brief Pop Next Present Picture to RT.
 		*/
-		void PushNextFrameToRenderTarget() const;
+		void PopPresentPicture() const;
 
 		/**
 		* @brief Parse DataChunk.
@@ -53,9 +54,9 @@ namespace Neptune::Video {
 		void ParserDataChunk(uint8_t* data, uint64_t size) const;
 
 		/**
-		* @brief Get Decoded Texture Count.
+		* @brief Get Present Picture Count.
 		*/
-		uint32_t GetDecodedTextureCount() const;
+		uint32_t GetPresentPictureCount() const;
 
 		/**
 		* @brief Set Decode RenderTarget.

@@ -6,6 +6,7 @@
 
 #include "EditorWorld.h"
 #include "Layout.h"
+#include "Scripts/VideoPlayer.h"
 
 #include <World/Scene/Scene.h>
 #include <World/Entity/Entity.h>
@@ -59,6 +60,13 @@ namespace Neptune::Editor {
         {
             auto entity = scene->Create("plane");
             entity.AddComponent<TransformComponent>();
+        }
+        
+        {
+            auto entity = scene->Create("video_plane");
+            auto& component = entity.AddComponent<ScriptComponent>();
+            
+            component.AddScript(CreateSP<VideoPlayer>("C:/Users/spices/Desktop/hevc_8k60P_bilibili_1.mp4"));
         }
     }
 }

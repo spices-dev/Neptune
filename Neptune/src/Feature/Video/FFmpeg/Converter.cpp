@@ -9,7 +9,7 @@
 
 namespace Neptune::FFmpeg {
 
-	/*AVCodecID ToAVCodecID(VideoOperation op)
+	AVCodecID ToAVCodecID(VideoOperation op)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -22,5 +22,5 @@ namespace Neptune::FFmpeg {
 				return AV_CODEC_ID_H264;
 			}
 		}
-	}*/
+	}
 }

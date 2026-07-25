@@ -376,7 +376,7 @@ namespace Neptune::Vulkan {
         m_FlowVectorRT = renderTarget->GetRHIImpl<RenderTarget>();
     }
 
-    void Decoder::PushNextFrameToRenderTarget()
+    void Decoder::PopPresentPicture()
     {
         if (!m_DecodeRT) return;
 
@@ -385,7 +385,7 @@ namespace Neptune::Vulkan {
             m_DecodeRT->CopyToRenderTarget(m_ReferenceRT);
         }
 
-        auto slot = m_VideoSession->PopDisplaySlot();
+        const auto slot = m_VideoSession->PopDisplaySlot();
 
         {
             CmdList2 cmdList(GetContext());

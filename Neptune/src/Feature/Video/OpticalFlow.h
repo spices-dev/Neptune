@@ -15,6 +15,7 @@ namespace Neptune {
 
 		class OpticalFlow;
 	}
+	
 }
 
 namespace Neptune::Video {

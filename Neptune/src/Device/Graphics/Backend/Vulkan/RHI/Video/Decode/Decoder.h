@@ -591,7 +591,7 @@ namespace Neptune::Vulkan {
 
 		void ParserDataChunk(uint8_t* data, uint64_t size) override;
 
-        uint32_t GetDecodedPictureCount() override { return m_VideoSession->GetDisplaySlotCount(); }
+        uint32_t GetPresentPictureCount() override { return m_VideoSession->GetDisplaySlotCount(); }
 
         void SetDecodeRenderTarget(const SP<RHI::RenderTarget>& renderTarget) override;
 
@@ -599,7 +599,7 @@ namespace Neptune::Vulkan {
 
         void SetFlowVectorRenderTarget(const SP<RHI::RenderTarget>& renderTarget) override;
 
-        void PushNextFrameToRenderTarget() override;
+        void PopPresentPicture() override;
 
         int32_t BeginSequence(const VkParserSequenceInfo* pnvsi);
 

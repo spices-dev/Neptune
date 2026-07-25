@@ -18,11 +18,13 @@ namespace Neptune::Video {
 		m_Impl = CreateUP<RHI::Decoder>(&op);
 	}
 
-	void Decoder::PushNextFrameToRenderTarget() const
+	Decoder::~Decoder() = default;
+
+	void Decoder::PopPresentPicture() const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		m_Impl->PushNextFrameToRenderTarget();
+		m_Impl->PopPresentPicture();
 	}
 
 	void Decoder::ParserDataChunk(uint8_t* data, uint64_t size) const
@@ -32,11 +34,11 @@ namespace Neptune::Video {
 		m_Impl->ParserDataChunk(data, size);
 	}
 
-	uint32_t Decoder::GetDecodedTextureCount() const
+	uint32_t Decoder::GetPresentPictureCount() const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		return m_Impl->GetDecodedPictureCount();
+		return m_Impl->GetPresentPictureCount();
 	}
 
 	void Decoder::SetDecodeRenderTarget(const SP<RenderTarget>& renderTarget) const

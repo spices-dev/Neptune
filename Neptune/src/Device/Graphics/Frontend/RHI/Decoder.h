@@ -41,11 +41,11 @@ namespace Neptune::RHI {
 		virtual void ParserDataChunk(uint8_t* data, uint64_t size) = 0;
 
 		/**
-		* @brief Interface of Get Decoded Picture Count.
+		* @brief Interface of Get Present Picture Count.
 		*
-		* @return Returns Decoded Picture Count.
+		* @return Returns Present Picture Count.
 		*/
-		virtual uint32_t GetDecodedPictureCount() = 0;
+		virtual uint32_t GetPresentPictureCount() = 0;
 
 		/**
 		* @brief Interface of Set Decode RenderTarget.
@@ -69,9 +69,9 @@ namespace Neptune::RHI {
 		virtual void SetFlowVectorRenderTarget(const SP<RenderTarget>& renderTarget) = 0;
 
 		/**
-		* @brief Interface of Push NextFrame to RenderTarget.
+		* @brief Interface of Pop Next Present Picture to RenderTarget.
 		*/
-		virtual void PushNextFrameToRenderTarget() = 0;
+		virtual void PopPresentPicture() = 0;
 	};
 
 	/**
@@ -100,11 +100,11 @@ namespace Neptune::RHI {
 		void ParserDataChunk(uint8_t* data, uint64_t size) const { m_Impl->ParserDataChunk(data, size); }
 
 		/**
-		* @brief Interface of Get Decoded Picture Count.
+		* @brief Interface of Get Present Picture Count.
 		*
-		* @return Returns Decoded Picture Count.
+		* @return Returns Present Picture Count.
 		*/
-		uint32_t GetDecodedPictureCount() const { return m_Impl->GetDecodedPictureCount(); }
+		uint32_t GetPresentPictureCount() const { return m_Impl->GetPresentPictureCount(); }
 
 		/**
 		* @brief Interface of Set Decode RenderTarget.
@@ -128,8 +128,8 @@ namespace Neptune::RHI {
 		void SetFlowVectorRenderTarget(const SP<RenderTarget>& renderTarget) const { return m_Impl->SetFlowVectorRenderTarget(renderTarget); }
 
 		/**
-		* @brief Interface of Push NextFrame to RenderTarget.
+		* @brief Interface of Pop Next Present Picture to RenderTarget.
 		*/
-		void PushNextFrameToRenderTarget() const { return m_Impl->PushNextFrameToRenderTarget(); }
+		void PopPresentPicture() const { return m_Impl->PopPresentPicture(); }
 	};
 }

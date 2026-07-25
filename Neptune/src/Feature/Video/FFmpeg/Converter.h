@@ -8,9 +8,9 @@
 #include "Core/Core.h"
 #include "Feature/Video/VideoOperation.h"
 
-/*extern "C" {
+extern "C" {
 #include <libavformat/avformat.h>
-}*/
+}
 
 namespace Neptune::FFmpeg {
 
@@ -21,6 +21,6 @@ namespace Neptune::FFmpeg {
 	* 
 	* @return Returns AVCodecID.
 	*/
-	/*AVCodecID ToAVCodecID(VideoOperation op);*/
+	AVCodecID ToAVCodecID(VideoOperation op);
 
 }

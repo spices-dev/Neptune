@@ -17,4 +17,7 @@ namespace Neptune::Video {
 		return CreateUP<FFmpeg::Demuxer>();
 	}
 
+	Demuxer::Demuxer() = default;
+	
+	Demuxer::~Demuxer() = default;
 }

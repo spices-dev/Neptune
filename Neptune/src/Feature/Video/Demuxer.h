@@ -28,6 +28,11 @@ namespace Neptune::Video {
 	{
 	public:
 
+		/**
+		* @brief Create Demuxer.
+		* 
+		* @return Return Demuxer.
+		*/
 		static UP<Demuxer> Create();
 
 	public:
@@ -35,12 +40,12 @@ namespace Neptune::Video {
 		/**
 		* @brief Constructor Function.
 		*/
-		Demuxer() = default;
+		Demuxer();
 
 		/**
 		* @brief Destructor Function.
 		*/
-		virtual ~Demuxer() = default;
+		virtual ~Demuxer();
 
 		/**
 		* @brief Initialize demuxer context.
