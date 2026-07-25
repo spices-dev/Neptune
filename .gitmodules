@@ -43,3 +43,6 @@
 [submodule "Neptune/vendor/PixEvents"]
 	path = Neptune/vendor/PixEvents
 	url = https://github.com/spices-lib/PixEvents.git
+[submodule "Neptune/vendor/ffmpeg"]
+	path = Neptune/vendor/ffmpeg
+	url = https://github.com/spices-lib/ffmpeg.git
