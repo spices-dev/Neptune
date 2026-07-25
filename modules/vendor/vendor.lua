@@ -2,153 +2,36 @@
 -- @brief Defines all Solutions Dependencies.
 -- @author Spices.
 
--- Define module
-local module = {}
-
--- Solution Root
-local solution_root = _MAIN_SCRIPT_DIR
-
 -- Current Folder Directory
 local current_dir = debug.getinfo(1, "S").source:sub(2):match("(.*/)") or "./"
 
--- Sub Vendor Scripts
-local sub_vendor  = {
-    windows       = current_dir .. "windows.lua",
-    linux         = current_dir .. "linux.lua",
-    macosx        = current_dir .. "macos.lua",
-    emscripten    = current_dir .. "emscripten.lua",
-}
-
--- @brief Get Vulkan SDK Path.
---
--- @return Returns Vulkan SDK Path.
-local GetVulkanSDKPath = function()
-
-    -- Search in Env first.
-    local sdk_path = os.getenv("VULKAN_SDK") or ""
-    sdk_path = sdk_path:gsub("\\", "/")
-
-    local include_dir = (os.target() == "windows") and "Include" or "include"
-
-    if sdk_path ~= "" then
-        return sdk_path .. "/" .. include_dir
-    end
-
-    local version = "1.4.321.1"
-
-    -- Default Vulkan Path.
-    local default_paths = {
-        windows = "C:/VulkanSDK/" .. version .. "/Include",
-        linux   = os.getenv("HOME") .. "/VulkanSDK/" .. version .. "/x86_64/include",
-        macosx  = ""
-    }
-
-    return default_paths[os.target()] or ""
-
-end
-
--- @brief Get Emsdk Path.
---
--- @return Returns Emsdk Path.
-local GetEmsdkPath = function()
-
-    local paths = {
-        windows = "C:/emsdk",
-        linux   = "",
-        macosx  = ""
-    }
-
-    return paths[os.target()] or ""
-
-end
-
--- @brief Get AdaptiveCpp Path.
---
--- @return Returns AdaptiveCpp Path.
-local GetAdaptiveCppPath = function()
-
-    local paths = {
-        windows = "C:/AdaptiveCpp",
-        linux   = "",
-        macosx  = ""
-    }
-
-    return paths[os.target()] or ""
-
-end
-
--- @brief Get Sub Vendor LibraryDirs.
---
--- @return Returns Sub Vendor LibraryDirs.
-local GetSubVendorLibraryDirs = function()
-
-    return loadfile(sub_vendor[os.target()])().GetLibraryDirs(module.includes) or {}
-
-end
-
--- @brief Get Sub Vendor Libraries.
---
--- @return Returns Sub Vendor Libraries.
-local GetSubVendorLibraries = function()
-
-    return loadfile(sub_vendor[os.target()])().GetLibraries() or {}
-
-end
-
--- Includes
-local includes                        = {
-    ["Neptune"]                       = solution_root .. "/Neptune/src",                                                            -- Include: Neptune
-    ["NeptuneShader"]                 = solution_root .. "/Neptune/assets/Shaders/src",                                             -- Include: NeptuneShader
-    ["emscripten"]                    = GetEmsdkPath() .. "/upstream/emscripten/cache/sysroot/include/",                            -- Include: emscripten
-    ["emscripten_glfw"]               = solution_root .. "/Neptune/vendor/emscripten-glfw/",                                        -- Include: emscripten-glfw
-    ["emdawnwebgpu"]                  = solution_root .. "/Neptune/vendor/emdawnwebgpu/webgpu/include",                             -- Include: emdawnwebgpu
-    ["GLFW"]                          = solution_root .. "/Neptune/vendor/GLFW/include",                                            -- Include: GLFW
-    ["VulkanSDK"]                     = GetVulkanSDKPath(),                                                                         -- Include: VulkanSDK
-    ["glm"]                           = solution_root .. "/Neptune/vendor/glm",                                                     -- Include: glm
-    ["vma"]                           = solution_root .. "/Neptune/vendor/vma/include",                                             -- Include: vma
-    ["Glad"]                          = solution_root .. "/Neptune/vendor/Glad/include",                                            -- Include: Glad
-    ["stb_image"]                     = solution_root .. "/Neptune/vendor/stb_image",                                               -- Include: stb_image
-    ["ImGui"]                         = solution_root .. "/Neptune/vendor/imgui",                                                   -- Include: ImGui
-    ["entt"]                          = solution_root .. "/Neptune/vendor/entt/include",                                            -- Include: entt
-    ["yaml_cpp"]                      = solution_root .. "/Neptune/vendor/yaml-cpp/include",                                        -- Include: yaml_cpp
-    ["rapidyaml"]                     = solution_root .. "/Neptune/vendor/rapidyaml",                                               -- Include: rapidyaml
-    ["ImPlot"]                        = solution_root .. "/Neptune/vendor/implot",                                                  -- Include: ImPlot
-    ["spdlog"]                        = solution_root .. "/Neptune/vendor/spdlog/include",                                          -- Include: spdlog
-    ["ImGuizmo"]                      = solution_root .. "/Neptune/vendor/ImGuizmo",                                                -- Include: ImGuizmo
-    ["tracy"]                         = solution_root .. "/Neptune/vendor/tracy/public",                                            -- Include: tracy
-    ["IconFontCppHeaders"]            = solution_root .. "/Neptune/vendor/IconFontCppHeaders",                                      -- Include: IconFontCppHeaders
-    ["DirectX12AgilitySDK"]           = solution_root .. "/Neptune/vendor/Microsoft.Direct3D.D3D12/build/native/include",           -- Include: DirectX12AgilitySDK
-    ["DirectX_Headers"]               = solution_root .. "/Neptune/vendor/DirectX-Headers/include",                                 -- Include: DirectX-Headers
-    ["WinPixEventRuntime"]            = solution_root .. "/Neptune/vendor/PixEvents/include",                                       -- Include: WinPixEventRuntime
-    ["AdaptiveCpp"]                   = GetAdaptiveCppPath() .. "/include",                                                         -- Include: AdaptiveCpp
-    ["googletest"]                    = solution_root .. "/UnitTest/vendor/googletest/googletest/include",                          -- Include: googletest
-    ["googlemock"]                    = solution_root .. "/UnitTest/vendor/googletest/googlemock/include",                          -- Include: googlemock
-}
-module.includes                       = includes
-
--- Library Directories
-module.library_dirs                   = GetSubVendorLibraryDirs()
-
--- Library Directories
-module.libraries                      = GetSubVendorLibraries()
-
--- Nuget Dependencies
-module.nugets                         = {
-}
-
--- Desktop Third Party Projects
-module.third_party_projects_desktops  = {
-	["GLFW"]                          = solution_root .. "/Neptune/vendor/GLFW",                                       -- Dependency: GLFW
-	["Glad"]                          = solution_root .. "/Neptune/vendor/Glad",                                       -- Dependency: Glad
-}
-
--- Third Party Projects
-module.third_party_projects           = {
-	["imgui"]                         = solution_root .. "/Neptune/vendor/imgui",                                      -- Dependency: imgui
-	["yaml-cpp"]                      = solution_root .. "/Neptune/vendor/yaml-cpp",                                   -- Dependency: yaml-cpp
-	["implot"]                        = solution_root .. "/Neptune/vendor/implot",                                     -- Dependency: implot
-    ["tracy"]                         = solution_root .. "/Neptune/vendor/tracy",                                      -- Dependency: tracy
-    ["googletest"]                    = solution_root .. "/UnitTest/vendor/googletest",                                -- Dependency: googletest
+-- Define module
+local module                          = {
+    ["Neptune"]                       = loadfile(current_dir .. "Neptune.lua")(),                                      -- Third Party: Neptune
+    ["emscripten"]                    = loadfile(current_dir .. "emscripten.lua")(),                                   -- Third Party: emscripten
+    ["emscripten_glfw"]               = loadfile(current_dir .. "emscripten-glfw.lua")(),                              -- Third Party: emscripten-glfw
+    ["emdawnwebgpu"]                  = loadfile(current_dir .. "emdawnwebgpu.lua")(),                                 -- Third Party: emdawnwebgpu
+    ["GLFW"]                          = loadfile(current_dir .. "GLFW.lua")(),                                         -- Third Party: GLFW
+    ["Vulkan"]                        = loadfile(current_dir .. "Vulkan.lua")(),                                       -- Third Party: Vulkan
+    ["glm"]                           = loadfile(current_dir .. "glm.lua")(),                                          -- Third Party: glm
+    ["vma"]                           = loadfile(current_dir .. "vma.lua")(),                                          -- Third Party: vma
+    ["Glad"]                          = loadfile(current_dir .. "Glad.lua")(),                                         -- Third Party: Glad
+    ["stb_image"]                     = loadfile(current_dir .. "stb_image.lua")(),                                    -- Third Party: stb_image
+    ["ImGui"]                         = loadfile(current_dir .. "ImGui.lua")(),                                        -- Third Party: ImGui
+    ["entt"]                          = loadfile(current_dir .. "entt.lua")(),                                         -- Third Party: entt
+    ["yaml_cpp"]                      = loadfile(current_dir .. "yaml-cpp.lua")(),                                     -- Third Party: yaml_cpp
+    ["rapidyaml"]                     = loadfile(current_dir .. "rapidyaml.lua")(),                                    -- Third Party: rapidyaml
+    ["ImPlot"]                        = loadfile(current_dir .. "ImPlot.lua")(),                                       -- Third Party: ImPlot
+    ["spdlog"]                        = loadfile(current_dir .. "spdlog.lua")(),                                       -- Third Party: spdlog
+    ["ImGuizmo"]                      = loadfile(current_dir .. "ImGuizmo.lua")(),                                     -- Third Party: ImGuizmo
+    ["tracy"]                         = loadfile(current_dir .. "tracy.lua")(),                                        -- Third Party: tracy
+    ["IconFontCppHeaders"]            = loadfile(current_dir .. "IconFontCppHeaders.lua")(),                           -- Third Party: IconFontCppHeaders
+    ["DirectX12AgilitySDK"]           = loadfile(current_dir .. "DirectX12AgilitySDK.lua")(),                          -- Third Party: DirectX12AgilitySDK
+    ["DirectX_Headers"]               = loadfile(current_dir .. "DirectX-Headers.lua")(),                              -- Third Party: irectX-Headers
+    ["WinPixEventRuntime"]            = loadfile(current_dir .. "WinPixEventRuntime.lua")(),                           -- Third Party: WinPixEventRuntime
+    ["AdaptiveCpp"]                   = loadfile(current_dir .. "AdaptiveCpp.lua")(),                                  -- Third Party: AdaptiveCpp
+    ["ffmpeg"]                        = loadfile(current_dir .. "ffmpeg.lua")(),                                       -- Third Party: ffmpeg
+    ["googletest"]                    = loadfile(current_dir .. "googletest.lua")(),                                   -- Third Party: googletest
 }
 
 -- @brief Load Third Party Projects.
@@ -156,14 +39,25 @@ module.LoadThirdPartyProjects = function()
 
     -- Project Dependencies.
     group "Dependencies"
-    if os.target() ~= "emscripten" then
-        for name, path in pairs(module.third_party_projects_desktops) do
-            include(path)
+
+    for name, third_party in pairs(module) do
+
+        if type(third_party) ~= "table" then
+
+            goto continue
+            
         end
+
+        if third_party.project then
+
+            include(third_party.project)
+
+        end
+
+        ::continue::
+
     end
-    for name, path in pairs(module.third_party_projects) do
-        include(path)
-    end
+    
     group ""
 
 end

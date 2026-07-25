@@ -22,12 +22,12 @@ solution.DefineCppExecutable("Runtime", function()
 	-- The Solution Additional Include Folder.
 	includedirs
 	{
-		"%{vendor.includes.Neptune}",                              -- Neptune Source Folder.
-		"src",                                                     -- UnitTest Source Folder.
-		"%{vendor.includes.glm}",                                  -- Library: glm Source Folder.
-		"%{vendor.includes.ImGui}",                                -- Library: ImGui Source Folder.
-		"%{vendor.includes.entt}",                                 -- Library: entt Source Folder.
-		"%{vendor.includes.tracy}",                                -- Library: tracy Source Folder.
+		"src",                                                     -- Library: Runtime Source Folder.
+		vendor.Neptune.includes,                                   -- Library: Neptune Source Folder.
+		vendor.glm.includes,                                       -- Library: glm Source Folder.
+		vendor.ImGui.includes,                                     -- Library: ImGui Source Folder.
+		vendor.entt.includes,                                      -- Library: entt Source Folder.
+		vendor.tracy.includes,                                     -- Library: tracy Source Folder.
 	}
 
 	-- In Visual Studio, it only works when generated a new solution, remember update solution will not works.
@@ -36,7 +36,7 @@ solution.DefineCppExecutable("Runtime", function()
 	{}
 
 	-- The Solution Inherit from
-	solution.Uses("Neptune")                   -- Dependency: Neptune
+	solution.Uses("Neptune")                                       -- Dependency: Neptune
 
 	-- Configuration: Dlls.
 	filter "files:**.dll"
@@ -50,7 +50,8 @@ solution.DefineCppExecutable("Runtime", function()
 		-- Windows Specific DLLs.
 		files 
 		{ 
-			"%{vendor.library_dirs.WinPixEventRuntime}/%{vendor.libraries.WinPixEventRuntime}.dll",          -- DLL: WinPixEventRuntime
+			vendor.WinPixEventRuntime.dynamic_libraries,          -- DLL: WinPixEventRuntime
+			vendor.ffmpeg.dynamic_libraries,                      -- DLL: ffmpeg
 		}
 
 		-- Windows Specific Additional Include Folder.

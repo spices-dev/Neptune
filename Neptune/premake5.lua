@@ -50,20 +50,19 @@ solution.DefineCppStaticLibrary("Neptune", function()
 	-- The Solution Additional Include Folder.
 	includedirs
 	{
-		"src",                                                     -- Neptune Source Folder.
-		"%{vendor.includes.NeptuneShader}",                        -- Neptune Shader Source Folder.
-		"%{vendor.includes.glm}",                                  -- Library: glm Source Folder.
-		"%{vendor.includes.vma}",                                  -- Library: vma Source Folder.
-		"%{vendor.includes.stb_image}",                            -- Library: stb_image Source Folder.
-		"%{vendor.includes.ImGui}",                                -- Library: ImGui Source Folder.
-		"%{vendor.includes.entt}",                                 -- Library: entt Source Folder.
-		"%{vendor.includes.yaml_cpp}",                             -- Library: yaml_cpp Source Folder.
-		"%{vendor.includes.rapidyaml}",                            -- Library: rapidyaml Source Folder.
-		"%{vendor.includes.ImPlot}",                               -- Library: ImPlot Source Folder.
-		"%{vendor.includes.spdlog}",                               -- Library: spdlog Source Folder.
-		"%{vendor.includes.ImGuizmo}",                             -- Library: ImGuizmo Source Folder.
-		"%{vendor.includes.tracy}",                                -- Library: tracy Source Folder.
-		"%{vendor.includes.IconFontCppHeaders}",                   -- Library: IconFontCppHeaders Source Folder.
+		vendor.Neptune.includes,                              -- Library: Neptune Source Folder.
+		vendor.glm.includes,                                  -- Library: glm Source Folder.
+		vendor.vma.includes,                                  -- Library: vma Source Folder.
+		vendor.stb_image.includes,                            -- Library: stb_image Source Folder.
+		vendor.ImGui.includes,                                -- Library: ImGui Source Folder.
+		vendor.entt.includes,                                 -- Library: entt Source Folder.
+		vendor.yaml_cpp.includes,                             -- Library: yaml_cpp Source Folder.
+		vendor.rapidyaml.includes,                            -- Library: rapidyaml Source Folder.
+		vendor.ImPlot.includes,                               -- Library: ImPlot Source Folder.
+		vendor.spdlog.includes,                               -- Library: spdlog Source Folder.
+		vendor.ImGuizmo.includes,                             -- Library: ImGuizmo Source Folder.
+		vendor.tracy.includes,                                -- Library: tracy Source Folder.
+		vendor.IconFontCppHeaders.includes,                   -- Library: IconFontCppHeaders Source Folder.
 	}
 
 	-- The Solution Dependency
@@ -84,12 +83,13 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		-- The Solution Additional Include Folder.
 		includedirs
 		{
-			"%{vendor.includes.GLFW}",                                 -- Library: GLFW Source Folder.
-			"%{vendor.includes.VulkanSDK}",                            -- Library: VulkanSDK Source Folder.
-			"%{vendor.includes.Glad}",                                 -- Library: Glad Source Folder.
-			"%{vendor.includes.DirectX_Headers}",                      -- Library: DirectX-Headers Source Folder.
-			"%{vendor.includes.WinPixEventRuntime}",                   -- Library: WinPixEventRuntime Source Folder.
-			"%{vendor.includes.AdaptiveCpp}",                          -- Library: AdaptiveCpp Source Folder.
+			vendor.GLFW.includes,                                 -- Library: GLFW Source Folder.
+			vendor.Vulkan.includes,                               -- Library: VulkanSDK Source Folder.
+			vendor.Glad.includes,                                 -- Library: Glad Source Folder.
+			vendor.DirectX_Headers.includes,                      -- Library: DirectX-Headers Source Folder.
+			vendor.WinPixEventRuntime.includes,                   -- Library: WinPixEventRuntime Source Folder.
+			vendor.AdaptiveCpp.includes,                          -- Library: AdaptiveCpp Source Folder.
+			vendor.ffmpeg.includes,                               -- Library: ffmpeg Source Folder.
 		}
 
 		-- Windows Specific Additional Library Folder.
@@ -124,9 +124,10 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		-- The Solution Additional Include Folder.
 		includedirs
 		{
-			"%{vendor.includes.GLFW}",                                 -- Library: GLFW Source Folder.
-			"%{vendor.includes.VulkanSDK}",                            -- Library: VulkanSDK Source Folder.
-			"%{vendor.includes.Glad}",                                 -- Library: Glad Source Folder.
+			vendor.GLFW.includes,                                      -- Library: GLFW Source Folder.
+			vendor.Vulkan.includes,                                    -- Library: VulkanSDK Source Folder.
+			vendor.Glad.includes,                                      -- Library: Glad Source Folder.
+			vendor.ffmpeg.includes,                                    -- Library: ffmpeg Source Folder.
 		}
 
 		-- Linux Specific Additional Library Folder.
@@ -157,10 +158,9 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		-- The Solution Additional Include Folder.
 		includedirs
 		{
-			"%{vendor.includes.emscripten}",                           -- Library: emscripten Header Folder.
-			"%{vendor.includes.emscripten_glfw}/include",              -- Library: emscripten_glfw Header Folder.
-			"%{vendor.includes.emscripten_glfw}/external",             -- Library: emscripten_glfw Header Folder.
-			"%{vendor.includes.emdawnwebgpu}",                         -- Library: emdawnwebgpu Header Folder.
+			vendor.emscripten.includes,                                -- Library: emscripten Header Folder.
+			vendor.emscripten_glfw.includes,                           -- Library: emscripten_glfw Header Folder.
+			vendor.emdawnwebgpu.includes,                              -- Library: emdawnwebgpu Header Folder.
 		}
 
 		-- The Solution Additional Library Folder.
@@ -225,20 +225,18 @@ solution.DefineCppStaticLibrary("Neptune", function()
 			-- Windows Specific Library Folder.
 			libdirs
 			{
-				"%{vendor.library_dirs.VulkanSDK}",                        -- Library: VulkanSDK.
-				"%{vendor.library_dirs.WinPixEventRuntime}",               -- Library: WinPixEventRuntime.
+				vendor.Vulkan.library_dirs,                                -- Library: VulkanSDK.
+				vendor.WinPixEventRuntime.library_dirs,                    -- Library: WinPixEventRuntime.
+				vendor.ffmpeg.library_dirs,                                -- Library: ffmpeg.
 			}
 
 			-- Windows Specific Solution Dependency.
 			links
 			{
-				"%{vendor.libraries.vulkan}",                              -- Dependency: vulkan
-				"%{vendor.libraries.dxgi}",                                -- Dependency: dxgi
-				"%{vendor.libraries.d3d11}",                               -- Dependency: d3d11
-				"%{vendor.libraries.d3dcompiler}",                         -- Dependency: d3dcompiler
-				"%{vendor.libraries.d3d12}",                               -- Dependency: d3d12
-				"%{vendor.libraries.WinPixEventRuntime}",                  -- Dependency: WinPixEventRuntime
-				
+				vendor.Vulkan.libraries,                                   -- Dependency: vulkan
+				vendor.WinPixEventRuntime.libraries,                       -- Dependency: WinPixEventRuntime
+				vendor.ffmpeg.libraries,                                   -- Dependency: ffmpeg
+
 				"GLFW",                                                    -- Dependency: GLFW
 				"Glad",                                                    -- Dependency: Glad
 				"tracy",                                                   -- Dependency: tracy
@@ -264,13 +262,13 @@ solution.DefineCppStaticLibrary("Neptune", function()
 			-- Linux Specific Additional Library Folder.
 			libdirs
 			{
-				"%{vendor.library_dirs.VulkanSDK}",                        -- Library: VulkanSDK.
+				vendor.Vulkan.library_dirs,                                -- Library: VulkanSDK.
 			}
 
 			-- Linux Specific Solution Dependency.
 			links
 			{
-				"%{vendor.libraries.vulkan}",                              -- Dependency: vulkan
+				vendor.Vulkan.libraries,                                   -- Dependency: vulkan
 				
 				"GLFW",                                                    -- Dependency: GLFW
 				"Glad",                                                    -- Dependency: Glad

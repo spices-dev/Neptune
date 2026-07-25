@@ -1,33 +1,37 @@
 -- @file emscripten.lua.
--- @brief Defines all Solutions Emscripten Dependencies.
+-- @brief Defines emscripten Third Party.
 -- @author Spices.
+
+-- @brief Get Emsdk Path.
+--
+-- @return Returns Emsdk Path.
+local GetEmsdkPath = function()
+
+    local paths = {
+        windows = "C:/emsdk",
+        linux   = "",
+        macosx  = ""
+    }
+
+    return paths[os.target()] or ""
+
+end
 
 -- Define module
 local module = {}
 
--- @brief Get Emscripten LibraryDirs.
---
--- @param[in] includes Solution Includes.
---
--- @return Returns Emscripten LibraryDirs.
-module.GetLibraryDirs = function(includes)
+if os.target() == "emscripten" then
 
-    local library_dir                 = {
+    -- Includes
+    module.includes = {
+        GetEmsdkPath() .. "/upstream/emscripten/cache/sysroot/include/"                      -- Include: emscripten
     }
 
-    return library_dir
+    -- Library Directories
+    module.library_dirs = {}
 
-end
-
--- @brief Get Emscripten Libraries.
---
--- @return Returns Emscripten Libraries.
-module.GetLibraries = function()
-
-    local libraries                   = {
-    }
-
-    return libraries
+    -- Library Dependencies
+    module.libraries = {}
 
 end
 
