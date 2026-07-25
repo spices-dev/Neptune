@@ -329,7 +329,7 @@ namespace Neptune::Vulkan {
 			}
 		}
 
-		VK_CHECK(GetContext().Get<IFunctions>()->vkGetPhysicalDeviceVideoCapabilitiesKHR(Handle(), &videoProfile, &capabilities));
+		VK_CHECK(GetContext().Get<IFunctions>()->vkGetPhysicalDeviceVideoCapabilitiesKHR(Handle(), &videoProfile, &capabilities))
 
 		if (decodeCapabilities.flags & VK_VIDEO_DECODE_CAPABILITY_DPB_AND_OUTPUT_COINCIDE_BIT_KHR)
 		{

@@ -73,15 +73,24 @@ namespace Neptune::FFmpeg {
 
         m_CodedLumaBitDepth   = 8;
         m_CodedChromaBitDepth = 8;
-        if (m_Params.format == AV_PIX_FMT_YUV420P10LE) 
-        {
-            m_CodedLumaBitDepth   = 10;
-            m_CodedChromaBitDepth = 10;
-        }
-        else if (m_Params.format == AV_PIX_FMT_YUV420P12LE) 
-        {
-            m_CodedLumaBitDepth   = 12;
-            m_CodedChromaBitDepth = 12;
+        switch (m_Params.format) {
+            case AV_PIX_FMT_YUV420P10LE:
+            case AV_PIX_FMT_YUV422P10LE:
+            case AV_PIX_FMT_YUV444P10LE:
+            {
+                m_CodedLumaBitDepth   = 10;
+                m_CodedChromaBitDepth = 10;
+                break;
+            }
+            case AV_PIX_FMT_YUV420P12LE:
+            case AV_PIX_FMT_YUV444P12LE:
+            {
+                m_CodedLumaBitDepth   = 12;
+                m_CodedChromaBitDepth = 12;
+                break;
+            }
+            default:
+                break;
         }
         m_IsStreamDemuxer = (!strcmp(m_Fmtc->iformat->long_name, "QuickTime / MOV") ||
                              !strcmp(m_Fmtc->iformat->long_name, "FLV (Flash Video)") ||
