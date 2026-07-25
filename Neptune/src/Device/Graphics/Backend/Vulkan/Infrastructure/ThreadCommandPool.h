@@ -28,7 +28,7 @@ namespace Neptune::Vulkan {
 	* @brief Vulkan::ThreadCommandPool Class.
 	* This class defines the Vulkan::ThreadCommandPool behaves.
 	*/
-	class ThreadCommandPool : public Infrastructure, public std::enable_shared_from_this<ThreadCommandPool>
+	class ThreadCommandPool : public Infrastructure
 	{
 	public:
 
@@ -79,6 +79,7 @@ namespace Neptune::Vulkan {
 
 		std::unordered_map<UUID, SP<Unit::CommandPool>> m_CommandPools;    // @brief Container of CommandPool.
 		std::mutex m_Mutex;                                                // @brief CommandPool mutex.
+		SP<std::monostate> m_Life;                                         // @brief Life Marker.
 	};
 
 }

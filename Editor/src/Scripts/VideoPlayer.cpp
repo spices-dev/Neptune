@@ -27,7 +27,7 @@ namespace Neptune::Editor {
 
 		m_Decoder = CreateUP<Video::Decoder>(VideoOperation::DecodeH265);
 		
-		m_Decoder->SetDecodeRenderTarget(ResourcePool<RenderTarget>::Instance().GetResource("CurrDecodeRT"));
+		m_Decoder->SetDecodeRenderTarget(ResourcePool<RenderTarget>::Instance().CreateResource("CurrDecodeRT"));
 	}
 	
 	void VideoPlayer::OnTick()

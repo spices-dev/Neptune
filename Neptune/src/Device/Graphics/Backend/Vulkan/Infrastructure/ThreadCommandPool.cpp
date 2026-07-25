@@ -34,19 +34,17 @@ namespace Neptune::Vulkan {
 			*/
 			virtual ~ThreadID()
 			{
-				auto commandPool = m_Guard.lock();
-
-				if (!commandPool)
+				if (!m_GuardDeleter)
 				{
 					return;
 				}
 
-				if (m_GraphicId.has_value())     commandPool->Release(m_GraphicId.value());
-				if (m_ComputeId.has_value())     commandPool->Release(m_ComputeId.value());
-				if (m_TransferId.has_value())    commandPool->Release(m_TransferId.value());
-				if (m_VideoEncodeId.has_value()) commandPool->Release(m_VideoEncodeId.value());
-				if (m_VideoDecodeId.has_value()) commandPool->Release(m_VideoDecodeId.value());
-				if (m_OpticalFlowId.has_value()) commandPool->Release(m_OpticalFlowId.value());
+				if (m_GraphicId.has_value())     std::invoke(m_GuardDeleter, m_GraphicId.value());
+				if (m_ComputeId.has_value())     std::invoke(m_GuardDeleter, m_ComputeId.value());
+				if (m_TransferId.has_value())    std::invoke(m_GuardDeleter, m_TransferId.value());
+				if (m_VideoEncodeId.has_value()) std::invoke(m_GuardDeleter, m_VideoEncodeId.value());
+				if (m_VideoDecodeId.has_value()) std::invoke(m_GuardDeleter, m_VideoDecodeId.value());
+				if (m_OpticalFlowId.has_value()) std::invoke(m_GuardDeleter, m_OpticalFlowId.value());
 			}
 
 			/**
@@ -97,13 +95,13 @@ namespace Neptune::Vulkan {
 			}
 
 			/**
-			* @brief Set CommandPool Guard.
+			* @brief Set Thread CommandPool Guard Deleter.
 			*
-			* @param[in] guard Thread CommandPool.
+			* @param[in] deleter Thread CommandPool Guard Deleter.
 			*/
-			void SetGuard(const SP<ThreadCommandPool>& guard)
+			void SetGuardDeleter(const std::function<void(UUID)>& deleter)
 			{
-				m_Guard = guard;
+				m_GuardDeleter = deleter;
 			}
 
 		public:
@@ -115,7 +113,7 @@ namespace Neptune::Vulkan {
 			std::optional<UUID> m_VideoDecodeId;        // @brief VideoDecode Sub Thread CommandPool id.
 			std::optional<UUID> m_OpticalFlowId;        // @brief OpticalFlow Sub Thread CommandPool id.
 
-			WP<ThreadCommandPool> m_Guard;              // @brief ThreadCommandPool Guard.
+			std::function<void(UUID)> m_GuardDeleter;   // @brief ThreadCommandPool Guard.
 		};
 
 		thread_local ThreadID s_TLSThreadID;            // @brief Thread id instance.
@@ -124,6 +122,7 @@ namespace Neptune::Vulkan {
 
 	ThreadCommandPool::ThreadCommandPool(Context& context, EInfrastructure e)
 		: Infrastructure(context, e)
+		, m_Life(CreateSP<std::monostate>())
 	{}
 
 	const VkCommandPool& ThreadCommandPool::Handle()
@@ -141,7 +140,15 @@ namespace Neptune::Vulkan {
 
 		s_TLSThreadID.SetId(uuid, GetEInfrastructure());
 
-		s_TLSThreadID.SetGuard(shared_from_this());
+		WP life = m_Life;
+		s_TLSThreadID.SetGuardDeleter([life, this](UUID id) {
+			if (!life.lock())
+			{
+				return;
+			}
+			
+			this->Release(id);
+		});
 
 		auto commandPool = Create();
 
@@ -187,7 +194,7 @@ namespace Neptune::Vulkan {
 		
 		switch (GetEInfrastructure())
 		{
-			case GraphicThreadCommandPool:		return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().graphic.value();
+			case GraphicThreadCommandPool:	   return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().graphic.value();
 			case ComputeThreadCommandPool:     return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().compute.value();
 			case TransferThreadCommandPool:    return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().transfer.value();
 			case VideoEncodeThreadCommandPool: return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().videoEncode.value();

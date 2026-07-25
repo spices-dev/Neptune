@@ -640,9 +640,9 @@ namespace Neptune::Vulkan {
         VkExtent2D                  m_codedExtent;
         VkParserDetectedVideoFormat m_videoFormat;
         ImageSpecsIndex             m_imageSpecsIndex;
-        RenderTarget*               m_DecodeRT;
-        RenderTarget*               m_ReferenceRT;
-        RenderTarget*               m_FlowVectorRT;
+        RenderTarget*               m_DecodeRT     = nullptr;
+        RenderTarget*               m_ReferenceRT  = nullptr;
+        RenderTarget*               m_FlowVectorRT = nullptr;
 	};
 }
 
