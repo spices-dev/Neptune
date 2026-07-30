@@ -51,6 +51,8 @@ Makefile
 /Nepnep/package-lock.json
 /Nepnep/prisma/migrations
 
+/Neptune/assets/Shaders/src/*.spv
+
 /Neptune/vendor/Glad/bin
 /Neptune/vendor/Glad/bin-int
 /Neptune/vendor/Glad/*.vcxproj

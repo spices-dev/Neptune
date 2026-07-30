@@ -1,15 +1,15 @@
 /**
-* @file ShaderMaterialAttributes.glsl.
+* @file MaterialAttributes.glsl.
 * @brief This Shader Header File Defines MaterialAttributes Structure and Functions.
 * @author Spices.
 */
 
 /************************************Pre Compile******************************************/
 
-#ifndef SHADER_MATERIAL_ATTRIBUTES
-#define SHADER_MATERIAL_ATTRIBUTES
+#ifndef MATERIAL_ATTRIBUTES_H
+#define MATERIAL_ATTRIBUTES_H
 
-#include "ShaderCommon.h"
+#include "Core.h"
 
 /*****************************************************************************************/
 

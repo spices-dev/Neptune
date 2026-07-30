@@ -1,15 +1,15 @@
 /**
-* @file ShaderPreRendererLayout.glsl.
+* @file PreRendererLayout.glsl.
 * @brief This Shader Header File Defines Pre Shader DescriptorSets.
 * @author Spices.
 */
 
 /************************************Pre Compile*******************************************/
 
-#ifndef SHADER_PRERENDERER_LAYOUT
-#define SHADER_PRERENDERER_LAYOUT
+#ifndef PRERENDERER_LAYOUT_H
+#define PRERENDERER_LAYOUT_H
 
-#include "ShaderCommon.h"
+#include "Core.h"
 
 /*****************************************************************************************/
 
@@ -28,7 +28,7 @@ layout(set = 0, binding = 0) uniform ShaderView
 */
 layout(set = 0, binding = 1) uniform ShaderInput 
 {
-    Input spiecsInput;          /* @see SpiecsInput */
+    Input engineInput;          /* @see EngineInput */
 };
 
 /**

@@ -34,13 +34,13 @@ solution.DefineCppStaticLibrary("Neptune", function()
 	defines
 	{
 		-- Define Engine Assets Folder.
-		--'NEPTUNE_ASSETS_PATH=std::string("' .. path.translate(os.getcwd(), "/") .. '/assets/")',
+		'NEPTUNE_ASSETS_PATH=std::string("' .. path.translate(os.getcwd(), "/") .. '/assets/")',
 
 		-- Define Engine Logs Folder.
-		--'NEPTUNE_CONSOLElOGFILE_PATH=std::string("saved/ConsoleLog/")',
+		'NEPTUNE_CONSOLElOGFILE_PATH=std::string("saved/ConsoleLog/")',
 
 		-- Define Engine Extent Processes Folder.
-		--'NEPTUNE_EXTENT_PROCESS_PATH=std::string("' .. path.translate(os.getcwd(), "/") .. '/../vendor/")',
+		'NEPTUNE_EXTENT_PROCESS_PATH=std::string("' .. path.translate(os.getcwd(), "/") .. '/../vendor/")',
 
 		platform.GetComputeFeatures(),
 		platform.GetGraphicsFeatures(),

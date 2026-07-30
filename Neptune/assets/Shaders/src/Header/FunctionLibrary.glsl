@@ -1,15 +1,15 @@
 /**
-* @file ShaderFunctionLibrary.glsl.
+* @file FunctionLibrary.glsl.
 * @brief This Shader Header File Defines Shader Functions.
 * @author Spices.
 */
 
 /************************************Pre Compile*******************************************/
 
-#ifndef SHADER_FUNCTION_LIBRARY
-#define SHADER_FUNCTION_LIBRARY
+#ifndef FUNCTION_LIBRARY_H
+#define FUNCTION_LIBRARY_H
 
-#include "ShaderCommon.h"
+#include "Core.h"
 
 /*****************************************************************************************/
 

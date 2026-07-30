@@ -1,18 +1,18 @@
 /**
-* @file ShaderCommon.h.
+* @file CORE.h.
 * @brief This Shader Header File Defines Shader Structure both Shader side and C++ side.
 * @author Spices.
 */
 
 /************************************Pre Compile*******************************************/
 
-#ifndef SHADER_COMMON
-#define SHADER_COMMON
+#ifndef CORE_H
+#define CORE_H
 
 #ifdef __cplusplus
 #include <glm/glm.hpp>
 
-namespace Neptune::ShaderCommon
+namespace Neptune::ShaderCore
 {
 using vec2 = glm::vec2;     
 using vec3 = glm::vec3;     

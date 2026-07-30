@@ -1,15 +1,15 @@
 /**
-* @file ShaderVertexInput.glsl.
-* @brief This Shader Header File Defines Vertex Input Structure.
+* @file BindLessMaterial.glsl.
+* @brief This Shader Header File Defines BindLess Material Structure.
 * @author Spices.
 */
 
 /************************************Pre Compile******************************************/
 
-#ifndef SHADER_BINDLESS_MATERIAL
-#define SHADER_BINDLESS_MATERIAL
+#ifndef BINDLESS_MATERIAL_H
+#define BINDLESS_MATERIAL_H
 
-#include "ShaderCommon.h"
+#include "Core.h"
 
 /*****************************************************************************************/
 

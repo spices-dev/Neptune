@@ -36,7 +36,7 @@ namespace Neptune {
 
 	private:
 
-		std::vector<uint8_t> Compile(const std::string& data);
+		std::vector<uint8_t> Compile(const std::string& path);
 
 	private:
 

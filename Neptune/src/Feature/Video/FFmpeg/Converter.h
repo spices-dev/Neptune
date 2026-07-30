@@ -6,11 +6,8 @@
 
 #pragma once
 #include "Core/Core.h"
+#include "Core.h"
 #include "Feature/Video/VideoOperation.h"
-
-extern "C" {
-#include <libavformat/avformat.h>
-}
 
 namespace Neptune::FFmpeg {
 

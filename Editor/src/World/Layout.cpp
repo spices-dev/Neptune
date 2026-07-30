@@ -6,6 +6,7 @@
 
 #include "Layout.h"
 #include "Slate/Console.h"
+#include "Slate/ViewPort.h"
 
 namespace Neptune::Editor::Layout {
 
@@ -13,9 +14,15 @@ namespace Neptune::Editor::Layout {
     
     void OnLayout()
     {
+        NEPTUNE_PROFILE_ZONE
+        
         Console console;
         
         console.OnSubmitRHI();
+        
+        ViewPort viewPort;
+        
+        viewPort.OnSubmitRHI();
     }
     
 }

@@ -1,22 +1,22 @@
 /**
-* @file ShaderClosestHit.glsl.
+* @file ClosestHit.glsl.
 * @brief This Shader Defines a Closest Hit Shader Basic Behaver.
 * @author Spices.
 */
 
 /************************************Pre Compile*******************************************/
 
-#ifndef SHADER_CLOSEST_HIT_PBR
-#define SHADER_CLOSEST_HIT_PBR
+#ifndef CLOSEST_HIT_PBR_H
+#define CLOSEST_HIT_PBR_H
 
-#extension GL_EXT_ray_tracing           : require   /* @brief Enable Ray Tracing Shader. */
+#extension GL_EXT_ray_tracing : require   /* @brief Enable Ray Tracing Shader. */
 
-#include "ShaderCommon.h"
-#include "ShaderFunctionLibrary.glsl"
-#include "ShaderPreRendererLayout.glsl"
-#include "ShaderBindLessMaterial.glsl"
-#include "ShaderMeshDescLayout.glsl"
-#include "ShaderMaterialAttributes.glsl"
+#include "Core.h"
+#include "FunctionLibrary.glsl"
+#include "PreRendererLayout.glsl"
+#include "BindLessMaterial.glsl"
+#include "MeshDescLayout.glsl"
+#include "MaterialAttributes.glsl"
 
 /*****************************************************************************************/
 

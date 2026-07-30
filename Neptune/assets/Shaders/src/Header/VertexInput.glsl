@@ -1,13 +1,13 @@
 /**
-* @file ShaderVertexInput.glsl.
+* @file VertexInput.glsl.
 * @brief This Shader Header File Defines Vertex Input Structure.
 * @author Spices.
 */
 
 /************************************Pre Compile******************************************/
 
-#ifndef SHADER_VERTEX_INPUT
-#define SHADER_VERTEX_INPUT
+#ifndefVERTEX_INPUT_H
+#defineVERTEX_INPUT_H
 
 /*****************************************************************************************/
 

@@ -6,10 +6,10 @@
 
 /************************************Pre Compile*******************************************/
 
-#ifndef SHADER_MESHDESC_LAYOUT
-#define SHADER_MESHDESC_LAYOUT
+#ifndef MESHDESC_LAYOUT_H
+#define MESHDESC_LAYOUT_H
 
-#include "ShaderCommon.h"
+#include "Core.h"
 
 /*****************************************************************************************/
 

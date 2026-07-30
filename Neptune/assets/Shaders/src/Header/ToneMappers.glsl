@@ -1,15 +1,15 @@
 /**
-* @file ShaderToneMappers.glsl.
+* @file ToneMappers.glsl.
 * @brief This Shader Header File Defines Tone Mappers.
 * @author Spices.
 */
 
 /************************************Pre Compile******************************************/
 
-#ifndef SHADER_TONE_MAPPERS
-#define SHADER_TONE_MAPPERS
+#ifndef TONE_MAPPERS_H
+#define TONE_MAPPERS_H
 
-#include "ShaderCommon.h"
+#include "Core.h"
 
 /*****************************************************************************************/
 

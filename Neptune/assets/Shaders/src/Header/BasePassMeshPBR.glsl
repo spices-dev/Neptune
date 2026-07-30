@@ -1,22 +1,22 @@
 /**
-* @file ShaderBasePassMeshPBR.glsl.
+* @file BasePassMeshPBR.glsl.
 * @brief This Shader Header File Defines BasePass Mesh Fragment Shader PBR behave.
 * @author Spices.
 */
 
 /************************************Pre Compile*******************************************/
 
-#ifndef SHADER_BASEPASS_MESH_PBR
-#define SHADER_BASEPASS_MESH_PBR
+#ifndef BASEPASS_MESH_PBR_H
+#define BASEPASS_MESH_PBR_H
 
-#extension GL_EXT_fragment_shader_barycentric   : require   /* @brief Enable barycentric access Macro. */
+#extension GL_EXT_fragment_shader_barycentric : require   /* @brief Enable barycentric access Macro. */
 
-#include "ShaderCommon.h"
-#include "ShaderFunctionLibrary.glsl"
-#include "ShaderPreRendererLayout.glsl"
-#include "ShaderBindLessMaterial.glsl"
-#include "ShaderMeshDescLayout.glsl"
-#include "ShaderMaterialAttributes.glsl"
+#include "Core.h"
+#include "FunctionLibrary.glsl"
+#include "PreRendererLayout.glsl"
+#include "BindLessMaterial.glsl"
+#include "MeshDescLayout.glsl"
+#include "MaterialAttributes.glsl"
 
 /*****************************************************************************************/
 

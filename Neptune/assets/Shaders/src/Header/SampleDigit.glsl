@@ -1,5 +1,5 @@
 /**
-* @file ShaderSampleDigit.glsl.
+* @file SampleDigit.glsl.
 * @brief This Shader Header File Defines Shader Functions.
 * @author Iq.
 * @see https://www.shadertoy.com/view/4sf3RN .
@@ -7,10 +7,10 @@
 
 /************************************Pre Compile*******************************************/
 
-#ifndef SHADER_SAMPLE_DIGIT
-#define SHADER_SAMPLE_DIGIT
+#ifndef SAMPLE_DIGIT_H
+#define SAMPLE_DIGIT_H
 
-#include "ShaderCommon.h"
+#include "Core.h"
 
 /*****************************************************************************************/
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "Core/Core.h"
 #include "Pass.h"
-#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 
 namespace Neptune::RHI {
 
