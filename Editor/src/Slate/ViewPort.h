@@ -1,8 +1,12 @@
+/**
+* @file ViewPort.h.
+* @brief The ViewPort Class Definitions.
+* @author Spices.
+*/
+
 #pragma once
 #include <Core/Core.h>
 #include <Slate/Frontend/View/ViewBase.h>
-
-#include <imgui.h>
 
 namespace Neptune::Editor::View {
 
@@ -19,11 +23,6 @@ namespace Neptune::Editor::View {
 	private:
 
 		void ResizeQuery();
-
-	private:
-
-		ImTextureID m_TextureID{};
-		ImVec2      m_SlateSize = { 1, 1 };
 	};
 
 }

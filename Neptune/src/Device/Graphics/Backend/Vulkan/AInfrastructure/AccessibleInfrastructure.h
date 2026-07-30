@@ -26,6 +26,7 @@ namespace Neptune::Vulkan {
         GraphicQueue,            // @brief GraphicQueue
         DescriptorPool,          // @brief DescriptorPool
         SwapChainRenderPass,     // @brief SwapChainRenderPass
+        SwapChainImageUsage,     // @brief SwapChainImageUsage
         MSAASamples,             // @brief MSAASamples Count
         Allocator,               // @brief Allocator
         CheckResultFn,           // @brief CheckResultFn
@@ -40,6 +41,7 @@ namespace Neptune::Vulkan {
     using AGraphicQueue           = Render::Common::AccessibleInfrastructure<VkQueue,                      EAccessibleInfrastructure::GraphicQueue>;
     using ADescriptorPool         = Render::Common::AccessibleInfrastructure<VkDescriptorPool,             EAccessibleInfrastructure::DescriptorPool>;
     using ASwapChainRenderPass    = Render::Common::AccessibleInfrastructure<VkRenderPass,                 EAccessibleInfrastructure::SwapChainRenderPass>;
+    using ASwapChainImageUsage    = Render::Common::AccessibleInfrastructure<VkImageUsageFlags,            EAccessibleInfrastructure::SwapChainImageUsage>;
     using AMSAASamples            = Render::Common::AccessibleInfrastructure<VkSampleCountFlagBits,        EAccessibleInfrastructure::MSAASamples>;
     using AAllocator              = Render::Common::AccessibleInfrastructure<const VkAllocationCallbacks*, EAccessibleInfrastructure::Allocator>;
     using ACheckResultFn          = Render::Common::AccessibleInfrastructure<void(*)(VkResult),            EAccessibleInfrastructure::CheckResultFn>;

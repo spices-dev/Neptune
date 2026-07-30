@@ -33,7 +33,7 @@ namespace Neptune::Vulkan {
 
 		VkDescriptorSetLayoutBinding                        layoutBinding{};
 		layoutBinding.binding                             = 0;
-		layoutBinding.descriptorType                      = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+		layoutBinding.descriptorType                      = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
 		layoutBinding.descriptorCount                     = 1;
 		layoutBinding.stageFlags                          = VK_SHADER_STAGE_FRAGMENT_BIT;
 

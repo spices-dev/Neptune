@@ -1,3 +1,9 @@
+/**
+* @file ViewPort.cpp.
+* @brief The ViewPort Class Implementation.
+* @author Spices.
+*/
+
 #include "ViewPort.h"
 #include <Resource/ResourcePool.h>
 #include <Resource/Texture/RenderTarget.h>
@@ -10,6 +16,12 @@
 
 namespace Neptune::Editor::View {
 
+	namespace {
+
+		ImTextureID s_TextureID{};
+		ImVec2      s_SlateSize = { 1, 1 };
+	}
+
 	void ViewPort::OnSubmitRHI()
 	{
 		NEPTUNE_PROFILE_ZONE
@@ -21,7 +33,7 @@ namespace Neptune::Editor::View {
 
 		ResizeQuery();
 
-		ImGui::Image(m_TextureID, m_SlateSize);
+		ImGui::Image(s_TextureID, s_SlateSize);
 
 		ImGui::End();
 	}
@@ -32,7 +44,7 @@ namespace Neptune::Editor::View {
 		
 		ImVec2 tempSize = ImVec2(glm::max(ImGui::GetContentRegionAvail().x, 1.0f), glm::max(ImGui::GetContentRegionAvail().y, 1.0f));
 
-		if (m_SlateSize.x != tempSize.x || m_SlateSize.y != tempSize.y)
+		if (s_SlateSize.x != tempSize.x || s_SlateSize.y != tempSize.y)
 		{
 			{
 				EngineEvent event(EngineEventBit::StopTheEngine);
@@ -46,10 +58,10 @@ namespace Neptune::Editor::View {
 				Event::GetEventCallbackFn()(event);
 			}
 
-			m_TextureID = (ImTextureID)ResourcePool<RenderTarget>::Instance().GetResource("Scene")->GetRHIResource()->CreateBindingID();
+			s_TextureID = (ImTextureID)ResourcePool<RenderTarget>::Instance().GetResource("Scene")->GetRHIResource()->CreateBindingID();
 		}
 
-		m_SlateSize = tempSize;
+		s_SlateSize = tempSize;
 	}
 
 }

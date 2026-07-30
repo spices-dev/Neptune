@@ -192,6 +192,7 @@ namespace Neptune::Vulkan {
     	auto pass = std::dynamic_pointer_cast<Render::SlatePass>(m_RenderPasses.back());
     	
     	context.Registry<ASwapChainRenderPass>(pass->GetRenderPass()->GetRHIImpl<RenderPass>()->Handle());
+    	context.Registry<ASwapChainImageUsage>(VK_IMAGE_USAGE_TRANSFER_DST_BIT);
 
 		return context.GetInfrastructures();
 	}

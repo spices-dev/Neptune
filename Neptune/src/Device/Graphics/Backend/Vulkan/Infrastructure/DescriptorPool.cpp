@@ -30,6 +30,22 @@ namespace Neptune::Vulkan {
 
         {
             VkDescriptorPoolSize             poolSize{};
+            poolSize.type                  = VK_DESCRIPTOR_TYPE_SAMPLER;
+            poolSize.descriptorCount       = DescriptorPoolSize;
+
+            poolSizes.emplace_back(poolSize);
+        }
+
+        {
+            VkDescriptorPoolSize             poolSize{};
+            poolSize.type                  = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
+            poolSize.descriptorCount       = DescriptorPoolSize;
+
+            poolSizes.emplace_back(poolSize);
+        }
+
+        {
+            VkDescriptorPoolSize             poolSize{};
             poolSize.type                  = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
             poolSize.descriptorCount       = DescriptorPoolSize;
 

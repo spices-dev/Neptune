@@ -112,6 +112,7 @@ namespace Neptune::Vulkan::Resource {
 			switch (write.descriptorType)
 			{
 				case VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT:
+				case VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE:
 				case VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER:
 				case VK_DESCRIPTOR_TYPE_STORAGE_IMAGE:
 				{
@@ -127,7 +128,7 @@ namespace Neptune::Vulkan::Resource {
 					break;
 				default:
 				{
-					NEPTUNE_CORE_WARN("Invalid VkDescriptorType in UpdateDescriptorSet.")
+					NEPTUNE_CORE_ERROR("Invalid VkDescriptorType in UpdateDescriptorSet.")
 					break;
 				}
 			}
