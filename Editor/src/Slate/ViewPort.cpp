@@ -12,6 +12,7 @@
 #include <Core/Event/WindowEvent.h>
 #include <Core/Event/EngineEvent.h>
 
+#include <imgui.h>
 #include <glm/common.hpp>
 
 namespace Neptune::Editor::View {
