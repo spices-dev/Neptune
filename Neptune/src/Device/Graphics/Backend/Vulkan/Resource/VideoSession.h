@@ -14,7 +14,6 @@
 #include "Device/Graphics/Backend/Vulkan/Unit/VideoSessionParameters.h"
 #include "Device/Graphics/Backend/Vulkan/VideoParser/STD/StdVideoPictureParametersSet.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/DecodePictureBuffer.h"
-#include "Device/Graphics/Backend/Vulkan/Unit/SamplerYcbcrConversion.h"
 
 #include <unordered_map>
 #include <queue>
@@ -160,7 +159,7 @@ namespace Neptune::Vulkan::Resource {
 		/**
 		* @brief Create FlowVector RenderTarget.
 		*
-		* @param[out] rt Target RenderTarget.
+		* @param[out] rt RenderTarget.
 		* @param[in] width .
 		* @param[in] height .
 		*/
@@ -201,14 +200,15 @@ namespace Neptune::Vulkan::Resource {
 
 		/**
 		* @brief Create YcbcrConversion.
+		* 
+		* @param[in] image Image.
 		*/
-		void CreateSamplerYcbcrConversion();
+		void CreateSamplerYcbcrConversion(const SP<Image>& image) const;
 
 	private:
 
 		Unit::VideoSession                   m_Session;              // @brief This VideoSession.
 		Unit::VideoSessionParameters         m_Parameters;           // @brief This VideoSessionParameters.
-		Unit::SamplerYcbcrConversion         m_Conversion;           // @brief This SamplerYcbcrConversion.
 		DecodePictureBuffer                  m_DPB;                  // @brief DecodePictureBuffer.
 		std::queue<uint8_t>                  m_DisplaySlots;         // @brief Display Slots.
 		SP<DecodeBuffer>                     m_Buffer;               // @brief DecodeBuffer.

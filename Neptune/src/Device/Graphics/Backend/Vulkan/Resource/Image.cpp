@@ -60,16 +60,26 @@ namespace Neptune::Vulkan::Resource {
 
 		m_ImageSampler.CreateSampler(GetContext().Get<IDevice>()->Handle(), info);
 
-		DEBUGUTILS_SETOBJECTNAME(m_ImageSampler, "ImageSampler")
+		DEBUGUTILS_SETOBJECTNAME(m_ImageSampler, "Sampler")
+	}
+
+	void Image::CreateSamplerYcbcrConversion(const VkSamplerYcbcrConversionCreateInfo& info)
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		m_Conversion.CreateSamplerYcbcrConversion(GetContext().Get<IDevice>()->Handle(), info);
+
+		DEBUGUTILS_SETOBJECTNAME(m_Conversion, "SamplerYcbcrConversion")
 	}
 
 	void Image::SetName(const std::string& name) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		DEBUGUTILS_SETOBJECTNAME(m_Image, name + "Image")
-		DEBUGUTILS_SETOBJECTNAME(m_ImageView, name + "ImageView")
-		DEBUGUTILS_SETOBJECTNAME(m_ImageSampler, name + "ImageSampler")
+		DEBUGUTILS_SETOBJECTNAME(m_Image,        name + "Image")
+		DEBUGUTILS_SETOBJECTNAME(m_ImageView,    name + "ImageView")
+		DEBUGUTILS_SETOBJECTNAME(m_ImageSampler, name + "Sampler")
+		DEBUGUTILS_SETOBJECTNAME(m_Conversion,   name + "SamplerYcbcrConversion")
 	}
 
 	void Image::TransitionLayout(VkImageLayout newLayout)

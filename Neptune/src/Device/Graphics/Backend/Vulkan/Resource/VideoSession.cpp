@@ -152,8 +152,6 @@ namespace Neptune::Vulkan::Resource {
 		UpdateVideoSessionParameters();
 
 		CreateDecodePictureBuffer(profile, width, height, slots, property.dpbFormat);
-
-		CreateSamplerYcbcrConversion();
 	}
 
 	void VideoSession::CreateQueryPool(const VkVideoProfileInfoKHR& profile, uint32_t slot)
@@ -299,7 +297,7 @@ namespace Neptune::Vulkan::Resource {
         }
 	}
 
-	void VideoSession::CreateSamplerYcbcrConversion()
+	void VideoSession::CreateSamplerYcbcrConversion(const SP<Image>& image) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -317,7 +315,7 @@ namespace Neptune::Vulkan::Resource {
 		info.chromaFilter                                    = VK_FILTER_LINEAR;
 		info.forceExplicitReconstruction                     = VK_FALSE;
 
-		m_Conversion.CreateSamplerYcbcrConversion(GetContext().Get<IDevice>()->Handle(), info);
+		image->CreateSamplerYcbcrConversion(info);
 	}
 
 	void VideoSession::CreateDecodeRenderTarget(RenderTarget* rt, const VkVideoProfileInfoKHR& profile, uint32_t width, uint32_t height) const
@@ -326,9 +324,11 @@ namespace Neptune::Vulkan::Resource {
 
 		auto image = CreateSP<Image>(GetContext());
 
+		CreateSamplerYcbcrConversion(image);
+
 		VkSamplerYcbcrConversionInfo                           conversionInfo{};
 		conversionInfo.sType                                 = VK_STRUCTURE_TYPE_SAMPLER_YCBCR_CONVERSION_INFO;
-		conversionInfo.conversion                            = m_Conversion.GetHandle();
+		conversionInfo.conversion                            = image->GetSamplerYcbcrConversion();
 		conversionInfo.pNext                                 = nullptr;
 
 		{

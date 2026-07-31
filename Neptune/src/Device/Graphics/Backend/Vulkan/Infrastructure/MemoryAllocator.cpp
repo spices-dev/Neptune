@@ -42,17 +42,23 @@ namespace Neptune::Vulkan {
 			
 			auto type = MemoryEnum::Other;
 			
-			if (flags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) {
-				if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) {
+			if (flags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) 
+			{
+				if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) 
+				{
 					type = MemoryEnum::Shared;
-				} else {
+				} 
+				else 
+				{
 					type = MemoryEnum::Device;
 				}
 			}
-			else if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) {
+			else if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) 
+			{
 				type = MemoryEnum::HostDevice;
 			}
-			else {
+			else 
+			{
 				type = MemoryEnum::Other;
 			}
 			
@@ -81,17 +87,23 @@ namespace Neptune::Vulkan {
 			
 			auto type = MemoryEnum::Other;
 			
-			if (flags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) {
-				if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) {
+			if (flags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) 
+			{
+				if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) 
+				{
 					type = MemoryEnum::Shared;
-				} else {
+				} 
+				else 
+				{
 					type = MemoryEnum::Device;
 				}
 			}
-			else if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) {
+			else if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) 
+			{
 				type = MemoryEnum::HostDevice;
 			}
-			else {
+			else 
+			{
 				type = MemoryEnum::Other;
 			}
 			
@@ -111,6 +123,24 @@ namespace Neptune::Vulkan {
 	MemoryAllocator::~MemoryAllocator()
 	{
 		NEPTUNE_PROFILE_ZONE
+
+		VmaTotalStatistics stats{};
+
+		vmaCalculateStatistics(Handle(), &stats);
+
+		if (stats.total.statistics.allocationCount)
+		{
+			char* statsString = nullptr;
+
+			vmaBuildStatsString(Handle(), &statsString, true);
+
+			std::stringstream ss;
+			ss << "VMA Stats: \n" << statsString;
+
+			NEPTUNE_CORE_ERROR(ss.str())
+
+			vmaFreeStatsString(Handle(), statsString);
+		}
 
 		vmaDestroyAllocator(Handle());
 

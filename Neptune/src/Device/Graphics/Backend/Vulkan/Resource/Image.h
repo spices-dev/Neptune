@@ -13,6 +13,7 @@
 #include "Device/Graphics/Backend/Vulkan/Unit/Image.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/ImageView.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/Sampler.h"
+#include "Device/Graphics/Backend/Vulkan/Unit/SamplerYcbcrConversion.h"
 
 namespace Neptune::Vulkan::Resource {
 
@@ -73,6 +74,13 @@ namespace Neptune::Vulkan::Resource {
 		void CreateSampler(const VkSamplerCreateInfo& info);
 
 		/**
+		* @brief Create Image Sampler YcbcrConversion.
+		*
+		* @param[in] info VkSamplerYcbcrConversionCreateInfo.
+		*/
+		void CreateSamplerYcbcrConversion(const VkSamplerYcbcrConversionCreateInfo& info);
+
+		/**
 		* @brief Set Image name.
 		*
 		* @param[in] name Image name.
@@ -92,6 +100,13 @@ namespace Neptune::Vulkan::Resource {
 		* @return Returns Sampler Unit Handle.
 		*/
 		const Unit::Sampler::Handle& GetSampler() const { return m_ImageSampler.GetHandle(); }
+
+		/**
+		* @brief Get SamplerYcbcrConversion Unit Handle.
+		*
+		* @return Returns SamplerYcbcrConversion Unit Handle.
+		*/
+		const Unit::SamplerYcbcrConversion::Handle& GetSamplerYcbcrConversion() const { return m_Conversion.GetHandle(); }
 
 		/**
 		* @brief Get Image Format.
@@ -144,16 +159,17 @@ namespace Neptune::Vulkan::Resource {
 
 	private:
 
-		Unit::Image     m_Image;                  // @brief This Image.
-		Unit::ImageView m_ImageView;              // @brief This ImageView.
-		Unit::Sampler   m_ImageSampler;           // @brief This Sampler.
+		Unit::Image                  m_Image;                  // @brief This Image.
+		Unit::ImageView              m_ImageView;              // @brief This ImageView.
+		Unit::Sampler                m_ImageSampler;           // @brief This Sampler.
+		Unit::SamplerYcbcrConversion m_Conversion;             // @brief This SamplerYcbcrConversion.
 
-		VkFormat        m_Format{};               // @brief VkFormat.
-		VkImageLayout   m_Layout{};               // @brief VkImageLayout.
-		uint32_t        m_LayerCount = 1;         // @brief Layer Count.
+		VkFormat                     m_Format{};               // @brief VkFormat.
+		VkImageLayout                m_Layout{};               // @brief VkImageLayout.
+		uint32_t                     m_LayerCount = 1;         // @brief Layer Count.
 
-		uint32_t        m_Width{};                // @brief Width.
-		uint32_t        m_Height{};               // @brief Height.
+		uint32_t                     m_Width{};                // @brief Width.
+		uint32_t                     m_Height{};               // @brief Height.
 
 	};
 }

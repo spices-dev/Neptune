@@ -91,11 +91,14 @@ namespace Neptune::Vulkan {
 						auto* p = _aligned_realloc(pOriginal, size, alignment);
 #else
 						auto* p = aligned_alloc(alignment, size);
+
 						free(pOriginal);
 #endif
 
-						if (p && p != pOriginal) {
+						if (p && p != pOriginal)
+						{
 							NEPTUNE_PROFILE_FREE_N(pOriginal, ToString(MemoryEnum::Host))
+
 							NEPTUNE_PROFILE_ALLOC_N(p, size, ToString(MemoryEnum::Host))
 						}
 
@@ -129,17 +132,23 @@ namespace Neptune::Vulkan {
 		
 		auto type = MemoryEnum::Other;
 			
-		if (flags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) {
-			if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) {
+		if (flags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) 
+		{
+			if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) 
+			{
 				type = MemoryEnum::Shared;
-			} else {
+			} 
+			else 
+			{
 				type = MemoryEnum::Device;
 			}
 		}
-		else if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) {
+		else if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) 
+		{
 			type = MemoryEnum::HostDevice;
 		}
-		else {
+		else 
+		{
 			type = MemoryEnum::Other;
 		}
 
@@ -163,17 +172,23 @@ namespace Neptune::Vulkan {
 		
 		auto type = MemoryEnum::Other;
 			
-		if (flags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) {
-			if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) {
+		if (flags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) 
+		{
+			if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) 
+			{
 				type = MemoryEnum::Shared;
-			} else {
+			} 
+			else 
+			{
 				type = MemoryEnum::Device;
 			}
 		}
-		else if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) {
+		else if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) 
+		{
 			type = MemoryEnum::HostDevice;
 		}
-		else {
+		else 
+		{
 			type = MemoryEnum::Other;
 		}
 		
