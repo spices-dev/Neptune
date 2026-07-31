@@ -43,6 +43,9 @@
 #include "Device/Graphics/Frontend/RHI/RHI.h"
 #include "Window/Window.h"
 #include "Core/Event/WindowEvent.h"
+#include "Resource/Texture/RenderTarget.h"
+#include "Resource/ResourcePool.h"
+#include "Resource/Shader/Shader.h"
 
 namespace Neptune {
 
@@ -110,6 +113,9 @@ namespace Neptune {
         RHI::RHIDelegate::SetCreator(nullptr);
 
         m_RenderPasses.clear();
+
+        ResourcePool<RenderTarget>::Instance().Reset();
+        ResourcePool<Shader>::Instance().Reset();
     }
 
     void RenderFrontend::RenderFrame(Scene* scene)

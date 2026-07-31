@@ -38,6 +38,8 @@ namespace Neptune::Editor {
 		{
 			auto packet = m_Demuxer->DemuxFrame();
 
+			if (!packet.size) return;
+
 			m_Decoder->ParserDataChunk(packet.data, packet.size);
 		}
 
