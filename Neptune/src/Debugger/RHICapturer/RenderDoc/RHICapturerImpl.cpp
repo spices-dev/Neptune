@@ -10,20 +10,22 @@
 
 #include "RHICapturerImpl.h"
 
-#include <Windows.h>
 #include <renderdoc_app.h>
+#include <Windows.h>
 
 namespace {
 
-	constexpr char dll_path[] = "renderdoc.dll";    // @brief RenderDoc DLL Path
+	constexpr char dll_path[] = "renderdoc.dll";    // @brief RenderDoc DLL Path.
 	
-	RENDERDOC_API_1_7_0* s_Api = nullptr;
-	HWND s_hwnd = NULL;
+	RENDERDOC_API_1_7_0* s_Api = nullptr;           // @brief RenderDoc api.
+	HWND s_Window = NULL;                           // @brief RenderDoc captured window.
 	
 }
 
-void InitRenderDoc()
+void Initialize()
 {
+	NEPTUNE_PROFILE_ZONE
+
 	HMODULE mod = GetModuleHandleA(dll_path);
 
 	if (!mod)
@@ -46,26 +48,34 @@ void InitRenderDoc()
 	s_Api->SetCaptureOptionU32(eRENDERDOC_Option_HookIntoChildren, 1);
 }
 
-void SetActiveWindow(void* hwnd)
+void SetCaptureWindow(void* window)
 {
-	s_hwnd = (HWND)hwnd;
+	NEPTUNE_PROFILE_ZONE
+
+	s_Window = (HWND)window;
 	
-	s_Api->SetActiveWindow(nullptr, s_hwnd);
+	s_Api->SetActiveWindow(nullptr, s_Window);
 }
 
-void BeginCapture()
+void BeginEngineScope()
 {
-	s_Api->StartFrameCapture(nullptr, s_hwnd);
+	NEPTUNE_PROFILE_ZONE
+
+	s_Api->StartFrameCapture(nullptr, s_Window);
 }
 
-void EndCapture()
+void EndEngineScope()
 {
-	s_Api->EndFrameCapture(nullptr, s_hwnd);
+	NEPTUNE_PROFILE_ZONE
+
+	s_Api->EndFrameCapture(nullptr, s_Window);
 }
 
-void TriggerCapture()
+void TriggerCapture(uint32_t frames)
 {
-	s_Api->TriggerMultiFrameCapture(1);
+	NEPTUNE_PROFILE_ZONE
+
+	s_Api->TriggerMultiFrameCapture(frames);
 }
 
 #endif

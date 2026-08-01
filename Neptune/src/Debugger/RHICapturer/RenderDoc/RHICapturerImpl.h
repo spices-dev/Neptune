@@ -10,10 +10,38 @@
 
 #include "Core/Core.h"
 
-void InitRenderDoc();
-void SetActiveWindow(void* hwnd);
-void BeginCapture();
-void EndCapture();
-void TriggerCapture();
+namespace Neptune::RenderDoc {
+    
+    /**
+    * @brief Initialize RenderDoc evvironment.
+    * 
+    */
+    void Initialize();
+
+    /**
+    * @brief Set Captured WindowContext.
+    * 
+    * @param[in] Native Window.
+    */
+    void SetCaptureWindow(void* window);
+
+    /**
+    * @brief Begin Engine Main Scope.
+    */
+    void BeginEngineScope();
+
+    /**
+    * @brief End Engine Main Scope.
+    */
+    void EndEngineScope();
+
+    /**
+    * @brief Trigger Capture Next Frames.
+    * 
+    * @param[in] frames Frame Count.
+    */
+    void TriggerCapture(uint32_t frames = 1);
+
+}
 
 #endif
