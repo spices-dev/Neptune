@@ -43,7 +43,7 @@ namespace Neptune::RHI {
 		* @param[in] renderTarget RenderTarget.
 		* @param[in] info RenderTargetAttachmentInfo.
 		*/
-		virtual void AddColorAttachment(SP<class RenderTarget> renderTarget, const RenderTargetAttachmentInfo& info) = 0;
+		virtual void AddColorAttachment(const SP<class RenderTarget>& renderTarget, const RenderTargetAttachmentInfo& info) = 0;
 
 		/**
 		* @brief Interface of Build RenderPass.
@@ -81,7 +81,7 @@ namespace Neptune::RHI {
 		* @param[in] renderTarget RenderTarget.
 		* @param[in] info RenderTargetAttachmentInfo.
 		*/
-		void AddColorAttachment(SP<class RenderTarget> renderTarget, const RenderTargetAttachmentInfo& info) const { m_Impl->AddColorAttachment(renderTarget, info); }
+		void AddColorAttachment(const SP<class RenderTarget>& renderTarget, const RenderTargetAttachmentInfo& info) const { m_Impl->AddColorAttachment(renderTarget, info); }
 
 		/**
 		* @brief Interface of Build RenderPass.

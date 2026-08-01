@@ -37,21 +37,21 @@ namespace Neptune::RHI {
 		* 
 		* @param[in] rt RenderTarget.
 		*/
-		virtual void SetInputRenderTarget(SP<RenderTarget> rt) = 0;
+		virtual void SetInputRenderTarget(const SP<RenderTarget>& rt) = 0;
 
 		/**
 		* @brief Interface of Set Reference RenderTarget.
 		*
 		* @param[in] rt RenderTarget.
 		*/
-		virtual void SetReferenceRenderTarget(SP<RenderTarget> rt) = 0;
+		virtual void SetReferenceRenderTarget(const SP<RenderTarget>& rt) = 0;
 
 		/**
 		* @brief Interface of Set FlowVector RenderTarget.
 		*
 		* @param[in] rt RenderTarget.
 		*/
-		virtual void SetFlowVectorRenderTarget(SP<RenderTarget> rt) = 0;
+		virtual void SetFlowVectorRenderTarget(const SP<RenderTarget>& rt) = 0;
 
 		/**
 		* @brief Interface of Create OpticalFlow Session.
@@ -88,21 +88,21 @@ namespace Neptune::RHI {
 		*
 		* @param[in] rt RenderTarget.
 		*/
-		void SetInputRenderTarget(SP<RenderTarget> rt) const { m_Impl->SetInputRenderTarget(rt); }
+		void SetInputRenderTarget(const SP<RenderTarget>& rt) const { m_Impl->SetInputRenderTarget(rt); }
 
 		/**
 		* @brief Interface of Set Reference RenderTarget.
 		*
 		* @param[in] rt RenderTarget.
 		*/
-		void SetReferenceRenderTarget(SP<RenderTarget> rt) const { m_Impl->SetReferenceRenderTarget(rt); }
+		void SetReferenceRenderTarget(const SP<RenderTarget>& rt) const { m_Impl->SetReferenceRenderTarget(rt); }
 
 		/**
 		* @brief Interface of Set FlowVector RenderTarget.
 		*
 		* @param[in] rt RenderTarget.
 		*/
-		void SetFlowVectorRenderTarget(SP<RenderTarget> rt) const { m_Impl->SetFlowVectorRenderTarget(rt); }
+		void SetFlowVectorRenderTarget(const SP<RenderTarget>& rt) const { m_Impl->SetFlowVectorRenderTarget(rt); }
 
 		/**
 		* @brief Interface of Create OpticalFlow Session.

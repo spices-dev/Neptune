@@ -57,7 +57,7 @@ namespace Neptune::Direct3D11 {
 		*
 		* @return Returns true if succeeded.
 		*/
-		bool CopyToRenderTarget(const RHI::RenderTarget* target) override;
+		bool CopyToRenderTarget(const SP<RHI::RenderTarget>& target) override;
 
 		/**
 		* @brief Interface of Get Format.

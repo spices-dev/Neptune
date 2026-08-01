@@ -60,7 +60,7 @@ namespace Neptune::Vulkan {
 		* @param[in] binding .
 		* @param[in] renderTarget RenderTarget.
 		*/
-		void AddUniformTexture(uint32_t set, uint32_t binding, SP<RHI::RenderTarget> renderTarget) override;
+		void AddUniformTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget) override;
 
 		/**
 		* @brief Interface of Update UniformBuffer.
@@ -78,7 +78,7 @@ namespace Neptune::Vulkan {
 		* @param[in] binding .
 		* @param[in] renderTarget RenderTarget.
 		*/
-		void UpdateUniformTexture(uint32_t set, uint32_t binding, SP<RHI::RenderTarget> renderTarget) override;
+		void UpdateUniformTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget) override;
 
 		/**
 		* @brief Interface of Combine Shared DescriptorList.

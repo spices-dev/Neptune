@@ -62,7 +62,7 @@ namespace Neptune::Vulkan {
 
 	private:
 
-		std::vector<SP<Unit::Semaphore>> m_Semaphores;    // @brief Container of Semaphore.
+		std::vector<UP<Unit::Semaphore>> m_Semaphores;    // @brief Container of Semaphore.
 
 	};
 

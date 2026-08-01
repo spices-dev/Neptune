@@ -71,7 +71,7 @@ namespace Neptune::Vulkan {
 
 	private:
 
-		std::vector<SP<Unit::Fence>> m_Fences; // @brief Container of this Fence.
+		std::vector<UP<Unit::Fence>> m_Fences; // @brief Container of this Fence.
 
 	};
 	

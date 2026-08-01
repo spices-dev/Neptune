@@ -55,14 +55,14 @@ namespace Neptune::Vulkan {
 		*
 		* @param[in] renderPass RenderPass.
 		*/
-		void SetRenderPass(SP<RHI::RenderPass> renderPass) override;
+		void SetRenderPass(const SP<RHI::RenderPass>& renderPass) override;
 		
 		/**
 		* @brief Interface of Set DescriptorList.
 		*
 		* @param[in] descriptorList DescriptorList.
 		*/
-		void SetDescriptorList(SP<RHI::DescriptorList> descriptorList) override;
+		void SetDescriptorList(const SP<RHI::DescriptorList>& descriptorList) override;
 
 		/**
 		* @brief Interface of Set VertexAttributeLayout.
@@ -82,7 +82,7 @@ namespace Neptune::Vulkan {
 		* @param[in] stage ShaderStage.
 		* @param[in] shader Shader.
 		*/
-		void AddShader(ShaderStage stage, SP<RHI::Shader> shader) override;
+		void AddShader(ShaderStage stage, const SP<RHI::Shader>& shader) override;
 
 		/**
 		* @brief Interface of Build GraphicPipeline.

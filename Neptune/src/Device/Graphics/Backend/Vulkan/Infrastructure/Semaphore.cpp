@@ -31,13 +31,13 @@ namespace Neptune::Vulkan {
 
         for (uint32_t i = 0; i < count; ++i)
         {
-            auto semaphore = CreateSP<Unit::Semaphore>();
+            auto semaphore = CreateUP<Unit::Semaphore>();
 
             semaphore->CreateSemaphore(GetContext().Get<IDevice>()->Handle(), semaphoreInfo);
 
-            m_Semaphores.emplace_back(semaphore);
-
             DEBUGUTILS_SETOBJECTNAME(*semaphore, ToString())
+
+            m_Semaphores.emplace_back(std::move(semaphore));
         }
     }
 

@@ -24,7 +24,7 @@ namespace Neptune::OpenGL {
 		return nullptr;
 	}
 
-	bool RenderTarget::CopyToRenderTarget(const RHI::RenderTarget* target)
+	bool RenderTarget::CopyToRenderTarget(const SP<RHI::RenderTarget>& target)
 	{
 		NEPTUNE_PROFILE_ZONE
 

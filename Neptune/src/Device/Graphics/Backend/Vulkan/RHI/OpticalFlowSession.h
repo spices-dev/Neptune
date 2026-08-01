@@ -54,21 +54,21 @@ namespace Neptune::Vulkan {
 		*
 		* @param[in] rt RenderTarget.
 		*/
-		void SetInputRenderTarget(SP<RHI::RenderTarget> rt) override;
+		void SetInputRenderTarget(const SP<RHI::RenderTarget>& rt) override;
 
 		/**
 		* @brief Interface of Set Reference RenderTarget.
 		*
 		* @param[in] rt RenderTarget.
 		*/
-		void SetReferenceRenderTarget(SP<RHI::RenderTarget> rt) override;
+		void SetReferenceRenderTarget(const SP<RHI::RenderTarget>& rt) override;
 
 		/**
 		* @brief Interface of Set FlowVector RenderTarget.
 		*
 		* @param[in] rt RenderTarget.
 		*/
-		void SetFlowVectorRenderTarget(SP<RHI::RenderTarget> rt) override;
+		void SetFlowVectorRenderTarget(const SP<RHI::RenderTarget>& rt) override;
 
 		/**
 		* @brief Interface of Create OpticalFlow Session.

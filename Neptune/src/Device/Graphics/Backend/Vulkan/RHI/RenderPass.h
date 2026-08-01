@@ -58,7 +58,7 @@ namespace Neptune::Vulkan {
 		* @param[in] renderTarget RenderTarget.
 		* @param[in] info RenderTargetAttachmentInfo.
 		*/
-		void AddColorAttachment(SP<RHI::RenderTarget> renderTarget, const RenderTargetAttachmentInfo& info) override;
+		void AddColorAttachment(const SP<RHI::RenderTarget>& renderTarget, const RenderTargetAttachmentInfo& info) override;
 
 		/**
 		* @brief Interface of Build RenderPass.

@@ -35,7 +35,7 @@ namespace Neptune::Vulkan {
 		descriptorSet->AddBinding(info, layoutBinding);
 	}
 
-	void DescriptorList::AddUniformTexture(uint32_t set, uint32_t binding, SP<RHI::RenderTarget> renderTarget)
+	void DescriptorList::AddUniformTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -63,7 +63,7 @@ namespace Neptune::Vulkan {
 		m_DescriptorSets[set]->UpdateBuffer(binding, data);
 	}
 
-	void DescriptorList::UpdateUniformTexture(uint32_t set, uint32_t binding, SP<RHI::RenderTarget> renderTarget)
+	void DescriptorList::UpdateUniformTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget)
 	{
 		NEPTUNE_PROFILE_ZONE
 

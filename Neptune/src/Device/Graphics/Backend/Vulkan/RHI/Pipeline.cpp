@@ -120,7 +120,7 @@ namespace Neptune::Vulkan {
 		}
 	}
 
-	void Pipeline::SetRenderPass(SP<RHI::RenderPass> renderPass)
+	void Pipeline::SetRenderPass(const SP<RHI::RenderPass>& renderPass)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -137,7 +137,7 @@ namespace Neptune::Vulkan {
 
 	}
 
-	void Pipeline::SetDescriptorList(SP<RHI::DescriptorList> descriptorList)
+	void Pipeline::SetDescriptorList(const SP<RHI::DescriptorList>& descriptorList)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -162,7 +162,7 @@ namespace Neptune::Vulkan {
 		m_RasterizationInfo.cullMode = ToVkCullModeFlags(mode);
 	}
 
-	void Pipeline::AddShader(ShaderStage stage, SP<RHI::Shader> shader)
+	void Pipeline::AddShader(ShaderStage stage, const SP<RHI::Shader>& shader)
 	{
 		NEPTUNE_PROFILE_ZONE
 

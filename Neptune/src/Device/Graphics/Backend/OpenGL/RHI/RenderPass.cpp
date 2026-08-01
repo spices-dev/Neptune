@@ -18,7 +18,7 @@ namespace Neptune::OpenGL {
 
 	}
 
-	void RenderPass::AddColorAttachment(SP<RHI::RenderTarget> renderTarget, const RenderTargetAttachmentInfo& info)
+	void RenderPass::AddColorAttachment(const SP<RHI::RenderTarget>& renderTarget, const RenderTargetAttachmentInfo& info)
 	{
 		NEPTUNE_PROFILE_ZONE
 

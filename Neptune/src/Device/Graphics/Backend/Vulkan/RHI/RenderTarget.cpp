@@ -46,7 +46,7 @@ namespace Neptune::Vulkan {
 		return m_DescriptorSet.Handle();
 	}
 
-	bool RenderTarget::CopyToRenderTarget(const RHI::RenderTarget* target)
+	bool RenderTarget::CopyToRenderTarget(const SP<RHI::RenderTarget>& target)
 	{
 		NEPTUNE_PROFILE_ZONE
 

@@ -42,14 +42,14 @@ namespace Neptune::RHI {
 		* 
 		* @param[in] renderPass RenderPass.
 		*/
-		virtual void SetRenderPass(SP<class RenderPass> renderPass) = 0;
+		virtual void SetRenderPass(const SP<class RenderPass>& renderPass) = 0;
 
 		/**
 		* @brief Interface of Set DescriptorList.
 		*
 		* @param[in] descriptorList DescriptorList.
 		*/
-		virtual void SetDescriptorList(SP<class DescriptorList> descriptorList) = 0;
+		virtual void SetDescriptorList(const SP<class DescriptorList>& descriptorList) = 0;
 
 		/**
 		* @brief Interface of Set VertexAttributeLayout.
@@ -69,7 +69,7 @@ namespace Neptune::RHI {
 		* @param[in] stage ShaderStage.
 		* @param[in] shader Shader.
 		*/
-		virtual void AddShader(ShaderStage stage, SP<class Shader> shader) = 0;
+		virtual void AddShader(ShaderStage stage, const SP<class Shader>& shader) = 0;
 
 		/**
 		* @brief Interface of Build GraphicPipeline.
@@ -104,14 +104,14 @@ namespace Neptune::RHI {
 		*
 		* @param[in] renderPass RenderPass.
 		*/
-		void SetRenderPass(SP<class RenderPass> renderPass) const { m_Impl->SetRenderPass(renderPass); }
+		void SetRenderPass(const SP<class RenderPass>& renderPass) const { m_Impl->SetRenderPass(renderPass); }
 
 		/**
 		* @brief Interface of Set DescriptorList.
 		*
 		* @param[in] descriptorList DescriptorList.
 		*/
-		void SetDescriptorList(SP<class DescriptorList> descriptorList) const { m_Impl->SetDescriptorList(descriptorList); }
+		void SetDescriptorList(const SP<class DescriptorList>& descriptorList) const { m_Impl->SetDescriptorList(descriptorList); }
 
 		/**
 		* @brief Interface of Set VertexAttributeLayout.
@@ -131,7 +131,7 @@ namespace Neptune::RHI {
 		* @param[in] stage ShaderStage.
 		* @param[in] shader Shader.
 		*/
-		void AddShader(ShaderStage stage, SP<class Shader> shader) const { m_Impl->AddShader(stage, shader); }
+		void AddShader(ShaderStage stage, const SP<class Shader>& shader) const { m_Impl->AddShader(stage, shader); }
 
 		/**
 		* @brief Interface of Build GraphicPipeline.

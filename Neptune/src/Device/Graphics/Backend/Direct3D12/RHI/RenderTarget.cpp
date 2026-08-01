@@ -24,7 +24,7 @@ namespace Neptune::Direct3D12 {
 		return nullptr;
 	}
 
-	bool RenderTarget::CopyToRenderTarget(const RHI::RenderTarget* target)
+	bool RenderTarget::CopyToRenderTarget(const SP<RHI::RenderTarget>& target)
 	{
 		NEPTUNE_PROFILE_ZONE
 

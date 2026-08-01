@@ -30,6 +30,7 @@ namespace Neptune::Vulkan {
 		NEPTUNE_PROFILE_ZONE
 
 		auto physicalDevice = GetContext().Get<IPhysicalDevice>();
+
 		auto& property = physicalDevice->QuerySwapChainProperty();
 
         VkSwapchainCreateInfoKHR                 createInfo{};
@@ -68,16 +69,20 @@ namespace Neptune::Vulkan {
 		createInfo.clipped                     = VK_TRUE;
 		createInfo.oldSwapchain                = VK_NULL_HANDLE;
 
-		m_SwapChain = CreateSP<Unit::SwapChain>();
+		m_SwapChain = CreateUP<Unit::SwapChain>();
+
 		m_SwapChain->CreateSwapchain(GetContext().Get<IDevice>()->Handle(), createInfo);
+
 		DEBUGUTILS_SETOBJECTNAME(*m_SwapChain, ToString())
 
 		uint32_t imageCount = count;
+
 		auto images = m_SwapChain->GetSwapchainImages(imageCount);
 
 		for (size_t i = 0; i < count; ++i)
 		{
 			auto swapChainImage = CreateSP<Resource::Image>(GetContext());
+
 			swapChainImage->SetImage(images[i]);
 
 			m_SwapChainImage.emplace_back(swapChainImage);

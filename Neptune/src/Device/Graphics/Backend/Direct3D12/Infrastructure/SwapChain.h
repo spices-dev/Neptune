@@ -78,7 +78,7 @@ namespace Neptune::Direct3D12 {
 
 	private:
 
-		SP<Unit::SwapChain> m_SwapChain;           // @brief This SwapChain.
+		UP<Unit::SwapChain> m_SwapChain;           // @brief This SwapChain.
 		BOOL m_AllowTearing = FALSE;               // @brief Feature of AllowTearing.
 
 	};

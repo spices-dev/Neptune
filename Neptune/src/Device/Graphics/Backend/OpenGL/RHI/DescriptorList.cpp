@@ -18,7 +18,7 @@ namespace Neptune::OpenGL {
 
 	}
 
-	void DescriptorList::AddUniformTexture(uint32_t set, uint32_t binding, SP<RHI::RenderTarget> renderTarget)
+	void DescriptorList::AddUniformTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -30,7 +30,7 @@ namespace Neptune::OpenGL {
 
 	}
 
-	void DescriptorList::UpdateUniformTexture(uint32_t set, uint32_t binding, SP<RHI::RenderTarget> renderTarget)
+	void DescriptorList::UpdateUniformTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget)
 	{
 		NEPTUNE_PROFILE_ZONE
 

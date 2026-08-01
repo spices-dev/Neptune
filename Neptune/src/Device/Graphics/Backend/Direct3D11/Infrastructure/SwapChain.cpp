@@ -48,7 +48,7 @@ namespace Neptune::Direct3D11 {
 		desc.SwapEffect                    = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 		desc.Stereo                        = false;
 
-        m_SwapChain = CreateSP<Unit::SwapChain>();
+        m_SwapChain = CreateUP<Unit::SwapChain>();
 
 		m_SwapChain->CreateSwapChain(factory, GetContext().Get<IDevice>()->Handle(), desc, hwnd);
 

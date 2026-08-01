@@ -46,7 +46,7 @@ namespace Neptune::RHI {
 		* @param[in] binding .
 		* @param[in] renderTarget RenderTarget.
 		*/
-		virtual void AddUniformTexture(uint32_t set, uint32_t binding, SP<class RenderTarget> renderTarget) = 0;
+		virtual void AddUniformTexture(uint32_t set, uint32_t binding, const SP<class RenderTarget>& renderTarget) = 0;
 
 		/**
 		* @brief Interface of Update UniformBuffer.
@@ -64,7 +64,7 @@ namespace Neptune::RHI {
 		* @param[in] binding .
 		* @param[in] renderTarget RenderTarget.
 		*/
-		virtual void UpdateUniformTexture(uint32_t set, uint32_t binding, SP<class RenderTarget> renderTarget) = 0;
+		virtual void UpdateUniformTexture(uint32_t set, uint32_t binding, const SP<class RenderTarget>& renderTarget) = 0;
 
 		/**
 		* @brief Interface of Combine Shared DescriptorList.
@@ -126,7 +126,7 @@ namespace Neptune::RHI {
 		* @param[in] binding .
 		* @param[in] renderTarget RenderTarget.
 		*/
-		void AddUniformTexture(uint32_t set, uint32_t binding, SP<class RenderTarget> renderTarget) const { m_Impl->AddUniformTexture(set, binding, renderTarget); }
+		void AddUniformTexture(uint32_t set, uint32_t binding, const SP<class RenderTarget>& renderTarget) const { m_Impl->AddUniformTexture(set, binding, renderTarget); }
 
 		/**
 		* @brief Interface of Update UniformBuffer.
@@ -144,7 +144,7 @@ namespace Neptune::RHI {
 		* @param[in] binding .
 		* @param[in] renderTarget RenderTarget.
 		*/
-		void UpdateUniformTexture(uint32_t set, uint32_t binding, SP<class RenderTarget> renderTarget) const { m_Impl->UpdateUniformTexture(set, binding, renderTarget); }
+		void UpdateUniformTexture(uint32_t set, uint32_t binding, const SP<class RenderTarget>& renderTarget) const { m_Impl->UpdateUniformTexture(set, binding, renderTarget); }
 
 		/**
 		* @brief Interface of Combine Shared DescriptorList.

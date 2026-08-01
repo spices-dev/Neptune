@@ -57,7 +57,7 @@ namespace Neptune::Vulkan {
 		*
 		* @return Returns Unit Handle Interface.
 		*/
-		const SP<Unit::CommandBuffer> IHandle(uint32_t index = 0) const { return m_CommandBuffers[index]; }
+		const SP<Unit::CommandBuffer>& IHandle(uint32_t index = 0) const { return m_CommandBuffers[index]; }
 
 		/**
 		* @brief Begin CommandBuffer.

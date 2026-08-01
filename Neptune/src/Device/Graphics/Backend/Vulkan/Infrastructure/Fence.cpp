@@ -32,13 +32,13 @@ namespace Neptune::Vulkan {
 
         for (uint32_t i = 0; i < count; ++i)
         {
-            auto fence = CreateSP<Unit::Fence>();
+            auto fence = CreateUP<Unit::Fence>();
 
             fence->CreateFence(GetContext().Get<IDevice>()->Handle(), fenceInfo);
  
-            m_Fences.emplace_back(fence);
-
             DEBUGUTILS_SETOBJECTNAME(*fence, ToString())
+
+            m_Fences.emplace_back(std::move(fence));
         }
     }
 

@@ -31,7 +31,7 @@ namespace Neptune::Vulkan {
 		);
 	}
 
-	void OpticalFlowSession::SetInputRenderTarget(SP<RHI::RenderTarget> rt)
+	void OpticalFlowSession::SetInputRenderTarget(const SP<RHI::RenderTarget>& rt)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -40,7 +40,7 @@ namespace Neptune::Vulkan {
 		m_SessionImages[VK_OPTICAL_FLOW_SESSION_BINDING_POINT_INPUT_NV] = rhi->IHandle().get();
 	}
 
-	void OpticalFlowSession::SetReferenceRenderTarget(SP<RHI::RenderTarget> rt)
+	void OpticalFlowSession::SetReferenceRenderTarget(const SP<RHI::RenderTarget>& rt)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -49,7 +49,7 @@ namespace Neptune::Vulkan {
 		m_SessionImages[VK_OPTICAL_FLOW_SESSION_BINDING_POINT_REFERENCE_NV] = rhi->IHandle().get();
 	}
 
-	void OpticalFlowSession::SetFlowVectorRenderTarget(SP<RHI::RenderTarget> rt)
+	void OpticalFlowSession::SetFlowVectorRenderTarget(const SP<RHI::RenderTarget>& rt)
 	{
 		NEPTUNE_PROFILE_ZONE
 

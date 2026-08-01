@@ -18,8 +18,8 @@ namespace Neptune {
 		m_RHIResource->CreateRenderTarget(info);
 	}
 
-	bool RenderTarget::CopyToRenderTarget(SP<RenderTarget> target) const
+	bool RenderTarget::CopyToRenderTarget(const SP<RenderTarget>& target) const
 	{
-		return m_RHIResource->CopyToRenderTarget(target->GetRHIResource().get());
+		return m_RHIResource->CopyToRenderTarget(target->GetRHIResource());
 	}
 }
