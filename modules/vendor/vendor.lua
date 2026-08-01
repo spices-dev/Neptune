@@ -26,6 +26,7 @@ local module                          = {
     ["ImGuizmo"]                      = loadfile(current_dir .. "ImGuizmo.lua")(),                                     -- Third Party: ImGuizmo
     ["tracy"]                         = loadfile(current_dir .. "tracy.lua")(),                                        -- Third Party: tracy
     ["IconFontCppHeaders"]            = loadfile(current_dir .. "IconFontCppHeaders.lua")(),                           -- Third Party: IconFontCppHeaders
+    ["Direct3D11"]                    = loadfile(current_dir .. "Direct3D11.lua")(),                                   -- Third Party: Direct3D11
     ["DirectX12AgilitySDK"]           = loadfile(current_dir .. "DirectX12AgilitySDK.lua")(),                          -- Third Party: DirectX12AgilitySDK
     ["DirectX_Headers"]               = loadfile(current_dir .. "DirectX-Headers.lua")(),                              -- Third Party: irectX-Headers
     ["WinPixEventRuntime"]            = loadfile(current_dir .. "WinPixEventRuntime.lua")(),                           -- Third Party: WinPixEventRuntime

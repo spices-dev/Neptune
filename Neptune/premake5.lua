@@ -233,7 +233,9 @@ solution.DefineCppStaticLibrary("Neptune", function()
 			-- Windows Specific Solution Dependency.
 			links
 			{
-				vendor.Vulkan.libraries,                                   -- Dependency: vulkan
+				vendor.Vulkan.libraries,                                   -- Dependency: Vulkan
+				vendor.Direct3D11.libraries,                               -- Dependency: Direct3D11
+				vendor.DirectX12AgilitySDK.libraries,                      -- Dependency: DirectX12AgilitySDK
 				vendor.WinPixEventRuntime.libraries,                       -- Dependency: WinPixEventRuntime
 				vendor.ffmpeg.libraries,                                   -- Dependency: ffmpeg
 

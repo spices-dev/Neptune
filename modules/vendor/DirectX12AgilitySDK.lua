@@ -19,7 +19,17 @@ if os.target() == "windows" then
     module.library_dirs = {}
 
     -- Library Dependencies
-    module.libraries = {}
+    module.libraries = {
+        "dxgi",                                                                                     -- Library: dxgi
+        "d3d12",                                                                                    -- Library: d3d12
+        "d3dcompiler",                                                                              -- Library: d3dcompiler
+    }
+
+    -- Dynamic Library Dependencies
+    module.dynamic_libraries = {
+        solution_root .. "/Neptune/vendor/Microsoft.Direct3D.D3D12/build/native/bin/x64/D3D12Core.dll",         -- Library: D3D12Core
+        solution_root .. "/Neptune/vendor/Microsoft.Direct3D.D3D12/build/native/bin/x64/d3d12SDKLayers.dll",    -- Library: d3d12SDKLayers
+    }
 
 end
 

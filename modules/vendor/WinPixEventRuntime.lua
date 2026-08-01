@@ -22,10 +22,6 @@ if os.target() == "windows" then
 
     -- Library Dependencies
     module.libraries = {
-        "dxgi",                                                                                     -- Library: dxgi
-        "d3d11",                                                                                    -- Library: d3d11
-        "d3dcompiler",                                                                              -- Library: d3dcompiler
-        "d3d12",                                                                                    -- Library: d3d12
         "WinPixEventRuntime",                                                                       -- Library: WinPixEventRuntime
     }
 

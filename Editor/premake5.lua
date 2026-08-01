@@ -49,7 +49,8 @@ solution.DefineCppExecutable("Editor", function()
 
 		-- Windows Specific DLLs.
 		files 
-		{ 
+		{
+			vendor.DirectX12AgilitySDK.dynamic_libraries,         -- DLL: DirectX12AgilitySDK
 			vendor.WinPixEventRuntime.dynamic_libraries,          -- DLL: WinPixEventRuntime
 			vendor.ffmpeg.dynamic_libraries,                      -- DLL: ffmpeg
 		}
