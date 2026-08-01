@@ -20,8 +20,6 @@ namespace Neptune::Editor {
 
 		/**
 		* @brief Constructor Function.
-		* 
-		* @param[in] path Video File Path.
 		*/
 		RHICapturer() = default;
 		

@@ -33,6 +33,8 @@ end
 module.GetGraphicsFeatures = function()
 
     local list = {
+        "NP_GRAPHICS_OPENGL",                              -- Graphics: OpenGL
+        "NP_GRAPHICS_VULKAN",                              -- Graphics: Vulkan
         "NP_GRAPHICS_METAL",                               -- Graphics: Metal
     }
 

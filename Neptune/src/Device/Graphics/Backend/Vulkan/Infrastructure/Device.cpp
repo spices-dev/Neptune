@@ -96,9 +96,13 @@ namespace Neptune::Vulkan {
 		faultFeatures.sType                                     = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FAULT_FEATURES_EXT;
 		faultFeatures.pNext                                     = &descriptorIndexingFeatures;
 
+    	VkPhysicalDeviceBufferDeviceAddressFeatures               bufferDeviceAddressFeatures {};
+    	bufferDeviceAddressFeatures.sType                       = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BUFFER_DEVICE_ADDRESS_FEATURES;
+    	bufferDeviceAddressFeatures.pNext                       = &faultFeatures;
+    	
 		VkPhysicalDeviceFeatures2                                 deviceFeatures{};
 		deviceFeatures.sType                                    = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
-		deviceFeatures.pNext                                    = &faultFeatures;
+		deviceFeatures.pNext                                    = &bufferDeviceAddressFeatures;
 
 		vkGetPhysicalDeviceFeatures2(physicalDevice->Handle(), &deviceFeatures);
 
