@@ -18,10 +18,10 @@ namespace Neptune::Vulkan::Unit {
 
 		if (!m_Handle) return;
 
-		vkDestroyShaderModule(m_Device, m_Handle, GetAllocator());
+		vkDestroyShaderEXT(m_Device, m_Handle, GetAllocator());
 	}
 
-	void Shader::CreateShader(VkDevice device, const VkShaderModuleCreateInfo& info)
+	void Shader::CreateShader(VkDevice device, const VkShaderCreateInfoEXT& info)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateShaderModule(device, &info, GetAllocator(), &m_Handle))
+		VK_CHECK(vkCreateShadersEXT(device, 1, &info, GetAllocator(), &m_Handle))
 	}
 
 }

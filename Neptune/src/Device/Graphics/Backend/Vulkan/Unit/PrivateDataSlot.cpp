@@ -1,0 +1,36 @@
+﻿/**
+* @file PrivateDataSlot.cpp.
+* @brief The PrivateDataSlot Class Implementation.
+* @author Spices.
+*/
+
+#include "Pchheader.h"
+
+#ifdef NP_GRAPHICS_VULKAN
+
+#include "PrivateDataSlot.h"
+
+namespace Neptune::Vulkan::Unit {
+
+    PrivateDataSlot::~PrivateDataSlot()
+    {
+        NEPTUNE_PROFILE_ZONE
+
+        if (!m_Handle) return;
+
+        vkDestroyPrivateDataSlot(m_Device, m_Handle, GetAllocator());
+    }
+
+    void PrivateDataSlot::CreatePrivateDataSlot(VkDevice device, const VkPrivateDataSlotCreateInfo& info)
+    {
+        NEPTUNE_PROFILE_ZONE
+
+        assert(device);
+
+        m_Device = device;
+
+        VK_CHECK(vkCreatePrivateDataSlot(device, &info, GetAllocator(), &m_Handle))
+    }
+}
+
+#endif

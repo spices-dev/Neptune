@@ -23,7 +23,7 @@ namespace Neptune::Vulkan {
 		info.codeSize               = source.size();
 		info.pCode                  = reinterpret_cast<const uint32_t*>(source.data());
 
-		m_Shader.CreateShader(GetContext().Get<IDevice>()->Handle(), info);
+		m_Shader.CreateShaderModule(GetContext().Get<IDevice>()->Handle(), info);
 	}
 
 	void Shader::SetName(const std::string& name)

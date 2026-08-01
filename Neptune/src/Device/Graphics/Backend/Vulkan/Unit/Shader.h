@@ -17,7 +17,7 @@ namespace Neptune::Vulkan::Unit {
 	* @brief Vulkan::Unit::Shader Class.
 	* This class defines the Vulkan::Unit::Shader behaves.
 	*/
-	class Shader : public Unit<VkShaderModule, VkObjectType::VK_OBJECT_TYPE_SHADER_MODULE>
+	class Shader : public Unit<VkShaderEXT, VkObjectType::VK_OBJECT_TYPE_SHADER_EXT>
 	{
 	public:
 
@@ -36,12 +36,12 @@ namespace Neptune::Vulkan::Unit {
 		~Shader() override;
 
 		/**
-		* @brief Create Semaphore.
+		* @brief Create Shader.
 		*
 		* @param[in] device VkDevice.
-		* @param[in] info VkShaderModuleCreateInfo.
+		* @param[in] info VkShaderCreateInfoEXT.
 		*/
-		void CreateShader(VkDevice device, const VkShaderModuleCreateInfo& info);
+		void CreateShader(VkDevice device, const VkShaderCreateInfoEXT& info);
 
 	private:
 

@@ -10,7 +10,7 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
-#include "Device/Graphics/Backend/Vulkan/Unit/Shader.h"
+#include "Device/Graphics/Backend/Vulkan/Unit/ShaderModule.h"
 #include "Device/Graphics/Frontend/RHI/Shader.h"
 
 namespace Neptune::Vulkan {
@@ -58,11 +58,11 @@ namespace Neptune::Vulkan {
 		*
 		* @return Returns Unit Handle.
 		*/
-		const Unit::Shader::Handle& Handle() const { return m_Shader.GetHandle(); }
+		const Unit::ShaderModule::Handle& Handle() const { return m_Shader.GetHandle(); }
 
 	private:
 
-		Unit::Shader m_Shader;          // @brief This Shader.
+		Unit::ShaderModule m_Shader;          // @brief This Shader.
 	};
 }
 
