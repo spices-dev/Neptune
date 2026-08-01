@@ -34,6 +34,8 @@ namespace Neptune::OpenGL::GLFW {
 
     void WindowContext::Create(void* window)
     {
+        NEPTUNE_PROFILE_ZONE
+
         m_Window = window ? window : CreateWindow();
 
         MakeContextCurrent();
@@ -73,7 +75,9 @@ namespace Neptune::OpenGL::GLFW {
 #endif
 
         auto shared = GetContext().Has<IWindowContext>() ? static_cast<GLFWwindow*>(GetContext().Get<IWindowContext>()->Handle()) : nullptr;
+
         auto window = glfwCreateWindow(1, 1, "OpenGLContext", nullptr, shared);
+
         if (!window)
         {
             NEPTUNE_CORE_CRITICAL("Failed to Create glfwWindow")

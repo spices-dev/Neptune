@@ -39,7 +39,7 @@ namespace Neptune {
         m_CoreLogger = CreateUP<spdlog::logger>("Engine", begin(sinks), end(sinks));
         m_CoreLogger->set_level(spdlog::level::trace);
 
-        m_ClientLogger = CreateUP<spdlog::logger>("Game", begin(sinks), end(sinks));
+        m_ClientLogger = CreateUP<spdlog::logger>("Client", begin(sinks), end(sinks));
         m_ClientLogger->set_level(spdlog::level::trace);
 
         SetInitialized(true);
@@ -62,9 +62,9 @@ namespace Neptune {
     void LogImpl::CoreError     (const std::string& msg) const { m_CoreLogger->error   (msg); }
     void LogImpl::CoreCritical  (const std::string& msg) const { m_CoreLogger->critical(msg); }
 
-    void LogImpl::ClientTrace   (const std::string& msg) const { m_CoreLogger->trace   (msg); }
-    void LogImpl::ClientInfo    (const std::string& msg) const { m_CoreLogger->info    (msg); }
-    void LogImpl::ClientWarn    (const std::string& msg) const { m_CoreLogger->warn    (msg); }
-    void LogImpl::ClientError   (const std::string& msg) const { m_CoreLogger->error   (msg); }
-    void LogImpl::ClientCritical(const std::string& msg) const { m_CoreLogger->critical(msg); }
+    void LogImpl::ClientTrace   (const std::string& msg) const { m_ClientLogger->trace   (msg); }
+    void LogImpl::ClientInfo    (const std::string& msg) const { m_ClientLogger->info    (msg); }
+    void LogImpl::ClientWarn    (const std::string& msg) const { m_ClientLogger->warn    (msg); }
+    void LogImpl::ClientError   (const std::string& msg) const { m_ClientLogger->error   (msg); }
+    void LogImpl::ClientCritical(const std::string& msg) const { m_ClientLogger->critical(msg); }
 }

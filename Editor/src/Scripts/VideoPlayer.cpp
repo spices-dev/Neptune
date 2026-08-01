@@ -5,6 +5,7 @@
 */
 
 #include "VideoPlayer.h"
+
 #include <Feature/Video/Demuxer.h>
 #include <Feature/Video/Decoder.h>
 #include <Resource/ResourcePool.h>
