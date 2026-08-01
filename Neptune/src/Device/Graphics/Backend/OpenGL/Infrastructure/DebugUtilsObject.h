@@ -90,6 +90,8 @@ namespace Neptune::OpenGL {
 	{
 		NEPTUNE_PROFILE_ZONE
 
+		if (!unit.GetHandle()) return;
+
 		glObjectLabel(Unit::GetEUnit(), unit.GetHandle(), caption.size(), caption.c_str());
 	}
 	
@@ -97,6 +99,8 @@ namespace Neptune::OpenGL {
 	inline void DebugUtilsObject::SetObjectName<Unit::Sync>(const Unit::Sync& unit, const std::string& caption)
 	{
 		NEPTUNE_PROFILE_ZONE
+
+		if (!unit.GetHandle()) return;
 
 		glObjectPtrLabel(unit.GetHandle(), static_cast<GLsizei>(caption.size()), caption.c_str());
 	}

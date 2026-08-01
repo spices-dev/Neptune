@@ -16,6 +16,8 @@ namespace Neptune::OpenGL::Unit {
 	{
 		NEPTUNE_PROFILE_ZONE
 
+		if (!m_Handle) return;
+
 		glDeleteRenderbuffers(1, &m_Handle);
 	}
 
