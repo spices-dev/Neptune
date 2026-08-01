@@ -21,6 +21,14 @@ namespace Neptune::Vulkan::Unit {
         vkDestroyDebugUtilsMessengerEXT(m_Instance, m_Handle, GetAllocator());
     }
 
+    void DebugUtilsMessenger::SetFunctor(PFN_vkCreateDebugUtilsMessengerEXT create, PFN_vkDestroyDebugUtilsMessengerEXT destroy)
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        vkCreateDebugUtilsMessengerEXT  = create;
+        vkDestroyDebugUtilsMessengerEXT = destroy;
+    }
+    
     void DebugUtilsMessenger::CreateDebugUtilsMessenger(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT& info)
     {
         NEPTUNE_PROFILE_ZONE

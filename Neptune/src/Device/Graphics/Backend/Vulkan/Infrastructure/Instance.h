@@ -11,6 +11,7 @@
 #include "Core/Core.h"
 #include "Infrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/Instance.h"
+#include "Device/Graphics/Backend/Vulkan/Unit/DebugUtilsMessenger.h"
 
 #include <vector>
 
@@ -38,7 +39,7 @@ namespace Neptune::Vulkan {
 		/**
 		* @brief Destructor Function.
 		*/
-		~Instance() override;
+		~Instance() override = default;
 
 		/**
 		* @brief Get Unit Handle.
@@ -46,13 +47,6 @@ namespace Neptune::Vulkan {
 		* @return Returns Unit Handle.
 		*/
 		const Unit::Instance::Handle& Handle() const { return m_Instance.GetHandle(); }
-
-		/**
-		* @brief Get VkDebugUtilsMessengerEXT.
-		*
-		* @return Returns VkDebugUtilsMessengerEXT.
-		*/
-		const VkDebugUtilsMessengerEXT& DebugMessenger() const { return m_DebugMessenger; }
 
 	private:
 
@@ -81,23 +75,18 @@ namespace Neptune::Vulkan {
 		*/
 		bool CheckLayerRequirementsSatisfied();
 
-		/**
-		* @brief Set DebugCallback.
-		*/
-		void SetVulkanDebugCallbackFuncPointer();
-
-		/**
-		* @brief Fill VkDebugUtilsMessengerCreateInfoEXT.
-		*/
-		void FillDebugMessengerCreateInfo();
-
 	private:
 
 		Unit::Instance m_Instance;                                             // @brief This Instance.
 		std::vector<const char*> m_ExtensionProperties;                        // @brief Extensions.
 		std::vector<const char*> m_LayerProperties;                            // @brief Layers.
-		VkDebugUtilsMessengerEXT m_DebugMessenger{};                           // @brief VkDebugUtilsMessengerEXT.
-		VkDebugUtilsMessengerCreateInfoEXT m_DebugMessengerCreateInfo{};       // @brief VkDebugUtilsMessengerCreateInfoEXT.
+		
+#ifdef NEPTUNE_DEBUG
+		
+		Unit::DebugUtilsMessenger m_DebugMessenger;                            // @brief DebugUtilsMessenger.
+		
+#endif
+		
 	};
 
 }

@@ -36,6 +36,14 @@ namespace Neptune::Vulkan::Unit {
         ~DebugUtilsMessenger() override;
 
         /**
+        * @brief Set Functor.
+        * 
+        * @param[in] create PFN_vkCreateDebugUtilsMessengerEXT.
+        * @param[in] destroy PFN_vkDestroyDebugUtilsMessengerEXT.
+        */
+        void SetFunctor(PFN_vkCreateDebugUtilsMessengerEXT create, PFN_vkDestroyDebugUtilsMessengerEXT destroy);
+        
+        /**
         * @brief Create DebugUtilsMessenger.
         *
         * @param[in] instance VkInstance.
@@ -45,7 +53,9 @@ namespace Neptune::Vulkan::Unit {
 
     private:
 
-        VkInstance m_Instance = VK_NULL_HANDLE;       // @brief VkInstance.
+        VkInstance                            m_Instance = VK_NULL_HANDLE;       // @brief VkInstance.
+        PFN_vkCreateDebugUtilsMessengerEXT    vkCreateDebugUtilsMessengerEXT;    // @brief PFN_vkCreateDebugUtilsMessengerEXT
+        PFN_vkDestroyDebugUtilsMessengerEXT   vkDestroyDebugUtilsMessengerEXT;   // @brief PFN_vkDestroyDebugUtilsMessengerEXT
     };
 }
 

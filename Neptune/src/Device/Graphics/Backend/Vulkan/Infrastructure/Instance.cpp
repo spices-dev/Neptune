@@ -22,22 +22,51 @@ namespace Neptune::Vulkan {
         Create();
     }
 
-    Instance::~Instance()
-    {
-		NEPTUNE_PROFILE_ZONE
-
-#ifdef NEPTUNE_DEBUG
-
-		GetContext().Get<IFunctions>()->vkDestroyDebugUtilsMessengerEXT(Handle(), DebugMessenger(), nullptr);
-
-#endif
-
-    }
-
     void Instance::Create()
     {
 		NEPTUNE_PROFILE_ZONE
 
+    	VkDebugUtilsMessengerCreateInfoEXT         debugInfo {};
+    	debugInfo.sType                          = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+    	debugInfo.messageSeverity                = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT 
+									           	 | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT 
+									           	 | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT   
+									           	 | VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT;
+    	debugInfo.messageType                    = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT      
+									           	 | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT   
+									           	 | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+    	debugInfo.pfnUserCallback                = DebugCallback;
+    	debugInfo.pUserData                      = nullptr;
+    	debugInfo.pNext                          = nullptr;
+    	
+#ifdef NEPTUNE_DEBUG
+    	
+    	std::vector<VkValidationFeatureEnableEXT> validationFeatureEnable;
+
+#if 0
+
+    	validationFeatureEnable.push_back(VK_VALIDATION_FEATURE_ENABLE_DEBUG_PRINTF_EXT);
+	
+#if 0
+
+    	validationFeatureEnable.push_back(VK_VALIDATION_FEATURE_ENABLE_GPU_ASSISTED_EXT);
+    	validationFeatureEnable.push_back(VK_VALIDATION_FEATURE_ENABLE_GPU_ASSISTED_RESERVE_BINDING_SLOT_EXT);
+    	validationFeatureEnable.push_back(VK_VALIDATION_FEATURE_ENABLE_BEST_PRACTICES_EXT);
+    	validationFeatureEnable.push_back(VK_VALIDATION_FEATURE_ENABLE_SYNCHRONIZATION_VALIDATION_EXT);
+
+#endif
+
+#endif
+
+    	VkValidationFeaturesEXT								  validationFeatures{};
+    	validationFeatures.sType						    = VK_STRUCTURE_TYPE_VALIDATION_FEATURES_EXT;
+    	validationFeatures.enabledValidationFeatureCount    = static_cast<uint32_t>(validationFeatureEnable.size());
+    	validationFeatures.pEnabledValidationFeatures       = validationFeatureEnable.data();
+
+    	debugInfo.pNext                                     = &validationFeatures;
+
+#endif
+    	
         VkApplicationInfo                          appInfo {};
 		appInfo.sType                            = VK_STRUCTURE_TYPE_APPLICATION_INFO;
 		appInfo.pApplicationName                 = "Neptune";
@@ -76,45 +105,25 @@ namespace Neptune::Vulkan {
 
 		createInfo.enabledLayerCount             = static_cast<uint32_t>(m_LayerProperties.size());
 		createInfo.ppEnabledLayerNames           = m_LayerProperties.data();
-
-		FillDebugMessengerCreateInfo();
-
-		createInfo.pNext = &m_DebugMessengerCreateInfo;
-
-		std::vector<VkValidationFeatureEnableEXT> validationFeatureEnable;
-
-#if 0
-
-		validationFeatureEnable.push_back(VK_VALIDATION_FEATURE_ENABLE_DEBUG_PRINTF_EXT);
-	
-#if 0
-
-		validationFeatureEnable.push_back(VK_VALIDATION_FEATURE_ENABLE_GPU_ASSISTED_EXT);
-		validationFeatureEnable.push_back(VK_VALIDATION_FEATURE_ENABLE_GPU_ASSISTED_RESERVE_BINDING_SLOT_EXT);
-		validationFeatureEnable.push_back(VK_VALIDATION_FEATURE_ENABLE_BEST_PRACTICES_EXT);
-		validationFeatureEnable.push_back(VK_VALIDATION_FEATURE_ENABLE_SYNCHRONIZATION_VALIDATION_EXT);
-
-#endif
-
-#endif
-
-#ifdef NEPTUNE_DEBUG
-
-		VkValidationFeaturesEXT								  validationFeatures{};
-		validationFeatures.sType						    = VK_STRUCTURE_TYPE_VALIDATION_FEATURES_EXT;
-		validationFeatures.enabledValidationFeatureCount    = static_cast<uint32_t>(validationFeatureEnable.size());
-		validationFeatures.pEnabledValidationFeatures       = validationFeatureEnable.data();
-
-		m_DebugMessengerCreateInfo.pNext                    = &validationFeatures;
-
-#endif
+		createInfo.pNext                         = &debugInfo;
 
 		m_Instance.CreateInstance(createInfo);
 
 		GetContext().Registry<IFunctions>();
+
 		GetContext().Get<IFunctions>()->Init(Handle());
 
-		SetVulkanDebugCallbackFuncPointer();
+#ifdef NEPTUNE_DEBUG
+    	
+    	m_DebugMessenger.SetFunctor(
+			GetContext().Get<IFunctions>()->vkCreateDebugUtilsMessengerEXT,
+			GetContext().Get<IFunctions>()->vkDestroyDebugUtilsMessengerEXT
+		);
+    	
+    	m_DebugMessenger.CreateDebugUtilsMessenger(Handle(), debugInfo);
+    	
+#endif
+
     }
 
     void Instance::GetExtensionRequirements()
@@ -206,36 +215,6 @@ namespace Neptune::Vulkan {
 		return requiredLayers.empty();
 	}
 
-	void Instance::SetVulkanDebugCallbackFuncPointer()
-	{
-		NEPTUNE_PROFILE_ZONE
-
-#ifdef NEPTUNE_DEBUG
-
-		GetContext().Get<IFunctions>()->vkCreateDebugUtilsMessengerEXT(Handle(), &m_DebugMessengerCreateInfo, nullptr, &m_DebugMessenger);
-
-#endif
-
-	}
-
-	void Instance::FillDebugMessengerCreateInfo()
-	{
-		NEPTUNE_PROFILE_ZONE
-
-		m_DebugMessengerCreateInfo                     = VkDebugUtilsMessengerCreateInfoEXT {};
-		m_DebugMessengerCreateInfo.sType               = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
-		m_DebugMessengerCreateInfo.messageSeverity     = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT 
-			                                           | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT 
-			                                           | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT   
-			                                           | VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT;
-		m_DebugMessengerCreateInfo.messageType         = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT      
-			                                           | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT   
-			                                           | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
-		m_DebugMessengerCreateInfo.pfnUserCallback     = DebugCallback;
-		m_DebugMessengerCreateInfo.pUserData           = nullptr;
-		m_DebugMessengerCreateInfo.pNext               = nullptr;
-
-	}
 }
 
 #endif
