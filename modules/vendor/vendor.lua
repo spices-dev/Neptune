@@ -32,6 +32,7 @@ local module                          = {
     ["WinPixEventRuntime"]            = loadfile(current_dir .. "WinPixEventRuntime.lua")(),                           -- Third Party: WinPixEventRuntime
     ["AdaptiveCpp"]                   = loadfile(current_dir .. "AdaptiveCpp.lua")(),                                  -- Third Party: AdaptiveCpp
     ["ffmpeg"]                        = loadfile(current_dir .. "ffmpeg.lua")(),                                       -- Third Party: ffmpeg
+    ["RenderDoc"]                     = loadfile(current_dir .. "RenderDoc.lua")(),                                    -- Third Party: RenderDoc
     ["googletest"]                    = loadfile(current_dir .. "googletest.lua")(),                                   -- Third Party: googletest
 }
 

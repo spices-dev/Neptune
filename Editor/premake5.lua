@@ -39,7 +39,7 @@ solution.DefineCppExecutable("Editor", function()
 	solution.Uses("Neptune")                                       -- Dependency: Neptune
 
 	-- Configuration: Dlls.
-	filter "files:**.dll"
+	filter "files:**.dll or **.so"
 
 		-- Build Action: Copy
         buildaction "Copy"
@@ -53,6 +53,7 @@ solution.DefineCppExecutable("Editor", function()
 			vendor.DirectX12AgilitySDK.dynamic_libraries,         -- DLL: DirectX12AgilitySDK
 			vendor.WinPixEventRuntime.dynamic_libraries,          -- DLL: WinPixEventRuntime
 			vendor.ffmpeg.dynamic_libraries,                      -- DLL: ffmpeg
+			vendor.RenderDoc.dynamic_libraries,                   -- DLL: RenderDoc
 		}
 
 		-- Windows Specific Additional Include Folder.
@@ -80,7 +81,9 @@ solution.DefineCppExecutable("Editor", function()
 
 		-- Linux Specific DLLs.
 		files 
-		{}
+		{
+			vendor.RenderDoc.dynamic_libraries,                   -- DLL: RenderDoc
+		}
 
 		-- Linux Specific Additional Include Folder.
 		includedirs
@@ -146,7 +149,7 @@ solution.DefineCppExecutable("Editor", function()
 		-- Debug Specific Solution Macro Definitions.
 		defines
 		{
-			platform.GetProfilerFeatures(),
+			platform.GetDebuggerFeatures(),
 		}
 
 		-- Platform: Emscripten

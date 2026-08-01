@@ -6,7 +6,7 @@
 
 #pragma once
 
-#if defined(NP_PROFILE_TRACY) && defined(NP_COMPUTE_CUDA)
+#if defined(NP_PROFILER_TRACY) && defined(NP_COMPUTE_CUDA)
 
 #include <tracy/TracyCUDA.hpp>
 

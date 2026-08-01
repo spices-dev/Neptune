@@ -6,7 +6,7 @@
 
 #pragma once
 
-#if NP_PROFILE_TRACY
+#ifdef NP_PROFILER_TRACY
 
 #ifdef NP_GRAPHICS_OPENCL_CORE
 #include "Debugger/Profiler/Tracy/ProfilerImplOpenCL.h"

@@ -21,15 +21,7 @@ local sub_platform  = {
 -- @return Returns Compute Feature Lists.
 module.GetComputeFeatures = function()
 
-    local list = {}
-
-    local isClang = (_OPTIONS["cc"] == "clang") or (_OPTIONS["cc"] == "clang++")
-
-    if os.target() == "windows" and isClang then
-      --table.insert(list, "NP_COMPUTE_SYCL")              -- Compute: SYCL
-    end
-
-    return list
+    return loadfile(sub_platform[os.target()])().GetComputeFeatures() or {}
 
 end
 
@@ -38,45 +30,16 @@ end
 -- @return Returns Graphics Feature Lists.
 module.GetGraphicsFeatures = function()
 
-    local list = {}
-
-    if os.target() == "emscripten" then
-        table.insert(list, "NP_GRAPHICS_WEBGL")            -- Graphics: WebGL
-        table.insert(list, "NP_GRAPHICS_WEBGPU")           -- Graphics: WebGPU
-    end
-
-    if os.target() ~= "emscripten" then
-        table.insert(list, "NP_GRAPHICS_OPENGL")           -- Graphics: OpenGL
-        table.insert(list, "NP_GRAPHICS_VULKAN")           -- Graphics: Vulkan
-    end
-
-    if os.target() == "windows" then
-        table.insert(list, "NP_GRAPHICS_DIRECT3D11")       -- Graphics: Direct3D11
-        table.insert(list, "NP_GRAPHICS_DIRECT3D12")       -- Graphics: Direct3D12
-    end
-
-    if os.target() == "macosx" then
-        table.insert(list, "NP_GRAPHICS_METAL")            -- Graphics: Metal
-    end
-
-    return list
+    return loadfile(sub_platform[os.target()])().GetGraphicsFeatures() or {}
 
 end
 
--- @brief Get Profiler Feature Lists.
+-- @brief Get Debugger Feature Lists.
 -- 
--- @return Returns Profiler Feature Lists.
-module.GetProfilerFeatures = function()
+-- @return Returns Debugger Feature Lists.
+module.GetDebuggerFeatures = function()
 
-    local list = {}
-
-    table.insert(list, "NP_PROFILE_TRACY")                 -- Profiler: tracy
-    table.insert(list, "TRACY_ENABLE")                     -- tracy Feature Enable.
-    table.insert(list, "TRACY_ON_DEMAND")                  -- Used if want profile on demand.
-    table.insert(list, "TRACY_FIBERS")                     -- Enable fiber thread.
-    table.insert(list, "TRACY_IMPORT")                     -- Multi dll.
-
-    return list
+    return loadfile(sub_platform[os.target()])().GetDebuggerFeatures() or {}
 
 end
 
@@ -85,17 +48,7 @@ end
 -- @return Returns Window Feature Lists.
 module.GetWindowFeatures = function()
 
-    local list = {}
-
-    if os.target() ~= "emscripten" then
-        table.insert(list, "NP_WINDOW_GLFW")               -- Window: GLFW.
-        table.insert(list, "GLFW_INCLUDE_NONE")            -- Exclude <GL/gl.h>, we provide glad.
-    else
-        table.insert(list, "NP_WINDOW_EMSCRIPTENGLFW")     -- Window: emscripten_glfw.
-        table.insert(list, "GLFW_INCLUDE_NONE")            -- Exclude <GL/gl.h>, we provide glad.
-    end
-
-    return list
+    return loadfile(sub_platform[os.target()])().GetWindowFeatures() or {}
 
 end
 

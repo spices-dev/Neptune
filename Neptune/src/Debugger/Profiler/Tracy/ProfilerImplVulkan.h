@@ -6,7 +6,7 @@
 
 #pragma once
 
-#if defined(NP_PROFILE_TRACY) && defined(NP_GRAPHICS_VULKAN)
+#if defined(NP_PROFILER_TRACY) && defined(NP_GRAPHICS_VULKAN)
 
 #include <vulkan/vulkan.h>
 #include <tracy/TracyVulkan.hpp>

@@ -90,6 +90,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 			vendor.WinPixEventRuntime.includes,                   -- Library: WinPixEventRuntime Source Folder.
 			vendor.AdaptiveCpp.includes,                          -- Library: AdaptiveCpp Source Folder.
 			vendor.ffmpeg.includes,                               -- Library: ffmpeg Source Folder.
+			vendor.RenderDoc.includes,                            -- Library: RenderDoc Source Folder.
 		}
 
 		-- Windows Specific Additional Library Folder.
@@ -128,6 +129,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 			vendor.Vulkan.includes,                                    -- Library: VulkanSDK Source Folder.
 			vendor.Glad.includes,                                      -- Library: Glad Source Folder.
 			vendor.ffmpeg.includes,                                    -- Library: ffmpeg Source Folder.
+			vendor.RenderDoc.includes,                                 -- Library: RenderDoc Source Folder.
 		}
 
 		-- Linux Specific Additional Library Folder.
@@ -191,7 +193,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		-- Debug Specific Solution Macro Definitions.
 		defines
 		{
-			platform.GetProfilerFeatures(),
+			platform.GetDebuggerFeatures(),
 		}
 
 		-- Debug Specific Solution Dependency

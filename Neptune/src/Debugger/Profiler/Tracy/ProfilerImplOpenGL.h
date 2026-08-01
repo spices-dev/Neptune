@@ -6,7 +6,7 @@
 
 #pragma once
 
-#if defined(NP_PROFILE_TRACY) && defined(NP_GRAPHICS_OPENGL)
+#if defined(NP_PROFILER_TRACY) && defined(NP_GRAPHICS_OPENGL)
 
 #include <glad/glad.h>
 #include <tracy/TracyOpenGL.hpp>

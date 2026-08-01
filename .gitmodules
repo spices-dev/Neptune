@@ -46,3 +46,6 @@
 [submodule "Neptune/vendor/ffmpeg"]
 	path = Neptune/vendor/ffmpeg
 	url = https://github.com/spices-lib/ffmpeg.git
+[submodule "Neptune/vendor/RenderDoc"]
+	path = Neptune/vendor/RenderDoc
+	url = https://github.com/spices-lib/RenderDoc.git

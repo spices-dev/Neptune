@@ -5,25 +5,78 @@
 -- Define module
 local module = {}
 
--- @brief Get MacOS Executable LinkOptions.
+-- @brief Get Compute Feature Lists.
 --
--- @return Returns MacOS Executable LinkOptions.
+-- @return Returns Compute Feature Lists.
+module.GetComputeFeatures = function()
+
+    local list = {}
+
+    return list
+
+end
+
+-- @brief Get Executable LinkOptions.
+--
+-- @return Returns Executable LinkOptions.
 module.GetExecutableLinkOptions = function()
 
-    local linkoptions = { 
-    }
+    local linkoptions = {}
 
     return linkoptions
 
 end
 
--- @brief Get MacOS Executable Links.
+-- @brief Get Graphics Feature Lists.
+-- 
+-- @return Returns Graphics Feature Lists.
+module.GetGraphicsFeatures = function()
+
+    local list = {
+        "NP_GRAPHICS_METAL",                               -- Graphics: Metal
+    }
+
+    return list
+
+end
+
+-- @brief Get Debugger Feature Lists.
+-- 
+-- @return Returns Debugger Feature Lists.
+module.GetDebuggerFeatures = function()
+
+    local list = {}
+
+    table.insert(list, "NP_PROFILER_TRACY")                -- Profiler: tracy
+    table.insert(list, "TRACY_ENABLE")                     -- tracy Feature Enable.
+    table.insert(list, "TRACY_ON_DEMAND")                  -- Used if want profile on demand.
+    table.insert(list, "TRACY_FIBERS")                     -- Enable fiber thread.
+    table.insert(list, "TRACY_IMPORT")                     -- Multi dll.
+
+    return list
+
+end
+
+-- @brief Get Window Feature Lists.
+-- 
+-- @return Returns Window Feature Lists.
+module.GetWindowFeatures = function()
+
+    local list = {}
+
+    table.insert(list, "NP_WINDOW_GLFW")               -- Window: GLFW.
+    table.insert(list, "GLFW_INCLUDE_NONE")            -- Exclude <GL/gl.h>, we provide glad.
+
+    return list
+
+end
+
+-- @brief Get Executable Links.
 --
--- @return Returns MacOS Executable Links.
+-- @return Returns Executable Links.
 module.GetExecutableLinks = function()
 
-    local links = {
-    }
+    local links = {}
 
     return links
 

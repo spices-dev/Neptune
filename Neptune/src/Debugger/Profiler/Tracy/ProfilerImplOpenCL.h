@@ -6,7 +6,7 @@
 
 #pragma once
 
-#if defined(NP_PROFILE_TRACY) && defined(NP_COMPUTE_OPENCL)
+#if defined(NP_PROFILER_TRACY) && defined(NP_COMPUTE_OPENCL)
 
 #include <tracy/TracyOpenCL.hpp>
 

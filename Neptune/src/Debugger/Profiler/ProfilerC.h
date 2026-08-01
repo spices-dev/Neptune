@@ -6,7 +6,7 @@
 
 #pragma once
 
-#ifdef NP_PROFILE_TRACY
+#ifdef NP_PROFILER_TRACY
 #include "Debugger/Profiler/Tracy/ProfilerImplC.h"
 #else
 

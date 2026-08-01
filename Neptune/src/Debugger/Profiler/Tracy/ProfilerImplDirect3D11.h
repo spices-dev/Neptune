@@ -6,7 +6,7 @@
 
 #pragma once
 
-#if defined(NP_PROFILE_TRACY) && defined(NP_GRAPHICS_DIRECT3D11)
+#if defined(NP_PROFILER_TRACY) && defined(NP_GRAPHICS_DIRECT3D11)
 
 #include <tracy/TracyD3D11.hpp>
 
