@@ -124,8 +124,8 @@ namespace Neptune::Vulkan {
 			DEBUGUTILS_BEGINQUEUELABEL(context.Get<IGraphicQueue>()->Handle(), "MainGraphicQueue")
 
 			VkSemaphore waitSemaphores[]         = { context.Get<IComputeQueueSemaphore>()->Handle(clock.m_FrameIndex) };
-			VkSemaphore signalSemaphores[]       = { context.Get<IGraphicQueueSemaphore>()->Handle(clock.m_FrameIndex) };
-			VkPipelineStageFlags waitStages[]    = { VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT, VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+			VkSemaphore signalSemaphores[]       = { context.Get<IGraphicQueueSemaphore>()->Handle(clock.m_ImageIndex) };
+			VkPipelineStageFlags waitStages[]    = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
 
 			VkSubmitInfo                           submitInfo{};
 			submitInfo.sType                     = VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -148,7 +148,7 @@ namespace Neptune::Vulkan {
 			VkPresentInfoKHR                       presentInfo{};
 			presentInfo.sType                    = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 			presentInfo.waitSemaphoreCount       = 1;
-			presentInfo.pWaitSemaphores          = &context.Get<IGraphicQueueSemaphore>()->Handle(clock.m_FrameIndex);
+			presentInfo.pWaitSemaphores          = &context.Get<IGraphicQueueSemaphore>()->Handle(clock.m_ImageIndex);
 			presentInfo.swapchainCount           = 1;
 			presentInfo.pImageIndices            = &clock.m_ImageIndex;
 			presentInfo.pResults                 = nullptr;

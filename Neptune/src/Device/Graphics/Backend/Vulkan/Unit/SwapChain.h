@@ -47,12 +47,10 @@ namespace Neptune::Vulkan::Unit {
 
 		/**
 		* @brief Get SwapchainImages.
-		*
-		* @param[in] imageCount .
 		* 
 		* @return Returns SwapchainImages.
 		*/
-		std::vector<VkImage> GetSwapchainImages(uint32_t imageCount) const;
+		std::vector<VkImage> GetSwapchainImages() const;
 
 		/**
 		* @brief Get next SwapchainImage.

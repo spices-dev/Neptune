@@ -32,9 +32,13 @@ namespace Neptune::Vulkan::Unit {
 		VK_CHECK(vkCreateSwapchainKHR(m_Device, &createInfo, GetAllocator(), &m_Handle))
 	}
 
-	std::vector<VkImage> SwapChain::GetSwapchainImages(uint32_t imageCount) const
+	std::vector<VkImage> SwapChain::GetSwapchainImages() const
 	{
 		NEPTUNE_PROFILE_ZONE
+
+		uint32_t imageCount = 0;
+
+		VK_CHECK(vkGetSwapchainImagesKHR(m_Device, m_Handle, &imageCount, nullptr))
 
 		std::vector<VkImage> images(imageCount);
 

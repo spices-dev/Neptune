@@ -75,17 +75,13 @@ namespace Neptune::Vulkan {
 
 		DEBUGUTILS_SETOBJECTNAME(*m_SwapChain, ToString())
 
-		uint32_t imageCount = count;
+		auto images = m_SwapChain->GetSwapchainImages();
 
-		auto images = m_SwapChain->GetSwapchainImages(imageCount);
-
-		for (size_t i = 0; i < count; ++i)
+		for (size_t i = 0; i < images.size(); ++i)
 		{
-			auto swapChainImage = CreateSP<Resource::Image>(GetContext());
+			auto swapChainImage = CreateUP<Resource::Image>(GetContext());
 
 			swapChainImage->SetImage(images[i]);
-
-			m_SwapChainImage.emplace_back(swapChainImage);
 			
 			{
 				VkImageViewCreateInfo                   info{};
@@ -138,6 +134,8 @@ namespace Neptune::Vulkan {
 			}
 
 			swapChainImage->SetName("SwapChain");
+
+			m_SwapChainImage.emplace_back(std::move(swapChainImage));
 		}
     }
 
