@@ -38,6 +38,13 @@ namespace Neptune::Vulkan::Unit {
 		~SwapChain() override;
 
 		/**
+		* @brief Set Functor.
+		* 
+		* @param[in] setHdrMetadata PFN_vkSetHdrMetadataEXT.
+		*/
+		void SetFunctor(PFN_vkSetHdrMetadataEXT setHdrMetadata);
+		
+		/**
 		* @brief Create Swapchain.
 		*
 		* @param[in] device VkDevice.
@@ -62,9 +69,17 @@ namespace Neptune::Vulkan::Unit {
 		*/
 		VkResult GetNextImage(VkSemaphore semaphore, uint32_t& imageIndex) const;
 
+		/**
+		* @brief Set HDR Metadata.
+		*
+		* @param[in] meta VkHdrMetadataEXT.
+		*/
+		void SetHdrMetadata(const VkHdrMetadataEXT& meta) const;
+		
 	private:
 
-		VkDevice m_Device = nullptr;    // @brief VkDevice.
+		VkDevice m_Device = nullptr;                  // @brief VkDevice.
+		PFN_vkSetHdrMetadataEXT vkSetHdrMetadataEXT;  // @brief PFN_vkCreateOpticalFlowSessionNV
 	};
 }
 

@@ -55,16 +55,12 @@ namespace Neptune::Vulkan {
 		*/
 		void Init(VkInstance instance);
 
-		/** 
-		* @brief Debug Functions.
-		*/
+		// @brief Debug Functions. 
 		VK_FUNCTION_POINTER(vkCreateDebugUtilsMessengerEXT                  )
 		VK_FUNCTION_POINTER(vkDestroyDebugUtilsMessengerEXT                 )
 		VK_FUNCTION_POINTER(vkGetDeviceFaultInfoEXT                         )
 
-		/**
-		* @brief DebugUtils Function. 
-		*/
+		// @brief DebugUtils Function.  
 		VK_FUNCTION_POINTER(vkCmdBeginDebugUtilsLabelEXT                    )
 		VK_FUNCTION_POINTER(vkCmdEndDebugUtilsLabelEXT                      )
 		VK_FUNCTION_POINTER(vkCmdInsertDebugUtilsLabelEXT                   )
@@ -76,9 +72,7 @@ namespace Neptune::Vulkan {
 		VK_FUNCTION_POINTER(vkSetDebugUtilsObjectNameEXT                    )
 		VK_FUNCTION_POINTER(vkSetDebugUtilsObjectTagEXT                     )
 																            
-		/**														            
-		* @brief RayTracing Function.					            
-		*/														            
+		// @brief RayTracing Function.					             
 		VK_FUNCTION_POINTER(vkGetRayTracingShaderGroupHandlesKHR            )
 		VK_FUNCTION_POINTER(vkCmdTraceRaysKHR                               )
 		VK_FUNCTION_POINTER(vkCreateRayTracingPipelinesKHR                  )
@@ -91,41 +85,29 @@ namespace Neptune::Vulkan {
 		VK_FUNCTION_POINTER(vkGetAccelerationStructureBuildSizesKHR         )
 		VK_FUNCTION_POINTER(vkCmdCopyAccelerationStructureKHR               )
 
-		/**
-		* @brief Mesh Shader Function.
-		*/
+		// @brief Mesh Shader Function. 
 		VK_FUNCTION_POINTER(vkCmdDrawMeshTasksEXT                           )
 
-		/**
-		* @brief DGC Function.
-		*/
+		// @brief DGC Function. 
 		VK_FUNCTION_POINTER(vkCreateIndirectCommandsLayoutNV                )
 		VK_FUNCTION_POINTER(vkDestroyIndirectCommandsLayoutNV               )
 		VK_FUNCTION_POINTER(vkCmdExecuteGeneratedCommandsNV                 )
 		VK_FUNCTION_POINTER(vkGetGeneratedCommandsMemoryRequirementsNV      )
 		VK_FUNCTION_POINTER(vkCmdPreprocessGeneratedCommandsNV              )
 
-		/**
-		* @brief Aftermath Function.
-		*/
+		// @brief Aftermath Function. 
 		VK_FUNCTION_POINTER(vkCmdSetCheckpointNV                            )
 
-		/**
-		* @brief Tracy Vulkan Context Collect Function
-		*/
+		// @brief Tracy Vulkan Context Collect Function 
 		VK_FUNCTION_POINTER(vkGetPhysicalDeviceCalibrateableTimeDomainsEXT  )
 		VK_FUNCTION_POINTER(vkGetCalibratedTimestampsEXT                    )
 		VK_FUNCTION_POINTER(vkResetQueryPool                                )
 
-		/**
-		* @brief Copy data to image from host directly.
-		*/
+		// @brief Copy data to image from host directly. 
 		VK_FUNCTION_POINTER(vkCopyMemoryToImageEXT                          )
 		VK_FUNCTION_POINTER(vkCopyImageToMemoryEXT                          )
 
-		/**
-		* @brief Video Encode/Decode
-		*/
+		// @brief Video Encode/Decode 
 		VK_FUNCTION_POINTER(vkGetPhysicalDeviceVideoCapabilitiesKHR         )
 		VK_FUNCTION_POINTER(vkCreateVideoSessionParametersKHR               )
 		VK_FUNCTION_POINTER(vkDestroyVideoSessionParametersKHR              )
@@ -140,14 +122,15 @@ namespace Neptune::Vulkan {
 		VK_FUNCTION_POINTER(vkCmdDecodeVideoKHR                             )
 		VK_FUNCTION_POINTER(vkCmdEndVideoCodingKHR                          )
 
-		/**
-		* @brief Optical Flow.
-		*/
+		// @brief Optical Flow. 
 		VK_FUNCTION_POINTER(vkCreateOpticalFlowSessionNV                   )
 		VK_FUNCTION_POINTER(vkDestroyOpticalFlowSessionNV                  )
 		VK_FUNCTION_POINTER(vkCmdOpticalFlowExecuteNV                      )
 		VK_FUNCTION_POINTER(vkGetPhysicalDeviceOpticalFlowImageFormatsNV   )
 		VK_FUNCTION_POINTER(vkBindOpticalFlowSessionImageNV                )
+		
+		// @brief HDR. 
+		VK_FUNCTION_POINTER(vkSetHdrMetadataEXT                            )
 	};
 	
 }

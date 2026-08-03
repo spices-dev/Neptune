@@ -84,6 +84,8 @@ namespace Neptune::Vulkan {
 		EXPLAIN_VK_FUNCTION_POINTER(vkCmdOpticalFlowExecuteNV                       )
 		EXPLAIN_VK_FUNCTION_POINTER(vkGetPhysicalDeviceOpticalFlowImageFormatsNV    )
 		EXPLAIN_VK_FUNCTION_POINTER(vkBindOpticalFlowSessionImageNV                 )
+
+		EXPLAIN_VK_FUNCTION_POINTER(vkBindOpticalFlowSessionImageNV                 )
 	}
 }
 

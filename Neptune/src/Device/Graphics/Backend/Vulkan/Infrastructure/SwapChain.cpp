@@ -33,47 +33,65 @@ namespace Neptune::Vulkan {
 
 		auto& property = physicalDevice->QuerySwapChainProperty();
 
-        VkSwapchainCreateInfoKHR                 createInfo{};
-		createInfo.sType                       = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-		createInfo.surface                     = GetContext().Get<ISurface>()->Handle();
-		createInfo.minImageCount               = count;
-		createInfo.imageFormat                 = property.format.format;
-		createInfo.imageColorSpace             = property.format.colorSpace;
-		createInfo.imageExtent                 = property.surfaceSize;
-		createInfo.imageArrayLayers            = 1;
-		createInfo.imageUsage                  = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | 
-												 VK_IMAGE_USAGE_TRANSFER_DST_BIT;     // @brief StreamLine Required
+    	{
+			VkSwapchainCreateInfoKHR                 createInfo{};
+			createInfo.sType                       = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+			createInfo.surface                     = GetContext().Get<ISurface>()->Handle();
+			createInfo.minImageCount               = count;
+			createInfo.imageFormat                 = property.format.format;
+			createInfo.imageColorSpace             = property.format.colorSpace;
+			createInfo.imageExtent                 = property.surfaceSize;
+			createInfo.imageArrayLayers            = 1;
+			createInfo.imageUsage                  = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | 
+													 VK_IMAGE_USAGE_TRANSFER_DST_BIT;     // @brief StreamLine Required
 
-		uint32_t queueFamilyIndices[2] = 
-		{ 
-			physicalDevice->GetQueueFamilies().graphic.value(),
-			physicalDevice->GetQueueFamilies().present.value()
-		};
+			uint32_t queueFamilyIndices[2] = 
+			{ 
+				physicalDevice->GetQueueFamilies().graphic.value(),
+				physicalDevice->GetQueueFamilies().present.value()
+			};
 
-		if (queueFamilyIndices[0] != queueFamilyIndices[1])
-		{
-			createInfo.imageSharingMode        = VK_SHARING_MODE_CONCURRENT;
-			createInfo.queueFamilyIndexCount   = 2;
-			createInfo.pQueueFamilyIndices     = queueFamilyIndices;
+			if (queueFamilyIndices[0] != queueFamilyIndices[1])
+			{
+				createInfo.imageSharingMode        = VK_SHARING_MODE_CONCURRENT;
+				createInfo.queueFamilyIndexCount   = 2;
+				createInfo.pQueueFamilyIndices     = queueFamilyIndices;
+			}
+			else 
+			{
+				createInfo.imageSharingMode        = VK_SHARING_MODE_EXCLUSIVE;
+				createInfo.queueFamilyIndexCount   = 0;
+				createInfo.pQueueFamilyIndices     = nullptr;
+			}
+
+			createInfo.preTransform                = property.capabilities.currentTransform;
+			createInfo.compositeAlpha              = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
+			createInfo.presentMode                 = property.presentMode;
+			createInfo.clipped                     = VK_TRUE;
+			createInfo.oldSwapchain                = VK_NULL_HANDLE;
+
+			m_SwapChain = CreateUP<Unit::SwapChain>();
+
+			m_SwapChain->CreateSwapchain(GetContext().Get<IDevice>()->Handle(), createInfo);
+
+			DEBUGUTILS_SETOBJECTNAME(*m_SwapChain, ToString())
 		}
-		else 
+    	
+#if ENABLE_HDR
 		{
-			createInfo.imageSharingMode        = VK_SHARING_MODE_EXCLUSIVE;
-			createInfo.queueFamilyIndexCount   = 0;
-			createInfo.pQueueFamilyIndices     = nullptr;
+			VkHdrMetadataEXT                    meta {};
+			meta.displayPrimaryRed            = { 0.708, 0.292 };
+			meta.displayPrimaryGreen          = { 0.170, 0.797 };
+			meta.displayPrimaryBlue           = { 0.131, 0.046 };
+			meta.whitePoint                   = { 0.3127, 0.3290 };
+			meta.maxLuminance                 = 1000.0f;
+			meta.minLuminance                 = 0.001f;
+			meta.maxContentLightLevel         = 1000.0f;
+			meta.maxFrameAverageLightLevel    = 100.0f;
+			
+			m_SwapChain->SetHdrMetadata(meta);
 		}
-
-		createInfo.preTransform                = property.capabilities.currentTransform;
-		createInfo.compositeAlpha              = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-		createInfo.presentMode                 = property.presentMode;
-		createInfo.clipped                     = VK_TRUE;
-		createInfo.oldSwapchain                = VK_NULL_HANDLE;
-
-		m_SwapChain = CreateUP<Unit::SwapChain>();
-
-		m_SwapChain->CreateSwapchain(GetContext().Get<IDevice>()->Handle(), createInfo);
-
-		DEBUGUTILS_SETOBJECTNAME(*m_SwapChain, ToString())
+#endif
 
 		auto images = m_SwapChain->GetSwapchainImages();
 

@@ -477,6 +477,9 @@ namespace Neptune::Vulkan {
 			m_ExtensionProperties.push_back(VK_KHR_RAY_TRACING_PIPELINE_EXTENSION_NAME);
 			m_ExtensionProperties.push_back(VK_KHR_RAY_QUERY_EXTENSION_NAME);
 			m_ExtensionProperties.push_back(VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME);
+			
+			// @brief HDR
+			m_ExtensionProperties.push_back(VK_EXT_HDR_METADATA_EXTENSION_NAME);
 		}
 
 		return m_ExtensionProperties;
