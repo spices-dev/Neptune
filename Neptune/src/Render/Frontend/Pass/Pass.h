@@ -37,10 +37,10 @@ namespace Neptune::Render {
 		virtual void OnConstruct() = 0;
 
 		/**
-		* @brief Interface of Render.
+		* @brief Interface of CollectRHI.
 		*
 		* @param[in] scene Scene.
 		*/
-		virtual void OnRender(Scene* scene) = 0;
+		virtual void OnCollectRHI(Scene* scene) = 0;
 	};
 }

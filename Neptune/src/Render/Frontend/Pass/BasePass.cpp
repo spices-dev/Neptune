@@ -1,3 +1,9 @@
+/**
+* @file BasePass.cpp.
+* @brief The BasePass Class Implementation.
+* @author Spices.
+*/
+
 #include "Pchheader.h"
 #include "BasePass.h"
 #include "Device/Graphics/Frontend/RHI/Pipeline.h"
@@ -7,7 +13,6 @@
 #include "Device/Graphics/Frontend/RHI/RenderTarget.h"
 #include "Resource/Shader/Shader.h"
 #include "Resource/Texture/RenderTarget.h"
-#include "Resource/Shader/Shader.h"
 #include "Resource/ResourcePool.h"
 #include "Resource/Mesh/Mesh.h"
 #include "World/Scene/Scene.h"
@@ -18,6 +23,8 @@ namespace Neptune::Render {
 
 	void BasePass::OnConstruct()
 	{
+		NEPTUNE_PROFILE_ZONE
+		
 		{
 			auto& resourcePool = ResourcePool<RenderTarget>::Instance();
 
@@ -91,8 +98,10 @@ namespace Neptune::Render {
 		m_Pipeline->BuildGraphicPipeline();
 	}
 
-	void BasePass::OnRender(Scene* scene)
+	void BasePass::OnCollectRHI(Scene* scene)
 	{
+		NEPTUNE_PROFILE_ZONE
+		
 		const auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
 
 		m_DescriptorList->UpdateUniformTexture(1, 0, ResourcePool<RenderTarget>::Instance().GetResource("CurrDecodeRT")->GetRHIResource());

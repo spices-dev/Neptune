@@ -41,11 +41,11 @@ namespace Neptune::Render {
 		void OnConstruct() override;
 
 		/**
-		* @brief Interface of Render.
+		* @brief Interface of CollectRHI.
 		* 
 		* @param[in] scene Scene.
 		*/
-		void OnRender(Scene* scene) override;
+		void OnCollectRHI(Scene* scene) override;
 
 		/**
 		* @brief Get RenderPass.
@@ -63,7 +63,7 @@ namespace Neptune::Render {
 		
 	private:
 
-		SP<RHI::RenderPass> m_RenderPass;          // @brief This RenderPass
+		SP<RHI::RenderPass> m_RenderPass;          // @brief RenderPass
 		DelegateDrawSlate m_OnDelegateDrawSlate;   // @brief DelegateDrawSlate
 	};
 }

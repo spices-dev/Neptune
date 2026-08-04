@@ -1,7 +1,12 @@
+/**
+* @file FPSPass.h.
+* @brief The FPSPass Class Definitions.
+* @author Spices.
+*/
+
 #pragma once
 #include "Core/Core.h"
 #include "Pass.h"
-#include <glm/vec2.hpp>
 
 namespace Neptune::RHI {
 
@@ -12,21 +17,39 @@ namespace Neptune::RHI {
 
 namespace Neptune::Render { 
 
+	/**
+	* @brief FPSPass Class
+	*/
 	class FPSPass : public Pass
 	{
 	public:
 
+		/**
+		* @brief Constructor Function.
+		*/
 		FPSPass() : Pass() {}
+		
+		/**
+		* @brief Destructor Function.
+		*/
 		~FPSPass() override = default;
 
+		/**
+		* @brief Interface of Construct.
+		*/
 		void OnConstruct() override;
 
-		void OnRender(Scene* scene) override;
+		/**
+		* @brief Interface of CollectRHI.
+		*
+		* @param[in] scene Scene.
+		*/
+		void OnCollectRHI(Scene* scene) override;
 
 	private:
 
-		SP<RHI::RenderPass>      m_RenderPass;
-		SP<RHI::DescriptorList>  m_DescriptorList;
-		SP<RHI::Pipeline>        m_Pipeline;
+		SP<RHI::RenderPass>      m_RenderPass;         // @brief RenderPass
+		SP<RHI::DescriptorList>  m_DescriptorList;     // @brief DescriptorList
+		SP<RHI::Pipeline>        m_Pipeline;           // @brief Pipeline
 	};
 }

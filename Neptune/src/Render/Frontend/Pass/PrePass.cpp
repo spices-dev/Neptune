@@ -1,12 +1,13 @@
+/**
+* @file PrePass.cpp.
+* @brief The PrePass Class Implementation.
+* @author Spices.
+*/
+
 #include "Pchheader.h"
 #include "PrePass.h"
 #include "Device/Graphics/Frontend/RHI/Pipeline.h"
-#include "Device/Graphics/Frontend/RHI/RenderPass.h"
 #include "Device/Graphics/Frontend/RHI/DescriptorList.h"
-#include "Device/Graphics/Frontend/RHI/CmdList.h"
-#include "Device/Graphics/Frontend/RHI/RenderTarget.h"
-#include "Resource/Texture/RenderTarget.h"
-#include "Resource/Mesh/Mesh.h"
 #include "Header/Core.h"
 #include "World/Scene/Scene.h"
 #include "World/Component/Component.h"
@@ -16,6 +17,8 @@ namespace Neptune::Render {
 
 	void PrePass::OnConstruct()
 	{
+		NEPTUNE_PROFILE_ZONE
+		
 		m_DescriptorList = CreateSP<RHI::DescriptorList>();
 		m_DescriptorList->SetSharedLayout();
 		m_DescriptorList->AddUniformBuffer(0, 0, sizeof(ShaderCore::View));
@@ -23,8 +26,10 @@ namespace Neptune::Render {
 		m_DescriptorList->Build();
 	}
 
-	void PrePass::OnRender(Scene* scene)
+	void PrePass::OnCollectRHI(Scene* scene)
 	{
+		NEPTUNE_PROFILE_ZONE
+		
 		auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
 
 		ShaderCore::View view{};

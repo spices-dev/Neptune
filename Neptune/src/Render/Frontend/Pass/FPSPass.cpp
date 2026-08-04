@@ -1,13 +1,17 @@
+/**
+* @file FPSPass.cpp.
+* @brief The FPSPass Class Implementation.
+* @author Spices.
+*/
+
 #include "Pchheader.h"
 #include "FPSPass.h"
 #include "Device/Graphics/Frontend/RHI/Pipeline.h"
 #include "Device/Graphics/Frontend/RHI/RenderPass.h"
 #include "Device/Graphics/Frontend/RHI/DescriptorList.h"
 #include "Device/Graphics/Frontend/RHI/CmdList.h"
-#include "Device/Graphics/Frontend/RHI/RenderTarget.h"
 #include "Resource/Shader/Shader.h"
 #include "Resource/Texture/RenderTarget.h"
-#include "Resource/Shader/Shader.h"
 #include "Resource/ResourcePool.h"
 #include "Resource/Mesh/Mesh.h"
 #include "World/Scene/Scene.h"
@@ -18,6 +22,8 @@ namespace Neptune::Render {
 
 	void FPSPass::OnConstruct()
 	{
+		NEPTUNE_PROFILE_ZONE
+		
 		RenderTargetAttachmentInfo   info{};
 		info.loadOp                = AttachmentOP::Load;
 		info.enableBlend           = true;
@@ -73,8 +79,10 @@ namespace Neptune::Render {
 		m_Pipeline->BuildGraphicPipeline();
 	}
 
-	void FPSPass::OnRender(Scene* scene)
+	void FPSPass::OnCollectRHI(Scene* scene)
 	{
+		NEPTUNE_PROFILE_ZONE
+
 		const auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
 
 		RHI::CmdList cmdList;
