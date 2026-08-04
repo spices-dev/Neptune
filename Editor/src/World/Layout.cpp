@@ -23,6 +23,8 @@ namespace Neptune::Editor::Layout {
         ViewPort viewPort;
         
         viewPort.OnSubmitRHI();
+        
+        return [](){};
     }
     
 }
