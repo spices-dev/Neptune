@@ -10,6 +10,7 @@
 
 #include "Core/Core.h"
 #include "Window/Window.h"
+#include "Core/Event/EventProducer.h"
 
 struct GLFWwindow;
 
@@ -22,7 +23,7 @@ namespace Neptune::GLFW {
     * This class defines the WindowImpl behaves.
     * This class is just a wrapper of glfwWindow.
     */
-    class WindowImpl : public Window
+    class WindowImpl : public Window, public EventProducer
     {
     public:
 

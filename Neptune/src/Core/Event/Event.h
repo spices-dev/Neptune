@@ -25,8 +25,8 @@ namespace Neptune {
         WindowLostFocus        = 4,
         WindowMoved            = 5,
 
-        // @brief Slate Event.
-        SlateResize            = 6,
+        // @brief View Event.
+        ViewResize             = 6,
 
         // @brief Key Input Event.
         KeyPressed             = 7,
@@ -52,7 +52,7 @@ namespace Neptune {
     enum class EventCategory : uint16_t
     {
         EventCategoryApplication  = 0,    /* @brief Application  */
-        EventCategorySlate        = 1,    /* @brief Slate        */
+        EventCategoryView         = 1,    /* @brief View         */
         EventCategoryInput        = 2,    /* @brief Input        */
         EventCategoryKeyboard     = 3,    /* @brief Keyboard     */
         EventCategoryMouse        = 4,    /* @brief Mouse        */

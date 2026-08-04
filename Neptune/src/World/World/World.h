@@ -8,6 +8,7 @@
 #include "Core/Core.h"
 #include "WorldMarkFlag.h"
 #include "Core/Container/BitSet.hpp"
+#include "Core/Event/EventProducer.h"
 
 #include <unordered_map>
 
@@ -25,7 +26,7 @@ namespace Neptune {
     * @brief World Class
     * In program, all elements we see is a world.
     */
-    class World : public NonCopyable
+    class World : public NonCopyable, public EventProducer
     {
     public:
 
@@ -41,12 +42,12 @@ namespace Neptune {
         /**
         * @brief Constructor Function.
         */
-        World() = default;
+        World();
 
         /**
         * @brief Destructor Function.
         */
-        virtual ~World() = default;
+        ~World() override;
 
         /**
         * @brief Interface of World attached to Application.

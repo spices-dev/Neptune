@@ -29,13 +29,17 @@ namespace Neptune {
         return *S_Instance;
     }
 
+    World::World() : EventProducer(EventType::Engine) {}
+    
+    World::~World() = default;
+    
     void World::OnAttached()
     {
         NEPTUNE_PROFILE_ZONE
 
         EngineEvent event(EngineEventBit::InitSlateFrontend);
 
-        Event::GetEventCallbackFn()(event);
+        Dispatch(event);
     }
 
     void World::OnDetached()
@@ -45,7 +49,7 @@ namespace Neptune {
         {
             EngineEvent event(EngineEventBit::StopTheEngine);
 
-            Event::GetEventCallbackFn()(event);
+            Dispatch(event);
         }
 
         DestroyScene();
@@ -53,7 +57,7 @@ namespace Neptune {
         {
             EngineEvent event(EngineEventBit::ShutdownSlateFrontend);
 
-            Event::GetEventCallbackFn()(event);
+            Dispatch(event);
         }
 
         S_Instance.reset();

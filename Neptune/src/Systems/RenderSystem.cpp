@@ -9,7 +9,7 @@
 #include "Render/Frontend/RenderFrontend.h"
 #include "World/World/World.h"
 #include "Core/Event/EngineEvent.h"
-#include "Core/Event/SlateEvent.h"
+#include "Core/Event/ViewEvent.h"
 #include "Core/Event/WindowEvent.h"
 
 namespace Neptune {
@@ -56,7 +56,7 @@ namespace Neptune {
 
         dispatcher.Dispatch<EngineEvent>(BIND_EVENT_FN(RenderSystem::OnEngineEvent));
 
-        dispatcher.Dispatch<SlateResizeEvent>(BIND_EVENT_FN(RenderSystem::OnSlateResizeEvent));
+        dispatcher.Dispatch<ViewResizeEvent>(BIND_EVENT_FN(RenderSystem::OnViewResizeEvent));
 
         dispatcher.Dispatch<WindowResizeOverEvent>(BIND_EVENT_FN(RenderSystem::OnWindowResizeOverEvent));
     }
@@ -73,7 +73,7 @@ namespace Neptune {
         return false;
     }
 
-    bool RenderSystem::OnSlateResizeEvent(SlateResizeEvent& e) const
+    bool RenderSystem::OnViewResizeEvent(ViewResizeEvent& e) const
     {
         NEPTUNE_PROFILE_ZONE
 

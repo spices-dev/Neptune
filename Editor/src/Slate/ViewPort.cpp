@@ -8,7 +8,7 @@
 #include <Resource/ResourcePool.h>
 #include <Resource/Texture/RenderTarget.h>
 #include <Device/Graphics/Frontend/RHI/RenderTarget.h>
-#include <Core/Event/SlateEvent.h>
+#include <Core/Event/ViewEvent.h>
 #include <Core/Event/WindowEvent.h>
 #include <Core/Event/EngineEvent.h>
 
@@ -50,13 +50,13 @@ namespace Neptune::Editor::View {
 			{
 				EngineEvent event(EngineEventBit::StopTheEngine);
 
-				Event::GetEventCallbackFn()(event);
+				Dispatch(event);
 			}
 
 			{
-				SlateResizeEvent event(static_cast<uint32_t>(tempSize.x), static_cast<uint32_t>(tempSize.y));
+				ViewResizeEvent event(static_cast<uint32_t>(tempSize.x), static_cast<uint32_t>(tempSize.y));
 
-				Event::GetEventCallbackFn()(event);
+				Dispatch(event);
 			}
 
 			s_TextureID = (ImTextureID)ResourcePool<RenderTarget>::Instance().GetResource("Scene")->GetRHIResource()->CreateBindingID();

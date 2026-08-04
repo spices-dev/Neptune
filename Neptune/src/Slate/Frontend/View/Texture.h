@@ -1,7 +1,7 @@
 #pragma once
 #include "Core/Core.h"
 #include "ViewBase.h"
-#include "Slate/Frontend/ViewState/Texture.h"
+#include "Slate/Frontend/ViewModel/Texture.h"
 
 namespace Neptune::View {
 
@@ -9,17 +9,11 @@ namespace Neptune::View {
 	{
 	public:
 
-		static Texture Create(ViewState::Texture state);
+		static Texture Create(ViewModel::Texture state);
 
 		Texture() : ViewBase() {}
 
 		~Texture() override = default;
-
-		
-
-	private:
-
-		void ResizeQuery();
 
 	};
 

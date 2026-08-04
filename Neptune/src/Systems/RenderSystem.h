@@ -74,18 +74,18 @@ namespace Neptune {
         bool OnEngineEvent(class EngineEvent& e) const;
 
         /**
-        * @brief SlateResizeEvent Event.
+        * @brief ViewResizeEvent Event.
         *
-        * @param[in] e SlateResizeEvent.
+        * @param[in] e ViewResizeEvent.
         *
         * @return Returns true if consumed.
         */
-        bool OnSlateResizeEvent(class SlateResizeEvent& e) const;
+        bool OnViewResizeEvent(class ViewResizeEvent& e) const;
 
         /**
-        * @brief SlateResizeEvent Event.
+        * @brief WindowResizeOverEvent Event.
         *
-        * @param[in] e SlateResizeEvent.
+        * @param[in] e WindowResizeOverEvent.
         *
         * @return Returns true if consumed.
         */

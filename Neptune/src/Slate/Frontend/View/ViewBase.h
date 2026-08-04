@@ -7,13 +7,9 @@
 #pragma once
 #include "Core/Core.h"
 #include "Core/Event/Event.h"
-#include "Core/Delegate/DelegateBasic.h"
+#include "Slate/Frontend/Delegate.h"
 
 namespace Neptune::View {
-
-    DELEGATE(OnClick)
-    DELEGATE(OnMouseHover)
-    DELEGATE(OnMouseMove)
 
     /**
     * @brief This Class defines the basic behaves of specific slate.
@@ -33,8 +29,18 @@ namespace Neptune::View {
         */
         virtual ~ViewBase() = default;
 
-        DelegateOnClick      onClick;
-        DelegateOnMouseHover onMouseHover;
-        DelegateOnMouseMove  onMouseMove;
+        /**
+        * @brief On ViewBase Execute.
+        */
+        virtual void OnExecute();
+        
+        DelegateOnMouseTrigger  onMouseTrig;   // @brief DelegateOnMouseTrigger
+        DelegateOnKeyTrigger    onKeyTrig;     // @brief DelegateOnKeyTrigger
+        DelegateOnViewTrigger   onViewTrig;    // @brief DelegateOnViewTrigger
+        
+    private:
+        
+        std::vector<UP<ViewBase>> m_Child;
+
     };
 }

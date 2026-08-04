@@ -12,14 +12,14 @@ namespace Neptune::Editor::Layout {
 
     using namespace View;
     
-    void OnLayout()
+    std::function<void()> OnLayout()
     {
         NEPTUNE_PROFILE_ZONE
         
         Console console;
-        
+            
         console.OnSubmitRHI();
-        
+            
         ViewPort viewPort;
         
         viewPort.OnSubmitRHI();

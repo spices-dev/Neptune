@@ -135,7 +135,7 @@ namespace Neptune {
 
         WindowResizeOverEvent event(extent.x, extent.y);
 
-        Event::GetEventCallbackFn()(event);
+        Dispatch(event);
     }
 
     void RenderFrontend::ConstructDefaultPasses(const glm::vec2& rtSize)

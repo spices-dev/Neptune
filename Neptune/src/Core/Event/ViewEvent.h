@@ -1,7 +1,7 @@
 /**
-* @file SlateEvent.h.
-* @brief The SlateEvent Class Definitions.
-* @author The Cherno.
+* @file ViewEvent.h.
+* @brief The ViewEvent Class Definitions.
+* @author Spices.
 */
 
 #pragma once
@@ -14,19 +14,19 @@ namespace Neptune {
 
     /**
     * @brief This Class is inherited from Event Class.
-    * Called by Viewport Resize.
+    * Called by View Resize.
     */
-    class SlateResizeEvent : public Event
+    class ViewResizeEvent : public Event
     {
     public:
 
         /**
         * @brief Constructor Function.
         * 
-        * @param[in] width New Viewport Size.
-        * @param[in] height New Viewport Size.
+        * @param[in] width New View Size.
+        * @param[in] height New View Size.
         */
-        SlateResizeEvent(uint32_t width, uint32_t height)
+        ViewResizeEvent(uint32_t width, uint32_t height)
             : m_Width(width)
             , m_Height(height)
         {}
@@ -34,19 +34,19 @@ namespace Neptune {
         /**
         * @brief Destructor Function.
         */
-        ~SlateResizeEvent() override = default;
+        ~ViewResizeEvent() override = default;
 
         /**
-        * @brief Get New Viewport Width.
+        * @brief Get New View Width.
         * 
-        * @return Returns the New Viewport Width.
+        * @return Returns the New View Width.
         */
         [[nodiscard]] const uint32_t& GetWidth() const { return m_Width; }
 
         /**
-        * @brief Get New Viewport Height.
+        * @brief Get New View Height.
         * 
-        * @return Returns the New Viewport Width.
+        * @return Returns the New View Width.
         */
         [[nodiscard]] const uint32_t& GetHeight() const { return m_Height; }
 
@@ -60,30 +60,30 @@ namespace Neptune {
             NEPTUNE_PROFILE_ZONE
 
             std::stringstream ss;
-            ss << "SlateResizeEvent: " << m_Width << ", " << m_Height;
+            ss << "ViewResizeEvent: " << m_Width << ", " << m_Height;
 
             return ss.str();
         }
 
         /**
-        * @brief Specific this Class Type with SlateResize.
+        * @brief Specific this Class Type with ViewResize.
         */
-        EVENT_CLASS_TYPE(SlateResize)
+        EVENT_CLASS_TYPE(ViewResize)
 
         /**
-        * @brief Specific this Class Category with EventCategorySlate.
+        * @brief Specific this Class Category with EventCategoryView.
         */
-        EVENT_CLASS_CATEGORY(EventCategorySlate)
+        EVENT_CLASS_CATEGORY(EventCategoryView)
 
     private:
 
         /**
-        * @brief New Viewport Width.
+        * @brief New View Width.
         */
         uint32_t m_Width;
 
         /**
-        * @brief New Viewport Height.
+        * @brief New View Height.
         */
         uint32_t m_Height;
     };

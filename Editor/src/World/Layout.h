@@ -7,8 +7,10 @@
 #pragma once
 #include <Core/Core.h>
 
+#include <functional>
+
 namespace Neptune::Editor::Layout {
 
-    void OnLayout();
+    std::function<void()> OnLayout();
     
 }

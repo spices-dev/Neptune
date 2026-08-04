@@ -21,6 +21,7 @@ namespace Neptune::EmscriptenGLFW {
 
     WindowImpl::WindowImpl(const WindowInfo& initInfo, WindowImplement implement, RenderBackendEnum backend)
         : Window(implement)
+        , EventProducer(EventType::Count)
         , m_APIInterface(CreateInterface(backend))
     {
         NEPTUNE_PROFILE_ZONE
@@ -151,32 +152,38 @@ namespace Neptune::EmscriptenGLFW {
             const auto thisWindows = static_cast<WindowImpl*>(glfwGetWindowUserPointer(window));
 
             WindowResizeEvent event(width, height);
-            Event::GetEventCallbackFn()(event);
+            
+            thisWindows->Dispatch(event);
         });
 
         // Key event Callback.
         glfwSetKeyCallback(m_Windows, [](GLFWwindow* window, int key, int scancode, int action, int mods)
         {
+            const auto thisWindows = static_cast<WindowImpl*>(glfwGetWindowUserPointer(window));
+            
             switch (action)
             {
                 case GLFW_PRESS:
                 {
                     KeyPressedEvent event(static_cast<KeyCode>(key), 0);
-                    Event::GetEventCallbackFn()(event);
+                    
+                    thisWindows->Dispatch(event);
 
                     break;
                 }
                 case GLFW_RELEASE:
                 {
                     KeyReleasedEvent event(static_cast<KeyCode>(key));
-                    Event::GetEventCallbackFn()(event);
+                    
+                    thisWindows->Dispatch(event);
 
                     break;
                 }
                 case GLFW_REPEAT:
                 {
                     KeyPressedEvent event(static_cast<KeyCode>(key), 1);
-                    Event::GetEventCallbackFn()(event);
+                    
+                    thisWindows->Dispatch(event);
 
                     break;
                 }
@@ -188,26 +195,33 @@ namespace Neptune::EmscriptenGLFW {
         // Key Input event Callback.
         glfwSetCharCallback(m_Windows, [](GLFWwindow* window, unsigned int keycode)
         {
+            const auto thisWindows = static_cast<WindowImpl*>(glfwGetWindowUserPointer(window));
+            
             KeyTypedEvent event(static_cast<KeyCode>(keycode));
-            Event::GetEventCallbackFn()(event);
+            
+            thisWindows->Dispatch(event);
         });
 
         // Mouse Button event Callback.
         glfwSetMouseButtonCallback(m_Windows, [](GLFWwindow* window, int button, int action, int mods)
         {
+            const auto thisWindows = static_cast<WindowImpl*>(glfwGetWindowUserPointer(window));
+            
             switch (action)
             {
                 case GLFW_PRESS:
                 {
                     MouseButtonPressedEvent event(static_cast<MouseCode>(button));
-                    Event::GetEventCallbackFn()(event);
+                    
+                    thisWindows->Dispatch(event);
 
                     break;
                 }
                 case GLFW_RELEASE:
                 {
                     MouseButtonReleasedEvent event(static_cast<MouseCode>(button));
-                    Event::GetEventCallbackFn()(event);
+                    
+                    thisWindows->Dispatch(event);
 
                     break;
                 }
@@ -219,15 +233,21 @@ namespace Neptune::EmscriptenGLFW {
         // Mouse Scroll event Callback.
         glfwSetScrollCallback(m_Windows, [](GLFWwindow* window, double xOffset, double yOffset)
         {
+            const auto thisWindows = static_cast<WindowImpl*>(glfwGetWindowUserPointer(window));
+            
             MouseScrolledEvent event(static_cast<float>(xOffset), static_cast<float>(yOffset));
-            Event::GetEventCallbackFn()(event);
+            
+            thisWindows->Dispatch(event);
         });
 
         // Mouse Move event Callback.
         glfwSetCursorPosCallback(m_Windows, [](GLFWwindow* window, double xPos, double yPos)
         {
+            const auto thisWindows = static_cast<WindowImpl*>(glfwGetWindowUserPointer(window));
+            
             MouseMovedEvent event(static_cast<float>(xPos), static_cast<float>(yPos));
-            Event::GetEventCallbackFn()(event);
+            
+            thisWindows->Dispatch(event);
         });
     }
 

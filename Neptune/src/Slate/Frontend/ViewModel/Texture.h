@@ -1,7 +1,7 @@
 #pragma once
 #include "Core/Core.h"
 
-namespace Neptune::ViewState {
+namespace Neptune::ViewModel {
 
 	class Texture
 	{

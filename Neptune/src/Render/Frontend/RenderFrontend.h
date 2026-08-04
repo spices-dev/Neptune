@@ -9,6 +9,7 @@
 #include "Core/NonCopyable.h"
 #include "RenderDelegate.h"
 #include "Core/Event/Event.h"
+#include "Core/Event/EventProducer.h"
 #include "Device/Graphics/Frontend/RHI/RHI.h"
 #include "Device/Graphics/Frontend/Core.h"
 #include "Enum.h"
@@ -28,7 +29,7 @@ namespace Neptune {
     * @brief RenderFrontend Class.
     * This class defines the RenderFrontEnd behaves.
     */
-    class RenderFrontend : public NonCopyable
+    class RenderFrontend : public NonCopyable, public EventProducer
     {
     public:
 
@@ -46,7 +47,7 @@ namespace Neptune {
         /**
         * @brief Destructor Function.
         */
-        virtual ~RenderFrontend() = default;
+        ~RenderFrontend() override = default;
 
         /**
         * @brief Interface of Initialize.
@@ -129,7 +130,10 @@ namespace Neptune {
         * 
         * @param[in] backend RenderBackendEnum.
         */
-        explicit RenderFrontend(RenderBackendEnum backend) : m_RenderBackendEnum(backend) {}
+        explicit RenderFrontend(RenderBackendEnum backend) 
+            : EventProducer(EventType::WindowResizeOver)
+            , m_RenderBackendEnum(backend) 
+        {}
 
         /**
         * @brief Recreate SwapChain.
