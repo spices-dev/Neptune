@@ -195,7 +195,7 @@ namespace Neptune::Vulkan::Unit {
 		{
 			if (!p->hostMemory)
 			{
-				NEPTUNE_CORE_WARN("Vulkan::Unit::Buffer Property without VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT.");
+				NEPTUNE_LOG_CORE(W) << "Vulkan::Unit::Buffer Property without VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT.";
 				return;
 			}
 
@@ -214,7 +214,7 @@ namespace Neptune::Vulkan::Unit {
 		{
 			if (!p->hostMemory)
 			{
-				NEPTUNE_CORE_WARN("Vulkan::Unit::Buffer Property without VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT.")
+				NEPTUNE_LOG_CORE(W) << "Vulkan::Unit::Buffer Property without VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT.";
 				return;
 			}
 

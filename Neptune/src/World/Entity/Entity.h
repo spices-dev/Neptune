@@ -151,10 +151,7 @@ namespace Neptune {
 
         if (HasComponent<T>())
         {
-            std::stringstream ss;
-            ss << "Entity: " << m_Handle << " already has such component.";
-
-            NEPTUNE_CORE_WARN(ss.str())
+            NEPTUNE_LOG_CORE(E) << "Entity: " << m_Handle << " already has such component.";
             return GetComponent<T>();
         }
 
@@ -197,10 +194,7 @@ namespace Neptune {
 
         if (!HasComponent<T>())
         {
-            std::stringstream ss;
-            ss << "Entity: " << m_Handle << " does not have such component.";
-
-            NEPTUNE_CORE_WARN(ss.str())
+            NEPTUNE_LOG_CORE(W) << "Entity: " << m_Handle << " does not have such component.";
             return;
         }
 

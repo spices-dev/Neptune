@@ -34,7 +34,7 @@ namespace Neptune::Vulkan {
 		    case VideoOperation::DecodeAV1:  return CreateSP<AV1Decoder>(context);
 		    default:
 		    {
-			    NEPTUNE_CORE_ERROR("Vulkan::Decoder::Create: Unsupported VideoOperation")
+			    NEPTUNE_LOG_CORE(E) << "Vulkan::Decoder::Create: Unsupported VideoOperation";
 			    return nullptr;
 		    }
 		}

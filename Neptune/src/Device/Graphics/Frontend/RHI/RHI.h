@@ -84,7 +84,7 @@ namespace Neptune::RHI {
 			}
 			else
 			{
-				NEPTUNE_CORE_ERROR("RHI Create With Wrong ERHI")
+				NEPTUNE_LOG_CORE(E) << "RHI Create With Wrong ERHI";
 			}
 		}
 

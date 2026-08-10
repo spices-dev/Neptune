@@ -264,7 +264,7 @@ namespace Neptune::Vulkan {
 		}
 		else 
 		{
-			NEPTUNE_CORE_WARN("Unsupported Vulkan Image Layout Transition!")
+			NEPTUNE_LOG_CORE(W) << "Unsupported Vulkan Image Layout Transition!";
 			return;
 		}
 		if (newLayout == VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL) 

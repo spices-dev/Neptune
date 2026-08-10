@@ -23,7 +23,7 @@ namespace Neptune::Vulkan {
 			case TextureFormat::R8_G8B8_2PLANE_420_UNORM:  return VkFormat::VK_FORMAT_G8_B8R8_2PLANE_420_UNORM;
 			default:
 			{
-				NEPTUNE_CORE_WARN("Unsupported Texture Format To VkFormat.")
+				NEPTUNE_LOG_CORE(W) << "Unsupported Texture Format To VkFormat.";
 				return VK_FORMAT_R8G8B8A8_UNORM;
 			}
 		}
@@ -42,7 +42,7 @@ namespace Neptune::Vulkan {
 			case TextureDomain::Texture3D:      return VkImageType::VK_IMAGE_TYPE_3D;
 			default:
 			{
-				NEPTUNE_CORE_WARN("Unsupported Texture Domain To VkImageType.")
+				NEPTUNE_LOG_CORE(W) << "Unsupported Texture Domain To VkImageType.";
 				return VK_IMAGE_TYPE_1D;
 			}
 		}
@@ -61,7 +61,7 @@ namespace Neptune::Vulkan {
 			case TextureDomain::Texture3D:      return VkImageViewType::VK_IMAGE_VIEW_TYPE_3D;
 			default:
 			{
-				NEPTUNE_CORE_WARN("Unsupported Texture Domain To VkImageViewType.")
+				NEPTUNE_LOG_CORE(W) << "Unsupported Texture Domain To VkImageViewType.";
 				return VK_IMAGE_VIEW_TYPE_2D;
 			}
 		}
@@ -79,7 +79,7 @@ namespace Neptune::Vulkan {
 			case RHIMemoryUsage::Preserved: return VK_MEMORY_PROPERTY_PROTECTED_BIT;
 			default:
 			{
-				NEPTUNE_CORE_WARN("Unsupported RHIMemoryUsage To VkMemoryPropertyFlags.")
+				NEPTUNE_LOG_CORE(W) << "Unsupported RHIMemoryUsage To VkMemoryPropertyFlags.";
 				return VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
 			}
 		}
@@ -96,7 +96,7 @@ namespace Neptune::Vulkan {
 			case RHIMemoryUsage::Shared:    return VMA_MEMORY_USAGE_CPU_TO_GPU;
 			default:
 			{
-				NEPTUNE_CORE_WARN("Unsupported RHIMemoryUsage To VmaMemoryUsage.")
+				NEPTUNE_LOG_CORE(W) << "Unsupported RHIMemoryUsage To VmaMemoryUsage.";
 				return VMA_MEMORY_USAGE_GPU_ONLY;
 			}
 		}
@@ -113,7 +113,7 @@ namespace Neptune::Vulkan {
 			case CullMode::Back:    return VK_CULL_MODE_BACK_BIT;
 			default:
 			{
-				NEPTUNE_CORE_WARN("Unsupported CullMode To VkCullModeFlags.")
+				NEPTUNE_LOG_CORE(W) << "Unsupported CullMode To VkCullModeFlags.";
 				return VK_CULL_MODE_NONE;
 			}
 		}
@@ -129,7 +129,7 @@ namespace Neptune::Vulkan {
 			case ShaderStage::Fragment:  return VK_SHADER_STAGE_FRAGMENT_BIT;
 			default:
 			{
-				NEPTUNE_CORE_WARN("Unsupported ShaderStage To VkShaderStageFlagBits.")
+				NEPTUNE_LOG_CORE(W) << "Unsupported ShaderStage To VkShaderStageFlagBits.";
 				return VK_SHADER_STAGE_VERTEX_BIT;
 			}
 		}
@@ -145,7 +145,7 @@ namespace Neptune::Vulkan {
 			case AttachmentOP::Load:     return VK_ATTACHMENT_LOAD_OP_LOAD;
 			default:
 			{
-				NEPTUNE_CORE_WARN("Unsupported AttachmentOP To VkAttachmentLoadOp.")
+				NEPTUNE_LOG_CORE(W) << "Unsupported AttachmentOP To VkAttachmentLoadOp.";
 				return VK_ATTACHMENT_LOAD_OP_CLEAR;
 			}
 		}
@@ -162,7 +162,7 @@ namespace Neptune::Vulkan {
 			case AttachmentLayout::ShaderRead:          return VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 			default:
 			{
-				NEPTUNE_CORE_WARN("Unsupported AttachmentLayout To VkImageLayout.")
+				NEPTUNE_LOG_CORE(W) << "Unsupported AttachmentLayout To VkImageLayout.";
 				return VK_IMAGE_LAYOUT_UNDEFINED;
 			}
 		}
@@ -179,7 +179,7 @@ namespace Neptune::Vulkan {
 			case VkFormat::VK_FORMAT_G8_B8R8_2PLANE_420_UNORM:        return TextureFormat::R8_G8B8_2PLANE_420_UNORM;
 			default:
 			{
-				NEPTUNE_CORE_WARN("Unsupported VkFormat To Texture Format.")
+				NEPTUNE_LOG_CORE(W) << "Unsupported VkFormat To Texture Format.";
 				return TextureFormat::RGBA8_UNORM;
 			}
 		}

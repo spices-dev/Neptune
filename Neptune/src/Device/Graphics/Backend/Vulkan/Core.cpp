@@ -67,27 +67,27 @@ namespace Neptune::Vulkan {
 		{
 			case VkDebugUtilsMessageSeverityFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:
 			{
-				NEPTUNE_CORE_TRACE(ss.str())
+				NEPTUNE_LOG_CORE(T) << ss.str();
 				break;
 			}
 			case VkDebugUtilsMessageSeverityFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
 			{
-				NEPTUNE_CORE_INFO(ss.str())
+				NEPTUNE_LOG_CORE(I) << ss.str();
 				break;
 			}
 			case VkDebugUtilsMessageSeverityFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
 			{
-				NEPTUNE_CORE_WARN(ss.str())
+				NEPTUNE_LOG_CORE(W) << ss.str();
 				break;
 			}
 			case VkDebugUtilsMessageSeverityFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
 			{
-				NEPTUNE_CORE_ERROR(ss.str())
+				NEPTUNE_LOG_CORE(E) << ss.str();
 				break;
 			}
 			default:
 			{
-				NEPTUNE_CORE_INFO(ss.str())
+				NEPTUNE_LOG_CORE(I) << ss.str();
 				break;
 			}
 		}
@@ -166,7 +166,7 @@ namespace Neptune::Vulkan {
             result = vkGetDeviceFaultInfoEXT(device, &faultCounts, nullptr);
             if (result != VK_SUCCESS) 
             {
-                NEPTUNE_CORE_ERROR("Device Lost: Failed to Query Fault Counts.")
+                NEPTUNE_LOG_CORE(E) << "Device Lost: Failed to Query Fault Counts.";
                 return;
             }
 
@@ -183,7 +183,7 @@ namespace Neptune::Vulkan {
             result = vkGetDeviceFaultInfoEXT(device, &faultCounts, &faultInfo);
             if (result != VK_SUCCESS && result != VK_INCOMPLETE) 
             {
-                NEPTUNE_CORE_ERROR("Device Lost: Failed to Query Fault Info.")
+                NEPTUNE_LOG_CORE(E) << "Device Lost: Failed to Query Fault Info.";
                 return;
             }
 
@@ -231,33 +231,24 @@ namespace Neptune::Vulkan {
 						file.write(reinterpret_cast<const char*>(vendorBinary.data()), static_cast<std::streamsize>(faultCounts.vendorBinarySize));
 						file.close();
 
-						std::stringstream ss;
-						ss << "Device Lost Vendor binary crash dump saved to " << dumpPath.string();
-
-						NEPTUNE_CORE_ERROR(ss.str())
+						NEPTUNE_LOG_CORE(E) << "Device Lost Vendor binary crash dump saved to " << dumpPath.string();
 					}
 					else
 					{
-						NEPTUNE_CORE_ERROR("Failed to open device lost dump file")
+						NEPTUNE_LOG_CORE(E) << "Failed to open device lost dump file";
 					}
 				}
 				catch (const std::filesystem::filesystem_error& e)
 				{
-					std::stringstream ss;
-					ss << "Filesystem error saving device lost dump: " << e.what();
-
-					NEPTUNE_CORE_ERROR(ss.str())
+					NEPTUNE_LOG_CORE(E) << "Filesystem error saving device lost dump: " << e.what();
 				}
 				catch (const std::exception& e)
 				{
-					std::stringstream ss;
-					ss << "Unexpected error saving device lost dump: " << e.what();
-
-					NEPTUNE_CORE_ERROR(ss.str())
+					NEPTUNE_LOG_CORE(E) << "Unexpected error saving device lost dump: " << e.what();
 				}
             }
 
-            NEPTUNE_CORE_ERROR(ss.str())
+            NEPTUNE_LOG_CORE(E) << ss.str();
             return;
 		}
 
@@ -280,11 +271,11 @@ namespace Neptune::Vulkan {
                 ss << "                        Heap: [ " << ToString(memoryProperties.memoryProperties.memoryHeaps[i].flags) << " ] Budget: [ " << memoryBudgetProperties.heapBudget[i] << " ] Usage: [ " << memoryBudgetProperties.heapUsage[i] << " ]\n";
             }
 
-            NEPTUNE_CORE_ERROR(ss.str())
+            NEPTUNE_LOG_CORE(E) << ss.str();
             return;
         }
 
-        NEPTUNE_CORE_ERROR(ss.str())
+        NEPTUNE_LOG_CORE(E) << ss.str();
 	}
 }
 

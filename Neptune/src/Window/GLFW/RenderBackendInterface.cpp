@@ -38,7 +38,7 @@ namespace Neptune::GLFW {
 			
 			default:
 			{
-				NEPTUNE_CORE_CRITICAL("Not supported RenderBackend in GLFW Configuration.")
+				NEPTUNE_LOG_CORE(C) << "Not supported RenderBackend in GLFW Configuration.";
 				return nullptr;
 			}
 		}

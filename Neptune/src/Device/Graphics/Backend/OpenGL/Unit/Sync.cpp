@@ -21,12 +21,12 @@ namespace Neptune::OpenGL::Unit {
 				case GL_CONDITION_SATISFIED: break;         // Wait for done.
 				case GL_TIMEOUT_EXPIRED:                    // Timeout
 				{
-					NEPTUNE_CORE_ERROR("glClientWaitSync Timeout.")
+					NEPTUNE_LOG_CORE(E) << "glClientWaitSync Timeout.";
 					break;
 				}
 				case GL_WAIT_FAILED:                        // Failed
 				{
-					NEPTUNE_CORE_ERROR("glClientWaitSync Failed.")
+					NEPTUNE_LOG_CORE(E) << "glClientWaitSync Failed.";
 
 					OPENGL_CHECK
 
@@ -34,7 +34,7 @@ namespace Neptune::OpenGL::Unit {
 				}
 				default:
 				{
-					NEPTUNE_CORE_WARN("glClientWaitSync Unkonwn Warnin.")
+					NEPTUNE_LOG_CORE(W) << "glClientWaitSync Unkonwn Warnin.";
 
 					OPENGL_CHECK
 

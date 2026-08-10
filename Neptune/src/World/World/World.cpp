@@ -71,10 +71,7 @@ namespace Neptune {
         
         if (m_Scenes.contains(name))
         {
-            std::stringstream ss;
-            ss << "Scene: [ " << name << " ] already exists in world!";
-            
-            NEPTUNE_CORE_ERROR(ss.str())
+            NEPTUNE_LOG_CORE(E) << "Scene: [ " << name << " ] already exists in world!";
             return nullptr;
         }
         
@@ -88,10 +85,7 @@ namespace Neptune {
 
         if (m_Scenes.contains(name))
         {
-            std::stringstream ss;
-            ss << "Scene: [ " << name << " ] already exists in world!";
-            
-            NEPTUNE_CORE_ERROR(ss.str())
+            NEPTUNE_LOG_CORE(E) << "Scene: [ " << name << " ] already exists in world!";
             return nullptr;
         }
 
@@ -105,10 +99,7 @@ namespace Neptune {
 
         if (!m_Scenes.contains(name))
         {
-            std::stringstream ss;
-            ss << "Scene: [ " << name << " ] do not exists in world!";
-
-            NEPTUNE_CORE_INFO(ss.str())
+            NEPTUNE_LOG_CORE(I) << "Scene: [ " << name << " ] do not exists in world!";
             return;
         }
 

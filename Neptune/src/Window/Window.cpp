@@ -45,12 +45,12 @@ namespace Neptune {
 #endif
             default:
             {
-                NEPTUNE_CORE_CRITICAL("Not supported Windows Implement.")
+                NEPTUNE_LOG_CORE(C) << "Not supported Windows Implement.";
                 return;
             }
         }
 
-        NEPTUNE_CORE_INFO("Window Created.")
+        NEPTUNE_LOG_CORE(I) << "Window Created.";
     }
 
     const Window& Window::Instance()
@@ -68,7 +68,7 @@ namespace Neptune {
 
         S_Instance.reset();
 
-        NEPTUNE_CORE_INFO("Window destroyed.")
+        NEPTUNE_LOG_CORE(I) << "Window destroyed.";
     }
 
     Window::Window(WindowImplement implement)

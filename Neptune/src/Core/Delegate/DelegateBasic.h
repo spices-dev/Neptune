@@ -91,7 +91,7 @@ namespace Neptune {
 		
 		if (m_Agents->Contains(*addr))
 		{
-			NEPTUNE_CORE_WARN("Agent Function binding repeatedly.")
+			NEPTUNE_LOG_CORE(W) << "Agent Function binding repeatedly.";
 			
 			return false;
 		}
@@ -109,7 +109,7 @@ namespace Neptune {
 		auto addr = reinterpret_cast<const uint64_t*>(&func);
 		if (!m_Agents->has_key(*addr))
 		{
-			NEPTUNE_CORE_WARN("Agent Function not bound yet.")
+			NEPTUNE_LOG_CORE(W) << "Agent Function not bound yet.";
 			
 			return false;
 		}

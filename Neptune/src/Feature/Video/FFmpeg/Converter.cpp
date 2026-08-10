@@ -18,7 +18,7 @@ namespace Neptune::FFmpeg {
 			case VideoOperation::DecodeH265: return AV_CODEC_ID_HEVC;
 			default:
 			{
-				NEPTUNE_CORE_WARN("Unsupported VideoOperation To AVCodecID.")
+				NEPTUNE_LOG_CORE(W) << "Unsupported VideoOperation To AVCodecID.";
 				return AV_CODEC_ID_H264;
 			}
 		}

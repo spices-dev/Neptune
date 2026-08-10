@@ -62,7 +62,7 @@ namespace Neptune {
     {
         NEPTUNE_PROFILE_ZONE
 
-        NEPTUNE_CORE_TRACE(event.ToString())
+        NEPTUNE_LOG_CORE(T) << event.ToString();
 
         for(auto& system : m_Systems)
         {

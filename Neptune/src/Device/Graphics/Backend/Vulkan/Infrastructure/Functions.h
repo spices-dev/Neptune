@@ -20,9 +20,7 @@ namespace Neptune::Vulkan {
 #define EXPLAIN_VK_FUNCTION_POINTER(function)  \
 	function = reinterpret_cast<PFN_##function>(vkGetInstanceProcAddr(instance, #function));  \
 	if(!function){                                                                            \
-		std::stringstream ss;                                                                 \
-		ss << "Vulkan Function: " << #function << " Not found.";                              \
-		NEPTUNE_CORE_ERROR(ss.str())                                                          \
+		NEPTUNE_LOG_CORE(E) << "Vulkan Function: " << #function << " Not found.";             \
 	}
 
 	using IFunctions = IInfrastructure<class Functions, EInfrastructure::Functions>;

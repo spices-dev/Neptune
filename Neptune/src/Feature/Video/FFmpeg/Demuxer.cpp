@@ -49,15 +49,11 @@ namespace Neptune::FFmpeg {
 
 		if (!m_Fmtc) 
         {
-            NEPTUNE_CORE_ERROR("No AVFormatContext provided.")
+            NEPTUNE_LOG_CORE(E) << "No AVFormatContext provided.";
             return;
         }
 
-        {
-            std::stringstream ss;
-            ss << "Media format: " << m_Fmtc->iformat->long_name << " (" << m_Fmtc->iformat->name << ")";
-            NEPTUNE_CORE_INFO(ss.str())
-        }
+        NEPTUNE_LOG_CORE(I) << "Media format: " << m_Fmtc->iformat->long_name << " (" << m_Fmtc->iformat->name << ")";
 
         FFMPEG_CHECK(avformat_find_stream_info(m_Fmtc, nullptr))
         
@@ -65,7 +61,7 @@ namespace Neptune::FFmpeg {
         
         if (m_VideoStream < 0) 
         {
-            NEPTUNE_CORE_ERROR("FFmpeg error: Could not find stream in input file.")
+            NEPTUNE_LOG_CORE(E) << "FFmpeg error: Could not find stream in input file.";
             return;
         }
 
@@ -127,7 +123,7 @@ namespace Neptune::FFmpeg {
             }
 
             if (!bsf) {
-                NEPTUNE_CORE_ERROR("FFmpeg error: av_bsf_get_by_name(): failed")
+                NEPTUNE_LOG_CORE(E) << "FFmpeg error: av_bsf_get_by_name(): failed";
                 return;
             }
             

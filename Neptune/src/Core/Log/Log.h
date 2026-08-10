@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <memory>
+#include <sstream>
 
 namespace Neptune {
 
@@ -74,40 +75,83 @@ namespace Neptune {
         */
         bool m_IsInitialized = false;
     };
+    
+    
+    
+    /**
+    * @brief LogStream Class.
+    */
+    class LogStream
+    {
+    public:
+
+        /**
+        * @brief Severity Levels
+        */
+        enum class LogLevel
+        {
+            T,     // @brief Trace
+            I,     // @brief Info
+            W,     // @brief Warning
+            E,     // @brief Error
+            C      // @brief CRITICAL
+        };
+        
+        /**
+        * @brief Constructor Function.
+        * 
+        * @param[in] core true in Engine.
+        * @param[in] level Severity Level of the message.
+        */
+        LogStream(bool core, LogLevel level)
+            : m_IsCore(core)
+            , m_Level(level)
+        {}
+
+        /**
+        * @brief Destructor Function.
+        */
+        ~LogStream();
+
+        /**
+        * @brief Receive log stream.
+        * 
+        * @tparam T streamed value.
+        * @param[in] value Value to append.
+        * 
+        * @return Returns this
+        */
+        template<typename T>
+        LogStream& operator<<(const T& value)
+        {
+            m_Stream << value;
+            
+            return *this;
+        }
+
+    private:
+        
+        bool m_IsCore;                 // @brief True in Engine Scope.
+        LogLevel m_Level;              // @brief Severity Level.
+        std::ostringstream m_Stream;   // @brief Log Stream.
+        
+    };
 }
 
 #ifdef NEPTUNE_DEBUG
 
 // Core log macros
-#define NEPTUNE_CORE_TRACE(...)    { if(auto&& logPtr = Neptune::Log::Get(); logPtr->IsInitialized()) { logPtr->CoreTrace      (__VA_ARGS__); } else { std::cout << __VA_ARGS__ << std::endl; } }
-#define NEPTUNE_CORE_INFO(...)     { if(auto&& logPtr = Neptune::Log::Get(); logPtr->IsInitialized()) { logPtr->CoreInfo       (__VA_ARGS__); } else { std::cout << __VA_ARGS__ << std::endl; } }
-#define NEPTUNE_CORE_WARN(...)     { if(auto&& logPtr = Neptune::Log::Get(); logPtr->IsInitialized()) { logPtr->CoreWarn       (__VA_ARGS__); } else { std::cout << __VA_ARGS__ << std::endl; } }
-#define NEPTUNE_CORE_ERROR(...)    { if(auto&& logPtr = Neptune::Log::Get(); logPtr->IsInitialized()) { logPtr->CoreError      (__VA_ARGS__); } else { std::cout << __VA_ARGS__ << std::endl; } }
-#define NEPTUNE_CORE_CRITICAL(...) { if(auto&& logPtr = Neptune::Log::Get(); logPtr->IsInitialized()) { logPtr->CoreCritical   (__VA_ARGS__); } else { std::cout << __VA_ARGS__ << std::endl; } }
-
+#define NEPTUNE_LOG_CORE(level)    Neptune::LogStream(true,  Neptune::LogStream::LogLevel::level)
 // Client log macro
-#define NEPTUNE_TRACE(...)         { if(auto&& logPtr = Neptune::Log::Get(); logPtr->IsInitialized()) { logPtr->ClientTrace    (__VA_ARGS__); } else { std::cout << __VA_ARGS__ << std::endl; } }
-#define NEPTUNE_INFO(...)          { if(auto&& logPtr = Neptune::Log::Get(); logPtr->IsInitialized()) { logPtr->ClientInfo     (__VA_ARGS__); } else { std::cout << __VA_ARGS__ << std::endl; } }
-#define NEPTUNE_WARN(...)          { if(auto&& logPtr = Neptune::Log::Get(); logPtr->IsInitialized()) { logPtr->ClientWarn     (__VA_ARGS__); } else { std::cout << __VA_ARGS__ << std::endl; } }
-#define NEPTUNE_ERROR(...)         { if(auto&& logPtr = Neptune::Log::Get(); logPtr->IsInitialized()) { logPtr->ClientError    (__VA_ARGS__); } else { std::cout << __VA_ARGS__ << std::endl; } }
-#define NEPTUNE_CRITICAL(...)      { if(auto&& logPtr = Neptune::Log::Get(); logPtr->IsInitialized()) { logPtr->ClientCritical (__VA_ARGS__); } else { std::cout << __VA_ARGS__ << std::endl; } }
+#define NEPTUNE_LOG(level)         Neptune::LogStream(false, Neptune::LogStream::LogLevel::level)
 
 #endif // NEPTUNE_DEBUG
 
 #ifdef NEPTUNE_RELEASE
 
 // Core log macros
-#define NEPTUNE_CORE_TRACE(...)
-#define NEPTUNE_CORE_INFO(...)
-#define NEPTUNE_CORE_WARN(...)
-#define NEPTUNE_CORE_ERROR(...)
-#define NEPTUNE_CORE_CRITICAL(...)
-
-// Client log macros
-#define NEPTUNE_TRACE(...)
-#define NEPTUNE_INFO(...)
-#define NEPTUNE_WARN(...)
-#define NEPTUNE_ERROR(...)
-#define NEPTUNE_CRITICAL(...)
+#define NEPTUNE_LOG_CORE(level)
+// Client log macro
+#define NEPTUNE_LOG(level)
 
 #endif // NEPTUNE_RELEASE

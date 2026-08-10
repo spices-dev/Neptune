@@ -46,7 +46,7 @@ namespace Neptune::OpenGL::GLFW {
         // Use glad to load OpenGL APIs.
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         {
-            NEPTUNE_CORE_CRITICAL("Failed to initialize GLAD")
+            NEPTUNE_LOG_CORE(C) << "Failed to initialize GLAD";
         }
     }
 
@@ -57,7 +57,7 @@ namespace Neptune::OpenGL::GLFW {
         // Initialize the library
         if (!glfwInit())
         {
-            NEPTUNE_CORE_CRITICAL("glfw init failed.")
+            NEPTUNE_LOG_CORE(C) << "glfw init failed.";
         }
 
         // Hidden Window.
@@ -80,7 +80,7 @@ namespace Neptune::OpenGL::GLFW {
 
         if (!window)
         {
-            NEPTUNE_CORE_CRITICAL("Failed to Create glfwWindow")
+            NEPTUNE_LOG_CORE(C) << "Failed to Create glfwWindow";
         }
 
         m_OffScreen = true;

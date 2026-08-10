@@ -8,12 +8,10 @@
 #include "Core/Core.h"
 #include "Log.h"
 
-// This ignores all warnings raised inside External headers
-#pragma warning(push, 0)
-#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE // This Macro must be defined.
-#include <spdlog/spdlog.h>
-#include <spdlog/fmt/ostr.h>
-#pragma warning(pop)
+namespace spdlog {
+    
+    class logger;
+}
 
 namespace Neptune {
 

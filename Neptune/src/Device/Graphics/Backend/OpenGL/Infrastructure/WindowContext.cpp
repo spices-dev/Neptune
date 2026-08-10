@@ -21,7 +21,7 @@ namespace Neptune::OpenGL {
             case WindowImplement::GLFW: return CreateUP<GLFW::WindowContext>(context, e, window);
             default:
             {
-                NEPTUNE_CORE_ERROR("WindowContext Create with WindowImplement that not supported.")
+                NEPTUNE_LOG_CORE(E) << "WindowContext Create with WindowImplement that not supported.";
                 return nullptr;
             }
         }

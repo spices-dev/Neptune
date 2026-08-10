@@ -21,7 +21,7 @@ namespace Neptune {
             case SlateBackendEnum::ImGui: sp = CreateUP<imgui::SlateBackend>(renderBackend, windowImpl); break;
             default:
             {
-                NEPTUNE_CORE_CRITICAL("Not Supported Slate Backend.")
+                NEPTUNE_LOG_CORE(C) << "Not Supported Slate Backend.";
                 return nullptr;
             }
 		}

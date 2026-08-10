@@ -28,7 +28,7 @@ namespace Neptune::GLFW {
         // Initialize the library
         if(!glfwInit()) 
         {
-            NEPTUNE_CORE_CRITICAL("glfw init failed.")
+            NEPTUNE_LOG_CORE(C) << "glfw init failed.";
         }
 
         // Set Hint
@@ -50,7 +50,7 @@ namespace Neptune::GLFW {
         if(!m_Windows) 
         {
             glfwTerminate();
-            NEPTUNE_CORE_CRITICAL("Window create failed.")
+            NEPTUNE_LOG_CORE(C) << "Window create failed.";
         }
 
         // Load APIs.
@@ -125,15 +125,12 @@ namespace Neptune::GLFW {
         NEPTUNE_PROFILE_ZONE
 
         // print the version on the console
-        NEPTUNE_CORE_INFO(glfwGetVersionString())
+        NEPTUNE_LOG_CORE(I) << glfwGetVersionString();
 
         // Error event Callback.
         glfwSetErrorCallback([](int error, const char* description){
 
-            std::stringstream ss;
-            ss << "glfwError: " << error << " | " << description;
-
-            NEPTUNE_CORE_ERROR(ss.str())
+            NEPTUNE_LOG_CORE(E) << "glfwError: " << error << " | " << description;
         });
 
         // Framebuffer resize event Callback, not in use.

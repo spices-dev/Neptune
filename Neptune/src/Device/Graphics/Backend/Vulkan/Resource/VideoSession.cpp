@@ -97,7 +97,7 @@ namespace Neptune::Vulkan::Resource {
 			case VK_VIDEO_CODEC_OPERATION_ENCODE_AV1_BIT_KHR:  info.pStdHeaderVersion = &av1EncodeStdVersion ; break;
 			default:
 			{
-				NEPTUNE_CORE_ERROR("Invalid VkVideoCodecOperationFlagBitsKHR in Calling CreateVideoSession()");
+				NEPTUNE_LOG_CORE(E) << "Invalid VkVideoCodecOperationFlagBitsKHR in Calling CreateVideoSession()";
 				return;
 			}
 		}
@@ -219,7 +219,7 @@ namespace Neptune::Vulkan::Resource {
 			}
 			default:
 			{
-				NEPTUNE_CORE_ERROR("Invalid VideoOperation in Calling CreateVideoSessionParameters()");
+				NEPTUNE_LOG_CORE(E) << "Invalid VideoOperation in Calling CreateVideoSessionParameters()";
 				return;
 			}
 		}
@@ -534,7 +534,7 @@ namespace Neptune::Vulkan::Resource {
 			case StdVideoPictureParametersSet::StdType::TYPE_H265_PPS: set = param->GetStdH265Pps()->pps_seq_parameter_set_id;   break;
 			default:
 			{
-				NEPTUNE_CORE_ERROR("Invalid StdType in Calling UpdateVideoSessionParameters()")
+				NEPTUNE_LOG_CORE(E) << "Invalid StdType in Calling UpdateVideoSessionParameters()";
 				return;
 			}
 		}
@@ -635,7 +635,7 @@ namespace Neptune::Vulkan::Resource {
 					}
 					default:
 					{
-						NEPTUNE_CORE_ERROR("Invalid StdType in Calling UpdateVideoSessionParameters()")
+						NEPTUNE_LOG_CORE(E) << "Invalid StdType in Calling UpdateVideoSessionParameters()";
 						return;
 					}
 				}

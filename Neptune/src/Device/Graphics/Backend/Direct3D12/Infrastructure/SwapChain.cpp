@@ -25,7 +25,7 @@ namespace Neptune::Direct3D12 {
             case WindowImplement::GLFW: return CreateUP<GLFW::SwapChain>(context, e, count, window);
             default:
             {
-                NEPTUNE_CORE_ERROR("SwapChain Create with WindowImplement that not supported.")
+                NEPTUNE_LOG_CORE(E) << "SwapChain Create with WindowImplement that not supported.";
                 return nullptr;
             }
         }

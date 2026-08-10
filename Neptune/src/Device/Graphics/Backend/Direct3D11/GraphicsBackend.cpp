@@ -75,9 +75,9 @@ namespace Neptune::Direct3D11 {
 			case RHI::ERHI::IndexBuffer:      return std::dynamic_pointer_cast<RHI::RHIIndexBuffer::Impl>       (CreateSP<IndexBuffer>          (*m_Context));
             case RHI::ERHI::CmdList:          return std::dynamic_pointer_cast<RHI::RHICmdList::Impl>           (CreateSP<CmdList>              (*m_Context));
 			case RHI::ERHI::CmdList2:         return std::dynamic_pointer_cast<RHI::RHICmdList2::Impl>          (CreateSP<CmdList2>             (*m_Context));
-            case RHI::ERHI::Decoder:          NEPTUNE_CORE_ERROR("Direct3D11 do not support Decoder RHI.")       return nullptr;
-            case RHI::ERHI::OpticalFlow:      NEPTUNE_CORE_ERROR("Direct3D11 do not support OpticalFlow RHI.")   return nullptr;
-            default:                          NEPTUNE_CORE_ERROR("Direct3D11 do not support this RHI.")          return nullptr;
+            case RHI::ERHI::Decoder:          NEPTUNE_LOG_CORE(E) << "Direct3D11 do not support Decoder RHI.";       return nullptr;
+            case RHI::ERHI::OpticalFlow:      NEPTUNE_LOG_CORE(E) << "Direct3D11 do not support OpticalFlow RHI.";   return nullptr;
+            default:                          NEPTUNE_LOG_CORE(E) <<"Direct3D11 do not support this RHI.";           return nullptr;
 		}
 	}
 

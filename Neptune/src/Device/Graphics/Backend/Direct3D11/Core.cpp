@@ -61,10 +61,7 @@ namespace Neptune::Direct3D11 {
 			default:                                                     label = "Unknown Error";                                                                            break;
 		}
 
-		std::stringstream ss;
-		ss << "Direct3D11 Error: [ " << label << " ]: ";
-
-        NEPTUNE_CORE_ERROR(ss.str())
+        NEPTUNE_LOG_CORE(E) << "Direct3D11 Error: [ " << label << " ]: ";
 	}
 }
 

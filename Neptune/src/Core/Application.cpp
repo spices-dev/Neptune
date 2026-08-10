@@ -30,7 +30,7 @@ namespace Neptune {
         {
             S_Instance = CreateUP<Application>();
 
-            NEPTUNE_CORE_INFO("Application created.")
+            NEPTUNE_LOG_CORE(I) << "Application created.";
         }
 
         return *S_Instance;
@@ -44,7 +44,7 @@ namespace Neptune {
 
         S_Instance.reset();
 
-        NEPTUNE_CORE_INFO("Application destroyed.")
+        NEPTUNE_LOG_CORE(I) << "Application destroyed.";
 #endif
     }
 

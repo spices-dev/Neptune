@@ -87,7 +87,7 @@ namespace Neptune {
             
             default:
             {
-                NEPTUNE_CORE_CRITICAL("Not Supported Render Backend.")
+                NEPTUNE_LOG_CORE(C) << "Not Supported Render Backend.";
                 return nullptr;
             }
         }

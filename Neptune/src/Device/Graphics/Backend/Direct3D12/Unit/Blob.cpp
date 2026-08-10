@@ -35,10 +35,7 @@ namespace Neptune::Direct3D12::Unit {
 
 			if (!errorBlob) return;
 
-			std::stringstream ss;
-			ss << errorBlob->GetBufferPointer();
-
-			NEPTUNE_CORE_ERROR(ss.str())
+			NEPTUNE_LOG_CORE(E) << errorBlob->GetBufferPointer();
 		}
 	}
 

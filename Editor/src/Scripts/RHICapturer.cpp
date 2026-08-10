@@ -23,7 +23,7 @@ namespace Neptune::Editor {
 
 		if (e.GetKeyCode() == Key::F12)
 		{
-			NEPTUNE_INFO("RHICapturer::F12 Pressed, Execute TriggerCapture() here.")
+			NEPTUNE_LOG(I) << "RHICapturer::F12 Pressed, Execute TriggerCapture() here.";
 		}
 
 		return false;

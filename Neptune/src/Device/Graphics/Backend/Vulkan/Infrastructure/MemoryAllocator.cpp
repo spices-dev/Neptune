@@ -134,10 +134,7 @@ namespace Neptune::Vulkan {
 
 			vmaBuildStatsString(Handle(), &statsString, true);
 
-			std::stringstream ss;
-			ss << "VMA Stats: \n" << statsString;
-
-			NEPTUNE_CORE_ERROR(ss.str())
+			NEPTUNE_LOG_CORE(E) << "VMA Stats: \n" << statsString;
 
 			vmaFreeStatsString(Handle(), statsString);
 		}

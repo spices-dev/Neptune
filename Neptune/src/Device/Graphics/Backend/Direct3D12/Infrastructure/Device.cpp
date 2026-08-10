@@ -115,10 +115,7 @@ namespace Neptune::Direct3D12 {
     	DXGI_ADAPTER_DESC3 desc{};
     	adapter.GetHandle()->GetDesc3(&desc);
     	
-    	std::stringstream ss;
-    	ss << "D3D12 Device Selected: " << StringLibrary::WCharToChar(desc.Description);
-    	
-    	NEPTUNE_CORE_INFO(ss.str())
+    	NEPTUNE_LOG_CORE(I) << "D3D12 Device Selected: " << StringLibrary::WCharToChar(desc.Description);
     }
 
 	D3D_FEATURE_LEVEL Device::GetMaxFeatureLevel(DXGIAdapter adapter) const

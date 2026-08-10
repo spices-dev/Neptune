@@ -22,7 +22,7 @@ namespace Neptune::imgui {
 			case WindowImplement::GLFW: return CreateUP<GLFWInterface>();
 			default:
 			{
-				NEPTUNE_CORE_CRITICAL("Not supported WindowImplement in ImGui Slate Configuration.")
+				NEPTUNE_LOG_CORE(C) << "Not supported WindowImplement in ImGui Slate Configuration.";
 				return nullptr;
 			}
 		}
@@ -64,7 +64,7 @@ namespace Neptune::imgui {
 #endif
 			default:
 			{
-				NEPTUNE_CORE_ERROR("Unsupported RenderBackendEnum in GLFWInterface::OnInitialize.")
+				NEPTUNE_LOG_CORE(E) << "Unsupported RenderBackendEnum in GLFWInterface::OnInitialize.";
 				break;
 			}
 		}

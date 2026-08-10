@@ -128,7 +128,7 @@ namespace Neptune::Vulkan::Resource {
 					break;
 				default:
 				{
-					NEPTUNE_CORE_ERROR("Invalid VkDescriptorType in UpdateDescriptorSet.")
+					NEPTUNE_LOG_CORE(E) << "Invalid VkDescriptorType in UpdateDescriptorSet.";
 					break;
 				}
 			}

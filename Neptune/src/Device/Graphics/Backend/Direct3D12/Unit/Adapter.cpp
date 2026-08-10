@@ -48,7 +48,7 @@ namespace Neptune::Direct3D12::Unit {
 
 		if (!m_Handle)
 		{
-			NEPTUNE_CORE_ERROR("Do not find a DXGIAdapter satisfied minimum requirements.")
+			NEPTUNE_LOG_CORE(E) << "Do not find a DXGIAdapter satisfied minimum requirements.";
 		}
 	}
 

@@ -171,7 +171,7 @@ namespace Neptune::Vulkan {
 		}
     	if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
 		{
-			NEPTUNE_CORE_ERROR("Failed to Acquire SwapChain Image.")
+			NEPTUNE_LOG_CORE(E) << "Failed to Acquire SwapChain Image.";
 		}
 
 		return true;
@@ -191,7 +191,7 @@ namespace Neptune::Vulkan {
 		}
     	if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
 		{
-			NEPTUNE_CORE_ERROR("Failed to Present SwapChain Image.")
+			NEPTUNE_LOG_CORE(E) << "Failed to Present SwapChain Image.";
 		}
 
 		return true;

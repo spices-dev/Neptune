@@ -17,7 +17,7 @@ namespace Neptune {
 
         if (GetModel().contains(script->GetFileString()))
         {
-            NEPTUNE_CORE_WARN("Script is existing on component.")
+            NEPTUNE_LOG_CORE(W) << "Script is existing on component.";
             return;
         }
 
@@ -32,7 +32,7 @@ namespace Neptune {
 
         if (!GetModel().contains(name))
         {
-            NEPTUNE_CORE_WARN("Script is not existing on component.")
+            NEPTUNE_LOG_CORE(W) << "Script is not existing on component.";
             return;
         }
 

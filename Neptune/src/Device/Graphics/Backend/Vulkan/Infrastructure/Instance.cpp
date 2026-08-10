@@ -82,10 +82,7 @@ namespace Neptune::Vulkan {
 		GetExtensionRequirements();
 		if (!CheckExtensionRequirementsSatisfied())
 		{
-			std::stringstream ss;
-			ss << "Instance Extension not Satisfied";
-
-			NEPTUNE_CORE_ERROR(ss.str())
+			NEPTUNE_LOG_CORE(E) << "Instance Extension not Satisfied";
 			return;
 		}
 
@@ -96,10 +93,7 @@ namespace Neptune::Vulkan {
     	
 		if (!CheckLayerRequirementsSatisfied())
 		{
-			std::stringstream ss;
-			ss << "Instance Layer not Satisfied";
-
-			NEPTUNE_CORE_ERROR(ss.str())
+			NEPTUNE_LOG_CORE(E) << "Instance Layer not Satisfied";
 			return;
 		}
 
@@ -163,10 +157,7 @@ namespace Neptune::Vulkan {
 		{
 			for (auto& set : requiredExtensions)
 			{
-				std::stringstream ss;
-				ss << "Instance Extension Required: " << set << ", Which is not satisfied";
-				
-				NEPTUNE_CORE_WARN(ss.str())
+				NEPTUNE_LOG_CORE(E) << "Instance Extension Required: " << set << ", Which is not satisfied";
 			}
 		}
 
@@ -206,10 +197,7 @@ namespace Neptune::Vulkan {
 		{
 			for (auto& set : requiredLayers)
 			{
-				std::stringstream ss;
-				ss << "Instance Layer Required: " << set << ", Which is not satisfied";
-				
-				NEPTUNE_CORE_WARN(ss.str())
+				NEPTUNE_LOG_CORE(W) << "Instance Layer Required: " << set << ", Which is not satisfied";
 			}
 		}
 

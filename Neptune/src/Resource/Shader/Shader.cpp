@@ -17,10 +17,8 @@ namespace Neptune {
 	{
 		std::ifstream file(NEPTUNE_ASSETS_PATH + path, std::ios::ate | std::ios::binary);
 		if (!file.is_open()) {
-			std::stringstream ss;
-			ss << "Failed to open file: " << path;
 			
-			NEPTUNE_CORE_ERROR(ss.str())
+			NEPTUNE_LOG_CORE(E) << "Failed to open file: " << path;
 			
 			return {};
 		}

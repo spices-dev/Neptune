@@ -18,10 +18,7 @@ namespace Neptune::FFmpeg {
 
 		char err_buf[AV_ERROR_MAX_STRING_SIZE];
 		av_strerror(result, err_buf, sizeof(err_buf));
-                
-		std::stringstream ss;
-		ss << "FFmpeg Error Code: " << result << ", desc: "<< err_buf;
 
-		NEPTUNE_CORE_ERROR(ss.str())
+		NEPTUNE_LOG_CORE(E) << "FFmpeg Error Code: " << result << ", desc: "<< err_buf;
 	}
 }

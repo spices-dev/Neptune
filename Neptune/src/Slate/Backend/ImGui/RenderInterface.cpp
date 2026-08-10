@@ -63,7 +63,7 @@ namespace Neptune::imgui {
 			
 			default:
 			{
-				NEPTUNE_CORE_CRITICAL("Not supported RenderBackend in ImGui Slate Configuration.")
+				NEPTUNE_LOG_CORE(C) << "Not supported RenderBackend in ImGui Slate Configuration.";
 				return nullptr;
 			}
 		}

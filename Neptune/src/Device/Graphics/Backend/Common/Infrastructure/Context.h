@@ -155,7 +155,7 @@ namespace Neptune::Render::Common {
 
         if (m_Infrastructures[position])
         {
-            NEPTUNE_CORE_ERROR("Infrastructure Already Registered.")
+            NEPTUNE_LOG_CORE(E) << "Infrastructure Already Registered.";
 
             return;
         }

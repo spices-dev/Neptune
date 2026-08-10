@@ -35,7 +35,7 @@ namespace Neptune::Vulkan {
 
         if (deviceCount == 0) 
 		{
-			NEPTUNE_CORE_ERROR("Failed to find GPUs with Vulkan support.")
+			NEPTUNE_LOG_CORE(E) << "Failed to find GPUs with Vulkan support.";
 			return;
 		}
 
@@ -53,12 +53,12 @@ namespace Neptune::Vulkan {
 			{
 				m_PhysicalDevice.SetHandle(physicalDevice);
 
-				NEPTUNE_CORE_INFO("Vulkan PhysicalDevice Selected.")
+				NEPTUNE_LOG_CORE(I) << "Vulkan PhysicalDevice Selected.";
 				return;
 			}
 		}
 
-		NEPTUNE_CORE_ERROR("Failed to find GPU Physical Device that satisfied our needs.")
+		NEPTUNE_LOG_CORE(E) << "Failed to find GPU Physical Device that satisfied our needs.";
     }
 
 	bool PhysicalDevice::IsExtensionMeetDemand(const VkPhysicalDevice& device) const
@@ -91,10 +91,7 @@ namespace Neptune::Vulkan {
 
 			for (auto& set : requiredExtensions)
 			{
-				std::stringstream ss;
-				ss << "Device Extension Required: [ " << set << " ], Which is not satisfied with device: " << deviceProperties.deviceName;
-
-				NEPTUNE_CORE_ERROR(ss.str())
+				NEPTUNE_LOG_CORE(E) << "Device Extension Required: [ " << set << " ], Which is not satisfied with device: " << deviceProperties.deviceName;
 			}
 
 			return false;
@@ -223,7 +220,7 @@ namespace Neptune::Vulkan {
 
 		if (!std::ranges::any_of(formats.begin(), formats.end(), [&](const auto& f) { return f.format == format; }))
 		{
-			NEPTUNE_CORE_ERROR("Format Not Supported In OpticalFlowSession.")
+			NEPTUNE_LOG_CORE(E) << "Format Not Supported In OpticalFlowSession.";
 			return false;
 		}
 
@@ -237,13 +234,13 @@ namespace Neptune::Vulkan {
 		vkGetPhysicalDeviceFormatProperties2(Handle(), format, &properties2);
 		if (usage & VK_OPTICAL_FLOW_USAGE_INPUT_BIT_NV && !(properties3.optimalTilingFeatures & VK_FORMAT_FEATURE_2_OPTICAL_FLOW_IMAGE_BIT_NV))
 		{
-			NEPTUNE_CORE_ERROR("VK_FORMAT_FEATURE_2_OPTICAL_FLOW_IMAGE_BIT_NV Not Supported OPTICAL_FLOW_IMAGE_BIT.")
+			NEPTUNE_LOG_CORE(E) << "VK_FORMAT_FEATURE_2_OPTICAL_FLOW_IMAGE_BIT_NV Not Supported OPTICAL_FLOW_IMAGE_BIT.";
 			return false;
 		}
 
 		if (usage & VK_OPTICAL_FLOW_USAGE_OUTPUT_BIT_NV && !(properties3.optimalTilingFeatures & VK_FORMAT_FEATURE_2_OPTICAL_FLOW_VECTOR_BIT_NV))
 		{
-			NEPTUNE_CORE_ERROR("VK_FORMAT_FEATURE_2_OPTICAL_FLOW_IMAGE_BIT_NV Not Supported OPTICAL_FLOW_VECTOR_BIT.")
+			NEPTUNE_LOG_CORE(E) << "VK_FORMAT_FEATURE_2_OPTICAL_FLOW_IMAGE_BIT_NV Not Supported OPTICAL_FLOW_VECTOR_BIT.";
 			return false;
 		}
 
@@ -350,7 +347,7 @@ namespace Neptune::Vulkan {
 		}
 		else
 		{
-			NEPTUNE_CORE_ERROR("Unsupported Decode Capability Flags.")
+			NEPTUNE_LOG_CORE(E) << "Unsupported Decode Capability Flags.";
         }
 
 		// Use One DPB as dst image.
@@ -387,7 +384,7 @@ namespace Neptune::Vulkan {
 		}
 		else
 		{
-			NEPTUNE_CORE_ERROR("Surface Extent is infinity.")
+			NEPTUNE_LOG_CORE(E) << "Surface Extent is infinity.";
 		}
 
 		uint32_t formatCount;

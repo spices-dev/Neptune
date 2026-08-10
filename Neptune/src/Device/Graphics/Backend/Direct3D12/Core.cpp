@@ -59,27 +59,27 @@ namespace Neptune::Direct3D12 {
 		{
 		case D3D12_MESSAGE_SEVERITY_MESSAGE:
 			{
-				NEPTUNE_CORE_TRACE(ss.str())
+				NEPTUNE_LOG_CORE(T) << ss.str();
 				break;
 			}
 		case D3D12_MESSAGE_SEVERITY_INFO:
 			{
-				NEPTUNE_CORE_INFO(ss.str())
+				NEPTUNE_LOG_CORE(I) << ss.str();
 				break;
 			}
 		case D3D12_MESSAGE_SEVERITY_WARNING:
 			{
-				NEPTUNE_CORE_WARN(ss.str())
+				NEPTUNE_LOG_CORE(W) << ss.str();
 				break;
 			}
 		case D3D12_MESSAGE_SEVERITY_ERROR:
 			{
-				NEPTUNE_CORE_ERROR(ss.str())
+				NEPTUNE_LOG_CORE(E) << ss.str();
 				break;
 			}
 		default:
 			{
-				NEPTUNE_CORE_INFO(ss.str())
+				NEPTUNE_LOG_CORE(I) << ss.str();
 				break;
 			}
 		}
@@ -128,10 +128,7 @@ namespace Neptune::Direct3D12 {
 			default:                                                     label = "Unknown Error";                                                                            break;
 		}
 
-		std::stringstream ss;
-		ss << "Direct3D12 Error: [ " << label << " ]";
-
-        NEPTUNE_CORE_ERROR(ss.str())
+        NEPTUNE_LOG_CORE(E) << "Direct3D12 Error: [ " << label << " ]";
 	}
 }
 

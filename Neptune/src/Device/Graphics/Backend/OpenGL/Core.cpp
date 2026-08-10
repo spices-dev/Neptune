@@ -48,7 +48,7 @@ namespace Neptune::OpenGL {
 		{
 			case GL_DEBUG_SEVERITY_NOTIFICATION:
 			{
-				NEPTUNE_CORE_TRACE(ss.str())
+				NEPTUNE_LOG_CORE(T) << ss.str();
 				break;
 			}
 			case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
@@ -56,19 +56,19 @@ namespace Neptune::OpenGL {
 			case GL_DEBUG_TYPE_PORTABILITY:
 			case GL_DEBUG_TYPE_PERFORMANCE:
 			{
-				NEPTUNE_CORE_WARN(ss.str())
+				NEPTUNE_LOG_CORE(W) << ss.str();
 				break;
 			}
 			case GL_DEBUG_TYPE_ERROR:
 			{
-				NEPTUNE_CORE_ERROR(ss.str())
+				NEPTUNE_LOG_CORE(E) << ss.str();
 				break;
 			}
 			case GL_DEBUG_TYPE_PUSH_GROUP: break;
 			case GL_DEBUG_TYPE_POP_GROUP: break;
 			default:
 			{
-				NEPTUNE_CORE_INFO(ss.str())
+				NEPTUNE_LOG_CORE(T) << ss.str();
 				break;
 			}
 		}
@@ -94,10 +94,7 @@ namespace Neptune::OpenGL {
 			default:                                                     label = "Unknown Error";                       break;
 		}
 
-		std::stringstream ss;
-		ss << "OpenGL Error: [ " << label << " ]";
-
-        NEPTUNE_CORE_ERROR(ss.str())
+        NEPTUNE_LOG_CORE(E) << "OpenGL Error: [ " << label << " ]";
 	}
 }
 
