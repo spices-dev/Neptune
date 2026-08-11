@@ -114,6 +114,35 @@ solution.DefineCppExecutable("UnitTest", function()
 		buildoptions 
 		{}
 
+	-- Platform: MacOS
+	filter "system:macosx"
+
+		-- MacOS Specific DLLs.
+		files 
+		{
+			vendor.RenderDoc.dynamic_libraries,                   -- DLL: RenderDoc
+		}
+
+		-- MacOS Specific Additional Include Folder.
+		includedirs
+		{}
+
+		-- MacOS Specific Solution Macro Definitions.
+		defines
+		{}
+
+		-- MacOS Specific Solution Dependency.
+		links
+		{}
+
+		-- The Solution link options
+		linkoptions
+		{}
+
+		-- The Solution build options
+		buildoptions 
+		{}
+
 	-- Platform: Emscripten
 	filter "system:emscripten"
 

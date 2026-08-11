@@ -30,6 +30,7 @@ local module                          = {
     ["DirectX12AgilitySDK"]           = loadfile(current_dir .. "DirectX12AgilitySDK.lua")(),                          -- Third Party: DirectX12AgilitySDK
     ["DirectX_Headers"]               = loadfile(current_dir .. "DirectX-Headers.lua")(),                              -- Third Party: irectX-Headers
     ["WinPixEventRuntime"]            = loadfile(current_dir .. "WinPixEventRuntime.lua")(),                           -- Third Party: WinPixEventRuntime
+    ["metal_cpp"]                     = loadfile(current_dir .. "metal-cpp.lua")(),                                    -- Third Party: metal-cpp
     ["AdaptiveCpp"]                   = loadfile(current_dir .. "AdaptiveCpp.lua")(),                                  -- Third Party: AdaptiveCpp
     ["ffmpeg"]                        = loadfile(current_dir .. "ffmpeg.lua")(),                                       -- Third Party: ffmpeg
     ["RenderDoc"]                     = loadfile(current_dir .. "RenderDoc.lua")(),                                    -- Third Party: RenderDoc

@@ -49,3 +49,6 @@
 [submodule "Neptune/vendor/RenderDoc"]
 	path = Neptune/vendor/RenderDoc
 	url = https://github.com/spices-lib/RenderDoc.git
+[submodule "Neptune/vendor/metal-cpp"]
+	path = Neptune/vendor/metal-cpp
+	url = https://github.com/apple/metal-cpp.git

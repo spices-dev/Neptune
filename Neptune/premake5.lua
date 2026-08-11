@@ -128,7 +128,6 @@ solution.DefineCppStaticLibrary("Neptune", function()
 			vendor.GLFW.includes,                                      -- Library: GLFW Source Folder.
 			vendor.Vulkan.includes,                                    -- Library: VulkanSDK Source Folder.
 			vendor.Glad.includes,                                      -- Library: Glad Source Folder.
-			vendor.ffmpeg.includes,                                    -- Library: ffmpeg Source Folder.
 			vendor.RenderDoc.includes,                                 -- Library: RenderDoc Source Folder.
 		}
 
@@ -149,6 +148,41 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		{}
 
 		-- Linux Specific make settings
+		makesettings 
+		{
+            "LINKCMD = $(file > $(OBJDIR)objects.rsp,$(OBJECTS)) $(AR) rcs $(TARGET) @$(OBJDIR)objects.rsp"     -- Enable response file
+        }
+
+	-- Platform: MacOS
+	filter "system:macosx"
+
+		-- The Solution Additional Include Folder.
+		includedirs
+		{
+			vendor.GLFW.includes,                                      -- Library: GLFW Source Folder.
+			vendor.Vulkan.includes,                                    -- Library: VulkanSDK Source Folder.
+			vendor.Glad.includes,                                      -- Library: Glad Source Folder.
+			vendor.metal_cpp.includes,                                 -- Library: metal-cpp Source Folder.
+			vendor.RenderDoc.includes,                                 -- Library: RenderDoc Source Folder.
+		}
+
+		-- MacOS Specific Additional Library Folder.
+		libdirs
+		{}
+
+		-- MacOS Specific Solution Macro Definitions.
+		defines
+		{}
+
+		-- MacOS Specific Solution Dependency.
+		links
+		{}
+
+		-- MacOS Specific build options
+		buildoptions 
+		{}
+
+		-- MacOS Specific make settings
 		makesettings 
 		{
             "LINKCMD = $(file > $(OBJDIR)objects.rsp,$(OBJECTS)) $(AR) rcs $(TARGET) @$(OBJDIR)objects.rsp"     -- Enable response file
