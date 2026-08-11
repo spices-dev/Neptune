@@ -313,6 +313,25 @@ solution.DefineCppStaticLibrary("Neptune", function()
 				"tracy",                                                   -- Dependency: tracy
 			}
 
+		-- Platform: MacOS
+		filter "system:macosx"
+
+			-- MacOS Specific Additional Library Folder.
+			libdirs
+			{
+				vendor.Vulkan.library_dirs,                                -- Library: VulkanSDK.
+			}
+
+			-- MacOS Specific Solution Dependency.
+			links
+			{
+				vendor.Vulkan.libraries,                                   -- Dependency: vulkan
+				
+				"GLFW",                                                    -- Dependency: GLFW
+				"Glad",                                                    -- Dependency: Glad
+				"tracy",                                                   -- Dependency: tracy
+			}
+
 		-- Platform: Emscripten
 		filter "system:emscripten"
 

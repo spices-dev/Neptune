@@ -17,8 +17,11 @@ local GetEmsdkPath = function()
 
 end
 
+-- Current Folder Directory
+local current_dir = debug.getinfo(1, "S").source:sub(2):match("(.*/)") or "./"
+
 -- Define module
-local module = {}
+local module = loadfile(current_dir .. "vender_base.lua")().NewModule("emscripten")
 
 if os.target() == "emscripten" then
 
