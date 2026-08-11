@@ -117,6 +117,9 @@ module.Initialize = function()
     -- Platform: MacOS
 	filter "system:macosx"
 
+		-- Architecture arm64
+        architecture "AARCH64"
+
         -- Use Lastest SystemVersion
 		systemversion "latest"
 
