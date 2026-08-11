@@ -9,6 +9,10 @@
 #ifdef NP_GRAPHICS_METAL
 
 #include "GraphicsBackend.h"
+#include "Infrastructure/InfrastructureHeader.h"
+#include "AInfrastructure/AccessibleInfrastructure.h"
+#include "RHI/RHIHeader.h"
+#include "Window/Window.h"
 
 namespace Neptune::Metal {
 
@@ -16,6 +20,8 @@ namespace Neptune::Metal {
         : GraphicsFrontend(GraphicsBackendEnum::Metal)
     {
         NEPTUNE_PROFILE_ZONE
+        
+        HandleResultDelegate::SetHandler([&]() { HandleResult(); });
     }
 
     GraphicsBackend::~GraphicsBackend() = default;
@@ -31,20 +37,35 @@ namespace Neptune::Metal {
     {
         NEPTUNE_PROFILE_ZONE
 
-        GraphicsFrontend::OnShutDown();
+        m_Context->UnRegistry();
     }
 
-    void RenderBackend::Wait()
+    Context& GraphicsBackend::GetContext() const
+    {
+        return *m_Context;
+    }
+    
+    void GraphicsBackend::Wait() const
     {
         NEPTUNE_PROFILE_ZONE
     }
 
-    std::any GraphicsBackend::CreateRHI(RHI::ERHI e, void* payload)
+    std::any GraphicsBackend::CreateRHI(RHI::ERHI e, void* payload) const
 	{
         NEPTUNE_PROFILE_ZONE
 
         return nullptr;
 	}
+    
+    AInfrastructures GraphicsBackend::AccessInfrastructure() const
+    {
+        NEPTUNE_PROFILE_ZONE
+
+        AContext context;
+        
+        return context.GetInfrastructures();
+    }
+    
 }
 
 #endif

@@ -9,16 +9,30 @@
 #ifdef NP_GRAPHICS_METAL
 
 #include "Core/Core.h"
-#include "GPURuntime/Graphic/Frontend/GraphicsFrontend.h"
+#include "Device/Graphics/Frontend/GraphicsFrontend.h"
+#include "Infrastructure/Enum.h"
+#include "Device/Graphics/Backend/Common/Concept.h"
+#include "Device/Graphics/Frontend/Core.h"
+
+namespace Neptune::Render::Common {
+    
+    template<typename T>
+    requires IsEnum<T>
+    class Context;
+}
 
 namespace Neptune::Metal {
 
     /**
-    * @brief GraphicsBackend Class.
-    * This class defines the GraphicsBackend behaves.
+    * @brief Metal::GraphicsBackend Class.
+    * This class defines the Metal::GraphicsBackend behaves.
     */
     class GraphicsBackend : public GraphicsFrontend
     {
+    public:
+        
+        using Context = Render::Common::Context<EInfrastructure>;
+        
     public:
 
         /**
@@ -46,7 +60,7 @@ namespace Neptune::Metal {
         /**
         * @brief Interface of Wait RenderBackend idle.
         */
-        void Wait() override;
+        void Wait() const override;
 
         /**
         * @brief Interface of CreateRHI.
@@ -56,9 +70,25 @@ namespace Neptune::Metal {
         *
         * @return Returns RHI::Impl
         */
-        std::any CreateRHI(RHI::ERHI e, void* payload) override;
+        std::any CreateRHI(RHI::ERHI e, void* payload) const override;
+
+        /**
+        * @brief Interface of Access Infrastructure.
+        *
+        * @return Returns Infrastructure.
+        */
+        AInfrastructures AccessInfrastructure() const override;
+
+        /**
+        * @brief Get Context.
+        * 
+        * @return Returns Context.
+        */
+        Context& GetContext() const;
 
     private:
+
+        UP<Context> m_Context; // @brief This Context.
 
     };
 }
