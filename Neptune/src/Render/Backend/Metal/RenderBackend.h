@@ -10,7 +10,7 @@
 
 #include "Core/Core.h"
 #include "Render/Frontend/RenderFrontend.h"
-#include "GPURuntime/Graphics/Backend/Metal/GraphicsBackend.h"
+#include "Device/Graphics/Backend/Metal/GraphicsBackend.h"
 
 namespace Neptune {
 
@@ -87,15 +87,14 @@ namespace Neptune::Metal {
 
         /**
         * @brief Get Context.
-        * 
+        *
         * @return Returns Context.
         */
         GraphicsBackend::Context& GetContext() const;
-        
+
     private:
 
         UP<GraphicsBackend> m_GraphicsBackend; // @brief This GraphicsBackend.
-        
     };
 }
 
