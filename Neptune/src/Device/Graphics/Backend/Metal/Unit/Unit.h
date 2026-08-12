@@ -14,11 +14,16 @@
 
 namespace Neptune::Metal::Unit {
 
+	namespace detail {
+	
+		constexpr uint32_t ignore = 0;
+	}
+
 	using namespace Render::Common;
 
-	template<typename T, auto E>
-	requires IsUnit<Render::Common::Unit<T, E>>
-	using Unit = Render::Common::Unit<T, E>;
+	template<typename T>
+	requires IsUnit<Render::Common::Unit<T, detail::ignore>>
+	using Unit = Render::Common::Unit<T, detail::ignore>;
 }
 
 #endif

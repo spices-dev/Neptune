@@ -11,6 +11,7 @@
 #define NP_GRAPHICS_METAL_CORE
 
 #include "Core/Core.h"
+#include "Version.h"
 #include "Render/Frontend/Core.h"
 
 #include <functional>
