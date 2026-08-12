@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Unit {
 
         if (!m_Handle) return;
 
-        VK_CHECK(vkReleaseDisplayEXT(m_Device, m_Handle))
+        VULKAN_CHECK(vkReleaseDisplayEXT(m_Device, m_Handle))
     }
     
 }

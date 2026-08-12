@@ -38,14 +38,14 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateVideoSessionParametersKHR(m_Device, &createInfo, GetAllocator(), &m_Handle))
+		VULKAN_CHECK(vkCreateVideoSessionParametersKHR(m_Device, &createInfo, GetAllocator(), &m_Handle))
 	}
 
 	void VideoSessionParameters::UpdateVideoSessionParameters(VkDevice device, const VkVideoSessionParametersUpdateInfoKHR& updateInfo) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		VK_CHECK(vkUpdateVideoSessionParametersKHR(m_Device, m_Handle, &updateInfo))
+		VULKAN_CHECK(vkUpdateVideoSessionParametersKHR(m_Device, m_Handle, &updateInfo))
 	}
 }
 

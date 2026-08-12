@@ -22,7 +22,7 @@ namespace Neptune::Vulkan::Unit {
 
         m_Device = device;
 
-        VK_CHECK(vkCreateDisplayModeKHR(device, display, &info, GetAllocator(), &m_Handle))
+        VULKAN_CHECK(vkCreateDisplayModeKHR(device, display, &info, GetAllocator(), &m_Handle))
     }
 }
 

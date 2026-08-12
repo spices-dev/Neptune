@@ -43,7 +43,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateVideoSessionKHR(m_Device, &createInfo, GetAllocator(), &m_Handle))
+		VULKAN_CHECK(vkCreateVideoSessionKHR(m_Device, &createInfo, GetAllocator(), &m_Handle))
 	}
 
 	VkDeviceMemory VideoSession::AllocateMemory(const VkMemoryAllocateInfo& info, VkMemoryPropertyFlags flags)
@@ -65,7 +65,7 @@ namespace Neptune::Vulkan::Unit {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		VK_CHECK(vkBindVideoSessionMemoryKHR(m_Device, m_Handle, infos.size(), infos.data()))
+		VULKAN_CHECK(vkBindVideoSessionMemoryKHR(m_Device, m_Handle, infos.size(), infos.data()))
 	}
 }
 

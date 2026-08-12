@@ -49,7 +49,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Flags = properties;
 		
-		VK_CHECK(vkCreateImage(device, &info, GetAllocator(), &m_Handle))
+		VULKAN_CHECK(vkCreateImage(device, &info, GetAllocator(), &m_Handle))
 
 		VkMemoryRequirements memRequirements;
 		vkGetImageMemoryRequirements(device, m_Handle, &memRequirements);
@@ -72,7 +72,7 @@ namespace Neptune::Vulkan::Unit {
 
 		AllocateMemory(device, &allocInfo, GetAllocator(), &alloc.memory, properties);
 
-		VK_CHECK(vkBindImageMemory(device, m_Handle, alloc.memory, 0))
+		VULKAN_CHECK(vkBindImageMemory(device, m_Handle, alloc.memory, 0))
 
 		m_Alloc = alloc;
 	}
@@ -101,7 +101,7 @@ namespace Neptune::Vulkan::Unit {
 			allocInfo.flags |= VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT;
 		}
 
-		VK_CHECK(vmaCreateImage(vma, &info, &allocInfo, &m_Handle, &alloc.alloc, nullptr))
+		VULKAN_CHECK(vmaCreateImage(vma, &info, &allocInfo, &m_Handle, &alloc.alloc, nullptr))
 
 		m_Alloc = alloc;
 	}

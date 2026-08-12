@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
         m_Instance = instance;
 
-        VK_CHECK(vkCreateDebugReportCallbackEXT(instance, &info, GetAllocator(), &m_Handle))
+        VULKAN_CHECK(vkCreateDebugReportCallbackEXT(instance, &info, GetAllocator(), &m_Handle))
     }
 }
 

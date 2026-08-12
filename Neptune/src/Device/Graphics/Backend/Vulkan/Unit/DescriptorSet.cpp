@@ -30,7 +30,7 @@ namespace Neptune::Vulkan::Unit {
 		m_Device = device;
 		m_DescriptorPool = info.descriptorPool;
 
-		VK_CHECK(vkAllocateDescriptorSets(device, &info, &m_Handle))
+		VULKAN_CHECK(vkAllocateDescriptorSets(device, &info, &m_Handle))
 	}
 
 	void DescriptorSet::UpdateDescriptorSet(const VkWriteDescriptorSet& write) const

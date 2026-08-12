@@ -176,7 +176,7 @@ namespace Neptune::Vulkan {
 		
 #endif
 		
-		VK_CHECK(vmaCreateAllocator(&createInfo, &m_Handle))
+		VULKAN_CHECK(vmaCreateAllocator(&createInfo, &m_Handle))
 		
 		vkGetPhysicalDeviceMemoryProperties(GetContext().Get<IPhysicalDevice>()->Handle(), &m_MemProps);
 	}

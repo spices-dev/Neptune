@@ -110,10 +110,10 @@ namespace Neptune::Vulkan::Resource {
 		vkGetPhysicalDeviceMemoryProperties(GetContext().Get<IPhysicalDevice>()->Handle(), &memProperties);
 		
 		uint32_t memoryRequirementsCount = 0;
-		VK_CHECK(GetContext().Get<IFunctions>()->vkGetVideoSessionMemoryRequirementsKHR(GetContext().Get<IDevice>()->Handle(), Handle(), &memoryRequirementsCount, NULL))
+		VULKAN_CHECK(GetContext().Get<IFunctions>()->vkGetVideoSessionMemoryRequirementsKHR(GetContext().Get<IDevice>()->Handle(), Handle(), &memoryRequirementsCount, NULL))
 
 		std::vector<VkVideoSessionMemoryRequirementsKHR> memoryRequirements(memoryRequirementsCount, { VK_STRUCTURE_TYPE_VIDEO_SESSION_MEMORY_REQUIREMENTS_KHR });
-		VK_CHECK(GetContext().Get<IFunctions>()->vkGetVideoSessionMemoryRequirementsKHR(GetContext().Get<IDevice>()->Handle(), Handle(), &memoryRequirementsCount, memoryRequirements.data()))
+		VULKAN_CHECK(GetContext().Get<IFunctions>()->vkGetVideoSessionMemoryRequirementsKHR(GetContext().Get<IDevice>()->Handle(), Handle(), &memoryRequirementsCount, memoryRequirements.data()))
 
         std::vector<VkBindVideoSessionMemoryInfoKHR> sessionBindMemorys(memoryRequirementsCount, { VK_STRUCTURE_TYPE_BIND_VIDEO_SESSION_MEMORY_INFO_KHR });
 

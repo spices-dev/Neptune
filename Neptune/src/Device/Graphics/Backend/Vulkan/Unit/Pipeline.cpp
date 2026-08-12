@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &info, GetAllocator(), &m_Handle))
+		VULKAN_CHECK(vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &info, GetAllocator(), &m_Handle))
 	}
 
 	void Pipeline::CreateComputePipeline(VkDevice device, const VkComputePipelineCreateInfo& info)
@@ -40,7 +40,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateComputePipelines(device, VK_NULL_HANDLE, 1, &info, GetAllocator(), &m_Handle))
+		VULKAN_CHECK(vkCreateComputePipelines(device, VK_NULL_HANDLE, 1, &info, GetAllocator(), &m_Handle))
 	}
 }
 

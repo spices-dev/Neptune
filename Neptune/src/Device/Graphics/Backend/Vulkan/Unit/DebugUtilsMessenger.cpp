@@ -37,7 +37,7 @@ namespace Neptune::Vulkan::Unit {
 
         m_Instance = instance;
 
-        VK_CHECK(vkCreateDebugUtilsMessengerEXT(instance, &info, GetAllocator(), &m_Handle))
+        VULKAN_CHECK(vkCreateDebugUtilsMessengerEXT(instance, &info, GetAllocator(), &m_Handle))
     }
 }
 

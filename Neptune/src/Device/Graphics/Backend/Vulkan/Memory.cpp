@@ -126,7 +126,7 @@ namespace Neptune::Vulkan {
 
 #ifdef NEPTUNE_RELEASE
 		
-		VK_CHECK(vkAllocateMemory(device, pAllocateInfo, pAllocator, pMemory))
+		VULKAN_CHECK(vkAllocateMemory(device, pAllocateInfo, pAllocator, pMemory))
 		
 #else
 		
@@ -152,7 +152,7 @@ namespace Neptune::Vulkan {
 			type = MemoryEnum::Other;
 		}
 
-		VK_CHECK(vkAllocateMemory(device, pAllocateInfo, pAllocator, pMemory))
+		VULKAN_CHECK(vkAllocateMemory(device, pAllocateInfo, pAllocator, pMemory))
 		
 		NEPTUNE_PROFILE_ALLOC_N(*pMemory, pAllocateInfo->allocationSize, ToString(type))
 		

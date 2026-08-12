@@ -17,14 +17,14 @@ namespace Neptune::Vulkan::Unit {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		VK_CHECK(vkQueueSubmit(m_Handle, 1, &info, fence))
+		VULKAN_CHECK(vkQueueSubmit(m_Handle, 1, &info, fence))
 	}
 
 	void Queue::Wait() const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		VK_CHECK(vkQueueWaitIdle(m_Handle))
+		VULKAN_CHECK(vkQueueWaitIdle(m_Handle))
 	}
 }
 

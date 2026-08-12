@@ -27,7 +27,7 @@ namespace Neptune::Vulkan::Unit {
 
 		assert(!m_Handle);
 
-		VK_CHECK(vkCreateInstance(&createInfo, GetAllocator(), &m_Handle))
+		VULKAN_CHECK(vkCreateInstance(&createInfo, GetAllocator(), &m_Handle))
 	}
 }
 

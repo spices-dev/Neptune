@@ -31,7 +31,7 @@ namespace Neptune::Vulkan::GLFW {
 
         Unit::Surface::Handle handle;
 
-        VK_CHECK(glfwCreateWindowSurface(instance, static_cast<GLFWwindow*>(window), GetAllocator(), &handle))
+        VULKAN_CHECK(glfwCreateWindowSurface(instance, static_cast<GLFWwindow*>(window), GetAllocator(), &handle))
 
         m_Surface.SetHandle(handle);
 

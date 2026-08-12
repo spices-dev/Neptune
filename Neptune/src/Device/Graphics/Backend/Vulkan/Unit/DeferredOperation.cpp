@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
         m_Device = device;
 
-        VK_CHECK(vkCreateDeferredOperationKHR(device, GetAllocator(), &m_Handle))
+        VULKAN_CHECK(vkCreateDeferredOperationKHR(device, GetAllocator(), &m_Handle))
     }
 }
 

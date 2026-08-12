@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateDescriptorPool(device, &info, GetAllocator(), &m_Handle))
+		VULKAN_CHECK(vkCreateDescriptorPool(device, &info, GetAllocator(), &m_Handle))
 	}
 }
 

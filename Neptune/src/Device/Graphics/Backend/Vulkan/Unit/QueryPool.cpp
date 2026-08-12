@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateQueryPool(device, &info, GetAllocator(), &m_Handle))
+		VULKAN_CHECK(vkCreateQueryPool(device, &info, GetAllocator(), &m_Handle))
 	}
 
 	std::vector<uint64_t> QueryPool::GetQueryPoolResult(uint32_t first, uint32_t count, uint32_t stride) const
@@ -38,7 +38,7 @@ namespace Neptune::Vulkan::Unit {
 
 		std::vector<uint64_t> result(count);
 
-		VK_CHECK(vkGetQueryPoolResults(m_Device, m_Handle, first, count, count * stride + sizeof(uint64_t), result.data(), stride, VK_QUERY_RESULT_64_BIT | VK_QUERY_RESULT_WITH_STATUS_BIT_KHR | VK_QUERY_RESULT_WAIT_BIT))
+		VULKAN_CHECK(vkGetQueryPoolResults(m_Device, m_Handle, first, count, count * stride + sizeof(uint64_t), result.data(), stride, VK_QUERY_RESULT_64_BIT | VK_QUERY_RESULT_WITH_STATUS_BIT_KHR | VK_QUERY_RESULT_WAIT_BIT))
 
 		return result;
 	}

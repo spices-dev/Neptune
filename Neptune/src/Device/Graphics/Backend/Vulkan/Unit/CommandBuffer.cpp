@@ -31,21 +31,21 @@ namespace Neptune::Vulkan::Unit {
 		m_Device = device;
 		m_CommandPool = info.commandPool;
 
-		VK_CHECK(vkAllocateCommandBuffers(m_Device, &info, &m_Handle))
+		VULKAN_CHECK(vkAllocateCommandBuffers(m_Device, &info, &m_Handle))
 	}
 
 	void CommandBuffer::Begin(const VkCommandBufferBeginInfo& info) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		VK_CHECK(vkBeginCommandBuffer(m_Handle, &info))
+		VULKAN_CHECK(vkBeginCommandBuffer(m_Handle, &info))
 	}
 
 	void CommandBuffer::End() const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		VK_CHECK(vkEndCommandBuffer(m_Handle))
+		VULKAN_CHECK(vkEndCommandBuffer(m_Handle))
 	}
 
 	void CommandBuffer::BeginRenderPass(const VkRenderPassBeginInfo& info, VkSubpassContents content) const

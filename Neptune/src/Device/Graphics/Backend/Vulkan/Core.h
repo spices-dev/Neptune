@@ -80,7 +80,7 @@ namespace Neptune::Vulkan {
 	*/
 	void HandleResult(VkResult result, VkPhysicalDevice physicalDevice, VkDevice device, PFN_vkGetDeviceFaultInfoEXT vkGetDeviceFaultInfoEXT);
 
-	#define VK_CHECK(expr)  { auto expr_value = expr; if (expr_value != VK_SUCCESS) { std::invoke(HandleResultDelegate::GetHandler(), expr_value); } }
+	#define VULKAN_CHECK(expr)  { auto expr_value = expr; if (expr_value != VK_SUCCESS) { std::invoke(HandleResultDelegate::GetHandler(), expr_value); } }
 }
 
 #endif

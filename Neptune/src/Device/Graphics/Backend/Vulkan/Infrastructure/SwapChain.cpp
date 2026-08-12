@@ -163,7 +163,7 @@ namespace Neptune::Vulkan {
 
 		const auto result = m_SwapChain->GetNextImage(semaphore, imageIndex);
 
-		VK_CHECK(result)
+		VULKAN_CHECK(result)
 
 		if (result == VK_ERROR_OUT_OF_DATE_KHR)
 		{

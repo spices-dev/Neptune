@@ -34,7 +34,7 @@ namespace Neptune::Vulkan::Unit {
         handles.pipelineBinaryCount        = 1;
         handles.pPipelineBinaries          = &m_Handle;
         
-        VK_CHECK(vkCreatePipelineBinariesKHR(device, &info, GetAllocator(), &handles))
+        VULKAN_CHECK(vkCreatePipelineBinariesKHR(device, &info, GetAllocator(), &handles))
     }
 }
 

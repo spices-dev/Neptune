@@ -146,7 +146,7 @@ namespace Neptune::Vulkan {
 		name_info.objectHandle            = reinterpret_cast<uint64_t>(unit.GetHandle());
 		name_info.pObjectName             = caption.c_str();
 
-		VK_CHECK(GetContext().Get<IFunctions>()->vkSetDebugUtilsObjectNameEXT(m_Device, &name_info))
+		VULKAN_CHECK(GetContext().Get<IFunctions>()->vkSetDebugUtilsObjectNameEXT(m_Device, &name_info))
 	}
 
 	template<>
@@ -164,7 +164,7 @@ namespace Neptune::Vulkan {
 		name_info.objectHandle            = reinterpret_cast<uint64_t>(unit.GetHandle());
 		name_info.pObjectName             = caption.c_str();
 
-		VK_CHECK(GetContext().Get<IFunctions>()->vkSetDebugUtilsObjectNameEXT(unit.GetHandle(), &name_info))
+		VULKAN_CHECK(GetContext().Get<IFunctions>()->vkSetDebugUtilsObjectNameEXT(unit.GetHandle(), &name_info))
 	}
 	
 	template <typename Unit>
@@ -182,7 +182,7 @@ namespace Neptune::Vulkan {
 		tag_info.tagSize                  = captions.size();
 		tag_info.pTag                     = captions.data();
 		
-		VK_CHECK(GetContext().Get<IFunctions>()->vkSetDebugUtilsObjectTagEXT(m_Device, &tag_info))
+		VULKAN_CHECK(GetContext().Get<IFunctions>()->vkSetDebugUtilsObjectTagEXT(m_Device, &tag_info))
 	}
 }
 

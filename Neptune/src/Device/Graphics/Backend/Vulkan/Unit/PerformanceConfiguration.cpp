@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
         m_Device = device;
 
-        VK_CHECK(vkAcquirePerformanceConfigurationINTEL(device, &info, &m_Handle))
+        VULKAN_CHECK(vkAcquirePerformanceConfigurationINTEL(device, &info, &m_Handle))
     }
 }
 

@@ -31,7 +31,7 @@ namespace Neptune::Vulkan {
         const auto instance = GetContext().Get<IInstance>()->Handle();
 
         uint32_t deviceCount = 0;
-        VK_CHECK(vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr))
+        VULKAN_CHECK(vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr))
 
         if (deviceCount == 0) 
 		{
@@ -40,7 +40,7 @@ namespace Neptune::Vulkan {
 		}
 
         std::vector<VkPhysicalDevice> PhysicalDevices(deviceCount);
-        VK_CHECK(vkEnumeratePhysicalDevices(instance, &deviceCount, PhysicalDevices.data()))
+        VULKAN_CHECK(vkEnumeratePhysicalDevices(instance, &deviceCount, PhysicalDevices.data()))
 
 		auto* surface = GetContext().Has<ISurface>() ? GetContext().Get<ISurface>()->Handle() : nullptr;
 		
@@ -66,10 +66,10 @@ namespace Neptune::Vulkan {
 		NEPTUNE_PROFILE_ZONE
 
 		uint32_t extensionCount;
-		VK_CHECK(vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, nullptr))
+		VULKAN_CHECK(vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, nullptr))
 
 		std::vector<VkExtensionProperties> availableExtensions(extensionCount);
-		VK_CHECK(vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, availableExtensions.data()))
+		VULKAN_CHECK(vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, availableExtensions.data()))
 
 		auto requiredList = GetExtensionRequirements();
 		std::set<std::string> requiredExtensions(requiredList.begin(), requiredList.end());
@@ -152,7 +152,7 @@ namespace Neptune::Vulkan {
 				if (surface)
 				{
 					VkBool32 presentSupport = false;
-					VK_CHECK(vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupport))
+					VULKAN_CHECK(vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupport))
 
 					// Get present queue identify.
 					if (presentSupport) 
@@ -213,10 +213,10 @@ namespace Neptune::Vulkan {
 		formatInfo.usage                     = usage;
 
 		uint32_t count = 0;
-		VK_CHECK(GetContext().Get<IFunctions>()->vkGetPhysicalDeviceOpticalFlowImageFormatsNV(Handle(), &formatInfo, &count, nullptr))
+		VULKAN_CHECK(GetContext().Get<IFunctions>()->vkGetPhysicalDeviceOpticalFlowImageFormatsNV(Handle(), &formatInfo, &count, nullptr))
 
 		std::vector<VkOpticalFlowImageFormatPropertiesNV> formats(count, { VK_STRUCTURE_TYPE_OPTICAL_FLOW_IMAGE_FORMAT_PROPERTIES_NV });
-		VK_CHECK(GetContext().Get<IFunctions>()->vkGetPhysicalDeviceOpticalFlowImageFormatsNV(Handle(), &formatInfo, &count, formats.data()))
+		VULKAN_CHECK(GetContext().Get<IFunctions>()->vkGetPhysicalDeviceOpticalFlowImageFormatsNV(Handle(), &formatInfo, &count, formats.data()))
 
 		if (!std::ranges::any_of(formats.begin(), formats.end(), [&](const auto& f) { return f.format == format; }))
 		{
@@ -255,7 +255,7 @@ namespace Neptune::Vulkan {
 		VkImageFormatProperties2               formatProperties2{};
 		formatProperties2.sType              = VK_STRUCTURE_TYPE_IMAGE_FORMAT_PROPERTIES_2;
 
-		VK_CHECK(vkGetPhysicalDeviceImageFormatProperties2(Handle(), &formatInfo2, &formatProperties2))
+		VULKAN_CHECK(vkGetPhysicalDeviceImageFormatProperties2(Handle(), &formatInfo2, &formatProperties2))
 
 		return true;
 	}
@@ -326,7 +326,7 @@ namespace Neptune::Vulkan {
 			}
 		}
 
-		VK_CHECK(GetContext().Get<IFunctions>()->vkGetPhysicalDeviceVideoCapabilitiesKHR(Handle(), &videoProfile, &capabilities))
+		VULKAN_CHECK(GetContext().Get<IFunctions>()->vkGetPhysicalDeviceVideoCapabilitiesKHR(Handle(), &videoProfile, &capabilities))
 
 		if (decodeCapabilities.flags & VK_VIDEO_DECODE_CAPABILITY_DPB_AND_OUTPUT_COINCIDE_BIT_KHR)
 		{
@@ -376,7 +376,7 @@ namespace Neptune::Vulkan {
 
 		SwapChainProperty property{};
 
-		VK_CHECK(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(Handle(), surface, &property.capabilities))
+		VULKAN_CHECK(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(Handle(), surface, &property.capabilities))
 
 		if (property.capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max())
 		{
@@ -389,13 +389,13 @@ namespace Neptune::Vulkan {
 
 		uint32_t formatCount;
 
-		VK_CHECK(vkGetPhysicalDeviceSurfaceFormatsKHR(Handle(), surface, &formatCount, nullptr))
+		VULKAN_CHECK(vkGetPhysicalDeviceSurfaceFormatsKHR(Handle(), surface, &formatCount, nullptr))
 
 		if (formatCount != 0)
 		{
 			property.formats.resize(formatCount);
 
-			VK_CHECK(vkGetPhysicalDeviceSurfaceFormatsKHR(Handle(), surface, &formatCount, property.formats.data()))
+			VULKAN_CHECK(vkGetPhysicalDeviceSurfaceFormatsKHR(Handle(), surface, &formatCount, property.formats.data()))
 
 			property.format = property.formats[0];
 
@@ -413,13 +413,13 @@ namespace Neptune::Vulkan {
 
 		uint32_t presentModeCount;
 
-		VK_CHECK(vkGetPhysicalDeviceSurfacePresentModesKHR(Handle(), surface, &presentModeCount, nullptr))
+		VULKAN_CHECK(vkGetPhysicalDeviceSurfacePresentModesKHR(Handle(), surface, &presentModeCount, nullptr))
 
 		if (presentModeCount != 0)
 		{
 			property.presentModes.resize(presentModeCount);
 
-			VK_CHECK(vkGetPhysicalDeviceSurfacePresentModesKHR(Handle(), surface, &presentModeCount, property.presentModes.data()))
+			VULKAN_CHECK(vkGetPhysicalDeviceSurfacePresentModesKHR(Handle(), surface, &presentModeCount, property.presentModes.data()))
 
 			property.presentMode = property.presentModes[0];
 
@@ -498,10 +498,10 @@ namespace Neptune::Vulkan {
 		videoFormatInfo.pNext                  = &videoProfiles;
 
 		uint32_t supportedFormatCount = 0;
-        VK_CHECK(GetContext().Get<IFunctions>()->vkGetPhysicalDeviceVideoFormatPropertiesKHR(Handle(), &videoFormatInfo, &supportedFormatCount, nullptr))
+        VULKAN_CHECK(GetContext().Get<IFunctions>()->vkGetPhysicalDeviceVideoFormatPropertiesKHR(Handle(), &videoFormatInfo, &supportedFormatCount, nullptr))
 
 		std::vector<VkVideoFormatPropertiesKHR> supportedFormats(supportedFormatCount, { VK_STRUCTURE_TYPE_VIDEO_FORMAT_PROPERTIES_KHR });
-		VK_CHECK(GetContext().Get<IFunctions>()->vkGetPhysicalDeviceVideoFormatPropertiesKHR(Handle(), &videoFormatInfo, &supportedFormatCount, supportedFormats.data()))
+		VULKAN_CHECK(GetContext().Get<IFunctions>()->vkGetPhysicalDeviceVideoFormatPropertiesKHR(Handle(), &videoFormatInfo, &supportedFormatCount, supportedFormats.data()))
 
 		std::vector<VkFormat> formats;
 		std::ranges::for_each(supportedFormats, [&](const auto& format){

@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateShadersEXT(device, 1, &info, GetAllocator(), &m_Handle))
+		VULKAN_CHECK(vkCreateShadersEXT(device, 1, &info, GetAllocator(), &m_Handle))
 	}
 
 }

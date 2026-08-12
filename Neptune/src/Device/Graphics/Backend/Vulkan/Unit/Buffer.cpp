@@ -81,7 +81,7 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Flags = properties;
 		
-		VK_CHECK(vkCreateBuffer(device, &info, GetAllocator(), &m_Handle))
+		VULKAN_CHECK(vkCreateBuffer(device, &info, GetAllocator(), &m_Handle))
 
 		VkMemoryDedicatedRequirements                       dedicatedRegs{};
 		dedicatedRegs.sType                               = VK_STRUCTURE_TYPE_MEMORY_DEDICATED_REQUIREMENTS;
@@ -123,7 +123,7 @@ namespace Neptune::Vulkan::Unit {
 
 		AllocateMemory(device, &allocInfo, GetAllocator(), &alloc.memory, properties);
 		
-		VK_CHECK(vkBindBufferMemory(device, m_Handle, alloc.memory, 0))
+		VULKAN_CHECK(vkBindBufferMemory(device, m_Handle, alloc.memory, 0))
 
 		if (info.usage & VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT)
 		{
@@ -136,7 +136,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (properties & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT)
 		{
-			VK_CHECK(vkMapMemory(alloc.device, alloc.memory, 0, info.size, 0, &alloc.hostMemory))
+			VULKAN_CHECK(vkMapMemory(alloc.device, alloc.memory, 0, info.size, 0, &alloc.hostMemory))
 		}
 
 		m_Alloc = alloc;
@@ -167,7 +167,7 @@ namespace Neptune::Vulkan::Unit {
 			allocInfo.flags |= VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT;
 		}
 
-		VK_CHECK(vmaCreateBuffer(vma, &info, &allocInfo, &m_Handle, &alloc.alloc, nullptr))
+		VULKAN_CHECK(vmaCreateBuffer(vma, &info, &allocInfo, &m_Handle, &alloc.alloc, nullptr))
 
 		if (info.usage & VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT)
 		{
@@ -180,7 +180,7 @@ namespace Neptune::Vulkan::Unit {
 
 		if (properties & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT)
 		{
-			VK_CHECK(vmaMapMemory(vma, alloc.alloc, &alloc.hostMemory))
+			VULKAN_CHECK(vmaMapMemory(vma, alloc.alloc, &alloc.hostMemory))
 		}
 
 		m_Alloc = alloc;
@@ -220,11 +220,11 @@ namespace Neptune::Vulkan::Unit {
 
 			if (size == VK_WHOLE_SIZE)
 			{
-				VK_CHECK(vmaCopyMemoryToAllocation(p->vma, data, p->alloc, offset, m_Size))
+				VULKAN_CHECK(vmaCopyMemoryToAllocation(p->vma, data, p->alloc, offset, m_Size))
 			}
 			else
 			{
-				VK_CHECK(vmaCopyMemoryToAllocation(p->vma, data, p->alloc, offset, size))
+				VULKAN_CHECK(vmaCopyMemoryToAllocation(p->vma, data, p->alloc, offset, size))
 			}
 		}
 		else
@@ -247,11 +247,11 @@ namespace Neptune::Vulkan::Unit {
 			range.offset                       = offset;
 			range.size                         = size;
 
-			VK_CHECK(vkFlushMappedMemoryRanges(p->device, 1, &range))
+			VULKAN_CHECK(vkFlushMappedMemoryRanges(p->device, 1, &range))
 		}
 		else if (auto* p = std::get_if<vmaAlloc>(&m_Alloc))
 		{
-			VK_CHECK(vmaFlushAllocation(p->vma, p->alloc, offset, size))
+			VULKAN_CHECK(vmaFlushAllocation(p->vma, p->alloc, offset, size))
 		}
 		else
 		{

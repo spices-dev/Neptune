@@ -38,14 +38,14 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateOpticalFlowSessionNV(m_Device, &info, GetAllocator(), &m_Handle))
+		VULKAN_CHECK(vkCreateOpticalFlowSessionNV(m_Device, &info, GetAllocator(), &m_Handle))
 	}
 
 	void OpticalFlowSession::BindOpticalFlowSessionImage(VkOpticalFlowSessionBindingPointNV bindPoint, VkImageView view, VkImageLayout layout) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		VK_CHECK(vkBindOpticalFlowSessionImageNV(m_Device, m_Handle, bindPoint, view, layout))
+		VULKAN_CHECK(vkBindOpticalFlowSessionImageNV(m_Device, m_Handle, bindPoint, view, layout))
 	}
 
 }

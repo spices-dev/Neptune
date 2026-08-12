@@ -29,21 +29,21 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Device = device;
 
-		VK_CHECK(vkCreateFence(device, &info, GetAllocator(), &m_Handle))
+		VULKAN_CHECK(vkCreateFence(device, &info, GetAllocator(), &m_Handle))
 	}
 
 	void Fence::Wait() const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		VK_CHECK(vkWaitForFences(m_Device, 1, &m_Handle, VK_TRUE, UINT64_MAX))
+		VULKAN_CHECK(vkWaitForFences(m_Device, 1, &m_Handle, VK_TRUE, UINT64_MAX))
 	}
 
 	void Fence::ResetFence() const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		VK_CHECK(vkResetFences(m_Device, 1, &m_Handle))
+		VULKAN_CHECK(vkResetFences(m_Device, 1, &m_Handle))
 	}
 }
 

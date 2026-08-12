@@ -181,10 +181,10 @@ namespace Neptune::Vulkan {
 		NEPTUNE_PROFILE_ZONE
 
 		uint32_t layerCount;
-		VK_CHECK(vkEnumerateInstanceLayerProperties(&layerCount, nullptr))
+		VULKAN_CHECK(vkEnumerateInstanceLayerProperties(&layerCount, nullptr))
 
 		std::vector<VkLayerProperties> availableLayers(layerCount);
-		VK_CHECK(vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data()))
+		VULKAN_CHECK(vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data()))
 
 		std::set<std::string> requiredLayers(m_LayerProperties.begin(), m_LayerProperties.end());
 
