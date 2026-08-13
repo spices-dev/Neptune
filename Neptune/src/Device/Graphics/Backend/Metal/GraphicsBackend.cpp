@@ -21,7 +21,7 @@ namespace Neptune::Metal {
     {
         NEPTUNE_PROFILE_ZONE
         
-        HandleResultDelegate::SetHandler([&]() { HandleResult(); });
+        HandleResultDelegate::SetHandler([&](NS::Error* result) { HandleResult(result); });
     }
 
     GraphicsBackend::~GraphicsBackend() = default;

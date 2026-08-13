@@ -64,6 +64,7 @@ namespace Neptune::Metal {
 	using MTLFunctionConstantValues         = MTL::FunctionConstantValues*;
 	using MTLFunctionHandle                 = MTL::FunctionHandle*;
 	using MTLFunctionLog                    = MTL::FunctionLog*;
+	using MTLFunction                       = MTL::Function*;
 	//using MTLFunctionStitching              = MTL::FunctionStitching*;
 	using MTLGPUAddress                     = MTL::GPUAddress*;
 	//using MTLHeaderBridge                   = MTL::HeaderBridge*;
@@ -80,6 +81,7 @@ namespace Neptune::Metal {
 	using MTLParallelRenderCommandEncoder   = MTL::ParallelRenderCommandEncoder*;
 	//using MTLPipeline                       = MTL::Pipeline*;
 	using MTLRenderPipelineState            = MTL::RenderPipelineState*;
+	using MTLRenderPipelineDescriptor       = MTL::RenderPipelineDescriptor*;
 	//using MTLRasterizationRate              = MTL::RasterizationRate*;
 	using MTLRenderCommandEncoder           = MTL::RenderCommandEncoder*;
 	//using MTLRenderPass                     = MTL::RenderPass*;

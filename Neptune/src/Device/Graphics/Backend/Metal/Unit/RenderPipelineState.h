@@ -35,6 +35,14 @@ namespace Neptune::Metal::Unit {
         */
         ~RenderPipelineState() override;
         
+        /**
+        * @brief Create RenderPipelineState.
+        * 
+        * @param[in] device MTLDevice.
+        * @param[in] desc MTLRenderPipelineDescriptor
+        */
+        void CreateRenderPipelineState(MTLDevice device, MTLRenderPipelineDescriptor desc);
+        
     };
 }
 

@@ -27,7 +27,7 @@ namespace Neptune::Metal {
 	*/
     struct HandleResultDelegate
     {
-        using Handler = std::function<void()>;
+        using Handler = std::function<void(NS::Error* result)>;
 
 		/**
 		* @brief Set Handler.
@@ -46,10 +46,12 @@ namespace Neptune::Metal {
 	
 	/**
 	* @brief Handle Error Result.
+	* 
+	* @param[in] result NS::Error*
 	*/
-	void HandleResult();
+	void HandleResult(NS::Error* result);
 
-	#define METAL_CHECK(expr)  { auto expr_value = expr; { std::invoke(HandleResultDelegate::GetHandler()); } }
+	#define METAL_CHECK(expr)  { NS::Error* result = nullptr; expr; if(result){ std::invoke(HandleResultDelegate::GetHandler(), result); } }
 }
 
 #endif

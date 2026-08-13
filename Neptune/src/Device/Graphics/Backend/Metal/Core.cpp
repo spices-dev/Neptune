@@ -38,9 +38,13 @@ namespace Neptune::Metal {
 		return s_Handler;
 	}
 	
-	void HandleResult()
+	void HandleResult(NS::Error* result)
 	{
         NEPTUNE_PROFILE_ZONE
+		
+		if (!result) return;
+		
+		NEPTUNE_LOG_CORE(E) << result->localizedDescription()->utf8String();
 	}
 }
 

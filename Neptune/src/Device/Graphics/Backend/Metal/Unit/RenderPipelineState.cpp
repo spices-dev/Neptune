@@ -21,6 +21,12 @@ namespace Neptune::Metal::Unit {
         m_Handle->release();
     }
     
+    void RenderPipelineState::CreateRenderPipelineState(MTLDevice device, MTLRenderPipelineDescriptor desc)
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        METAL_CHECK(m_Handle = device->newRenderPipelineState(desc, &result))
+    }
 }
 
 #endif
