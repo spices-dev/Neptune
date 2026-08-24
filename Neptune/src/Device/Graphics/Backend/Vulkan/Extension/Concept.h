@@ -1,0 +1,34 @@
+﻿/**
+* @file Concept.h.
+* @brief The Concept Definitions.
+* @author Spices.
+*/
+
+#pragma once
+#include "Core/Concept.h"
+#include "Extension.h"
+
+namespace Neptune::Vulkan::Extension {
+    
+    /**
+    * @brief Concept: Is Extension.
+    * 
+    * @tparam T .
+    */
+    template<typename T>
+    concept IsExtension = IsBase<Extension, T>;
+    
+    /**
+    * @brief Concept: Is IExtension.
+    * 
+    * @tparam T .
+    */
+    template<typename T>
+    concept IsIExtension = requires(T t) {
+        typename T::T;
+        t.E;
+        requires IsExtension<decltype(T::T)>;
+        requires IsEnum<decltype(T::E)>;
+    };
+    
+}

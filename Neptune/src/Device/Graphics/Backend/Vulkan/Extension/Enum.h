@@ -1,0 +1,33 @@
+﻿/**
+* @file Enum.h.
+* @brief The Enum Class Definitions.
+* @author Spices.
+*/
+
+#pragma once
+
+#ifdef NP_GRAPHICS_VULKAN
+
+namespace Neptune::Vulkan {
+
+    /**
+    * @brief Enum of Extension.
+    */
+    enum class EExtension : uint8_t
+    {
+        DescriptorBuffer = 0,                       // @brief DescriptorBuffer.
+        DescriptorHeap,                             // @brief DescriptorHeap.
+        DeviceFault,                                // @brief DeviceFault.
+        HDR,                                        // @brief HDR.
+        OpticalFlow,                                // @brief OpticalFlow.
+        RayTracing,                                 // @brief RayTracing.
+        SwapChain,                                  // @brief SwapChain.
+        VideoDecode,                                // @brief VideoDecode.
+        VideoEncode,                                // @brief VideoEncode.
+
+        Count
+    };
+
+}
+
+#endif
