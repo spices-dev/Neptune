@@ -3,7 +3,7 @@
 -- @author Spices.
 
 -- Default Version
-local default_version = "1.4.321.1"
+local default_version = "1.4.357.0"
 
 -- @brief Get Vulkan SDK Path.
 --
