@@ -64,6 +64,13 @@ namespace Neptune::Vulkan::Extension {
         void Registry(Args&&... args);
 
         /**
+        * @brief Unregister Infrastructure.
+        *
+        * @param[in] e E.
+        */
+        void UnRegistry(E e);
+        
+        /**
         * @brief Get registry IExtension.
         *
         * @tparam I IExtension Definitions.
@@ -72,7 +79,27 @@ namespace Neptune::Vulkan::Extension {
         */
         template<IsIExtension I>
         requires IsNotEmptyEnum<E>
-        typename I::T* Get();
+        typename I::T* Get() const;
+        
+        /**
+        * @brief Is registry IExtension.
+        *
+        * @tparam I IExtension Definitions.
+        * 
+        * @return Returns true if registry.
+        */
+        template<IsIExtension I>
+        requires IsNotEmptyEnum<E>
+        bool Has() const;
+        
+        /**
+        * @brief View all Infrastructures.
+        * 
+        * @param[in] fn Iter Functor.
+        */
+        template<typename F>
+        requires IsNotEmptyEnum<E>
+        void View(F&& fn) const;
         
     private:
 
@@ -98,15 +125,52 @@ namespace Neptune::Vulkan::Extension {
     }
 
     template<typename E> requires IsEnum<E>
+    inline void EContext<E>::UnRegistry(E e)
+    {
+        NEPTUNE_PROFILE_ZONE
+
+        const auto position = static_cast<uint8_t>(e);
+
+        if (!m_Infrastructures[position]) return;
+
+        m_Infrastructures[position].reset();
+    }
+    
+    template<typename E> requires IsEnum<E>
     template<IsIExtension I>
     requires IsNotEmptyEnum<E>
-    typename I::T* EContext<E>::Get()
+    typename I::T* EContext<E>::Get() const
     {
         NEPTUNE_PROFILE_ZONE
 
         const auto position = static_cast<uint8_t>(I::E);
 
         return static_cast<I::T*>(m_Infrastructures[position].get());
+    }
+    
+    template<typename E> requires IsEnum<E>
+    template<IsIExtension I>
+    requires IsNotEmptyEnum<E>
+    bool EContext<E>::Has() const
+    {
+        NEPTUNE_PROFILE_ZONE
+
+        const auto position = static_cast<uint8_t>(I::E);
+
+        return m_Infrastructures[position] != nullptr;
+    }
+    
+    template<typename E> requires IsEnum<E>
+    template<typename F>
+    requires IsNotEmptyEnum<E>
+    void EContext<E>::View(F&& fn) const
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        for (uint8_t i = 0; i < static_cast<uint8_t>(E::Count); ++i)
+        {
+            std::invoke(std::forward<F>(fn), static_cast<E>(i), m_Infrastructures[i].get());
+        }
     }
 }
 

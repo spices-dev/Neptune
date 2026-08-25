@@ -16,8 +16,6 @@
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderTarget.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/QueryPool.h"
 
-#include <bitset>
-
 namespace Neptune::Vulkan {
 
 	SP<Decoder> Decoder::Create(Context& context, void* payload)

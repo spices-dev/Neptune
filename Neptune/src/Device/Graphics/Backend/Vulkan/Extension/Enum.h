@@ -25,6 +25,9 @@ namespace Neptune::Vulkan {
         SwapChain,                                  // @brief SwapChain.
         VideoDecode,                                // @brief VideoDecode.
         VideoEncode,                                // @brief VideoEncode.
+        YCrBrConversion,                            // @brief YCrBrConversion.
+        Maintenance1,                               // @brief Maintenance1.
+        DebugUtils,                                 // @brief DebugUtils.
 
         Count
     };

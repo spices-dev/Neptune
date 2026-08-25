@@ -120,7 +120,7 @@ namespace Neptune::Render::Common {
         */
         template<IsIInfrastructure I>
         requires IsNotEmptyEnum<E>
-        I::T* Get();
+        typename I::T* Get() const;
 
         /**
         * @brief Is Infrastructure registry.
@@ -196,7 +196,7 @@ namespace Neptune::Render::Common {
     template<typename E> requires IsEnum<E>
     template<IsIInfrastructure I>
     requires IsNotEmptyEnum<E>
-    I::T* Context<E>::Get()
+    I::T* Context<E>::Get() const
     {
         NEPTUNE_PROFILE_ZONE
 

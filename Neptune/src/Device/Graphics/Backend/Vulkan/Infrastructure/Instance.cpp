@@ -10,6 +10,8 @@
 
 #include "Instance.h"
 #include "Functions.h"
+#include "Extensions.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/DebugUtils.h"
 
 namespace Neptune::Vulkan {
 
@@ -25,6 +27,20 @@ namespace Neptune::Vulkan {
     {
 		NEPTUNE_PROFILE_ZONE
 
+    	if (!CheckExtensionRequirementsSatisfied())
+    	{
+    		NEPTUNE_LOG_CORE(E) << "Instance Extension not Satisfied";
+    		return;
+    	}
+    	
+    	GetLayerRequirements();
+    	
+    	if (!CheckLayerRequirementsSatisfied())
+    	{
+    		NEPTUNE_LOG_CORE(E) << "Instance Layer not Satisfied";
+    		return;
+    	}
+    	
     	VkDebugUtilsMessengerCreateInfoEXT         debugInfo {};
     	debugInfo.sType                          = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
     	debugInfo.messageSeverity                = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT 
@@ -38,33 +54,15 @@ namespace Neptune::Vulkan {
     	debugInfo.pUserData                      = nullptr;
     	debugInfo.pNext                          = nullptr;
     	
-#ifdef NEPTUNE_DEBUG
-    	
-    	std::vector<VkValidationFeatureEnableEXT> validationFeatureEnable;
+		if (const auto debugUtils = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IDebugUtils>())
+		{
+			VkValidationFeaturesEXT								  validationFeatures{};
+			validationFeatures.sType						    = VK_STRUCTURE_TYPE_VALIDATION_FEATURES_EXT;
+			validationFeatures.enabledValidationFeatureCount    = static_cast<uint32_t>(debugUtils->GetFeatures().size());
+			validationFeatures.pEnabledValidationFeatures       = debugUtils->GetFeatures().data();
 
-#if 0
-
-    	validationFeatureEnable.push_back(VK_VALIDATION_FEATURE_ENABLE_DEBUG_PRINTF_EXT);
-	
-#if 0
-
-    	validationFeatureEnable.push_back(VK_VALIDATION_FEATURE_ENABLE_GPU_ASSISTED_EXT);
-    	validationFeatureEnable.push_back(VK_VALIDATION_FEATURE_ENABLE_GPU_ASSISTED_RESERVE_BINDING_SLOT_EXT);
-    	validationFeatureEnable.push_back(VK_VALIDATION_FEATURE_ENABLE_BEST_PRACTICES_EXT);
-    	validationFeatureEnable.push_back(VK_VALIDATION_FEATURE_ENABLE_SYNCHRONIZATION_VALIDATION_EXT);
-
-#endif
-
-#endif
-
-    	VkValidationFeaturesEXT								  validationFeatures{};
-    	validationFeatures.sType						    = VK_STRUCTURE_TYPE_VALIDATION_FEATURES_EXT;
-    	validationFeatures.enabledValidationFeatureCount    = static_cast<uint32_t>(validationFeatureEnable.size());
-    	validationFeatures.pEnabledValidationFeatures       = validationFeatureEnable.data();
-
-    	debugInfo.pNext                                     = &validationFeatures;
-
-#endif
+			debugInfo.pNext                                     = &validationFeatures;
+		}
     	
         VkApplicationInfo                          appInfo {};
 		appInfo.sType                            = VK_STRUCTURE_TYPE_APPLICATION_INFO;
@@ -77,25 +75,8 @@ namespace Neptune::Vulkan {
         VkInstanceCreateInfo                       createInfo {};
 		createInfo.sType                         = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 		createInfo.pApplicationInfo              = &appInfo;
-
-		GetExtensionRequirements();
-		if (!CheckExtensionRequirementsSatisfied())
-		{
-			NEPTUNE_LOG_CORE(E) << "Instance Extension not Satisfied";
-			return;
-		}
-
 		createInfo.enabledExtensionCount         = static_cast<uint32_t>(m_ExtensionProperties.size());
 		createInfo.ppEnabledExtensionNames       = m_ExtensionProperties.data();
-
-		GetLayerRequirements();
-    	
-		if (!CheckLayerRequirementsSatisfied())
-		{
-			NEPTUNE_LOG_CORE(E) << "Instance Layer not Satisfied";
-			return;
-		}
-
 		createInfo.enabledLayerCount             = static_cast<uint32_t>(m_LayerProperties.size());
 		createInfo.ppEnabledLayerNames           = m_LayerProperties.data();
 		createInfo.pNext                         = &debugInfo;
@@ -119,59 +100,65 @@ namespace Neptune::Vulkan {
 
     }
 
-    void Instance::GetExtensionRequirements()
-	{
-		NEPTUNE_PROFILE_ZONE
-
-		m_ExtensionProperties.push_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME);
-		m_ExtensionProperties.push_back(VK_KHR_GET_SURFACE_CAPABILITIES_2_EXTENSION_NAME);
-
-#ifdef NEPTUNE_DEBUG
-
-		m_ExtensionProperties.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
-
-#endif
-
-	}
-
 	bool Instance::CheckExtensionRequirementsSatisfied()
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		uint32_t extensionCount = 0;
-		vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+		VULKAN_CHECK(vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr))
 
 		std::vector<VkExtensionProperties> availableExtensions(extensionCount);
-		vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, availableExtensions.data());
-		
-		std::set<std::string> requiredExtensions(m_ExtensionProperties.begin(), m_ExtensionProperties.end());
-
-		for (const auto& extension : availableExtensions) 
-		{
-			requiredExtensions.erase(extension.extensionName);
-		}
-
-		if (!requiredExtensions.empty())
-		{
-			for (auto& set : requiredExtensions)
-			{
-				NEPTUNE_LOG_CORE(E) << "Instance Extension Required: " << set << ", Which is not satisfied";
-			}
-		}
-
-		return requiredExtensions.empty();
+		VULKAN_CHECK(vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, availableExtensions.data()))
+    	
+    	std::vector<EExtension> removedExtension;
+    	
+    	GetContext().Get<IExtensions>()->GetContext().View([&](const auto e, const auto& extension) {
+    		
+    		bool satisfy = true;
+    		const auto& extensions = extension->GetInstanceExtensions();
+    		
+            auto filtered = std::views::keys(extensions | std::views::filter([](const auto& pair) {
+                return pair.second;
+            }));
+    		
+    		std::ranges::for_each(filtered, [&](const auto& name) {
+    			
+    			std::string target(name);
+    			
+                if (std::ranges::all_of(availableExtensions, [&](const auto& ext) { return ext.extensionName != target; }))
+    			{
+    				NEPTUNE_LOG_CORE(E) << "Instance Extension Required: " << target << ", Which is not satisfied";
+    				
+    				satisfy = false;
+    			}
+    		});
+    		
+    		if (satisfy)
+    		{
+    			m_ExtensionProperties.insert(m_ExtensionProperties.end(), filtered.begin(), filtered.end());
+    		}
+		    else
+		    {
+		    	removedExtension.emplace_back(e);
+		    }
+    	});
+    	
+    	std::ranges::for_each(removedExtension, [&](const auto& e) {
+    		
+    		GetContext().Get<IExtensions>()->GetContext().UnRegistry(e);
+    	});
+    	
+    	return !m_ExtensionProperties.empty();
 	}
 
 	void Instance::GetLayerRequirements()
 	{
 		NEPTUNE_PROFILE_ZONE
 
-#ifdef NEPTUNE_DEBUG
-
-		m_LayerProperties.push_back("VK_LAYER_KHRONOS_validation");
-
-#endif
-
+    	if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDebugUtils>())
+    	{
+    		m_LayerProperties.push_back("VK_LAYER_KHRONOS_validation");
+    	}
 	}
 
 	bool Instance::CheckLayerRequirementsSatisfied()

@@ -44,6 +44,20 @@ namespace Neptune::Vulkan {
 		*/
 		~Extensions() override = default;
 		
+		/**
+		* @brief Get Extension::EContext.
+		*
+		* @return Returns Extension::EContext.
+		*/
+		Extension::EContext<EExtension>& GetContext() { return m_Context; }
+
+		/**
+		* @brief Get Extension::EContext.
+		* 
+		* @return Returns Extension::EContext.
+		*/
+		const Extension::EContext<EExtension>& GetContext() const { return m_Context; }
+		
     private:
         
         /**

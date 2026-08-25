@@ -55,12 +55,9 @@ namespace Neptune::Vulkan {
 		void Create();
 
 		/**
-		* @brief Get Extension Requirements.
-		*/
-		void GetExtensionRequirements();
-
-		/**
 		* @brief Check Extension Requirements Satisfied.
+		* 
+		* @return Returns true if satisfied.
 		*/
 		bool CheckExtensionRequirementsSatisfied();
 

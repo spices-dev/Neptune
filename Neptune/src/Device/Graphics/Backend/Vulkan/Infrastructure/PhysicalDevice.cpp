@@ -13,6 +13,7 @@
 #include "Instance.h"
 #include "Surface.h"
 #include "Functions.h"
+#include "Extensions.h"
 
 namespace Neptune::Vulkan {
 
@@ -61,41 +62,58 @@ namespace Neptune::Vulkan {
 		NEPTUNE_LOG_CORE(E) << "Failed to find GPU Physical Device that satisfied our needs.";
     }
 
-	bool PhysicalDevice::IsExtensionMeetDemand(const VkPhysicalDevice& device) const
+	bool PhysicalDevice::IsExtensionMeetDemand(const VkPhysicalDevice& device)
 	{
 		NEPTUNE_PROFILE_ZONE
 
+		VkPhysicalDeviceProperties deviceProperties;
+		vkGetPhysicalDeviceProperties(device, &deviceProperties);
+		
 		uint32_t extensionCount;
 		VULKAN_CHECK(vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, nullptr))
 
 		std::vector<VkExtensionProperties> availableExtensions(extensionCount);
 		VULKAN_CHECK(vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, availableExtensions.data()))
 
-		auto requiredList = GetExtensionRequirements();
-		std::set<std::string> requiredExtensions(requiredList.begin(), requiredList.end());
-
-		for (const auto& extension : availableExtensions)
-		{
-			requiredExtensions.erase(extension.extensionName);
-		}
-
-		if (requiredExtensions.empty())
-		{
-			return true;
-		}
-		else
-		{
-			// Get Physical Device name.
-			VkPhysicalDeviceProperties deviceProperties;
-			vkGetPhysicalDeviceProperties(device, &deviceProperties);
-
-			for (auto& set : requiredExtensions)
+		std::vector<EExtension> removedExtension;
+		
+		GetContext().Get<IExtensions>()->GetContext().View([&](const auto e, const auto& extension) {
+    		
+			bool satisfy = true;
+			const auto& extensions = extension->GetDeviceExtensions();
+    		
+			auto filtered = std::views::keys(extensions | std::views::filter([](const auto& pair) {
+				return pair.second;
+			}));
+			
+			std::ranges::for_each(filtered, [&](const auto& name) {
+    			
+				std::string target(name);
+				
+				if (std::ranges::all_of(availableExtensions, [&](const auto& ext) { return ext.extensionName != target; }))
+				{
+					NEPTUNE_LOG_CORE(E) << "Device Extension Required: [ " << target << " ], Which is not satisfied with device: " << deviceProperties.deviceName;
+    				
+					satisfy = false;
+				}
+			});
+    		
+			if (satisfy)
 			{
-				NEPTUNE_LOG_CORE(E) << "Device Extension Required: [ " << set << " ], Which is not satisfied with device: " << deviceProperties.deviceName;
+				m_ExtensionProperties.insert(m_ExtensionProperties.end(), filtered.begin(), filtered.end());
 			}
-
-			return false;
-		}
+			else
+			{
+				removedExtension.emplace_back(e);
+			}
+		});
+    	
+		std::ranges::for_each(removedExtension, [&](const auto& e) {
+    		
+			GetContext().Get<IExtensions>()->GetContext().UnRegistry(e);
+		});
+    	
+		return !m_ExtensionProperties.empty();
 	}
 
 	bool PhysicalDevice::IsPropertyMeetDemand(const VkPhysicalDevice& device)
@@ -441,27 +459,6 @@ namespace Neptune::Vulkan {
 	const std::vector<const char*>& PhysicalDevice::GetExtensionRequirements() const
 	{
 		NEPTUNE_PROFILE_ZONE
-
-		static std::vector<const char*> m_ExtensionProperties;
-
-		if (m_ExtensionProperties.empty())
-		{
-			m_ExtensionProperties.push_back(VK_KHR_MAINTENANCE_1_EXTENSION_NAME);
-			m_ExtensionProperties.push_back(VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME);
-			m_ExtensionProperties.push_back(VK_KHR_SHADER_CLOCK_EXTENSION_NAME);
-			m_ExtensionProperties.push_back(VK_KHR_SHADER_NON_SEMANTIC_INFO_EXTENSION_NAME);
-			m_ExtensionProperties.push_back(VK_KHR_SPIRV_1_4_EXTENSION_NAME);
-			m_ExtensionProperties.push_back(VK_EXT_MESH_SHADER_EXTENSION_NAME);
-			m_ExtensionProperties.push_back(VK_KHR_SHADER_FLOAT_CONTROLS_EXTENSION_NAME);
-			m_ExtensionProperties.push_back(VK_KHR_FRAGMENT_SHADING_RATE_EXTENSION_NAME);
-			m_ExtensionProperties.push_back(VK_EXT_NESTED_COMMAND_BUFFER_EXTENSION_NAME);
-
-			// @brief Video Decode/Encode
-			m_ExtensionProperties.push_back(VK_KHR_SAMPLER_YCBCR_CONVERSION_EXTENSION_NAME);
-
-			// @brief Optical Flow
-			//m_ExtensionProperties.push_back(VK_NV_OPTICAL_FLOW_EXTENSION_NAME);
-		}
 
 		return m_ExtensionProperties;
 	}

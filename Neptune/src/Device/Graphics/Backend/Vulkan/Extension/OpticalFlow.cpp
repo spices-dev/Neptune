@@ -13,7 +13,11 @@
 namespace Neptune::Vulkan::Extension {
     
     OpticalFlow::OpticalFlow()
-    {}
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        AddDeviceExtensions(VK_NV_OPTICAL_FLOW_EXTENSION_NAME);
+    }
     
 }
 

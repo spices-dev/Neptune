@@ -86,6 +86,8 @@ namespace Neptune::Vulkan {
 		EXPLAIN_VK_FUNCTION_POINTER(vkBindOpticalFlowSessionImageNV                 )
 
 		EXPLAIN_VK_FUNCTION_POINTER(vkBindOpticalFlowSessionImageNV                 )
+		
+		EXPLAIN_VK_FUNCTION_POINTER(vkSetHdrMetadataEXT                             )
 	}
 }
 

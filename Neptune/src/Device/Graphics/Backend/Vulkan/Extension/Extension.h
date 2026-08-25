@@ -55,6 +55,20 @@ namespace Neptune::Vulkan::Extension {
         */
         void AddDeviceFeatures(VkStructureType type);
         
+        /**
+        * @brief Get VkInstance Extension Requirement.
+        * 
+        * @return Returns VkInstance Extension Requirement.
+        */
+        const std::unordered_map<const char*, bool>& GetInstanceExtensions() const { return m_InstanceExtensions; }
+        
+        /**
+        * @brief Get VkPhysicalDevice/VkDevice Extension Requirement.
+        * 
+        * @return Returns VkPhysicalDevice/VkDevice Extension Requirement.
+        */
+        const std::unordered_map<const char*, bool>& GetDeviceExtensions() const { return m_DeviceExtensions; }
+        
     private:
         
         std::unordered_map<const char*, bool> m_InstanceExtensions;      // @brief VkInstance Extensions.

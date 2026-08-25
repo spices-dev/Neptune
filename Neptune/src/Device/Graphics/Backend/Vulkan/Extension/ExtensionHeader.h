@@ -17,5 +17,22 @@
 #include "Device/Graphics/Backend/Vulkan/Extension/SwapChain.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/VideoDecode.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/VideoEncode.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/YCrBrConversion.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/Maintenance1.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/MemoryBudget.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/DebugUtils.h"
+
+// Instance
+//m_ExtensionProperties.push_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME);
+//m_ExtensionProperties.push_back(VK_KHR_GET_SURFACE_CAPABILITIES_2_EXTENSION_NAME);
+
+// Device
+//m_ExtensionProperties.push_back(VK_KHR_SHADER_CLOCK_EXTENSION_NAME);
+//m_ExtensionProperties.push_back(VK_KHR_SHADER_NON_SEMANTIC_INFO_EXTENSION_NAME);
+//m_ExtensionProperties.push_back(VK_KHR_SPIRV_1_4_EXTENSION_NAME);
+//m_ExtensionProperties.push_back(VK_EXT_MESH_SHADER_EXTENSION_NAME);
+//m_ExtensionProperties.push_back(VK_KHR_SHADER_FLOAT_CONTROLS_EXTENSION_NAME);
+//m_ExtensionProperties.push_back(VK_KHR_FRAGMENT_SHADING_RATE_EXTENSION_NAME);
+//m_ExtensionProperties.push_back(VK_EXT_NESTED_COMMAND_BUFFER_EXTENSION_NAME);
 
 #endif

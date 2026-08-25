@@ -161,7 +161,7 @@ namespace Neptune::Vulkan {
 		* 
 		* @return Returns true if meets.
 		*/
-		bool IsExtensionMeetDemand(const VkPhysicalDevice& device) const;
+		bool IsExtensionMeetDemand(const VkPhysicalDevice& device);
 
 		/**
 		* @brief Is Property Meet Demand.

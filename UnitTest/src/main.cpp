@@ -47,7 +47,7 @@ int main(int argc, char** argv)
     }
     catch (const std::exception& ex)
     {
-        NEPTUNE_CORE_ERROR(ex.what())
+        NEPTUNE_LOG_CORE(E) << ex.what();
 
         Neptune::Log::Reset();
         

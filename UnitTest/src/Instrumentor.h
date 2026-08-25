@@ -55,11 +55,8 @@ namespace Neptune::Test {
 				// profiling output.
 				
 				// Edge case: BeginSession() might be before Log::Init()
-				
-				std::stringstream ss;
-				ss << "Instrumentor::BeginSession{ " << name << " } when session { " << m_CurrentSession->Name << " } already open.";
 
-				NEPTUNE_CORE_ERROR(ss.str());
+				NEPTUNE_LOG_CORE(E) << "Instrumentor::BeginSession{ " << name << " } when session { " << m_CurrentSession->Name << " } already open.";
 
 				InternalEndSession();
 			}
@@ -75,10 +72,7 @@ namespace Neptune::Test {
 			{
 				// Edge case: BeginSession() might be before Log::Init()
 
-				std::stringstream ss;
-				ss << "Instrumentor could not open results file { " << filepath << " }";
-
-				NEPTUNE_CORE_ERROR(ss.str());
+				NEPTUNE_LOG_CORE(E) << "Instrumentor could not open results file { " << filepath << " }";
 			}
 		}
 

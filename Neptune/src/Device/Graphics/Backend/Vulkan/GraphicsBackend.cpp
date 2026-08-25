@@ -13,6 +13,8 @@
 #include "AInfrastructure/AccessibleInfrastructure.h"
 #include "RHI/RHIHeader.h"
 #include "Converter.h"
+#include "Extension/DeviceFault.h"
+#include "Extension/MemoryBudget.h"
 #include "Window/Window.h"
 
 namespace Neptune::Vulkan {
@@ -27,6 +29,8 @@ namespace Neptune::Vulkan {
 				result, 
 				GetContext().Has<IPhysicalDevice>() ? GetContext().Get<IPhysicalDevice>()->Handle() : nullptr,
 				GetContext().Has<IDevice>() ? GetContext().Get<IDevice>()->Handle() : nullptr, 
+				GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDeviceFault>(),
+				GetContext().Get<IExtensions>()->GetContext().Has<Extension::IMemoryBudget>(),
 				GetContext().Get<IFunctions>()->vkGetDeviceFaultInfoEXT
 			); 
 		});

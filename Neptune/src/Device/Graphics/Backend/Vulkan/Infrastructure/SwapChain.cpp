@@ -14,6 +14,8 @@
 #include "PhysicalDevice.h"
 #include "Queue.h"
 #include "DebugUtilsObject.h"
+#include "Extensions.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/HDR.h"
 
 namespace Neptune::Vulkan {
 
@@ -77,9 +79,10 @@ namespace Neptune::Vulkan {
 			DEBUGUTILS_SETOBJECTNAME(*m_SwapChain, ToString())
 		}
     	
-#if ENABLE_HDR
+		if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IHDR>())
 		{
 			VkHdrMetadataEXT                    meta {};
+			meta.sType                           = VK_STRUCTURE_TYPE_HDR_METADATA_EXT;
 			meta.displayPrimaryRed            = { 0.708, 0.292 };
 			meta.displayPrimaryGreen          = { 0.170, 0.797 };
 			meta.displayPrimaryBlue           = { 0.131, 0.046 };
@@ -89,9 +92,10 @@ namespace Neptune::Vulkan {
 			meta.maxContentLightLevel         = 1000.0f;
 			meta.maxFrameAverageLightLevel    = 100.0f;
 			
+			m_SwapChain->SetFunctor(GetContext().Get<IFunctions>()->vkSetHdrMetadataEXT);
+			
 			m_SwapChain->SetHdrMetadata(meta);
 		}
-#endif
 
 		auto images = m_SwapChain->GetSwapchainImages();
 
