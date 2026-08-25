@@ -40,7 +40,8 @@ namespace Neptune::Vulkan {
     	
 		m_Context = CreateUP<Context>();
 
-		m_Context->Registry<IInstance>(window ? window->Extension() : std::vector{ VK_KHR_SURFACE_EXTENSION_NAME });
+		m_Context->Registry<IExtensions>(window);
+		m_Context->Registry<IInstance>();
 		m_Context->Registry<IDebugUtilsObject>();
 		if (window)
 		{

@@ -8,6 +8,7 @@
 
 #ifdef NP_GRAPHICS_VULKAN
 
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Instance.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Functions.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Surface.h"

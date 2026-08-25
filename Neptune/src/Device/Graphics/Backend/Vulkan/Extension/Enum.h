@@ -18,6 +18,7 @@ namespace Neptune::Vulkan {
         DescriptorBuffer = 0,                       // @brief DescriptorBuffer.
         DescriptorHeap,                             // @brief DescriptorHeap.
         DeviceFault,                                // @brief DeviceFault.
+        MemoryBudget,                               // @brief MemoryBudget.
         HDR,                                        // @brief HDR.
         OpticalFlow,                                // @brief OpticalFlow.
         RayTracing,                                 // @brief RayTracing.

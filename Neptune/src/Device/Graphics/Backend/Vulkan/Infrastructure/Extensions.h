@@ -13,6 +13,11 @@
 #include "Infrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Context.h"
 
+namespace Neptune {
+	
+	class Window;
+}
+
 namespace Neptune::Vulkan {
 
 	using IExtensions = IInfrastructure<class Extensions, EInfrastructure::Extensions>;
@@ -30,8 +35,9 @@ namespace Neptune::Vulkan {
 		*
 		* @param[in] context Context.
 		* @param[in] e EInfrastructure.
+		* @param[in] window Window.
 		*/
-		Extensions(Context& context, EInfrastructure e);
+		Extensions(Context& context, EInfrastructure e, const Window* window = nullptr);
 
 		/**
 		* @brief Destructor Function.
@@ -42,8 +48,10 @@ namespace Neptune::Vulkan {
         
         /**
         * @brief Create Extension.
+        * 
+        * @param[in] window Window.
         */
-        void Create();
+        void Create(const Window* window);
 		
     private:
     

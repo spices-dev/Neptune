@@ -12,8 +12,17 @@
 
 namespace Neptune::Vulkan::Extension {
     
-    SwapChain::SwapChain()
-    {}
+    SwapChain::SwapChain(const std::vector<const char*>& windowExtensions)
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        for (const auto& extension : windowExtensions)
+        {
+            AddInstanceExtensions(extension);
+        }
+        
+        AddDeviceExtensions(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
+    }
     
 }
 

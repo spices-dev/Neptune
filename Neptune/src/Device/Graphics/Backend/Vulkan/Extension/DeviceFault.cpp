@@ -13,7 +13,11 @@
 namespace Neptune::Vulkan::Extension {
     
     DeviceFault::DeviceFault()
-    {}
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        AddDeviceExtensions(VK_EXT_DEVICE_FAULT_EXTENSION_NAME);
+    }
     
 }
 

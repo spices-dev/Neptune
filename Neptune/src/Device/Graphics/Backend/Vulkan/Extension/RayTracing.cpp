@@ -13,7 +13,13 @@
 namespace Neptune::Vulkan::Extension {
     
     RayTracing::RayTracing()
-    {}
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        AddDeviceExtensions(VK_KHR_RAY_TRACING_PIPELINE_EXTENSION_NAME);
+        AddDeviceExtensions(VK_KHR_RAY_QUERY_EXTENSION_NAME);
+        AddDeviceExtensions(VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME);
+    }
     
 }
 

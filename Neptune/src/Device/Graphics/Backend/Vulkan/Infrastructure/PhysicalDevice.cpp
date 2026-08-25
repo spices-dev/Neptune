@@ -446,8 +446,6 @@ namespace Neptune::Vulkan {
 
 		if (m_ExtensionProperties.empty())
 		{
-			m_ExtensionProperties.push_back(VK_EXT_DEVICE_FAULT_EXTENSION_NAME);
-			m_ExtensionProperties.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
 			m_ExtensionProperties.push_back(VK_KHR_MAINTENANCE_1_EXTENSION_NAME);
 			m_ExtensionProperties.push_back(VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME);
 			m_ExtensionProperties.push_back(VK_KHR_SHADER_CLOCK_EXTENSION_NAME);
@@ -457,26 +455,12 @@ namespace Neptune::Vulkan {
 			m_ExtensionProperties.push_back(VK_KHR_SHADER_FLOAT_CONTROLS_EXTENSION_NAME);
 			m_ExtensionProperties.push_back(VK_KHR_FRAGMENT_SHADING_RATE_EXTENSION_NAME);
 			m_ExtensionProperties.push_back(VK_EXT_NESTED_COMMAND_BUFFER_EXTENSION_NAME);
-			m_ExtensionProperties.push_back(VK_EXT_MEMORY_BUDGET_EXTENSION_NAME);
 
 			// @brief Video Decode/Encode
-			m_ExtensionProperties.push_back(VK_KHR_VIDEO_QUEUE_EXTENSION_NAME);
-			m_ExtensionProperties.push_back(VK_KHR_VIDEO_ENCODE_QUEUE_EXTENSION_NAME);
-			m_ExtensionProperties.push_back(VK_KHR_VIDEO_MAINTENANCE_1_EXTENSION_NAME);
-			m_ExtensionProperties.push_back(VK_KHR_VIDEO_DECODE_QUEUE_EXTENSION_NAME);
-			m_ExtensionProperties.push_back(VK_KHR_VIDEO_DECODE_H265_EXTENSION_NAME);
 			m_ExtensionProperties.push_back(VK_KHR_SAMPLER_YCBCR_CONVERSION_EXTENSION_NAME);
 
 			// @brief Optical Flow
 			//m_ExtensionProperties.push_back(VK_NV_OPTICAL_FLOW_EXTENSION_NAME);
-			 
-			// @brief RayTracing
-			m_ExtensionProperties.push_back(VK_KHR_RAY_TRACING_PIPELINE_EXTENSION_NAME);
-			m_ExtensionProperties.push_back(VK_KHR_RAY_QUERY_EXTENSION_NAME);
-			m_ExtensionProperties.push_back(VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME);
-			
-			// @brief HDR
-			m_ExtensionProperties.push_back(VK_EXT_HDR_METADATA_EXTENSION_NAME);
 		}
 
 		return m_ExtensionProperties;

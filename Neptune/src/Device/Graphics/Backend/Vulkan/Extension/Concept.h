@@ -27,7 +27,7 @@ namespace Neptune::Vulkan::Extension {
     concept IsIExtension = requires(T t) {
         typename T::T;
         t.E;
-        requires IsExtension<decltype(T::T)>;
+        requires IsExtension<typename T::T>;
         requires IsEnum<decltype(T::E)>;
     };
     

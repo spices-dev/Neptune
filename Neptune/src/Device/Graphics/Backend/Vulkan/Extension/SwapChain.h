@@ -21,8 +21,9 @@ namespace Neptune::Vulkan::Extension {
 
         /**
         * @brief Constructor Function.
+        * @param[in] windowExtensions Window Extensions.
         */
-        SwapChain();
+        SwapChain(const std::vector<const char*>& windowExtensions = {});
         
         /**
         * @brief Destructor Function.

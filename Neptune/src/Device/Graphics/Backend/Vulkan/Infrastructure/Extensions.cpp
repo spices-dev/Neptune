@@ -10,20 +10,28 @@
 
 #include "Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/ExtensionHeader.h"
+#include "Window/Window.h"
 
 namespace Neptune::Vulkan {
 
-	Extensions::Extensions(Context& context, EInfrastructure e)
+	Extensions::Extensions(Context& context, EInfrastructure e, const Window* window)
 		: Infrastructure(context, e)
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		Create();
+		Create(window);
 	}
 
-	void Extensions::Create()
+	void Extensions::Create(const Window* window)
 	{
 		NEPTUNE_PROFILE_ZONE
+		
+		if (window)
+		{
+			m_Context.Registry<Extension::ISwapChain>(window ? window->Extension() : std::vector{ VK_KHR_SURFACE_EXTENSION_NAME });
+		}
+		
+		m_Context.Registry<Extension::IDeviceFault>();
 	}
 }
 

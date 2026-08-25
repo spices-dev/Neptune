@@ -13,9 +13,8 @@
 
 namespace Neptune::Vulkan {
 
-    Instance::Instance(Context& context, EInfrastructure e, const std::vector<const char*>& windowExtensions)
+    Instance::Instance(Context& context, EInfrastructure e)
         : Infrastructure(context, e)
-		, m_ExtensionProperties(windowExtensions)
     {
 		NEPTUNE_PROFILE_ZONE
 
@@ -126,7 +125,6 @@ namespace Neptune::Vulkan {
 
 		m_ExtensionProperties.push_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME);
 		m_ExtensionProperties.push_back(VK_KHR_GET_SURFACE_CAPABILITIES_2_EXTENSION_NAME);
-		m_ExtensionProperties.push_back(VK_EXT_SWAPCHAIN_COLOR_SPACE_EXTENSION_NAME);
 
 #ifdef NEPTUNE_DEBUG
 
