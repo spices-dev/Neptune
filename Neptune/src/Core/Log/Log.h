@@ -76,8 +76,6 @@ namespace Neptune {
         bool m_IsInitialized = false;
     };
     
-    
-    
     /**
     * @brief LogStream Class.
     */
@@ -111,7 +109,7 @@ namespace Neptune {
         /**
         * @brief Destructor Function.
         */
-        ~LogStream();
+        virtual ~LogStream();
 
         /**
         * @brief Receive log stream.
@@ -136,22 +134,27 @@ namespace Neptune {
         std::ostringstream m_Stream;   // @brief Log Stream.
         
     };
-}
 
+    template <LogStream::LogLevel Level>
+    constexpr bool IsLogLevelEnabled() 
+    {
 #ifdef NEPTUNE_DEBUG
-
-// Core log macros
-#define NEPTUNE_LOG_CORE(level)    Neptune::LogStream(true,  Neptune::LogStream::LogLevel::level)
-// Client log macro
-#define NEPTUNE_LOG(level)         Neptune::LogStream(false, Neptune::LogStream::LogLevel::level)
-
-#endif // NEPTUNE_DEBUG
+        return Level >= LogStream::LogLevel::T;
+#endif
 
 #ifdef NEPTUNE_RELEASE
+        return Level >= LogStream::LogLevel::I;
+#endif
+        
+    }
+}
 
 // Core log macros
-#define NEPTUNE_LOG_CORE(level)    Neptune::LogStream(true,  Neptune::LogStream::LogLevel::level)
-// Client log macro
-#define NEPTUNE_LOG(level)         Neptune::LogStream(false, Neptune::LogStream::LogLevel::level)
+#define NEPTUNE_LOG_CORE(level)                                              \
+    if constexpr (!Neptune::IsLogLevelEnabled<Neptune::LogStream::LogLevel::level>()) {} \
+    else Neptune::LogStream(true, Neptune::LogStream::LogLevel::level)
 
-#endif // NEPTUNE_RELEASE
+// Client log macro
+#define NEPTUNE_LOG(level)                                                   \
+    if constexpr (!Neptune::IsLogLevelEnabled<Neptune::LogStream::LogLevel::level>()) {} \
+    else Neptune::LogStream(false, Neptune::LogStream::LogLevel::level)
