@@ -21,6 +21,9 @@
 #include "Device/Graphics/Backend/Vulkan/Extension/Maintenance1.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/MemoryBudget.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/DebugUtils.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/BufferDeviceAddress.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/DescriptorIndexing.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/Vulkan13.h"
 
 // Instance
 //m_ExtensionProperties.push_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME);
@@ -34,15 +37,5 @@
 //m_ExtensionProperties.push_back(VK_KHR_SHADER_FLOAT_CONTROLS_EXTENSION_NAME);
 //m_ExtensionProperties.push_back(VK_KHR_FRAGMENT_SHADING_RATE_EXTENSION_NAME);
 //m_ExtensionProperties.push_back(VK_EXT_NESTED_COMMAND_BUFFER_EXTENSION_NAME);
-
-// Feature
-//VkPhysicalDeviceVulkan13Features                          vk13Frature{};
-//vk13Frature.sType                                       = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES;
-
-//VkPhysicalDeviceDescriptorIndexingFeatures                descriptorIndexingFeatures {};
-//descriptorIndexingFeatures.sType                        = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_INDEXING_FEATURES;
-
-//VkPhysicalDeviceBufferDeviceAddressFeatures               bufferDeviceAddressFeatures {};
-//bufferDeviceAddressFeatures.sType                       = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BUFFER_DEVICE_ADDRESS_FEATURES;
 
 #endif

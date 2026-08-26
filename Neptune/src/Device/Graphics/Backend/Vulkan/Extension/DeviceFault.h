@@ -15,6 +15,10 @@ namespace Neptune::Vulkan::Extension {
 
     using IDeviceFault = IExtension<class DeviceFault, EExtension::DeviceFault>;
     
+    /**
+    * @brief Used In:
+    * Device Lost Error Collection
+    */
     class DeviceFault : public Extension
     {
     public:

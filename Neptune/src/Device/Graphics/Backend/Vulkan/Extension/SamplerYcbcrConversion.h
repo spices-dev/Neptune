@@ -15,6 +15,10 @@ namespace Neptune::Vulkan::Extension {
 
     using ISamplerYcbcrConversion = IExtension<class SamplerYcbcrConversion, EExtension::SamplerYcbcrConversion>;
     
+    /**
+    * @brief Used In:
+    * Sample YUV Image
+    */
     class SamplerYcbcrConversion : public Extension
     {
     public:

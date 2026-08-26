@@ -28,6 +28,9 @@ namespace Neptune::Vulkan {
         SamplerYcbcrConversion,                     // @brief SamplerYcbcrConversion.
         Maintenance1,                               // @brief Maintenance1.
         DebugUtils,                                 // @brief DebugUtils.
+        BufferDeviceAddress,                        // @brief BufferDeviceAddress.
+        DescriptorIndexing,                         // @brief DescriptorIndexing.
+        Vulkan13,                                   // @brief Vulkan13.
 
         Count
     };
@@ -53,6 +56,8 @@ namespace Neptune::Vulkan {
             case SamplerYcbcrConversion:     return "SamplerYcbcrConversion";
             case Maintenance1:               return "Maintenance1";
             case DebugUtils:                 return "DebugUtils";
+            case BufferDeviceAddress:        return "BufferDeviceAddress";
+            case DescriptorIndexing:         return "DescriptorIndexing";
             default:                         return "NonNamed";
         }
     }

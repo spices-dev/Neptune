@@ -48,6 +48,9 @@ namespace Neptune::Vulkan {
 		m_Context.Registry<Extension::IVideoDecode>();
 		m_Context.Registry<Extension::IVideoEncode>();
 		m_Context.Registry<Extension::ISamplerYcbcrConversion>();
+		m_Context.Registry<Extension::IBufferDeviceAddress>();
+		m_Context.Registry<Extension::IDescriptorIndexing>();
+		m_Context.Registry<Extension::IVulkan13>();
 	}
 	
 	void Extensions::BuildFeatureChain(void** pNext)

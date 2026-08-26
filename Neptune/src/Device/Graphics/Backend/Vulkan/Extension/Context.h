@@ -169,6 +169,8 @@ namespace Neptune::Vulkan::Extension {
         
         for (uint8_t i = 0; i < static_cast<uint8_t>(E::Count); ++i)
         {
+            if (!m_Infrastructures[i]) continue;
+            
             std::invoke(std::forward<F>(fn), static_cast<E>(i), m_Infrastructures[i].get());
         }
     }

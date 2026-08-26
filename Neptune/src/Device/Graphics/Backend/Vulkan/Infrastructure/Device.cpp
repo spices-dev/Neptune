@@ -79,6 +79,8 @@ namespace Neptune::Vulkan {
 
     	GetContext().Get<IExtensions>()->BuildFeatureChainWithoutRepeat(&deviceFeatures.pNext);
 
+    	vkGetPhysicalDeviceFeatures2(physicalDevice->Handle(), &deviceFeatures);
+
         VkDeviceCreateInfo                                        createInfo{};
 		createInfo.sType                                        = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 		createInfo.pQueueCreateInfos                            = queueCreateInfos.data();
