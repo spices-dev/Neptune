@@ -150,8 +150,8 @@ namespace Neptune {
 #ifdef NEPTUNE_RELEASE
 
 // Core log macros
-#define NEPTUNE_LOG_CORE(level)
+#define NEPTUNE_LOG_CORE(level)    Neptune::LogStream(true,  Neptune::LogStream::LogLevel::level)
 // Client log macro
-#define NEPTUNE_LOG(level)
+#define NEPTUNE_LOG(level)         Neptune::LogStream(false, Neptune::LogStream::LogLevel::level)
 
 #endif // NEPTUNE_RELEASE

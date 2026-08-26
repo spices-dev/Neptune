@@ -10,6 +10,8 @@
 
 #include "Functions.h"
 #include "Instance.h"
+#include "Extensions.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/DebugUtils.h"
 
 namespace Neptune::Vulkan {
 
@@ -21,21 +23,24 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		EXPLAIN_VK_FUNCTION_POINTER(vkCreateDebugUtilsMessengerEXT                  )
-		EXPLAIN_VK_FUNCTION_POINTER(vkDestroyDebugUtilsMessengerEXT                 )
-		EXPLAIN_VK_FUNCTION_POINTER(vkGetDeviceFaultInfoEXT                         )
+		if(GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDebugUtils>())
+		{
+			EXPLAIN_VK_FUNCTION_POINTER(vkCreateDebugUtilsMessengerEXT                  )
+			EXPLAIN_VK_FUNCTION_POINTER(vkDestroyDebugUtilsMessengerEXT                 )
+			EXPLAIN_VK_FUNCTION_POINTER(vkGetDeviceFaultInfoEXT                         )
 
-		EXPLAIN_VK_FUNCTION_POINTER(vkCmdBeginDebugUtilsLabelEXT                    )
-		EXPLAIN_VK_FUNCTION_POINTER(vkCmdEndDebugUtilsLabelEXT                      )
-		EXPLAIN_VK_FUNCTION_POINTER(vkCmdInsertDebugUtilsLabelEXT                   )
+			EXPLAIN_VK_FUNCTION_POINTER(vkCmdBeginDebugUtilsLabelEXT                    )
+			EXPLAIN_VK_FUNCTION_POINTER(vkCmdEndDebugUtilsLabelEXT                      )
+			EXPLAIN_VK_FUNCTION_POINTER(vkCmdInsertDebugUtilsLabelEXT                   )
 
-		EXPLAIN_VK_FUNCTION_POINTER(vkQueueBeginDebugUtilsLabelEXT                  )
-		EXPLAIN_VK_FUNCTION_POINTER(vkQueueEndDebugUtilsLabelEXT                    )
-		EXPLAIN_VK_FUNCTION_POINTER(vkQueueInsertDebugUtilsLabelEXT                 )
+			EXPLAIN_VK_FUNCTION_POINTER(vkQueueBeginDebugUtilsLabelEXT                  )
+			EXPLAIN_VK_FUNCTION_POINTER(vkQueueEndDebugUtilsLabelEXT                    )
+			EXPLAIN_VK_FUNCTION_POINTER(vkQueueInsertDebugUtilsLabelEXT                 )
 																			       
-		EXPLAIN_VK_FUNCTION_POINTER(vkSetDebugUtilsObjectNameEXT                    )
-		EXPLAIN_VK_FUNCTION_POINTER(vkSetDebugUtilsObjectTagEXT                     )
-																			       
+			EXPLAIN_VK_FUNCTION_POINTER(vkSetDebugUtilsObjectNameEXT                    )
+			EXPLAIN_VK_FUNCTION_POINTER(vkSetDebugUtilsObjectTagEXT                     )
+		}
+		
 		EXPLAIN_VK_FUNCTION_POINTER(vkGetRayTracingShaderGroupHandlesKHR            )
 		EXPLAIN_VK_FUNCTION_POINTER(vkCmdTraceRaysKHR                               )
 		EXPLAIN_VK_FUNCTION_POINTER(vkCreateRayTracingPipelinesKHR                  )
