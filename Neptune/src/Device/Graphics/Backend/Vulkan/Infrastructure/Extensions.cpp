@@ -47,7 +47,48 @@ namespace Neptune::Vulkan {
 		m_Context.Registry<Extension::IRayTracing>();
 		m_Context.Registry<Extension::IVideoDecode>();
 		m_Context.Registry<Extension::IVideoEncode>();
-		m_Context.Registry<Extension::IYCrBrConversion>();
+		m_Context.Registry<Extension::ISamplerYcbcrConversion>();
+	}
+	
+	void Extensions::BuildFeatureChain(void** pNext)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		std::function filter = [](VkStructureType){ return true; };
+		
+		m_Context.View([&](const auto e, const auto& extension) {
+
+			auto last = pNext;
+			
+			extension->BuildFeatureChain(pNext, filter);
+
+			pNext = pNext ? pNext : last;
+		});
+	}
+	
+	void Extensions::BuildFeatureChainWithoutRepeat(void** pNext)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		std::unordered_set<VkStructureType> linked;
+		
+		std::function filter = [&](VkStructureType type) {
+			
+			if (linked.contains(type)) return false;
+			
+			linked.insert(type);
+			
+			return true;
+		};
+		
+		m_Context.View([&](const auto e, const auto& extension) {
+
+			auto last = pNext;
+			
+			extension->BuildFeatureChain(pNext, filter);
+
+			pNext = pNext ? pNext : last;
+		});
 	}
 }
 

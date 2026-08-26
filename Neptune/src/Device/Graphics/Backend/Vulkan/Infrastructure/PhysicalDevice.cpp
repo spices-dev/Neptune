@@ -142,9 +142,29 @@ namespace Neptune::Vulkan {
 		VkPhysicalDeviceFeatures2                             deviceFeatures {};
 		deviceFeatures.sType                                = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
 		deviceFeatures.pNext                                = nullptr;
+		
+		GetContext().Get<IExtensions>()->BuildFeatureChain(&deviceFeatures.pNext);
 
 		vkGetPhysicalDeviceFeatures2(device, &deviceFeatures);
 
+		std::vector<EExtension> removedExtension;
+		
+		GetContext().Get<IExtensions>()->GetContext().View([&](const auto e, const auto& extension) {
+			
+			if (!extension->IsFeaturesSatisfied())
+			{
+				removedExtension.emplace_back(e);
+				
+				NEPTUNE_LOG_CORE(E) << "Device Feature Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+			}
+			
+		});
+		
+		std::ranges::for_each(removedExtension, [&](const auto& e) {
+    		
+			GetContext().Get<IExtensions>()->GetContext().UnRegistry(e);
+		});
+		
 		return true;
 	}
 

@@ -68,13 +68,27 @@ namespace Neptune::Vulkan::Extension {
         * @return Returns VkPhysicalDevice/VkDevice Extension Requirement.
         */
         const std::unordered_map<const char*, bool>& GetDeviceExtensions() const { return m_DeviceExtensions; }
+
+        /**
+        * @brief Build Device Feature Chain.
+        * 
+        * @param[in,out] pNext pNext Chain.
+        * @param[in] filter Feature Filter.
+        */
+        virtual void BuildFeatureChain(void**& pNext, const std::function<bool(VkStructureType)>& filter) {}
+
+        /**
+        * @brief Combine Device Features.
+        * 
+        * @return Returns true if satisfied.
+        */
+        virtual bool IsFeaturesSatisfied() { return true; }
         
     private:
         
         std::unordered_map<const char*, bool> m_InstanceExtensions;      // @brief VkInstance Extensions.
         std::unordered_map<const char*, bool> m_DeviceExtensions;        // @brief VkPhysicalDevice/VkDevice Extensions.
         std::unordered_set<VkStructureType>   m_DeviceFeatures;          // @brief VkPhysicalDevice/VkDevice Features.
-        bool                                  m_Valid;                   // @brief This Extension Valid;
     };
 }
 

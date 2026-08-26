@@ -58,6 +58,20 @@ namespace Neptune::Vulkan {
 		*/
 		const Extension::EContext<EExtension>& GetContext() const { return m_Context; }
 		
+		/**
+		* @brief Build Device Feature Chain.
+		* 
+		* @param[in] pNext pNext Chain.
+		*/
+		void BuildFeatureChain(void** pNext);
+		
+		/**
+		* @brief Build Device Feature Chain(Contain Once).
+		* 
+		* @param[in] pNext pNext Chain.
+		*/
+		void BuildFeatureChainWithoutRepeat(void** pNext);
+		
     private:
         
         /**

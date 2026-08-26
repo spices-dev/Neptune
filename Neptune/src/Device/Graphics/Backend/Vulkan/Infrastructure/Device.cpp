@@ -14,6 +14,7 @@
 #include "ThreadQueue.h"
 #include "DebugUtilsObject.h"
 #include "Surface.h"
+#include "Extensions.h"
 
 namespace Neptune::Vulkan {
 
@@ -71,40 +72,12 @@ namespace Neptune::Vulkan {
 			QueuePriorities.push_back(queuePriority);
 			queueCreateInfos.push_back(queueCreateInfo);
 		}
-
-		VkPhysicalDeviceOpticalFlowFeaturesNV                     opticalFlowFeature{};
-		opticalFlowFeature.sType                                = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_OPTICAL_FLOW_FEATURES_NV;
-		opticalFlowFeature.pNext                                = nullptr;
-
-		VkPhysicalDeviceSamplerYcbcrConversionFeatures            ycbcrFeature{};
-		ycbcrFeature.sType                                      = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SAMPLER_YCBCR_CONVERSION_FEATURES;
-		ycbcrFeature.pNext                                      = nullptr;//&opticalFlowFeature;
-
-		VkPhysicalDeviceVideoMaintenance1FeaturesKHR              videoMain1Frature{};
-		videoMain1Frature.sType                                 = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VIDEO_MAINTENANCE_1_FEATURES_KHR;
-		videoMain1Frature.pNext                                 = &ycbcrFeature;
-
-		VkPhysicalDeviceVulkan13Features                          vk13Frature{};
-		vk13Frature.sType                                       = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES;
-		vk13Frature.pNext                                       = &videoMain1Frature;
-
-		VkPhysicalDeviceDescriptorIndexingFeatures                descriptorIndexingFeatures {};
-		descriptorIndexingFeatures.sType                        = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_INDEXING_FEATURES;
-		descriptorIndexingFeatures.pNext                        = &vk13Frature;  
-
-		VkPhysicalDeviceFaultFeaturesEXT                          faultFeatures{};
-		faultFeatures.sType                                     = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FAULT_FEATURES_EXT;
-		faultFeatures.pNext                                     = &descriptorIndexingFeatures;
-
-    	VkPhysicalDeviceBufferDeviceAddressFeatures               bufferDeviceAddressFeatures {};
-    	bufferDeviceAddressFeatures.sType                       = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BUFFER_DEVICE_ADDRESS_FEATURES;
-    	bufferDeviceAddressFeatures.pNext                       = &faultFeatures;
     	
 		VkPhysicalDeviceFeatures2                                 deviceFeatures{};
 		deviceFeatures.sType                                    = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
-		deviceFeatures.pNext                                    = &bufferDeviceAddressFeatures;
+		deviceFeatures.pNext                                    = nullptr;
 
-		vkGetPhysicalDeviceFeatures2(physicalDevice->Handle(), &deviceFeatures);
+    	GetContext().Get<IExtensions>()->BuildFeatureChainWithoutRepeat(&deviceFeatures.pNext);
 
         VkDeviceCreateInfo                                        createInfo{};
 		createInfo.sType                                        = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;

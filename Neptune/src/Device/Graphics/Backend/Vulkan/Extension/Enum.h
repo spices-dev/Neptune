@@ -25,12 +25,37 @@ namespace Neptune::Vulkan {
         SwapChain,                                  // @brief SwapChain.
         VideoDecode,                                // @brief VideoDecode.
         VideoEncode,                                // @brief VideoEncode.
-        YCrBrConversion,                            // @brief YCrBrConversion.
+        SamplerYcbcrConversion,                     // @brief SamplerYcbcrConversion.
         Maintenance1,                               // @brief Maintenance1.
         DebugUtils,                                 // @brief DebugUtils.
 
         Count
     };
+    
+    inline std::string ToString(EExtension e)
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        using enum EExtension;
+        
+        switch (e)
+        {
+            case DescriptorBuffer:           return "DescriptorBuffer";
+            case DescriptorHeap:             return "DescriptorHeap";
+            case DeviceFault:                return "DeviceFault";
+            case MemoryBudget:               return "MemoryBudget";
+            case HDR:                        return "HDR";
+            case OpticalFlow:                return "OpticalFlow";
+            case RayTracing:                 return "RayTracing";
+            case SwapChain:                  return "SwapChain";
+            case VideoDecode:                return "VideoDecode";
+            case VideoEncode:                return "VideoEncode";
+            case SamplerYcbcrConversion:     return "SamplerYcbcrConversion";
+            case Maintenance1:               return "Maintenance1";
+            case DebugUtils:                 return "DebugUtils";
+            default:                         return "NonNamed";
+        }
+    }
 
 }
 
