@@ -88,7 +88,7 @@ namespace Neptune::RHI {
 		*
 		* @param[in] count Flight Frames.
 		*/
-		void Build(uint32_t count = MaxFrameInFlight) const { m_Impl->Build(count); }
+		void Build(uint32_t count = SwapChainImageCount) const { m_Impl->Build(count); }
 
 	};
 }

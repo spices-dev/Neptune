@@ -34,7 +34,7 @@ namespace Neptune::Vulkan {
 
     	m_GraphicsBackend->OnInitialize(&window);
 		
-		GetContext().Registry<ISwapChain>(MaxFrameInFlight);
+		GetContext().Registry<ISwapChain>(SwapChainImageCount);
 
 		GetContext().Registry<IGraphicImageSemaphore>(MaxFrameInFlight);
 
@@ -205,7 +205,7 @@ namespace Neptune::Vulkan {
 
 		GetContext().UnRegistry<ISwapChain>();
 
-		GetContext().Registry<ISwapChain>(MaxFrameInFlight);
+		GetContext().Registry<ISwapChain>(SwapChainImageCount);
 
 		RenderFrontend::RecreateSwapChain();
 	}

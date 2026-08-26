@@ -56,7 +56,7 @@ namespace Neptune::Vulkan {
 
 		m_Context->Registry<IMemoryAllocator>();
 					  
-		m_Context->Registry<IGraphicQueueSemaphore>(MaxFrameInFlight);
+		m_Context->Registry<IGraphicQueueSemaphore>(SwapChainImageCount);
 		m_Context->Registry<IGraphicFence>(MaxFrameInFlight);
 
 		m_Context->Registry<IComputeQueueSemaphore>(MaxFrameInFlight);

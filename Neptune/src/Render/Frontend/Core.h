@@ -10,4 +10,6 @@
 namespace Neptune {
 
 	constexpr uint32_t MaxFrameInFlight = 2;
+	
+	constexpr uint32_t SwapChainImageCount = 3;
 }

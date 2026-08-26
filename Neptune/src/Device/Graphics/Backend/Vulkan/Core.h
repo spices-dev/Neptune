@@ -19,17 +19,19 @@
 
 namespace Neptune::Vulkan {
 
-	constexpr uint32_t MaxFrameInFlight = Neptune::MaxFrameInFlight;       // @brief Frames In Flight.
+	constexpr uint32_t MaxFrameInFlight = Neptune::MaxFrameInFlight;          // @brief Frames In Flight.
 
-	constexpr uint32_t NThreadQueue = 4;                                   // @brief Thread Queue Counts.
+	constexpr uint32_t SwapChainImageCount = Neptune::SwapChainImageCount;    // @brief SwapChain ImageCount.
 
-	constexpr uint32_t MaxDPBSlots = 16;                                   // @brief DPB Slot Counts.
-	
-	constexpr uint32_t DescriptorPoolSize = 1000;                          // @brief DescriptorPool Size.
+	constexpr uint32_t NThreadQueue = 4;                                      // @brief Thread Queue Counts.
 
-	#define VK_VERSION VK_API_VERSION_1_4                                  // @brief Use Vulkan 1.4.
+	constexpr uint32_t MaxDPBSlots = 16;                                      // @brief DPB Slot Counts.
 
-	#define VKImageHostOperation 0                                         // @brief Not use host operation.
+	constexpr uint32_t DescriptorPoolSize = 1000;                             // @brief DescriptorPool Size.
+
+	#define VK_VERSION VK_API_VERSION_1_4                                     // @brief Use Vulkan 1.4.
+
+	#define VKImageHostOperation 0                                            // @brief Not use host operation.
 
 	/**
 	* @brief Result Delegate Class.
