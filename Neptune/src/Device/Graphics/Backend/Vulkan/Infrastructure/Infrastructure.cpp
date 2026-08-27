@@ -24,6 +24,7 @@ namespace Neptune::Vulkan {
 		
         switch (GetEInfrastructure())
         {
+            case Extensions:                         return "Extensions";
             case Instance:                           return "Instance";
             case Functions:                          return "Functions";
             case DebugUtilsObject:                   return "DebugUtilsObject";
