@@ -54,6 +54,13 @@ namespace Neptune::imgui {
 				break;
 			}
 #endif
+#ifdef NP_GRAPHICS_METAL
+		case RenderBackendEnum::Metal:
+			{
+				ImGui_ImplGlfw_InitForOther(static_cast<GLFWwindow*>(Window::Instance().NativeWindow()), true);
+				break;
+			}
+#endif
 #ifdef NP_PLATFORM_EMSCRIPTEN
 			case RenderBackendEnum::WebGL:
 			case RenderBackendEnum::WebGPU:

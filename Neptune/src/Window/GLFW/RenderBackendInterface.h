@@ -179,6 +179,37 @@ namespace Neptune::GLFW {
     };
     
 #endif
+    
+#ifdef NP_GRAPHICS_METAL
+    
+    /**
+    * @brief Metal APIInterface.
+    */
+    class MetalInterface : public APIInterface
+    {
+    public:
+
+        /**
+        * @brief Interface of GLFW Hint Configuration with RenderBackend.
+        */
+        void Hint() const override;
+
+        /**
+        * @brief Interface of GLFW API Load Configuration with RenderBackend.
+        * 
+        * @param[in] handle GLFWwindow.
+        */
+        void APILoad(GLFWwindow* handle) const override {}
+        
+        /**
+        * @brief Interface of Get GLFW Window Extension.
+        *
+        * @return Returns Window Extension.
+        */
+        std::vector<const char*> Extension() const override { return {}; }
+    };
+    
+#endif
 
 }
 

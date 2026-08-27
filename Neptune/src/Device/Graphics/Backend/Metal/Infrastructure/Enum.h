@@ -15,6 +15,8 @@ namespace Neptune::Metal {
     */
     enum class EInfrastructure : uint8_t
     {
+        Device,                              // @brief LogicalDevice.
+        
         Count
     };
 

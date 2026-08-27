@@ -8,14 +8,14 @@
 #include "RenderInterface.h"
 #include "Render/Frontend/Core.h"
 
-#ifdef NP_GRAPHICS_VULKAN
-#include "Device/Graphics/Backend/Vulkan/AInfrastructure/AccessibleInfrastructure.h"
-#include <backends/imgui_impl_vulkan.h>
-#endif
-
 #ifdef NP_GRAPHICS_OPENGL
 #include "Device/Graphics/Backend/OpenGL/AInfrastructure/AccessibleInfrastructure.h"
 #include <backends/imgui_impl_opengl3.h>
+#endif
+
+#ifdef NP_GRAPHICS_VULKAN
+#include "Device/Graphics/Backend/Vulkan/AInfrastructure/AccessibleInfrastructure.h"
+#include <backends/imgui_impl_vulkan.h>
 #endif
 
 #ifdef NP_GRAPHICS_DIRECT3D11
@@ -26,6 +26,11 @@
 #ifdef NP_GRAPHICS_DIRECT3D12
 #include "Device/Graphics/Backend/Direct3D12/AInfrastructure/AccessibleInfrastructure.h"
 #include <backends/imgui_impl_dx12.h>
+#endif
+
+#ifdef NP_GRAPHICS_METAL
+#include "Device/Graphics/Backend/Metal/AInfrastructure/AccessibleInfrastructure.h"
+#include <backends/imgui_impl_metal.h>
 #endif
 
 #ifdef NP_GRAPHICS_WEBGPU
@@ -41,14 +46,6 @@ namespace Neptune::imgui {
 
 		switch (backend)
 		{
-#ifdef NP_GRAPHICS_DIRECT3D11
-			case RenderBackendEnum::Direct3D11: return CreateUP<Direct3D11Interface>();
-#endif
-			
-#ifdef NP_GRAPHICS_DIRECT3D12
-			case RenderBackendEnum::Direct3D12: return CreateUP<Direct3D12Interface>();
-#endif
-			
 #ifdef NP_GRAPHICS_OPENGL
 			case RenderBackendEnum::OpenGL: return CreateUP<OpenGLInterface>();
 #endif
@@ -57,6 +54,18 @@ namespace Neptune::imgui {
 			case RenderBackendEnum::Vulkan: return CreateUP<VulkanInterface>();
 #endif
 
+#ifdef NP_GRAPHICS_DIRECT3D11
+		case RenderBackendEnum::Direct3D11: return CreateUP<Direct3D11Interface>();
+#endif
+			
+#ifdef NP_GRAPHICS_DIRECT3D12
+		case RenderBackendEnum::Direct3D12: return CreateUP<Direct3D12Interface>();
+#endif
+	
+#ifdef NP_GRAPHICS_METAL
+		case RenderBackendEnum::Metal:      return CreateUP<MetalInterface>();
+#endif
+			
 #ifdef NP_GRAPHICS_WEBGPU
 			case RenderBackendEnum::WebGPU: return CreateUP<WebGPUInterface>();
 #endif
@@ -275,6 +284,52 @@ namespace Neptune::imgui {
 		const ImGuiIO& io = ImGui::GetIO();
 		
 		ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), static_cast<ID3D12GraphicsCommandList*>(payload));
+
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+		}
+	}
+
+#endif
+	
+#ifdef NP_GRAPHICS_METAL
+	
+	void MetalInterface::OnInitialize(const AInfrastructures& infrastructure) const
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		using namespace Metal;
+
+		using enum EAccessibleInfrastructure;
+
+		AContext context(infrastructure);
+
+		ImGui_ImplMetal_Init(context.Get<Device>());
+	}
+	
+	void MetalInterface::OnShutDown() const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		ImGui_ImplMetal_Shutdown();
+	}
+
+	void MetalInterface::BeginFrame() const
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		ImGui_ImplMetal_NewFrame();
+	}
+	
+	void MetalInterface::SubmitFrameRHI(void* payload) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		const ImGuiIO& io = ImGui::GetIO();
+		
+		ImGui_ImplMetal_RenderDrawData(ImGui::GetDrawData(), static_cast<MTL::CommandBuffer*>(payload), nullptr);
 
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{

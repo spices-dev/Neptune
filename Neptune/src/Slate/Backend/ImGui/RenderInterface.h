@@ -200,6 +200,43 @@ namespace Neptune::imgui {
     
 #endif
 
+#ifdef NP_GRAPHICS_METAL
+    
+    /**
+    * @brief Metal Interface.
+    */
+    class MetalInterface : public RenderInterface
+    {
+    public:
+
+        /**
+        * @brief Interface of Initialize.
+        *
+        * @param[in] infrastructure RenderFrontend Infrastructure.
+        */
+        void OnInitialize(const AInfrastructures& infrastructure) const override;
+
+        /**
+        * @brief Interface of ShutDown.
+        */
+        void OnShutDown() const override;
+
+        /**
+        * @brief Interface of Begin a frame.
+        */
+        void BeginFrame() const override;
+
+        /**
+        * @brief Interface of Submit Frame RHI.
+        * 
+        * @param[in] payload RenderFrontend Payload.
+        */
+        void SubmitFrameRHI(void* payload = nullptr) const override;
+        
+    };
+    
+#endif
+    
 #ifdef NP_GRAPHICS_WEBGPU
     
     /**

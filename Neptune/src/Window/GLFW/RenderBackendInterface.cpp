@@ -36,6 +36,10 @@ namespace Neptune::GLFW {
 			case RenderBackendEnum::Direct3D12: return CreateUP<Direct3D12Interface>();
 #endif
 			
+#ifdef NP_GRAPHICS_METAL
+		case RenderBackendEnum::Metal: return CreateUP<MetalInterface>();
+#endif
+			
 			default:
 			{
 				NEPTUNE_LOG_CORE(C) << "Not supported RenderBackend in GLFW Configuration.";
@@ -113,6 +117,18 @@ namespace Neptune::GLFW {
 		NEPTUNE_PROFILE_ZONE
 
 		// Set no OpenGL (use Direct3D12)
+		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+	}
+
+#endif
+	
+#ifdef NP_GRAPHICS_METAL
+	
+	void MetalInterface::Hint() const
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		// Set no OpenGL (use Metal)
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 	}
 

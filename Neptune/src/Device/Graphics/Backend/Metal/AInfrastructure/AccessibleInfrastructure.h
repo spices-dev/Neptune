@@ -19,8 +19,12 @@ namespace Neptune::Metal {
     */
     enum class EAccessibleInfrastructure : uint8_t
     {
+        Device = 0,             // @brief Device
+        
         Count
     };
+    
+    using ADevice  = Render::Common::AccessibleInfrastructure<MTL::Device*, EAccessibleInfrastructure::Device>;
     
     using AContext = Render::Common::AccessibleContext<EAccessibleInfrastructure>;
     

@@ -30,6 +30,10 @@ namespace Neptune::Metal {
     {
         NEPTUNE_PROFILE_ZONE
 
+        m_Context = CreateUP<Context>();
+        
+        m_Context->Registry<IDevice>();
+        
         GraphicsFrontend::OnInitialize();
     }
 
@@ -62,6 +66,8 @@ namespace Neptune::Metal {
         NEPTUNE_PROFILE_ZONE
 
         AContext context;
+        
+        context.Registry<ADevice>(m_Context->Get<IDevice>()->Handle());
         
         return context.GetInfrastructures();
     }
