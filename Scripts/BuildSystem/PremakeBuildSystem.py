@@ -35,7 +35,7 @@ class PremakeBuildSystem(BuildSystem):
             self.dependencyGraph.add_node(EmsdkDependency())
             self.dependencyGraph.add_node(GNUDependency())
 
-        if self.platform == "windows":
+        if self.platform != "emscripten":
             self.dependencyGraph.add_node(TracyDependency())
 
         if self.toolset == "gcc":

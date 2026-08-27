@@ -16,10 +16,10 @@ namespace Neptune::Tracy {
 #define NEPTUNE_PROFILE_FRAME                                             FrameMark;
 #define NEPTUNE_PROFILE_ZONE                                              ZoneScopedS(20);
 #define NEPTUNE_PROFILE_ZONEN(name)                                       ZoneScopedNS(name, 20);
-#define NEPTUNE_PROFILE_ALLOC(ptr, size)                                  TracySecureAllocS(ptr, size, 20);
-#define NEPTUNE_PROFILE_FREE(ptr)                                         TracySecureFreeS(ptr, 20);
-#define NEPTUNE_PROFILE_ALLOC_N(ptr, size, name)                          TracySecureAllocNS(ptr, size, 20, name);
-#define NEPTUNE_PROFILE_FREE_N(ptr, name)                                 TracySecureFreeNS(ptr, 20, name);
+#define NEPTUNE_PROFILE_ALLOC(ptr, size)                                  TracyAllocS(ptr, size, 20);
+#define NEPTUNE_PROFILE_FREE(ptr)                                         TracyFreeS(ptr, 20);
+#define NEPTUNE_PROFILE_ALLOC_N(ptr, size, name)                          TracyAllocNS(ptr, size, 20, name);
+#define NEPTUNE_PROFILE_FREE_N(ptr, name)                                 TracyFreeNS(ptr, 20, name);
 #define NEPTUNE_PROFILE_MARK(text)                                        TracyMessageL(text);
 #define NEPTUNE_PROFILE_IMAGE(image)                                      FrameImage(image, 64, 64, 0, false);
 #define NEPTUNE_PROFILE_THREAD_N(name)			  					      tracy::SetThreadName(name)
@@ -47,7 +47,7 @@ namespace Neptune::Tracy {
 */
 
 /**
-* @brief Used if want profile on demand.
+* @brief Used if you want profile on demand.
 * Enable profiling only when there's an established connection with the server.
 *
 * #define TRACY_ON_DEMAND

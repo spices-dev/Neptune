@@ -13,7 +13,9 @@ import tarfile
 @brief Tracy download url.
 """
 TracyURL = {
-    "windows": "https://github.com/wolfpld/tracy/releases/download/v0.13.1/windows-0.13.1.zip",
+    "windows": "https://github.com/wolfpld/tracy/releases/download/v0.14.1/windows-0.14.1.zip",
+    "linux":   "https://github.com/wolfpld/tracy/releases/download/v0.14.1/linux-0.14.1.zip",
+    "darwin":  "https://github.com/wolfpld/tracy/releases/download/v0.14.1/macos-0.14.1.zip"
 }
 
 class TracyDependency(Dependency):
@@ -61,7 +63,7 @@ class TracyDependency(Dependency):
                 return False
 
             print(f"Downloading tracy from {url}")
-            archive_path = install_dir / "windows-0.12.2.zip"
+            archive_path = install_dir / "tracy_download.zip"
 
             # Download the file
             urllib.request.urlretrieve(url, archive_path)
