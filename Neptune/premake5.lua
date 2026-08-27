@@ -51,6 +51,11 @@ solution.DefineCppStaticLibrary("Neptune", function()
 	includedirs
 	{
 		vendor.Neptune.includes,                              -- Library: Neptune Source Folder.
+	}
+
+	-- The Solution Additional External Include Folder.
+	externalincludedirs
+	{
 		vendor.glm.includes,                                  -- Library: glm Source Folder.
 		vendor.vma.includes,                                  -- Library: vma Source Folder.
 		vendor.stb_image.includes,                            -- Library: stb_image Source Folder.
@@ -80,8 +85,8 @@ solution.DefineCppStaticLibrary("Neptune", function()
 	-- Platform: Windows
 	filter "system:windows"
 
-		-- The Solution Additional Include Folder.
-		includedirs
+		-- The Solution Additional External Include Folder.
+		externalincludedirs
 		{
 			vendor.GLFW.includes,                                 -- Library: GLFW Source Folder.
 			vendor.Vulkan.includes,                               -- Library: VulkanSDK Source Folder.
@@ -122,8 +127,8 @@ solution.DefineCppStaticLibrary("Neptune", function()
 	-- Platform: Linux
 	filter "system:linux"
 
-		-- The Solution Additional Include Folder.
-		includedirs
+		-- The Solution Additional External Include Folder.
+		externalincludedirs
 		{
 			vendor.GLFW.includes,                                      -- Library: GLFW Source Folder.
 			vendor.Vulkan.includes,                                    -- Library: VulkanSDK Source Folder.
@@ -156,8 +161,8 @@ solution.DefineCppStaticLibrary("Neptune", function()
 	-- Platform: MacOS
 	filter "system:macosx"
 
-		-- The Solution Additional Include Folder.
-		includedirs
+		-- The Solution Additional External Include Folder.
+		externalincludedirs
 		{
 			vendor.GLFW.includes,                                      -- Library: GLFW Source Folder.
 			vendor.Vulkan.includes,                                    -- Library: VulkanSDK Source Folder.
@@ -191,8 +196,8 @@ solution.DefineCppStaticLibrary("Neptune", function()
 	-- Platform: Emscripten
 	filter "system:emscripten"
 
-		-- The Solution Additional Include Folder.
-		includedirs
+		-- The Solution Additional External Include Folder.
+		externalincludedirs
 		{
 			vendor.emscripten.includes,                                -- Library: emscripten Header Folder.
 			vendor.emscripten_glfw.includes,                           -- Library: emscripten_glfw Header Folder.

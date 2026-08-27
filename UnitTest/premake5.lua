@@ -25,6 +25,11 @@ solution.DefineCppExecutable("UnitTest", function()
 	includedirs
 	{
 		"src",                                                     -- Library: UnitTest Source Folder.
+	}
+
+	-- The Solution Additional External Include Folder.
+	externalincludedirs
+	{
 		vendor.Neptune.includes,                                   -- Library: Neptune Source Folder.
 		vendor.glm.includes,                                       -- Library: glm Source Folder.
 		vendor.ImGui.includes,                                     -- Library: ImGui Source Folder.
@@ -65,8 +70,8 @@ solution.DefineCppExecutable("UnitTest", function()
 			vendor.RenderDoc.dynamic_libraries,                   -- DLL: RenderDoc
 		}
 
-		-- Windows Specific Additional Include Folder.
-		includedirs
+		-- Windows Specific Additional External Include Folder.
+		externalincludedirs
 		{}
 
 		-- Windows Specific Solution Macro Definitions.
@@ -94,8 +99,8 @@ solution.DefineCppExecutable("UnitTest", function()
 			vendor.RenderDoc.dynamic_libraries,                   -- DLL: RenderDoc
 		}
 
-		-- Linux Specific Additional Include Folder.
-		includedirs
+		-- Linux Specific Additional External Include Folder.
+		externalincludedirs
 		{}
 
 		-- Linux Specific Solution Macro Definitions.
@@ -123,8 +128,8 @@ solution.DefineCppExecutable("UnitTest", function()
 			vendor.RenderDoc.dynamic_libraries,                   -- DLL: RenderDoc
 		}
 
-		-- MacOS Specific Additional Include Folder.
-		includedirs
+		-- MacOS Specific Additional External Include Folder.
+		externalincludedirs
 		{}
 
 		-- MacOS Specific Solution Macro Definitions.
@@ -150,8 +155,8 @@ solution.DefineCppExecutable("UnitTest", function()
 		files 
 		{}
 
-		-- Emscripten Specific Additional Include Folder.
-		includedirs
+		-- Emscripten Specific Additional External Include Folder.
+		externalincludedirs
 		{}
 
 		-- Emscripten Specific Solution Macro Definitions.

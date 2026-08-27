@@ -118,16 +118,22 @@ module.Initialize = function()
 	filter "system:macosx"
 
 		-- Architecture arm64
-        architecture "AARCH64"
+        architecture "ARM64"
 
         -- Use Lastest SystemVersion
 		systemversion "latest"
 
-        -- Windows Specific Solution Macro Definitions.
+        -- MacOS Specific Solution Macro Definitions.
 		defines
 		{
 			-- Define Platform: MacOS.
 			"NP_PLATFORM_MACOS"
+		}
+
+		-- XCode Specific Solution Settings.
+		xcodebuildsettings
+		{
+			["MACOSX_DEPLOYMENT_TARGET"] = "13.0",       -- Minimal OS Version: 13.0
 		}
 
     -- Platform: Emscripten

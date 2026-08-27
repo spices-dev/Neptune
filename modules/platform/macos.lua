@@ -78,8 +78,19 @@ end
 -- @return Returns Executable Links.
 module.GetExecutableLinks = function()
 
+    local windows  = module.GetWindowFeatures()
+    local debugger = module.GetDebuggerFeatures()
+
     local links = {}
 
+    if table.contains(windows, "NP_WINDOW_GLFW") then
+        table.insert(links, "Cocoa.framework")                       -- Dependency: Cocoa.framework
+        table.insert(links, "IOKit.framework")                       -- Dependency: IOKit.framework
+        table.insert(links, "CoreFoundation.framework")              -- Dependency: CoreFoundation.framework
+        table.insert(links, "CoreVideo.framework")                   -- Dependency: CoreVideo.framework
+        table.insert(links, "QuartzCore.framework")                  -- Dependency: QuartzCore.framework
+    end
+    
     return links
 
 end
