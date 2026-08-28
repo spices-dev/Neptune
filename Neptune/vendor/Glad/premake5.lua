@@ -9,7 +9,7 @@ solution.DefineCStaticLibrary("Glad", function()
         "src/glad.c"
     }
     
-    includedirs
+    externalincludedirs
     {
         "include",                            -- Library: Glad Source Folder.
     }

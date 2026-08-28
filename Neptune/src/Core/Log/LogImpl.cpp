@@ -48,19 +48,14 @@ namespace Neptune {
 
         m_ClientLogger = CreateUP<spdlog::logger>("Client", begin(sinks), end(sinks));
         m_ClientLogger->set_level(spdlog::level::trace);
-
-        SetInitialized(true);
     }
 
-    LogImpl::~LogImpl ()
+    LogImpl::~LogImpl()
     {
         NEPTUNE_PROFILE_ZONE
 
-        SetInitialized(false);
-
         m_CoreLogger.reset();
         m_ClientLogger.reset();
-        spdlog::drop_all();
     }
 
     void LogImpl::CoreTrace     (const std::string& msg) const { m_CoreLogger->trace   (msg); }

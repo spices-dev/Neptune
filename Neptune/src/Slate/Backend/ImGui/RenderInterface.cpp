@@ -30,6 +30,7 @@
 
 #ifdef NP_GRAPHICS_METAL
 #include "Device/Graphics/Backend/Metal/AInfrastructure/AccessibleInfrastructure.h"
+#define IMGUI_IMPL_METAL_CPP
 #include <backends/imgui_impl_metal.h>
 #endif
 
@@ -306,7 +307,7 @@ namespace Neptune::imgui {
 
 		AContext context(infrastructure);
 
-		ImGui_ImplMetal_Init(context.Get<Device>());
+		ImGui_ImplMetal_Init(context.Get<ADevice>());
 	}
 	
 	void MetalInterface::OnShutDown() const

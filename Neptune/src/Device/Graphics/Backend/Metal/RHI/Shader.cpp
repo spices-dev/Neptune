@@ -10,7 +10,7 @@
 
 #include "Shader.h"
 
-namespace Neptune::OpenGL {
+namespace Neptune::Metal {
 
 	void Shader::SetSource(const std::vector<uint8_t>& source)
 	{

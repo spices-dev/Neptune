@@ -24,7 +24,7 @@ local GetVulkanSDKPath = function()
     local default_paths = {
         windows = "C:/VulkanSDK/" .. default_version .. "/Include",
         linux   = os.getenv("HOME") .. "/VulkanSDK/" .. default_version .. "/x86_64/include",
-        macosx  = ""
+        macosx  = os.getenv("HOME") .. "/VulkanSDK/" .. default_version .. "/macos/include",
     }
 
     return default_paths[os.target()] or ""

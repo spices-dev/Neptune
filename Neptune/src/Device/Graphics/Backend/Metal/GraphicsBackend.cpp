@@ -33,8 +33,6 @@ namespace Neptune::Metal {
         m_Context = CreateUP<Context>();
         
         m_Context->Registry<IDevice>();
-        
-        GraphicsFrontend::OnInitialize();
     }
 
     void GraphicsBackend::OnShutDown()

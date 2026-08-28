@@ -4,7 +4,14 @@
 
 solution.DefineCppStaticLibrary("Neptune", function()
 
-	pchheader "Pchheader.h"          -- PreCompiler Header File.
+	filter { "toolset:msc*" }
+		pchheader "Pchheader.h"      -- PreCompiler Header File.
+
+	filter { "toolset:not msc*" }
+		pchheader "src/Pchheader.h"  -- PreCompiler Header File.
+
+	filter {}
+
 	pchsource "src/Pchheader.cpp"    -- PreCompiler Cpp File.
 
 	-- The Solution Files.
@@ -308,6 +315,12 @@ solution.DefineCppStaticLibrary("Neptune", function()
 				vendor.Vulkan.library_dirs,                                -- Library: VulkanSDK.
 			}
 
+			-- Linux Specific Runtime Additional Library Folder.
+			runpathdirs
+			{
+				vendor.Vulkan.library_dirs,                                -- Runtime Library: VulkanSDK.
+			}
+
 			-- Linux Specific Solution Dependency.
 			links
 			{
@@ -325,6 +338,12 @@ solution.DefineCppStaticLibrary("Neptune", function()
 			libdirs
 			{
 				vendor.Vulkan.library_dirs,                                -- Library: VulkanSDK.
+			}
+
+			-- MacOS Specific Runtime Additional Library Folder.
+			runpathdirs
+			{
+				vendor.Vulkan.library_dirs,                                -- Runtime Library: VulkanSDK.
 			}
 
 			-- MacOS Specific Solution Dependency.

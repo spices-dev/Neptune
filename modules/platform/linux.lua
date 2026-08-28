@@ -35,6 +35,7 @@ module.GetGraphicsFeatures = function()
     local list = {
         "NP_GRAPHICS_OPENGL",                              -- Graphics: OpenGL
         "NP_GRAPHICS_VULKAN",                              -- Graphics: Vulkan
+        "VK_ENABLE_BETA_EXTENSIONS",                       -- Enable Vulkan Beta Extensions
     }
 
     return list

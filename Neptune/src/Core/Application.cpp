@@ -42,9 +42,10 @@ namespace Neptune {
 
 #ifndef NP_PLATFORM_EMSCRIPTEN
 
+        NEPTUNE_LOG_CORE(I) << "Application destroyed.";
+        
         S_Instance.reset();
 
-        NEPTUNE_LOG_CORE(I) << "Application destroyed.";
 #endif
     }
 
@@ -52,6 +53,8 @@ namespace Neptune {
     {
         NEPTUNE_PROFILE_ZONE
 
+        Log::SetInitialized(true);
+        
 #ifdef NP_PLATFORM_EMSCRIPTEN
         Window::Create(WindowInfo{1920, 1080, "Neptune"}, WindowImplement::emscripten_glfw, RenderBackendEnum::WebGPU);
 #else

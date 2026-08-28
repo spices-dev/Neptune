@@ -12,6 +12,7 @@
 #include "Functions.h"
 #include "Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/DebugUtils.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/Portability.h"
 
 namespace Neptune::Vulkan {
 
@@ -81,6 +82,11 @@ namespace Neptune::Vulkan {
 		createInfo.ppEnabledLayerNames           = m_LayerProperties.data();
 		createInfo.pNext                         = &debugInfo;
 
+    	if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IPortability>())
+    	{
+    		createInfo.flags                     = VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
+    	}
+    	
 		m_Instance.CreateInstance(createInfo);
 
 		GetContext().Registry<IFunctions>();

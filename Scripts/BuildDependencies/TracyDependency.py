@@ -30,7 +30,10 @@ class TracyDependency(Dependency):
         super().__init__("tracy", ["git"])
 
         # Set dependency path
-        self.dependencyPath = self.solutionDirectory / "vendor" / "tracy" /"tracy-profiler.exe"
+        if self.isWindows:
+            self.dependencyPath = self.solutionDirectory / "vendor" / "tracy" /"tracy-profiler.exe"
+        elif self.isMacos:
+            self.dependencyPath = self.solutionDirectory / "vendor" / "tracy" /"tracy-profiler.app"
 
     def path(self) -> str:
         """
@@ -69,9 +72,8 @@ class TracyDependency(Dependency):
             urllib.request.urlretrieve(url, archive_path)
 
             # Extract the archive
-            if self.isWindows:
-                with zipfile.ZipFile(archive_path, 'r') as zip_ref:
-                    zip_ref.extractall(install_dir)
+            with zipfile.ZipFile(archive_path, 'r') as zip_ref:
+                zip_ref.extractall(install_dir)
 
             # Clean up
             archive_path.unlink()

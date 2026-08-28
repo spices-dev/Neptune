@@ -17,7 +17,6 @@ namespace Neptune::Vulkan::Extension {
 
     /**
     * @brief Used In:
-    * VMA
     * RayTracing
     * Bindless
     */

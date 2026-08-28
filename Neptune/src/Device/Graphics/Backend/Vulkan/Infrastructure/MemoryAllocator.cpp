@@ -14,6 +14,8 @@
 #include "Instance.h"
 #include "PhysicalDevice.h"
 #include "Device.h"
+#include "Extensions.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/BufferDeviceAddress.h"
 #include "Core/Memory/Enum.h"
 
 namespace Neptune::Vulkan {
@@ -159,11 +161,15 @@ namespace Neptune::Vulkan {
 												VMA_ALLOCATOR_CREATE_KHR_MAINTENANCE4_BIT              |
 												VMA_ALLOCATOR_CREATE_KHR_MAINTENANCE5_BIT              |
 												VMA_ALLOCATOR_CREATE_EXT_MEMORY_BUDGET_BIT             |
-												VMA_ALLOCATOR_CREATE_BUFFER_DEVICE_ADDRESS_BIT         |
 												VMA_ALLOCATOR_CREATE_EXT_MEMORY_PRIORITY_BIT           |
 												VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT |
 												VMA_ALLOCATION_CREATE_HOST_ACCESS_RANDOM_BIT           ;
 
+		if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IBufferDeviceAddress>())
+		{
+			createInfo.flags                 |= VMA_ALLOCATOR_CREATE_BUFFER_DEVICE_ADDRESS_BIT;
+		}
+		
 #ifdef NEPTUNE_DEBUG
 		
 		VmaDeviceMemoryCallbacks                deviceMemoryCallbacks{};

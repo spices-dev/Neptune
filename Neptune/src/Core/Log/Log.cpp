@@ -14,6 +14,8 @@ namespace Neptune {
     namespace {
         
         UP<Log> s_Log = nullptr;
+        
+        bool s_IsInitialized = false;
     }
     
     const UP<Log>& Log::Get()
@@ -28,11 +30,28 @@ namespace Neptune {
         return s_Log;
     }
 
+    bool Log::IsInitialized()
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        return s_IsInitialized;
+    }
+
+
+    void Log::SetInitialized(bool isInitialized)
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        s_IsInitialized = isInitialized;
+    }
+    
     void Log::Reset()
     {
         NEPTUNE_PROFILE_ZONE
 
         s_Log.reset();
+        
+        SetInitialized(false);
     }
 
     LogStream::~LogStream()
@@ -40,13 +59,15 @@ namespace Neptune {
         NEPTUNE_PROFILE_ZONE
         
         const std::string msg = m_Stream.str();
-        const auto& log    = Log::Get();
         
-        if (!log->IsInitialized())
+        if (!Log::IsInitialized())
         {
-            std::cout << msg << std::endl;
+            std::cout << msg << "\n" << std::endl;
+            
             return;
         }
+
+        const auto& log = Log::Get();
 
         if (m_IsCore)
         {

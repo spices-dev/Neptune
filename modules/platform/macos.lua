@@ -35,6 +35,7 @@ module.GetGraphicsFeatures = function()
     local list = {
         "NP_GRAPHICS_OPENGL",                              -- Graphics: OpenGL
         "NP_GRAPHICS_VULKAN",                              -- Graphics: Vulkan
+        "VK_ENABLE_BETA_EXTENSIONS",                       -- Enable Vulkan Beta Extensions
         "NP_GRAPHICS_METAL",                               -- Graphics: Metal
     }
 
@@ -79,7 +80,7 @@ end
 module.GetExecutableLinks = function()
 
     local windows  = module.GetWindowFeatures()
-    local debugger = module.GetDebuggerFeatures()
+    local graphics = module.GetGraphicsFeatures()
 
     local links = {}
 
@@ -89,6 +90,10 @@ module.GetExecutableLinks = function()
         table.insert(links, "CoreFoundation.framework")              -- Dependency: CoreFoundation.framework
         table.insert(links, "CoreVideo.framework")                   -- Dependency: CoreVideo.framework
         table.insert(links, "QuartzCore.framework")                  -- Dependency: QuartzCore.framework
+    end
+
+    if table.contains(graphics, "NP_GRAPHICS_METAL") then
+        table.insert(links, "Metal.framework")                       -- Dependency: Cocoa.Metal
     end
     
     return links

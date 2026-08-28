@@ -31,6 +31,7 @@ namespace Neptune::Vulkan {
         BufferDeviceAddress,                        // @brief BufferDeviceAddress.
         DescriptorIndexing,                         // @brief DescriptorIndexing.
         Vulkan13,                                   // @brief Vulkan13.
+        Portability,                                // @brief Portability.
 
         Count
     };
@@ -58,6 +59,8 @@ namespace Neptune::Vulkan {
             case DebugUtils:                 return "DebugUtils";
             case BufferDeviceAddress:        return "BufferDeviceAddress";
             case DescriptorIndexing:         return "DescriptorIndexing";
+            case Vulkan13:                   return "Vulkan13";
+            case Portability:                return "Portability";
             default:                         return "NonNamed";
         }
     }

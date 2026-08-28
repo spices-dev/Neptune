@@ -59,21 +59,14 @@ namespace Neptune {
         * 
         * @return Returns Initialized state.
         */
-        bool IsInitialized() const { return m_IsInitialized; }
+        static bool IsInitialized();
 
         /**
         * @brief Set Initialized state.
         * 
         * @param[in] isInitialized .
         */
-        void SetInitialized(bool isInitialized) { m_IsInitialized = isInitialized; }
-        
-    private:
-
-        /**
-        * @brief Boolean of Initialize state.
-        */
-        bool m_IsInitialized = false;
+        static void SetInitialized(bool isInitialized);
     };
     
     /**

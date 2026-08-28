@@ -29,6 +29,12 @@ namespace Neptune::Render::Common {
         static constexpr auto E = KVTuple::E;
     };
     
+    template<IsAInfrastructure A>
+    struct MergeableTypeInfo
+    {
+        typename A::T Value;
+    };
+    
     /**
     * @brief RenderBackend AccessibleContext.
     * 
@@ -129,7 +135,7 @@ namespace Neptune::Render::Common {
 
         const auto position = static_cast<uint8_t>(A::E);
 
-        m_Infrastructures[position] = t;
+        m_Infrastructures[position] = MergeableTypeInfo<A> { t };
     }
 
     template<typename E> requires IsEnum<E>
@@ -141,7 +147,7 @@ namespace Neptune::Render::Common {
 
         const auto position = static_cast<uint8_t>(A::E);
 
-        return std::any_cast<typename A::T>(m_Infrastructures.at(position));
+        return std::any_cast<const MergeableTypeInfo<A>&>(m_Infrastructures.at(position)).Value;
     }
     
 }
