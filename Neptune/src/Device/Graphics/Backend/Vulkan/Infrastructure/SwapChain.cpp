@@ -16,6 +16,7 @@
 #include "DebugUtilsObject.h"
 #include "Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/HDR.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
 
 namespace Neptune::Vulkan {
 
@@ -49,8 +50,8 @@ namespace Neptune::Vulkan {
 
 			uint32_t queueFamilyIndices[2] = 
 			{ 
-				physicalDevice->GetQueueFamilies().graphic.value(),
-				physicalDevice->GetQueueFamilies().present.value()
+				GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT),
+				GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetPresentQueueFamil()
 			};
 
 			if (queueFamilyIndices[0] != queueFamilyIndices[1])

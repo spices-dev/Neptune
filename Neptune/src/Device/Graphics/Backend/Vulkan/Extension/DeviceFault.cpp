@@ -17,8 +17,6 @@ namespace Neptune::Vulkan::Extension {
         NEPTUNE_PROFILE_ZONE
         
         AddDeviceExtensions(VK_EXT_DEVICE_FAULT_EXTENSION_NAME);
-
-        AddDeviceFeatures(VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FAULT_FEATURES_EXT);
     }
     
     void DeviceFault::BuildFeatureChain(void**& pNext, const std::function<bool(VkStructureType)>& filter)

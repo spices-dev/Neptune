@@ -25,13 +25,6 @@ namespace Neptune::Vulkan::Extension {
 
         m_DeviceExtensions.emplace(name, value);
     }
-    
-    void Extension::AddDeviceFeatures(VkStructureType type)
-    {
-        NEPTUNE_PROFILE_ZONE
-        
-        m_DeviceFeatures.emplace(type);
-    }
 }
 
 #endif

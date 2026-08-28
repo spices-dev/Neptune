@@ -10,6 +10,7 @@
 
 #include "GraphicsBackend.h"
 #include "Infrastructure/InfrastructureHeader.h"
+#include "Extension/ExtensionHeader.h"
 #include "AInfrastructure/AccessibleInfrastructure.h"
 #include "RHI/RHIHeader.h"
 #include "Converter.h"
@@ -127,7 +128,7 @@ namespace Neptune::Vulkan {
 		context.Registry<AInstance>(m_Context->Get<IInstance>()->Handle());
 		context.Registry<APhysicalDevice>(m_Context->Get<IPhysicalDevice>()->Handle());
 		context.Registry<ADevice>(m_Context->Get<IDevice>()->Handle());
-		context.Registry<AGraphicQueueFamily>(m_Context->Get<IPhysicalDevice>()->GetQueueFamilies().graphic.value());
+		context.Registry<AGraphicQueueFamily>(m_Context->Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT));
 		context.Registry<AGraphicQueue>(m_Context->Get<IGraphicQueue>()->Handle());
 		context.Registry<ADescriptorPool>(m_Context->Get<IDescriptorPool>()->Handle());
 		context.Registry<AMSAASamples>(VK_SAMPLE_COUNT_1_BIT);

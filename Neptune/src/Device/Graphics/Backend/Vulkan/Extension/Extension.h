@@ -49,13 +49,6 @@ namespace Neptune::Vulkan::Extension {
         void AddDeviceExtensions(const char* name, bool value = true);
         
         /**
-        * @brief Add VkPhysicalDevice/VkDevice Features Requirement.
-        * 
-        * @param[in] type Features Type.
-        */
-        void AddDeviceFeatures(VkStructureType type);
-        
-        /**
         * @brief Get VkInstance Extension Requirement.
         * 
         * @return Returns VkInstance Extension Requirement.
@@ -76,19 +69,40 @@ namespace Neptune::Vulkan::Extension {
         * @param[in] filter Feature Filter.
         */
         virtual void BuildFeatureChain(void**& pNext, const std::function<bool(VkStructureType)>& filter) {}
+        
+        /**
+        * @brief Build Device Property Chain.
+        * 
+        * @param[in,out] pNext pNext Chain.
+        * @param[in] filter Feature Filter.
+        */
+        virtual void BuildPropertyChain(void**& pNext, const std::function<bool(VkStructureType)>& filter) {}
 
         /**
-        * @brief Combine Device Features.
+        * @brief Build Device Queue Chain.
+        * 
+        * @param[in,out] chains Required Chain.
+        */
+        virtual void BuildQueueChain(std::unordered_set<VkQueueFlagBits>& chains) {}
+        
+        /**
+        * @brief Is Device Features satisfied.
         * 
         * @return Returns true if satisfied.
         */
         virtual bool IsFeaturesSatisfied() { return true; }
         
+        /**
+        * @brief Is Device Properties satisfied.
+        * 
+        * @return Returns true if satisfied.
+        */
+        virtual bool IsPropertiesSatisfied() { return true; }
+        
     private:
         
         std::unordered_map<const char*, bool> m_InstanceExtensions;      // @brief VkInstance Extensions.
         std::unordered_map<const char*, bool> m_DeviceExtensions;        // @brief VkPhysicalDevice/VkDevice Extensions.
-        std::unordered_set<VkStructureType>   m_DeviceFeatures;          // @brief VkPhysicalDevice/VkDevice Features.
     };
 }
 

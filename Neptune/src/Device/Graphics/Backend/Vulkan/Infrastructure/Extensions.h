@@ -66,6 +66,20 @@ namespace Neptune::Vulkan {
 		void BuildFeatureChain(void** pNext);
 		
 		/**
+		* @brief Build Device Property Chain.
+		* 
+		* @param[in] pNext pNext Chain.
+		*/
+		void BuildPropertyChain(void** pNext);
+		
+		/**
+		* @brief Build Device Queue Chain.
+		* 
+		* @param[in,out] chains Required Chain.
+		*/
+		void BuildQueueChain(std::unordered_set<VkQueueFlagBits>& chains);
+		
+		/**
 		* @brief Build Device Feature Chain(Contain Once).
 		* 
 		* @param[in] pNext pNext Chain.

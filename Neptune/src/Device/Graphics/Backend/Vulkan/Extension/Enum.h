@@ -32,6 +32,7 @@ namespace Neptune::Vulkan {
         DescriptorIndexing,                         // @brief DescriptorIndexing.
         Vulkan13,                                   // @brief Vulkan13.
         Portability,                                // @brief Portability.
+        Queue,                                      // @brief Queue.
 
         Count
     };
@@ -61,6 +62,7 @@ namespace Neptune::Vulkan {
             case DescriptorIndexing:         return "DescriptorIndexing";
             case Vulkan13:                   return "Vulkan13";
             case Portability:                return "Portability";
+            case Queue:                      return "Queue";
             default:                         return "NonNamed";
         }
     }

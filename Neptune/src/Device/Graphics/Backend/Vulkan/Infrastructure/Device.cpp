@@ -15,6 +15,7 @@
 #include "DebugUtilsObject.h"
 #include "Surface.h"
 #include "Extensions.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
 
 namespace Neptune::Vulkan {
 
@@ -37,18 +38,23 @@ namespace Neptune::Vulkan {
     {
 		NEPTUNE_PROFILE_ZONE
 
-		const auto physicalDevice  = GetContext().Get<IPhysicalDevice>();
-		const auto& families = physicalDevice->GetQueueFamilies();
+		const auto& graphicFamily     = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
+		const auto& presentFamily     = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetPresentQueueFamil();
+		const auto& computeFamily     = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_COMPUTE_BIT);
+		const auto& transferFamily    = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_TRANSFER_BIT);
+		const auto& videoEncodeFamily = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_VIDEO_ENCODE_BIT_KHR);
+		const auto& videoDecodeFamily = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_VIDEO_DECODE_BIT_KHR);
+		const auto& opticalFlowFamily = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_OPTICAL_FLOW_BIT_NV);
 
 		std::unordered_map<uint32_t, std::unordered_map<uint32_t, std::vector<VkQueue>>> queueFamilies;
 
-		queueFamilies[families.graphic    .value()][0] = std::vector<VkQueue>(1 + NThreadQueue, VK_NULL_HANDLE);
-		queueFamilies[families.present    .value()][1] = std::vector<VkQueue>(1,                VK_NULL_HANDLE);
-		queueFamilies[families.compute    .value()][2] = std::vector<VkQueue>(1 + NThreadQueue, VK_NULL_HANDLE);
-		queueFamilies[families.transfer   .value()][3] = std::vector<VkQueue>(1,                VK_NULL_HANDLE);
-		queueFamilies[families.videoEncode.value()][4] = std::vector<VkQueue>(1,                VK_NULL_HANDLE);
-		queueFamilies[families.videoDecode.value()][5] = std::vector<VkQueue>(1,                VK_NULL_HANDLE);
-		queueFamilies[families.opticalFlow.value()][6] = std::vector<VkQueue>(1,                VK_NULL_HANDLE);
+		queueFamilies[graphicFamily][0]     = std::vector<VkQueue>(1 + NThreadQueue, VK_NULL_HANDLE);
+		queueFamilies[presentFamily][1]     = std::vector<VkQueue>(1,                VK_NULL_HANDLE);
+		queueFamilies[computeFamily][2]     = std::vector<VkQueue>(1 + NThreadQueue, VK_NULL_HANDLE);
+		queueFamilies[transferFamily][3]    = std::vector<VkQueue>(1,                VK_NULL_HANDLE);
+		queueFamilies[videoEncodeFamily][4] = std::vector<VkQueue>(1,                VK_NULL_HANDLE);
+		queueFamilies[videoDecodeFamily][5] = std::vector<VkQueue>(1,                VK_NULL_HANDLE);
+		queueFamilies[opticalFlowFamily][6] = std::vector<VkQueue>(1,                VK_NULL_HANDLE);
 
 		std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
 		std::vector<SP<std::vector<float>>> QueuePriorities;
@@ -72,6 +78,8 @@ namespace Neptune::Vulkan {
 			QueuePriorities.push_back(queuePriority);
 			queueCreateInfos.push_back(queueCreateInfo);
 		}
+    	
+    	const auto physicalDevice  = GetContext().Get<IPhysicalDevice>();
     	
 		VkPhysicalDeviceFeatures2                                 deviceFeatures{};
 		deviceFeatures.sType                                    = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
@@ -109,23 +117,23 @@ namespace Neptune::Vulkan {
 
 #if 0 // Use One Queue for all commands. This method with higher fps.
 
-		auto graphic     = queueFamilies[families.graphic    .value()][0][0];
-		auto present     = queueFamilies[families.graphic    .value()][0][0];
-		auto compute     = queueFamilies[families.graphic    .value()][0][0];
-		auto transfer    = queueFamilies[families.graphic    .value()][0][0];
-		auto videoEncode = queueFamilies[families.videoEncode.value()][4][0];
-		auto videoDecode = queueFamilies[families.videoDecode.value()][5][0];
-		auto opticalFlow = queueFamilies[families.opticalFlow.value()][6][0];
+		auto graphic     = queueFamilies[graphicFamily    ][0][0];
+		auto present     = queueFamilies[presentFamily    ][0][0];
+		auto compute     = queueFamilies[computeFamily    ][0][0];
+		auto transfer    = queueFamilies[transferFamily   ][0][0];
+		auto videoEncode = queueFamilies[videoEncodeFamily][4][0];
+		auto videoDecode = queueFamilies[videoDecodeFamily][5][0];
+		auto opticalFlow = queueFamilies[opticalFlowFamily][6][0];
 
 #else // Split Commands to different Queues.
 
-		auto graphic     = queueFamilies[families.graphic    .value()][0][0];
-		auto present     = queueFamilies[families.present    .value()][0][0];
-		auto compute     = queueFamilies[families.compute    .value()][2][0];
-		auto transfer    = queueFamilies[families.transfer   .value()][3][0];
-		auto videoEncode = queueFamilies[families.videoEncode.value()][4][0];
-		auto videoDecode = queueFamilies[families.videoDecode.value()][5][0];
-		auto opticalFlow = queueFamilies[families.opticalFlow.value()][6][0];
+		auto graphic     = queueFamilies[graphicFamily    ][0][0];
+		auto present     = queueFamilies[presentFamily    ][0][0];
+		auto compute     = queueFamilies[computeFamily    ][2][0];
+		auto transfer    = queueFamilies[transferFamily   ][3][0];
+		auto videoEncode = queueFamilies[videoEncodeFamily][4][0];
+		auto videoDecode = queueFamilies[videoDecodeFamily][5][0];
+		auto opticalFlow = queueFamilies[opticalFlowFamily][6][0];
 
 #endif
 
@@ -145,8 +153,8 @@ namespace Neptune::Vulkan {
 
 		for (int i = 0; i < NThreadQueue; i++)
 		{
-			GetContext().Get<IGraphicThreadQueue>()->Add(queueFamilies[families.graphic.value()][0][i + 1]);
-			GetContext().Get<IComputeThreadQueue>()->Add(queueFamilies[families.compute.value()][2][i + 1]);
+			GetContext().Get<IGraphicThreadQueue>()->Add(queueFamilies[graphicFamily][0][i + 1]);
+			GetContext().Get<IComputeThreadQueue>()->Add(queueFamilies[computeFamily][2][i + 1]);
 		}
 
 		GetContext().Get<ITransferThreadQueue>()->Add(transfer);

@@ -38,6 +38,13 @@ namespace Neptune::Vulkan::Extension {
         void BuildFeatureChain(void**& pNext, const std::function<bool(VkStructureType)>& filter) override;
 
         /**
+        * @brief Build Device Queue Chain.
+        * 
+        * @param[in,out] chains Required Chain.
+        */
+        void BuildQueueChain(std::unordered_set<VkQueueFlagBits>& chains) override { chains.insert(VK_QUEUE_VIDEO_DECODE_BIT_KHR); }
+        
+        /**
         * @brief Combine Device Features.
         * 
         * @return Returns true if satisfied.

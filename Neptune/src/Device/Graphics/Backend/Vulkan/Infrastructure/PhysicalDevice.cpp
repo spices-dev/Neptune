@@ -14,6 +14,7 @@
 #include "Surface.h"
 #include "Functions.h"
 #include "Extensions.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
 
 namespace Neptune::Vulkan {
 
@@ -120,18 +121,34 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		VkPhysicalDeviceOpticalFlowPropertiesNV       flowProps{};
-		flowProps.sType                             = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_OPTICAL_FLOW_PROPERTIES_NV;
-		flowProps.pNext                             = nullptr;
-
 		VkPhysicalDeviceProperties2                   prop2 {};
 		prop2.sType                                 = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2;
-		prop2.pNext                                 = &flowProps;
+		prop2.pNext                                 = nullptr;
+
+		GetContext().Get<IExtensions>()->BuildPropertyChain(&prop2.pNext);
 
 		vkGetPhysicalDeviceProperties2(device, &prop2);
 
 		m_Properties = prop2.properties;
 
+		std::vector<EExtension> removedExtension;
+		
+		GetContext().Get<IExtensions>()->GetContext().View([&](const auto e, const auto& extension) {
+			
+			if (!extension->IsPropertiesSatisfied())
+			{
+				removedExtension.emplace_back(e);
+				
+				NEPTUNE_LOG_CORE(E) << "Device Property Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+			}
+			
+		});
+		
+		std::ranges::for_each(removedExtension, [&](const auto& e) {
+    		
+			GetContext().Get<IExtensions>()->GetContext().UnRegistry(e);
+		});
+		
 		return true;
 	}
 
@@ -168,78 +185,17 @@ namespace Neptune::Vulkan {
 		return true;
 	}
 
-	bool PhysicalDevice::IsQueueMeetDemand(const VkPhysicalDevice& device, const VkSurfaceKHR& surface)
+	bool PhysicalDevice::IsQueueMeetDemand(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		uint32_t queueFamilyCount = 0;
-		vkGetPhysicalDeviceQueueFamilyProperties2(device, &queueFamilyCount, nullptr);
+		std::unordered_set<VkQueueFlagBits> queueChain;
 
-		std::vector<VkQueueFamilyProperties2> queueFamilies(queueFamilyCount,{ VK_STRUCTURE_TYPE_QUEUE_FAMILY_PROPERTIES_2 });
-		vkGetPhysicalDeviceQueueFamilyProperties2(device, &queueFamilyCount, queueFamilies.data());
+		GetContext().Get<IExtensions>()->BuildQueueChain(queueChain);
 
-		for (uint32_t i = 0; i < queueFamilyCount; ++i)
-		{
-			const auto& queueFamily = queueFamilies[i];
-			
-			if (queueFamily.queueFamilyProperties.queueFlags & VK_QUEUE_GRAPHICS_BIT && (!m_QueueFamilies.graphic || !m_QueueFamilies.present))
-			{
-				// Get graphic queue identify.
-				m_QueueFamilies.graphic = i;
-				
-				if (surface)
-				{
-					VkBool32 presentSupport = false;
-					VULKAN_CHECK(vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupport))
+		const auto& queue = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>();
 
-					// Get present queue identify.
-					if (presentSupport) 
-					{
-						m_QueueFamilies.present = i;
-					}
-				}
-				else
-				{
-					m_QueueFamilies.present = i;
-				}
-			}
-			else
-			{
-				// Get compute queue identify.
-				if (queueFamily.queueFamilyProperties.queueFlags & VK_QUEUE_COMPUTE_BIT && !m_QueueFamilies.compute) 
-				{
-					m_QueueFamilies.compute = i;
-				}
-
-				// Get transfer queue identify.
-				if (queueFamily.queueFamilyProperties.queueFlags & VK_QUEUE_TRANSFER_BIT && !m_QueueFamilies.transfer) 
-				{
-					m_QueueFamilies.transfer = i;
-				}
-
-				// Get video encode queue identify.
-				if (queueFamily.queueFamilyProperties.queueFlags & VK_QUEUE_VIDEO_ENCODE_BIT_KHR && !m_QueueFamilies.videoEncode)
-				{
-					m_QueueFamilies.videoEncode = i;
-				}
-
-				// Get video decode queue identify.
-				if (queueFamily.queueFamilyProperties.queueFlags & VK_QUEUE_VIDEO_DECODE_BIT_KHR && !m_QueueFamilies.videoDecode)
-				{
-					m_QueueFamilies.videoDecode = i;
-				}
-
-				// Get video decode queue identify.
-				if (queueFamily.queueFamilyProperties.queueFlags & VK_QUEUE_OPTICAL_FLOW_BIT_NV && !m_QueueFamilies.opticalFlow)
-				{
-					m_QueueFamilies.opticalFlow = i;
-				}
-			}
-
-			if (m_QueueFamilies.IsComplete()) return true;
-		}
-
-		return false;
+		return queue->IsQueuesSatisfied(queueChain, device, surface);
 	}
 
 	bool PhysicalDevice::IsOpticalFlowSessionSupport(VkFormat format, VkOpticalFlowUsageFlagsNV usage)

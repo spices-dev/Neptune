@@ -200,6 +200,25 @@ namespace Neptune::Vulkan {
 			return "Host Local";
 		}
 	}
+	
+	std::string ToString(VkQueueFlagBits bit)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		switch (bit)
+		{
+			case VK_QUEUE_GRAPHICS_BIT:                 return "Graphic Queue";
+			case VK_QUEUE_COMPUTE_BIT:                  return "Compute Queue";
+			case VK_QUEUE_TRANSFER_BIT:                 return "Transfer Queue";
+			case VK_QUEUE_SPARSE_BINDING_BIT:           return "Sparse Binding Queue";
+			case VK_QUEUE_PROTECTED_BIT:                return "Protected Queue";
+			case VK_QUEUE_VIDEO_DECODE_BIT_KHR:         return "Video Decode Queue";
+			case VK_QUEUE_VIDEO_ENCODE_BIT_KHR:         return "Video Encode Queue";
+			case VK_QUEUE_OPTICAL_FLOW_BIT_NV:          return "Optical Flow Queue";
+			case VK_QUEUE_DATA_GRAPH_BIT_ARM:           return "Data Graph Queue";
+			default:                                    return "NonNamed";
+		}
+	}
 }
 
 #endif

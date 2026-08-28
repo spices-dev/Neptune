@@ -9,9 +9,10 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "ThreadCommandPool.h"
-#include "PhysicalDevice.h"
 #include "Device.h"
 #include "DebugUtilsObject.h"
+#include "Extensions.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
 
 namespace Neptune::Vulkan {
 
@@ -194,12 +195,12 @@ namespace Neptune::Vulkan {
 		
 		switch (GetEInfrastructure())
 		{
-			case GraphicThreadCommandPool:	   return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().graphic.value();
-			case ComputeThreadCommandPool:     return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().compute.value();
-			case TransferThreadCommandPool:    return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().transfer.value();
-			case VideoEncodeThreadCommandPool: return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().videoEncode.value();
-			case VideoDecodeThreadCommandPool: return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().videoDecode.value();
-			case OpticalFlowThreadCommandPool: return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().opticalFlow.value();
+			case GraphicThreadCommandPool:	   return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
+			case ComputeThreadCommandPool:     return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_COMPUTE_BIT);
+			case TransferThreadCommandPool:    return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_TRANSFER_BIT);
+			case VideoEncodeThreadCommandPool: return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_VIDEO_ENCODE_BIT_KHR);
+			case VideoDecodeThreadCommandPool: return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_VIDEO_DECODE_BIT_KHR);
+			case OpticalFlowThreadCommandPool: return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_OPTICAL_FLOW_BIT_NV);
 			default: return 0;
 		}
 	}

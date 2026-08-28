@@ -115,6 +115,15 @@ namespace Neptune::Vulkan {
 	* @return Returns std::string.
 	*/
 	std::string ToString(VkMemoryHeapFlags flag);
+	
+	/**
+	* @brief Convert VkQueueFlagBits to std::string.
+	*
+	* @param[in] bit VkQueueFlagBits.
+	*
+	* @return Returns std::string.
+	*/
+	std::string ToString(VkQueueFlagBits bit);
 
 }
 

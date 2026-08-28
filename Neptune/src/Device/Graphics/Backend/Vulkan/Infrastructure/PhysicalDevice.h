@@ -16,30 +16,6 @@
 #include <optional>
 
 namespace Neptune::Vulkan {
-	
-	/**
-	* @brief Queue Families.
-	*/
-	struct QueueFamilies
-	{
-		std::optional<uint32_t> graphic;                    // @brief Graphic Queue Family.
-		std::optional<uint32_t> present;                    // @brief Present Queue Family.
-		std::optional<uint32_t> transfer;                   // @brief Transfer Queue Family.
-		std::optional<uint32_t> compute;                    // @brief Compute Queue Family.
-		std::optional<uint32_t> videoEncode;                // @brief VideoEncode Queue Family.
-		std::optional<uint32_t> videoDecode;                // @brief VideoDecode Queue Family.
-		std::optional<uint32_t> opticalFlow;                // @brief OpticalFlow Queue Family.
-
-		/**
-		* @brief Is all families are found.
-		* 
-		* @return Returns true if found.
-		*/
-		bool IsComplete() const
-		{
-			return graphic && present && transfer && compute && videoEncode && videoDecode && opticalFlow;
-		}
-	};
 
 	/**
 	* @brief SwapChain Property.
@@ -103,18 +79,11 @@ namespace Neptune::Vulkan {
 		const std::vector<const char*>& GetExtensionRequirements() const;
 
 		/**
-		* @brief Get QueueFamilies.
-		*
-		* @return Returns QueueFamilies.
-		*/
-		const QueueFamilies& GetQueueFamilies() const { return m_QueueFamilies; }
-
-		/**
 		* @brief Get Properties.
 		*
 		* @return Returns Properties.
 		*/
-		const VkPhysicalDeviceProperties& GetProperties() const { return m_Properties; };
+		const VkPhysicalDeviceProperties& GetProperties() const { return m_Properties; }
 
 		/**
 		* @brief Get SwapChain Properties.
@@ -189,7 +158,7 @@ namespace Neptune::Vulkan {
 		*
 		* @return Returns true if meets.
 		*/
-		bool IsQueueMeetDemand(const VkPhysicalDevice& device, const VkSurfaceKHR& surface);
+		bool IsQueueMeetDemand(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const;
 
 		/**
 		* @brief Is Queue OpticalFlow Session Supported.
@@ -215,7 +184,6 @@ namespace Neptune::Vulkan {
 
 		Unit::PhysicalDevice m_PhysicalDevice;              // @brief This PhysicalDevice.
 		std::vector<const char*> m_ExtensionProperties;     // @brief Extensions.
-		QueueFamilies m_QueueFamilies;                      // @brief QueueFamilies.
 		VkPhysicalDeviceProperties m_Properties;            // @brief VkPhysicalDeviceProperties.
 		SwapChainProperty m_SwapChainProperty;              // @brief SwapChainProperty.
 	};

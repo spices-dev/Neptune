@@ -25,6 +25,7 @@
 #include "Device/Graphics/Backend/Vulkan/Extension/DescriptorIndexing.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Vulkan13.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Portability.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
 
 // Instance
 //m_ExtensionProperties.push_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME);

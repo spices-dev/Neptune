@@ -15,6 +15,8 @@
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderTarget.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/DecodeBuffer.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/QueryPool.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Extensions.h"
 #include "Core/Math/Math.h"
 
 namespace Neptune::Vulkan::Resource {
@@ -78,7 +80,7 @@ namespace Neptune::Vulkan::Resource {
 		info.sType                                = VK_STRUCTURE_TYPE_VIDEO_SESSION_CREATE_INFO_KHR;
 		info.flags                                = sessionFlags;
 		info.pVideoProfile                        = &profile;
-		info.queueFamilyIndex                     = GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().videoDecode.value();
+		info.queueFamilyIndex                     = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_VIDEO_DECODE_BIT_KHR);
 		info.pictureFormat                        = m_DstFormat;
 		info.maxCodedExtent                       = property.capabilities.maxCodedExtent;
 		info.maxDpbSlots                          = slots;

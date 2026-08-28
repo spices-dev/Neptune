@@ -52,6 +52,7 @@ namespace Neptune::Vulkan {
 		m_Context.Registry<Extension::IDescriptorIndexing>();
 		m_Context.Registry<Extension::IVulkan13>();
 		m_Context.Registry<Extension::IPortability>();
+		m_Context.Registry<Extension::IQueue>();
 	}
 	
 	void Extensions::BuildFeatureChain(void** pNext)
@@ -67,6 +68,36 @@ namespace Neptune::Vulkan {
 			extension->BuildFeatureChain(pNext, filter);
 
 			pNext = pNext ? pNext : last;
+		});
+	}
+	
+	void Extensions::BuildPropertyChain(void** pNext)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		std::function filter = [](VkStructureType){ return true; };
+		
+		m_Context.View([&](const auto e, const auto& extension) {
+
+			auto last = pNext;
+			
+			extension->BuildPropertyChain(pNext, filter);
+
+			pNext = pNext ? pNext : last;
+		});
+	}
+	
+	void Extensions::BuildQueueChain(std::unordered_set<VkQueueFlagBits>& chains)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		chains.insert(VK_QUEUE_GRAPHICS_BIT);
+		chains.insert(VK_QUEUE_TRANSFER_BIT);
+		chains.insert(VK_QUEUE_COMPUTE_BIT);
+		
+		m_Context.View([&](const auto e, const auto& extension) {
+			
+			extension->BuildQueueChain(chains);
 		});
 	}
 	

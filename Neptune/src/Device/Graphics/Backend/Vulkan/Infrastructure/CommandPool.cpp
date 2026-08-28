@@ -11,7 +11,8 @@
 #include "CommandPool.h"
 #include "Device.h"
 #include "DebugUtilsObject.h"
-#include "PhysicalDevice.h"
+#include "Extensions.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
 
 namespace Neptune::Vulkan {
 
@@ -45,8 +46,8 @@ namespace Neptune::Vulkan {
         
         switch (GetEInfrastructure())
 		{
-			case GraphicCommandPool:	return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().graphic.value();
-			case ComputeCommandPool:    return GetContext().Get<IPhysicalDevice>()->GetQueueFamilies().compute.value();
+			case GraphicCommandPool:	return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
+			case ComputeCommandPool:    return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_COMPUTE_BIT);
 			default: return 0;
 		}
     }

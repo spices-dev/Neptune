@@ -31,6 +31,18 @@ namespace Neptune::Vulkan::Extension {
         }
     }
     
+    void OpticalFlow::BuildPropertyChain(void**& pNext, const std::function<bool(VkStructureType)>& filter)
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        if (std::invoke(filter, m_OpticalFlowProperties.sType))
+        {
+            *pNext = &m_OpticalFlowProperties;
+
+            pNext  = &m_OpticalFlowProperties.pNext;
+        }
+    }
+    
     bool OpticalFlow::IsFeaturesSatisfied()
     {
         NEPTUNE_PROFILE_ZONE
@@ -38,6 +50,20 @@ namespace Neptune::Vulkan::Extension {
         NEPTUNE_LOG_CORE(I) << "OpticalFlow [ opticalFlow ] : " << m_OpticalFlowFeatures.opticalFlow;
         
         if (!m_OpticalFlowFeatures.opticalFlow)
+        {
+            return false;
+        }
+
+        return true;
+    }
+    
+    bool OpticalFlow::IsPropertiesSatisfied()
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        NEPTUNE_LOG_CORE(I) << "OpticalFlow [ globalFlowSupported ] : " << m_OpticalFlowProperties.globalFlowSupported;
+        
+        if (!m_OpticalFlowProperties.globalFlowSupported)
         {
             return false;
         }

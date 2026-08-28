@@ -9,6 +9,8 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "DecodeBuffer.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/PhysicalDevice.h"
 
 namespace Neptune::Vulkan::Resource {
@@ -43,6 +45,8 @@ namespace Neptune::Vulkan::Resource {
 
 		auto bufferSize = (((size ? size : VideoDecodeBufferDefaultSize) + (alignment - 1)) & ~(alignment - 1));
 
+		auto family = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_VIDEO_DECODE_BIT_KHR);
+		
 		VkBufferCreateInfo                   info{};
 		info.sType                         = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
 		info.size                          = bufferSize;
@@ -50,7 +54,7 @@ namespace Neptune::Vulkan::Resource {
 		info.flags                         = VK_BUFFER_CREATE_VIDEO_PROFILE_INDEPENDENT_BIT_KHR;
 		info.sharingMode                   = VK_SHARING_MODE_EXCLUSIVE;
 		info.queueFamilyIndexCount         = 1;
-		info.pQueueFamilyIndices           = &physicalDevice->GetQueueFamilies().videoDecode.value();
+		info.pQueueFamilyIndices           = &family;
 
 		m_Buffer.CreateBuffer(info, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
 	}
