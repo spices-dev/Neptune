@@ -12,7 +12,8 @@
 
 namespace Neptune::Vulkan::Extension {
     
-    HDR::HDR()
+    HDR::HDR(EExtensionState state)
+        : Extension(state)
     {
         NEPTUNE_PROFILE_ZONE
         

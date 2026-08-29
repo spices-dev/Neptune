@@ -12,7 +12,8 @@
 
 namespace Neptune::Vulkan::Extension {
     
-    DescriptorBuffer::DescriptorBuffer()
+    DescriptorBuffer::DescriptorBuffer(EExtensionState state)
+        : Extension(state)
     {}
     
 }

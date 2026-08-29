@@ -12,7 +12,8 @@
 
 namespace Neptune::Vulkan::Extension {
     
-    SwapChain::SwapChain(const std::vector<const char*>& windowExtensions)
+    SwapChain::SwapChain(EExtensionState state, const std::vector<const char*>& windowExtensions)
+        : Extension(state)
     {
         NEPTUNE_PROFILE_ZONE
         

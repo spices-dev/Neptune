@@ -21,8 +21,10 @@ namespace Neptune::Vulkan::Extension {
 
         /**
         * @brief Constructor Function.
+        * 
+        * @param[in] state EExtensionState.
         */
-        HDR();
+        explicit HDR(EExtensionState state = EExtensionState::Core);
         
         /**
         * @brief Destructor Function.

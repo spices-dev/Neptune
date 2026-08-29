@@ -26,8 +26,10 @@ namespace Neptune::Vulkan::Extension {
 
         /**
         * @brief Constructor Function.
+        * 
+        * @param[in] state EExtensionState.
         */
-        BufferDeviceAddress() = default;
+        explicit BufferDeviceAddress(EExtensionState state = EExtensionState::Core) : Extension(state) {}
         
         /**
         * @brief Destructor Function.

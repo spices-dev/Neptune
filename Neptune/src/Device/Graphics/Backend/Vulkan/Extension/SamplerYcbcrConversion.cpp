@@ -12,7 +12,8 @@
 
 namespace Neptune::Vulkan::Extension {
     
-    SamplerYcbcrConversion::SamplerYcbcrConversion()
+    SamplerYcbcrConversion::SamplerYcbcrConversion(EExtensionState state)
+        : Extension(state)
     {
         NEPTUNE_PROFILE_ZONE
         

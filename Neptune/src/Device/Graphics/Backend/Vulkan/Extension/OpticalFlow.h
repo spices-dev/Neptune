@@ -21,8 +21,10 @@ namespace Neptune::Vulkan::Extension {
 
         /**
         * @brief Constructor Function.
+        * 
+        * @param[in] state EExtensionState.
         */
-        OpticalFlow();
+        explicit OpticalFlow(EExtensionState state = EExtensionState::Core);
         
         /**
         * @brief Destructor Function.
@@ -46,13 +48,6 @@ namespace Neptune::Vulkan::Extension {
         void BuildPropertyChain(void**& pNext, const std::function<bool(VkStructureType)>& filter) override;
         
         /**
-        * @brief Build Device Queue Chain.
-        * 
-        * @param[in,out] chains Required Chain.
-        */
-        void BuildQueueChain(std::unordered_set<VkQueueFlagBits>& chains) override { chains.insert(VK_QUEUE_OPTICAL_FLOW_BIT_NV); }
-        
-        /**
         * @brief Combine Device Features.
         * 
         * @return Returns true if satisfied.
@@ -65,6 +60,15 @@ namespace Neptune::Vulkan::Extension {
         * @return Returns true if satisfied.
         */
         bool IsPropertiesSatisfied() override;
+        
+        /**
+        * @brief Is Device Queue satisfied.
+        * 
+        * @param[in] queues VkQueueFlagBits.
+        * 
+        * @return Returns true if satisfied.
+        */
+        bool IsQueueSatisfied(const std::unordered_set<VkQueueFlagBits>& queues) const override { return queues.contains(VK_QUEUE_OPTICAL_FLOW_BIT_NV); }
         
     private:
         

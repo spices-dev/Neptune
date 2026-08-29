@@ -15,6 +15,15 @@
 namespace Neptune::Vulkan::Extension {
     
     /**
+    * @brief Enum of Extension State.
+    */
+    enum class EExtensionState : uint8_t
+    {
+        Core = 0,       // @brief Core.
+        Extent,         // @brief Extent.
+    };
+    
+    /**
     * @brief Vulkan::Extension Class.
     * This class defines the Vulkan::Extension behaves.
     */
@@ -24,14 +33,23 @@ namespace Neptune::Vulkan::Extension {
 
         /**
         * @brief Constructor Function.
+        * 
+        * @param[in] state EExtensionState.
         */
-        Extension() = default;
+        explicit Extension(EExtensionState state = EExtensionState::Core) : m_State(state) {}
         
         /**
         * @brief Destructor Function.
         */
         virtual ~Extension() = default;
 
+        /**
+        * @brief Get EExtensionState.
+        * 
+        * @return Returns EExtensionState.
+        */
+        EExtensionState GetState() const { return m_State; }
+        
         /**
         * @brief Add VkInstance Extension Requirement.
         * 
@@ -77,13 +95,6 @@ namespace Neptune::Vulkan::Extension {
         * @param[in] filter Feature Filter.
         */
         virtual void BuildPropertyChain(void**& pNext, const std::function<bool(VkStructureType)>& filter) {}
-
-        /**
-        * @brief Build Device Queue Chain.
-        * 
-        * @param[in,out] chains Required Chain.
-        */
-        virtual void BuildQueueChain(std::unordered_set<VkQueueFlagBits>& chains) {}
         
         /**
         * @brief Is Device Features satisfied.
@@ -99,8 +110,18 @@ namespace Neptune::Vulkan::Extension {
         */
         virtual bool IsPropertiesSatisfied() { return true; }
         
+        /**
+        * @brief Is Device Queue satisfied.
+        * 
+        * @param[in] queues VkQueueFlagBits.
+        * 
+        * @return Returns true if satisfied.
+        */
+        virtual bool IsQueueSatisfied(const std::unordered_set<VkQueueFlagBits>& queues) const { return true; }
+        
     private:
         
+        EExtensionState m_State;                                         // @brief EExtensionState.
         std::unordered_map<const char*, bool> m_InstanceExtensions;      // @brief VkInstance Extensions.
         std::unordered_map<const char*, bool> m_DeviceExtensions;        // @brief VkPhysicalDevice/VkDevice Extensions.
     };

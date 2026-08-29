@@ -12,7 +12,8 @@
 
 namespace Neptune::Vulkan::Extension {
     
-    Portability::Portability()
+    Portability::Portability(EExtensionState state)
+        : Extension(state)
     {
         NEPTUNE_PROFILE_ZONE
         

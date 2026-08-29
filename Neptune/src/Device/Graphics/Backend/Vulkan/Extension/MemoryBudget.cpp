@@ -12,7 +12,8 @@
 
 namespace Neptune::Vulkan::Extension {
     
-    MemoryBudget::MemoryBudget()
+    MemoryBudget::MemoryBudget(EExtensionState state)
+        : Extension(state)
     {
         NEPTUNE_PROFILE_ZONE
         

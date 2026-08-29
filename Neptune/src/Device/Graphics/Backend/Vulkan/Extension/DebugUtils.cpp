@@ -12,7 +12,8 @@
 
 namespace Neptune::Vulkan::Extension {
     
-    DebugUtils::DebugUtils()
+    DebugUtils::DebugUtils(EExtensionState state)
+        : Extension(state)
     {
         NEPTUNE_PROFILE_ZONE
         

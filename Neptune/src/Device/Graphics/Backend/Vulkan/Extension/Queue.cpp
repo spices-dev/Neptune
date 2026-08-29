@@ -13,7 +13,22 @@
 
 namespace Neptune::Vulkan::Extension {
     
-    bool Queue::IsQueuesSatisfied(const std::unordered_set<VkQueueFlagBits>& chains, const VkPhysicalDevice& device, const VkSurfaceKHR& surface)
+    namespace {
+        
+        constexpr std::array s_Chains {
+            VK_QUEUE_GRAPHICS_BIT,
+            VK_QUEUE_COMPUTE_BIT,
+            VK_QUEUE_TRANSFER_BIT,
+          //VK_QUEUE_SPARSE_BINDING_BIT,
+          //VK_QUEUE_PROTECTED_BIT,
+            VK_QUEUE_VIDEO_DECODE_BIT_KHR,
+            VK_QUEUE_VIDEO_ENCODE_BIT_KHR,
+            VK_QUEUE_OPTICAL_FLOW_BIT_NV,
+          //VK_QUEUE_DATA_GRAPH_BIT_ARM
+        };
+    }
+    
+    std::unordered_set<VkQueueFlagBits> Queue::Query(const VkPhysicalDevice& device, const VkSurfaceKHR& surface)
     {
         NEPTUNE_PROFILE_ZONE
         
@@ -23,9 +38,11 @@ namespace Neptune::Vulkan::Extension {
         std::vector<VkQueueFamilyProperties2> queueFamilies(queueFamilyCount,{ VK_STRUCTURE_TYPE_QUEUE_FAMILY_PROPERTIES_2 });
         vkGetPhysicalDeviceQueueFamilyProperties2(device, &queueFamilyCount, queueFamilies.data());
         
+        std::unordered_set found(s_Chains.begin(), s_Chains.end());
+        
         std::unordered_set<uint32_t> used;
         
-        std::ranges::for_each(chains, [&](const auto& bit) {
+        std::ranges::for_each(s_Chains, [&](const auto& bit) {
             
             bool support = false;
             
@@ -51,7 +68,7 @@ namespace Neptune::Vulkan::Extension {
             
             if (!support)
             {
-                NEPTUNE_LOG_CORE(E) << "Queue [ " << Vulkan::ToString(bit) << " ] : was not satisfied.";
+                found.erase(bit);
             }
         });
         
@@ -93,7 +110,7 @@ namespace Neptune::Vulkan::Extension {
             }
         }
         
-        return true;
+        return found;
     }
     
     uint32_t Queue::GetQueueFamily(VkQueueFlagBits bit) const

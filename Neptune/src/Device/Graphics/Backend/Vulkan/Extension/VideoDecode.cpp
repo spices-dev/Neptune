@@ -12,7 +12,8 @@
 
 namespace Neptune::Vulkan::Extension {
     
-    VideoDecode::VideoDecode()
+    VideoDecode::VideoDecode(EExtensionState state)
+        : Extension(state)
     {
         NEPTUNE_PROFILE_ZONE
         

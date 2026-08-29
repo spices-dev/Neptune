@@ -12,7 +12,8 @@
 
 namespace Neptune::Vulkan::Extension {
     
-    OpticalFlow::OpticalFlow()
+    OpticalFlow::OpticalFlow(EExtensionState state)
+        : Extension(state)
     {
         NEPTUNE_PROFILE_ZONE
         

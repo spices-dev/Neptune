@@ -28,7 +28,11 @@ namespace Neptune::Vulkan {
 		
 		if (window)
 		{
-			m_Context.Registry<Extension::ISwapChain>(window ? window->Extension() : std::vector{ VK_KHR_SURFACE_EXTENSION_NAME });
+			m_Context.Registry<Extension::ISwapChain>(Extension::EExtensionState::Core, window->Extension());
+		}
+		else
+		{
+			m_Context.Registry<Extension::ISwapChain>(Extension::EExtensionState::Extent, std::vector{ VK_KHR_SURFACE_EXTENSION_NAME });
 		}
 		
 #ifdef NEPTUNE_DEBUG
@@ -37,22 +41,22 @@ namespace Neptune::Vulkan {
 		
 #endif
 		
-		m_Context.Registry<Extension::IDeviceFault>();
-		m_Context.Registry<Extension::IDescriptorBuffer>();
-		m_Context.Registry<Extension::IDescriptorHeap>();
-		m_Context.Registry<Extension::IHDR>();
-		m_Context.Registry<Extension::IMaintenance1>();
-		m_Context.Registry<Extension::IMemoryBudget>();
-		m_Context.Registry<Extension::IOpticalFlow>();
-		m_Context.Registry<Extension::IRayTracing>();
-		m_Context.Registry<Extension::IVideoDecode>();
-		m_Context.Registry<Extension::IVideoEncode>();
-		m_Context.Registry<Extension::ISamplerYcbcrConversion>();
-		m_Context.Registry<Extension::IBufferDeviceAddress>();
-		m_Context.Registry<Extension::IDescriptorIndexing>();
-		m_Context.Registry<Extension::IVulkan13>();
-		m_Context.Registry<Extension::IPortability>();
-		m_Context.Registry<Extension::IQueue>();
+		m_Context.Registry<Extension::IDescriptorBuffer>         (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IDescriptorHeap>           (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IDeviceFault>              (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IMemoryBudget>             (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IHDR>                      (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IOpticalFlow>              (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IRayTracing>               (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IVideoDecode>              (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IVideoEncode>              (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::ISamplerYcbcrConversion>   (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IMaintenance1>             (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IBufferDeviceAddress>      (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IDescriptorIndexing>       (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IVulkan13>                 (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IPortability>              (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IQueue>                    (Extension::EExtensionState::Core);
 	}
 	
 	void Extensions::BuildFeatureChain(void** pNext)
@@ -87,18 +91,13 @@ namespace Neptune::Vulkan {
 		});
 	}
 	
-	void Extensions::BuildQueueChain(std::unordered_set<VkQueueFlagBits>& chains)
+	std::unordered_set<VkQueueFlagBits> Extensions::BuildQueueChain(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		chains.insert(VK_QUEUE_GRAPHICS_BIT);
-		chains.insert(VK_QUEUE_TRANSFER_BIT);
-		chains.insert(VK_QUEUE_COMPUTE_BIT);
+		const auto& queue = m_Context.Get<Extension::IQueue>();
 		
-		m_Context.View([&](const auto e, const auto& extension) {
-			
-			extension->BuildQueueChain(chains);
-		});
+		return queue->Query(device, surface);
 	}
 	
 	void Extensions::BuildFeatureChainWithoutRepeat(void** pNext)

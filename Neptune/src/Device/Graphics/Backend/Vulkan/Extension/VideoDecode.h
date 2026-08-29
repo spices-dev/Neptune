@@ -21,8 +21,10 @@ namespace Neptune::Vulkan::Extension {
 
         /**
         * @brief Constructor Function.
+        * 
+        * @param[in] state EExtensionState.
         */
-        VideoDecode();
+        explicit VideoDecode(EExtensionState state = EExtensionState::Core);
         
         /**
         * @brief Destructor Function.
@@ -36,13 +38,6 @@ namespace Neptune::Vulkan::Extension {
         * @param[in] filter Feature Filter.
         */
         void BuildFeatureChain(void**& pNext, const std::function<bool(VkStructureType)>& filter) override;
-
-        /**
-        * @brief Build Device Queue Chain.
-        * 
-        * @param[in,out] chains Required Chain.
-        */
-        void BuildQueueChain(std::unordered_set<VkQueueFlagBits>& chains) override { chains.insert(VK_QUEUE_VIDEO_DECODE_BIT_KHR); }
         
         /**
         * @brief Combine Device Features.
@@ -50,6 +45,15 @@ namespace Neptune::Vulkan::Extension {
         * @return Returns true if satisfied.
         */
         bool IsFeaturesSatisfied() override;
+        
+        /**
+        * @brief Is Device Queue satisfied.
+        * 
+        * @param[in] queues VkQueueFlagBits.
+        * 
+        * @return Returns true if satisfied.
+        */
+        bool IsQueueSatisfied(const std::unordered_set<VkQueueFlagBits>& queues) const override { return queues.contains(VK_QUEUE_VIDEO_DECODE_BIT_KHR); }
         
     private:
         

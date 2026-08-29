@@ -12,7 +12,8 @@
 
 namespace Neptune::Vulkan::Extension {
     
-    Maintenance1::Maintenance1()
+    Maintenance1::Maintenance1(EExtensionState state)
+        : Extension(state)
     {
         NEPTUNE_PROFILE_ZONE
         

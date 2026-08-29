@@ -116,6 +116,8 @@ namespace Neptune::Vulkan {
 		std::vector<VkExtensionProperties> availableExtensions(extensionCount);
 		VULKAN_CHECK(vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, availableExtensions.data()))
     	
+    	bool coreSatisfied = true;
+    	
     	std::vector<EExtension> removedExtension;
     	
     	GetContext().Get<IExtensions>()->GetContext().View([&](const auto e, const auto& extension) {
@@ -133,8 +135,17 @@ namespace Neptune::Vulkan {
     			
                 if (std::ranges::all_of(availableExtensions, [&](const auto& ext) { return ext.extensionName != target; }))
     			{
-    				NEPTUNE_LOG_CORE(E) << "Instance Extension Required: " << target << ", Which is not satisfied";
-    				
+                	if (extension->GetState() == Extension::EExtensionState::Core)
+                	{
+                		coreSatisfied = false;
+                		
+						NEPTUNE_LOG_CORE(E) << "Instance Extension Required: " << target << ", Which is not satisfied";
+                	}
+	                else
+	                {
+	                	NEPTUNE_LOG_CORE(W) << "Instance Extension Required: " << target << ", Which is not satisfied";
+	                }
+
     				satisfy = false;
     			}
     		});
@@ -154,7 +165,7 @@ namespace Neptune::Vulkan {
     		GetContext().Get<IExtensions>()->GetContext().UnRegistry(e);
     	});
     	
-    	return !m_ExtensionProperties.empty();
+    	return coreSatisfied;
 	}
 
 	void Instance::GetLayerRequirements()

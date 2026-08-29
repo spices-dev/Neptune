@@ -25,8 +25,10 @@ namespace Neptune::Vulkan::Extension {
 
         /**
         * @brief Constructor Function.
+        * 
+        * @param[in] state EExtensionState.
         */
-        SamplerYcbcrConversion();
+        explicit SamplerYcbcrConversion(EExtensionState state = EExtensionState::Core);
         
         /**
         * @brief Destructor Function.

@@ -25,8 +25,10 @@ namespace Neptune::Vulkan::Extension {
 
         /**
         * @brief Constructor Function.
+        * 
+        * @param[in] state EExtensionState.
         */
-        Vulkan13() = default;
+        explicit Vulkan13(EExtensionState state = EExtensionState::Core) : Extension(state) {}
         
         /**
         * @brief Destructor Function.

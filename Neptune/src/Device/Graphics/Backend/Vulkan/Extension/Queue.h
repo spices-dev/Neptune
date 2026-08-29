@@ -23,8 +23,10 @@ namespace Neptune::Vulkan::Extension {
 
         /**
         * @brief Constructor Function.
+        * 
+        * @param[in] state EExtensionState.
         */
-        Queue() = default;
+        explicit Queue(EExtensionState state = EExtensionState::Core) : Extension(state) {}
         
         /**
         * @brief Destructor Function.
@@ -32,15 +34,12 @@ namespace Neptune::Vulkan::Extension {
         ~Queue() override = default;
         
         /**
-        * @brief Is Device Queues satisfied.
+        * @brief Query PhysicalDevice Queues.
         * 
-        * @param[in] chains VkQueueFlagBits.
-        * @param[in] device VkDevice.
-        * @param[in] surface VkSurfaceKHR_T.
-        * 
-        * @return Returns true if satisfied.
+        * @param[in] device VkPhysicalDevice.
+        * @param[in] surface VkSurfaceKHR.
         */
-        bool IsQueuesSatisfied(const std::unordered_set<VkQueueFlagBits>& chains, const VkPhysicalDevice& device, const VkSurfaceKHR& surface);
+        std::unordered_set<VkQueueFlagBits> Query(const VkPhysicalDevice& device, const VkSurfaceKHR& surface);
         
         /**
         * @brief Get Queue Family.

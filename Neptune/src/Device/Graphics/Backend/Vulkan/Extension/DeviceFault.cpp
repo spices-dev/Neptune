@@ -12,7 +12,8 @@
 
 namespace Neptune::Vulkan::Extension {
     
-    DeviceFault::DeviceFault()
+    DeviceFault::DeviceFault(EExtensionState state)
+        : Extension(state)
     {
         NEPTUNE_PROFILE_ZONE
         

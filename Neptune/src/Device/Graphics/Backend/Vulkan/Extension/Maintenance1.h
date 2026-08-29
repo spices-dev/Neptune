@@ -21,8 +21,10 @@ namespace Neptune::Vulkan::Extension {
 
         /**
         * @brief Constructor Function.
+        * 
+        * @param[in] state EExtensionState.
         */
-        Maintenance1();
+        explicit Maintenance1(EExtensionState state = EExtensionState::Core);
         
         /**
         * @brief Destructor Function.

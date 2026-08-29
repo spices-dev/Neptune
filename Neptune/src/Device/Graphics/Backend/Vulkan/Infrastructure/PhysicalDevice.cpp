@@ -15,6 +15,7 @@
 #include "Functions.h"
 #include "Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
+#include "Window/Window.h"
 
 namespace Neptune::Vulkan {
 
@@ -76,6 +77,8 @@ namespace Neptune::Vulkan {
 		std::vector<VkExtensionProperties> availableExtensions(extensionCount);
 		VULKAN_CHECK(vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, availableExtensions.data()))
 
+		bool coreSatisfied = true;
+		
 		std::vector<EExtension> removedExtension;
 		
 		GetContext().Get<IExtensions>()->GetContext().View([&](const auto e, const auto& extension) {
@@ -93,7 +96,16 @@ namespace Neptune::Vulkan {
 				
 				if (std::ranges::all_of(availableExtensions, [&](const auto& ext) { return ext.extensionName != target; }))
 				{
-					NEPTUNE_LOG_CORE(E) << "Device Extension Required: [ " << target << " ], Which is not satisfied with device: " << deviceProperties.deviceName;
+					if (extension->GetState() == Extension::EExtensionState::Core)
+					{
+						coreSatisfied = false;
+						
+						NEPTUNE_LOG_CORE(E) << "Device Extension Required: [ " << target << " ], Which is not satisfied with device: " << deviceProperties.deviceName;
+					}
+					else
+					{
+						NEPTUNE_LOG_CORE(W) << "Device Extension Required: [ " << target << " ], Which is not satisfied with device: " << deviceProperties.deviceName;
+					}
     				
 					satisfy = false;
 				}
@@ -114,7 +126,7 @@ namespace Neptune::Vulkan {
 			GetContext().Get<IExtensions>()->GetContext().UnRegistry(e);
 		});
     	
-		return !m_ExtensionProperties.empty();
+		return coreSatisfied;
 	}
 
 	bool PhysicalDevice::IsPropertyMeetDemand(const VkPhysicalDevice& device)
@@ -131,15 +143,26 @@ namespace Neptune::Vulkan {
 
 		m_Properties = prop2.properties;
 
+		bool coreSatisfied = true;
+		
 		std::vector<EExtension> removedExtension;
 		
 		GetContext().Get<IExtensions>()->GetContext().View([&](const auto e, const auto& extension) {
 			
 			if (!extension->IsPropertiesSatisfied())
 			{
-				removedExtension.emplace_back(e);
+				if (extension->GetState() == Extension::EExtensionState::Core)
+				{
+					coreSatisfied = false;
+					
+					NEPTUNE_LOG_CORE(E) << "Device Property Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+				}
+				else
+				{
+					NEPTUNE_LOG_CORE(W) << "Device Property Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+				}
 				
-				NEPTUNE_LOG_CORE(E) << "Device Property Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+				removedExtension.emplace_back(e);
 			}
 			
 		});
@@ -149,7 +172,7 @@ namespace Neptune::Vulkan {
 			GetContext().Get<IExtensions>()->GetContext().UnRegistry(e);
 		});
 		
-		return true;
+		return coreSatisfied;
 	}
 
 	bool PhysicalDevice::IsFeatureMeetDemand(const VkPhysicalDevice& device) const
@@ -164,15 +187,26 @@ namespace Neptune::Vulkan {
 
 		vkGetPhysicalDeviceFeatures2(device, &deviceFeatures);
 
+		bool coreSatisfied = true;
+		
 		std::vector<EExtension> removedExtension;
 		
 		GetContext().Get<IExtensions>()->GetContext().View([&](const auto e, const auto& extension) {
 			
 			if (!extension->IsFeaturesSatisfied())
 			{
-				removedExtension.emplace_back(e);
+				if (extension->GetState() == Extension::EExtensionState::Core)
+				{
+					coreSatisfied = false;
+
+					NEPTUNE_LOG_CORE(E) << "Device Feature Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+				}
+				else
+				{
+					NEPTUNE_LOG_CORE(I) << "Device Feature Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+				}
 				
-				NEPTUNE_LOG_CORE(E) << "Device Feature Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+				removedExtension.emplace_back(e);
 			}
 			
 		});
@@ -182,20 +216,45 @@ namespace Neptune::Vulkan {
 			GetContext().Get<IExtensions>()->GetContext().UnRegistry(e);
 		});
 		
-		return true;
+		return coreSatisfied;
 	}
 
 	bool PhysicalDevice::IsQueueMeetDemand(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		std::unordered_set<VkQueueFlagBits> queueChain;
+		auto queueChain = GetContext().Get<IExtensions>()->BuildQueueChain(device, surface);
+		
+		bool coreSatisfied = true;
 
-		GetContext().Get<IExtensions>()->BuildQueueChain(queueChain);
+		std::vector<EExtension> removedExtension;
+		
+		GetContext().Get<IExtensions>()->GetContext().View([&](const auto e, const auto& extension) {
+			
+			if (!extension->IsQueueSatisfied(queueChain))
+			{
+				if (extension->GetState() == Extension::EExtensionState::Core)
+				{
+					coreSatisfied = false;
 
-		const auto& queue = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>();
+					NEPTUNE_LOG_CORE(E) << "Device Queue Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+				}
+				else
+				{
+					NEPTUNE_LOG_CORE(I) << "Device Queue Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+				}
+				
+				removedExtension.emplace_back(e);
+			}
+			
+		});
+		
+		std::ranges::for_each(removedExtension, [&](const auto& e) {
 
-		return queue->IsQueuesSatisfied(queueChain, device, surface);
+			GetContext().Get<IExtensions>()->GetContext().UnRegistry(e);
+		});
+		
+		return coreSatisfied;
 	}
 
 	bool PhysicalDevice::IsOpticalFlowSessionSupport(VkFormat format, VkOpticalFlowUsageFlagsNV usage)

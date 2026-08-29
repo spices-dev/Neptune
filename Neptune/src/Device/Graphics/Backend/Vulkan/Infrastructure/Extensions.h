@@ -75,9 +75,12 @@ namespace Neptune::Vulkan {
 		/**
 		* @brief Build Device Queue Chain.
 		* 
-		* @param[in,out] chains Required Chain.
+		* @param[in] device VkPhysicalDevice.
+		* @param[in] surface VkSurfaceKHR.
+		* 
+		* @return Returns Required Chain.
 		*/
-		void BuildQueueChain(std::unordered_set<VkQueueFlagBits>& chains);
+		std::unordered_set<VkQueueFlagBits> BuildQueueChain(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const;
 		
 		/**
 		* @brief Build Device Feature Chain(Contain Once).

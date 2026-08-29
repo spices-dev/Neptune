@@ -12,7 +12,8 @@
 
 namespace Neptune::Vulkan::Extension {
     
-    RayTracing::RayTracing()
+    RayTracing::RayTracing(EExtensionState state)
+        : Extension(state)
     {
         NEPTUNE_PROFILE_ZONE
         
