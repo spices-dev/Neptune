@@ -1,6 +1,6 @@
 ﻿/**
 * @file VideoDecode.h.
-* @brief The VideoDecode Class Definitions and Implementation.
+* @brief The VideoDecode Class Definitions.
 * @author Spices.
 */
 

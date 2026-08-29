@@ -1,6 +1,6 @@
 ﻿/**
 * @file Vulkan13.h.
-* @brief The Vulkan13 Class Definitions and Implementation.
+* @brief The Vulkan13 Class Definitions.
 * @author Spices.
 */
 

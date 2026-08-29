@@ -1,6 +1,6 @@
 ﻿/**
 * @file SwapChain.h.
-* @brief The SwapChain Class Definitions and Implementation.
+* @brief The SwapChain Class Definitions.
 * @author Spices.
 */
 

@@ -1,6 +1,6 @@
 ﻿/**
 * @file HDR.h.
-* @brief The HDR Class Definitions and Implementation.
+* @brief The HDR Class Definitions.
 * @author Spices.
 */
 

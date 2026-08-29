@@ -1,6 +1,6 @@
 ﻿/**
 * @file OpticalFlow.h.
-* @brief The OpticalFlow Class Definitions and Implementation.
+* @brief The OpticalFlow Class Definitions.
 * @author Spices.
 */
 

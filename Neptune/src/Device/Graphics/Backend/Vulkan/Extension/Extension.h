@@ -1,6 +1,6 @@
 ﻿/**
 * @file Extension.h.
-* @brief The Extension Class Definitions and Implementation.
+* @brief The Extension Class Definitions.
 * @author Spices.
 */
 

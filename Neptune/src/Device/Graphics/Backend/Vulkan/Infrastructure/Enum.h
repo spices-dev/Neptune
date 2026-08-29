@@ -16,6 +16,7 @@ namespace Neptune::Vulkan {
     enum class EInfrastructure : uint8_t
     {
         Functions = 0,                       // @brief Functors.
+        Layers,                              // @brief Layers.
         Extensions,                          // @brief Extensions.
         Instance,                            // @brief Instance.
         DebugUtilsObject,                    // @brief Label/Name Functors.

@@ -1,6 +1,6 @@
 ﻿/**
 * @file DeviceFault.h.
-* @brief The DeviceFault Class Definitions and Implementation.
+* @brief The DeviceFault Class Definitions.
 * @author Spices.
 */
 

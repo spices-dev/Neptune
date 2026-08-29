@@ -1,6 +1,6 @@
 ﻿/**
 * @file DescriptorHeap.h.
-* @brief The DescriptorHeap Class Definitions and Implementation.
+* @brief The DescriptorHeap Class Definitions.
 * @author Spices.
 */
 

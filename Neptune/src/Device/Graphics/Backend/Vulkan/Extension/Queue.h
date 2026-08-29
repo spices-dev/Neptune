@@ -1,6 +1,6 @@
 ﻿/**
 * @file Queue.h.
-* @brief The Queue Class Definitions and Implementation.
+* @brief The Queue Class Definitions.
 * @author Spices.
 */
 

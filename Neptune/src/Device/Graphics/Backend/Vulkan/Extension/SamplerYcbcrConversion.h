@@ -1,6 +1,6 @@
 ﻿/**
 * @file SamplerYcbcrConversion.h.
-* @brief The SamplerYcbcrConversion Class Definitions and Implementation.
+* @brief The SamplerYcbcrConversion Class Definitions.
 * @author Spices.
 */
 

@@ -1,6 +1,6 @@
 ﻿/**
 * @file DescriptorIndexing.h.
-* @brief The DescriptorIndexing Class Definitions and Implementation.
+* @brief The DescriptorIndexing Class Definitions.
 * @author Spices.
 */
 

@@ -1,6 +1,6 @@
 ﻿/**
 * @file VideoEncode.h.
-* @brief The VideoEncode Class Definitions and Implementation.
+* @brief The VideoEncode Class Definitions.
 * @author Spices.
 */
 

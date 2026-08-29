@@ -1,6 +1,6 @@
 ﻿/**
 * @file Maintenance1.h.
-* @brief The Maintenance1 Class Definitions and Implementation.
+* @brief The Maintenance1 Class Definitions.
 * @author Spices.
 */
 

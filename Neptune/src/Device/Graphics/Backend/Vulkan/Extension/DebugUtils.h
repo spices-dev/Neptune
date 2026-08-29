@@ -1,6 +1,6 @@
 ﻿/**
 * @file DebugUtils.h.
-* @brief The DebugUtils Class Definitions and Implementation.
+* @brief The DebugUtils Class Definitions.
 * @author Spices.
 */
 

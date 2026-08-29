@@ -1,6 +1,6 @@
 ﻿/**
 * @file RayTracing.h.
-* @brief The RayTracing Class Definitions and Implementation.
+* @brief The RayTracing Class Definitions.
 * @author Spices.
 */
 

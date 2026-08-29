@@ -1,6 +1,6 @@
 ﻿/**
 * @file Portability.h.
-* @brief The Portability Class Definitions and Implementation.
+* @brief The Portability Class Definitions.
 * @author Spices.
 */
 

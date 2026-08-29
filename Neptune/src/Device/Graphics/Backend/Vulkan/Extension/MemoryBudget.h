@@ -1,6 +1,6 @@
 ﻿/**
 * @file MemoryBudget.h.
-* @brief The MemoryBudget Class Definitions and Implementation.
+* @brief The MemoryBudget Class Definitions.
 * @author Spices.
 */
 

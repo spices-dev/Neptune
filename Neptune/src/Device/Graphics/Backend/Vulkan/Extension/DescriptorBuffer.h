@@ -1,6 +1,6 @@
 ﻿/**
 * @file DescriptorBuffer.h.
-* @brief The DescriptorBuffer Class Definitions and Implementation.
+* @brief The DescriptorBuffer Class Definitions.
 * @author Spices.
 */
 

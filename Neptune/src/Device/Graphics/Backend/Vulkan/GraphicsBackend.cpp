@@ -11,6 +11,7 @@
 #include "GraphicsBackend.h"
 #include "Infrastructure/InfrastructureHeader.h"
 #include "Extension/ExtensionHeader.h"
+#include "Layer/LayerHeader.h"
 #include "AInfrastructure/AccessibleInfrastructure.h"
 #include "RHI/RHIHeader.h"
 #include "Converter.h"
@@ -45,6 +46,7 @@ namespace Neptune::Vulkan {
     	
 		m_Context = CreateUP<Context>();
 
+		m_Context->Registry<ILayers>();
 		m_Context->Registry<IExtensions>(window);
 		m_Context->Registry<IInstance>();
 		m_Context->Registry<IDebugUtilsObject>();

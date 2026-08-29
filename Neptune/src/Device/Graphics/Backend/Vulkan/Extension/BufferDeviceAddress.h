@@ -1,6 +1,6 @@
 ﻿/**
 * @file BufferDeviceAddress.h.
-* @brief The BufferDeviceAddress Class Definitions and Implementation.
+* @brief The BufferDeviceAddress Class Definitions.
 * @author Spices.
 */
 
