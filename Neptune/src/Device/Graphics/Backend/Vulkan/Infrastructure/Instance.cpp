@@ -55,9 +55,10 @@ namespace Neptune::Vulkan {
     	debugInfo.pUserData                      = nullptr;
     	debugInfo.pNext                          = nullptr;
     	
+        VkValidationFeaturesEXT					   validationFeatures{};
+
 		if (const auto debugUtils = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IDebugUtils>())
 		{
-			VkValidationFeaturesEXT								  validationFeatures{};
 			validationFeatures.sType						    = VK_STRUCTURE_TYPE_VALIDATION_FEATURES_EXT;
 			validationFeatures.enabledValidationFeatureCount    = static_cast<uint32_t>(debugUtils->GetFeatures().size());
 			validationFeatures.pEnabledValidationFeatures       = debugUtils->GetFeatures().data();
@@ -80,7 +81,12 @@ namespace Neptune::Vulkan {
 		createInfo.ppEnabledExtensionNames       = m_ExtensionProperties.data();
 		createInfo.enabledLayerCount             = static_cast<uint32_t>(m_LayerProperties.size());
 		createInfo.ppEnabledLayerNames           = m_LayerProperties.data();
-		createInfo.pNext                         = &debugInfo;
+        createInfo.pNext                         = nullptr;
+
+        if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDebugUtils>())
+        {
+		    createInfo.pNext                     = &debugInfo;
+        }
 
     	if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IPortability>())
     	{
@@ -93,17 +99,15 @@ namespace Neptune::Vulkan {
 
 		GetContext().Get<IFunctions>()->Init(Handle());
 
-#ifdef NEPTUNE_DEBUG
-    	
-    	m_DebugMessenger.SetFunctor(
-			GetContext().Get<IFunctions>()->vkCreateDebugUtilsMessengerEXT,
-			GetContext().Get<IFunctions>()->vkDestroyDebugUtilsMessengerEXT
-		);
-    	
-    	m_DebugMessenger.CreateDebugUtilsMessenger(Handle(), debugInfo);
-    	
-#endif
+        if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDebugUtils>())
+        {
+            m_DebugMessenger.SetFunctor(
+                GetContext().Get<IFunctions>()->vkCreateDebugUtilsMessengerEXT,
+                GetContext().Get<IFunctions>()->vkDestroyDebugUtilsMessengerEXT
+            );
 
+            m_DebugMessenger.CreateDebugUtilsMessenger(Handle(), debugInfo);
+        }
     }
 
 	bool Instance::CheckExtensionRequirementsSatisfied()

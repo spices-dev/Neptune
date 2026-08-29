@@ -74,15 +74,9 @@ namespace Neptune::Vulkan {
 	private:
 
 		Unit::Instance m_Instance;                                             // @brief This Instance.
+		Unit::DebugUtilsMessenger m_DebugMessenger;                            // @brief DebugUtilsMessenger.
 		std::vector<const char*> m_ExtensionProperties;                        // @brief Extensions.
 		std::vector<const char*> m_LayerProperties;                            // @brief Layers.
-		
-#ifdef NEPTUNE_DEBUG
-		
-		Unit::DebugUtilsMessenger m_DebugMessenger;                            // @brief DebugUtilsMessenger.
-		
-#endif
-		
 	};
 
 }
