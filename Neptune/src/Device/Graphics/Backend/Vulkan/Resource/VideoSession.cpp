@@ -400,6 +400,8 @@ namespace Neptune::Vulkan::Resource {
         }
 
 		{
+			const auto& properties = GetContext().Get<IPhysicalDevice>()->GetProperties();
+			
 			VkSamplerCreateInfo                                createInfo{};
 			createInfo.sType                                 = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
 			createInfo.magFilter                             = VK_FILTER_LINEAR;
@@ -409,10 +411,6 @@ namespace Neptune::Vulkan::Resource {
 			createInfo.addressModeW                          = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
 			createInfo.anisotropyEnable                      = VK_FALSE;
 			createInfo.pNext                                 = &conversionInfo;
-
-			VkPhysicalDeviceProperties                         properties{};
-			vkGetPhysicalDeviceProperties(GetContext().Get<IPhysicalDevice>()->Handle(), &properties);
-
 			createInfo.maxAnisotropy                         = properties.limits.maxSamplerAnisotropy;
 			createInfo.borderColor                           = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
 			createInfo.unnormalizedCoordinates               = VK_FALSE;
@@ -422,7 +420,7 @@ namespace Neptune::Vulkan::Resource {
 			createInfo.mipmapMode                            = VK_SAMPLER_MIPMAP_MODE_LINEAR;
 			createInfo.mipLodBias                            = 0.0f;
 			createInfo.minLod                                = 0;
-			createInfo.maxLod                                = 1;
+			createInfo.maxLod                                = VK_LOD_CLAMP_NONE;
 
 			image->CreateSampler(createInfo);
 		}
@@ -490,6 +488,8 @@ namespace Neptune::Vulkan::Resource {
         }
 
 		{
+			const auto& properties = GetContext().Get<IPhysicalDevice>()->GetProperties();
+			
 			VkSamplerCreateInfo                                createInfo{};
 			createInfo.sType                                 = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
 			createInfo.magFilter                             = VK_FILTER_NEAREST;
@@ -498,10 +498,6 @@ namespace Neptune::Vulkan::Resource {
 			createInfo.addressModeV                          = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
 			createInfo.addressModeW                          = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
 			createInfo.anisotropyEnable                      = VK_FALSE;
-
-			VkPhysicalDeviceProperties                         properties{};
-			vkGetPhysicalDeviceProperties(GetContext().Get<IPhysicalDevice>()->Handle(), &properties);
-
 			createInfo.maxAnisotropy                         = properties.limits.maxSamplerAnisotropy;
 			createInfo.borderColor                           = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
 			createInfo.unnormalizedCoordinates               = VK_FALSE;
@@ -511,7 +507,7 @@ namespace Neptune::Vulkan::Resource {
 			createInfo.mipmapMode                            = VK_SAMPLER_MIPMAP_MODE_NEAREST;
 			createInfo.mipLodBias                            = 0.0f;
 			createInfo.minLod                                = 0;
-			createInfo.maxLod                                = 1;
+			createInfo.maxLod                                = VK_LOD_CLAMP_NONE;
 
 			image->CreateSampler(createInfo);
 		}

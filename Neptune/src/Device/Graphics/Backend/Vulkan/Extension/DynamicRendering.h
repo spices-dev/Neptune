@@ -35,6 +35,25 @@ namespace Neptune::Vulkan::Extension {
         * @brief Destructor Function.
         */
         ~DynamicRendering() override = default;
+
+        /**
+        * @brief Build Device Feature Chain.
+        *
+        * @param[in,out] pNext pNext Chain.
+        * @param[in] filter Feature Filter.
+        */
+        void BuildFeatureChain(void**& pNext, const std::function<bool(VkStructureType)>& filter) override;
+
+        /**
+        * @brief Combine Device Features.
+        *
+        * @return Returns true if satisfied.
+        */
+        bool IsFeaturesSatisfied() override;
+
+    private:
+
+        VkPhysicalDeviceDynamicRenderingFeatures m_DynamicRenderingFeatures{ VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DYNAMIC_RENDERING_FEATURES }; // @brief DynamicRenderingFeatures.
     };
 }
 

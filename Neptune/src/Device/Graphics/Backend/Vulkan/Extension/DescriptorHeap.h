@@ -35,6 +35,25 @@ namespace Neptune::Vulkan::Extension {
         * @brief Destructor Function.
         */
         ~DescriptorHeap() override = default;
+
+        /**
+        * @brief Build Device Feature Chain.
+        *
+        * @param[in,out] pNext pNext Chain.
+        * @param[in] filter Feature Filter.
+        */
+        void BuildFeatureChain(void**& pNext, const std::function<bool(VkStructureType)>& filter) override;
+
+        /**
+        * @brief Combine Device Features.
+        *
+        * @return Returns true if satisfied.
+        */
+        bool IsFeaturesSatisfied() override;
+
+    private:
+
+        VkPhysicalDeviceDescriptorHeapFeaturesEXT m_DescriptorHeapFeatures{ VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_HEAP_FEATURES_EXT }; // @briefDescriptorHeapFeatures.
     };
 }
 

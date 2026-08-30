@@ -44,7 +44,7 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static const char* data            = "cached/CrashDiagnostic";
+            static const char* data            = "cache/CrashDiagnostic";
 
             VkLayerSettingEXT                    settings {};
             settings.pLayerName                = GetInstanceLayer().c_str();

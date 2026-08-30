@@ -156,11 +156,11 @@ namespace Neptune::Vulkan {
                 	{
                 		coreSatisfied = false;
                 		
-						NEPTUNE_LOG_CORE(E) << "Instance Extension Required: " << target << ", Which is not satisfied";
+						NEPTUNE_LOG_CORE(E) << "Instance Extension Required: [ " << target << " ], Which is not satisfied";
                 	}
 	                else
 	                {
-	                	NEPTUNE_LOG_CORE(W) << "Instance Extension Required: " << target << ", Which is not satisfied";
+	                	NEPTUNE_LOG_CORE(W) << "Instance Extension Required: [ " << target << " ], Which is not satisfied";
 	                }
 
     				satisfy = false;
@@ -220,7 +220,7 @@ namespace Neptune::Vulkan {
 			}
             else
             {
-                m_LayerProperties.emplace_back(target);
+                m_LayerProperties.emplace_back(target.c_str());
             }
 		});
     	

@@ -38,6 +38,11 @@ namespace Neptune::Vulkan {
         ExternalMemoryHost,                         // @brief ExternalMemoryHost.
         CopyMemorytIndirect,                        // @brief CopyMemorytIndirect.
         DeviceGeneratedCommands,                    // @brief DeviceGeneratedCommands.
+        GetPhysicalDeviceProperties2,               // @brief GetPhysicalDeviceProperties2.
+        PageableDeviceLocalMemory,                  // @brief PageableDeviceLocalMemory.
+        GetSurfaceCapabilities2,                    // @brief GetSurfaceCapabilities2.
+        CreateRenderPass2,                          // @brief CreateRenderPass2.
+        DynamicRenderingLocalRead,                  // @brief DynamicRenderingLocalRead.
 
         Count
     };
@@ -50,26 +55,35 @@ namespace Neptune::Vulkan {
         
         switch (e)
         {
-            case DescriptorBuffer:           return "DescriptorBuffer";
-            case DescriptorHeap:             return "DescriptorHeap";
-            case DeviceFault:                return "DeviceFault";
-            case MemoryBudget:               return "MemoryBudget";
-            case HDR:                        return "HDR";
-            case OpticalFlow:                return "OpticalFlow";
-            case RayTracing:                 return "RayTracing";
-            case SwapChain:                  return "SwapChain";
-            case VideoDecode:                return "VideoDecode";
-            case VideoEncode:                return "VideoEncode";
-            case SamplerYcbcrConversion:     return "SamplerYcbcrConversion";
-            case Maintenance1:               return "Maintenance1";
-            case DebugUtils:                 return "DebugUtils";
-            case BufferDeviceAddress:        return "BufferDeviceAddress";
-            case DescriptorIndexing:         return "DescriptorIndexing";
-            case Vulkan13:                   return "Vulkan13";
-            case Portability:                return "Portability";
-            case Queue:                      return "Queue";
-            case LayerSetting:               return "LayerSetting";
-            default:                         return "NonNamed";
+            case DescriptorBuffer:                return "DescriptorBuffer";
+            case DescriptorHeap:                  return "DescriptorHeap";
+            case DeviceFault:                     return "DeviceFault";
+            case MemoryBudget:                    return "MemoryBudget";
+            case HDR:                             return "HDR";
+            case OpticalFlow:                     return "OpticalFlow";
+            case RayTracing:                      return "RayTracing";
+            case SwapChain:                       return "SwapChain";
+            case VideoDecode:                     return "VideoDecode";
+            case VideoEncode:                     return "VideoEncode";
+            case SamplerYcbcrConversion:          return "SamplerYcbcrConversion";
+            case Maintenance1:                    return "Maintenance1";
+            case DebugUtils:                      return "DebugUtils";
+            case BufferDeviceAddress:             return "BufferDeviceAddress";
+            case DescriptorIndexing:              return "DescriptorIndexing";
+            case Vulkan13:                        return "Vulkan13";
+            case Portability:                     return "Portability";
+            case Queue:                           return "Queue";
+            case LayerSetting:                    return "LayerSetting";
+            case DynamicRendering:                return "DynamicRendering";
+            case ExternalMemoryHost:              return "ExternalMemoryHost";
+            case CopyMemorytIndirect:             return "CopyMemorytIndirect";
+            case DeviceGeneratedCommands:         return "DeviceGeneratedCommands";
+            case GetPhysicalDeviceProperties2:    return "GetPhysicalDeviceProperties2";
+            case PageableDeviceLocalMemory:       return "PageableDeviceLocalMemory";
+            case GetSurfaceCapabilities2:         return "GetSurfaceCapabilities2";
+            case CreateRenderPass2:               return "CreateRenderPass2";
+            case DynamicRenderingLocalRead:       return "DynamicRenderingLocalRead";
+            default:                              return "NonNamed";
         }
     }
 

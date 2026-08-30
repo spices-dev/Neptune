@@ -70,7 +70,7 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static const char* data            = "vk_apidump.txt";
+            static const char* data            = "cache/vk_api_dump.txt";
 
             VkLayerSettingEXT                    settings {};
             settings.pLayerName                = GetInstanceLayer().c_str();

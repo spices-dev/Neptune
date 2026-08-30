@@ -129,6 +129,9 @@ namespace Neptune::Vulkan {
 		
 		// @brief HDR. 
 		VK_FUNCTION_POINTER(vkSetHdrMetadataEXT                            )
+
+		// @brief vkCreateRenderPass2KHR
+		VK_FUNCTION_POINTER(vkCreateRenderPass2KHR                         )
 	};
 	
 }

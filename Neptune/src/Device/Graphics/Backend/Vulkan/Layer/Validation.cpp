@@ -343,7 +343,7 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static const char* data            = "cached/CDLDump";
+            static const char* data            = "cache/CdlDump";
 
             VkLayerSettingEXT                    settings {};
             settings.pLayerName                = GetInstanceLayer().c_str();

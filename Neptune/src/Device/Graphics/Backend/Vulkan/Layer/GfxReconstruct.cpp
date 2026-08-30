@@ -83,7 +83,7 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static const char* data            = "gfxrecon_capture.gfxr";
+            static const char* data            = "cache/GfxReconstruct/gfxrecon_capture.gfxr";
 
             VkLayerSettingEXT                    settings {};
             settings.pLayerName                = GetInstanceLayer().c_str();
@@ -317,7 +317,7 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static const char* data            = "vk_gfx_reconstruct.txt";
+            static const char* data            = "cache/GfxReconstruct/vk_gfx_reconstruct.txt";
 
             VkLayerSettingEXT                    settings {};
             settings.pLayerName                = GetInstanceLayer().c_str();

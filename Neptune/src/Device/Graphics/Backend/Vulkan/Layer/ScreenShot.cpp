@@ -31,7 +31,7 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static const char* data            = "cached/ScreenShot";
+            static const char* data            = "cache/ScreenShot";
 
             VkLayerSettingEXT                    settings {};
             settings.pLayerName                = GetInstanceLayer().c_str();

@@ -30,10 +30,12 @@
 #include "Device/Graphics/Backend/Vulkan/Extension/DynamicRendering.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/ExternalMemoryHost.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/CopyMemorytIndirect.h"
-
-// Instance
-//m_ExtensionProperties.push_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME);
-//m_ExtensionProperties.push_back(VK_KHR_GET_SURFACE_CAPABILITIES_2_EXTENSION_NAME);
+#include "Device/Graphics/Backend/Vulkan/Extension/DeviceGeneratedCommands.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/GetPhysicalDeviceProperties2.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/PageableDeviceLocalMemory.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/GetSurfaceCapabilities2.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/CreateRenderPass2.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/DynamicRenderingLocalRead.h"
 
 // Device
 //m_ExtensionProperties.push_back(VK_KHR_SHADER_CLOCK_EXTENSION_NAME);
