@@ -33,6 +33,11 @@ namespace Neptune::Vulkan {
         Vulkan13,                                   // @brief Vulkan13.
         Portability,                                // @brief Portability.
         Queue,                                      // @brief Queue.
+        LayerSetting,                               // @brief LayerSetting.
+        DynamicRendering,                           // @brief DynamicRendering.
+        ExternalMemoryHost,                         // @brief ExternalMemoryHost.
+        CopyMemorytIndirect,                        // @brief CopyMemorytIndirect.
+        DeviceGeneratedCommands,                    // @brief DeviceGeneratedCommands.
 
         Count
     };
@@ -63,6 +68,7 @@ namespace Neptune::Vulkan {
             case Vulkan13:                   return "Vulkan13";
             case Portability:                return "Portability";
             case Queue:                      return "Queue";
+            case LayerSetting:               return "LayerSetting";
             default:                         return "NonNamed";
         }
     }

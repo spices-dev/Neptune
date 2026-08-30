@@ -52,6 +52,13 @@ namespace Neptune::Vulkan {
 		*/
 		const Layer::LContext<ELayer>& GetContext() const { return m_Context; }
 		
+		/**
+		* @brief Build Layer Setting Chain.
+		*
+		* @param[in,out] settings VkLayerSettingEXT.
+		*/
+		void BuildLayerSettingChain(std::vector<VkLayerSettingEXT>& settings);
+
     private:
         
         /**

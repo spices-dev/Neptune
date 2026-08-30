@@ -15,6 +15,12 @@ namespace Neptune::Vulkan::Extension {
 
     using IDescriptorBuffer = IExtension<class DescriptorBuffer, EExtension::DescriptorBuffer>;
     
+    /**
+    * @brief Used In:
+    * Not in VK_LAYER_KHRONOS_validation syncval_shader_accesses_heuristic
+    * VK_LAYER_KHRONOS_validation gpu_dump_descriptors
+    * VK_LAYER_KHRONOS_validation descriptor_hashing
+    */
     class DescriptorBuffer : public Extension
     {
     public:

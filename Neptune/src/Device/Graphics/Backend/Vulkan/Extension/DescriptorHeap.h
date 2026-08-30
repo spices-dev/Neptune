@@ -15,6 +15,11 @@ namespace Neptune::Vulkan::Extension {
 
     using IDescriptorHeap = IExtension<class DescriptorHeap, EExtension::DescriptorHeap>;
     
+    /**
+    * @brief Used In:
+    * VK_LAYER_KHRONOS_validation gpu_dump_descriptors
+    * VK_LAYER_KHRONOS_validation descriptor_hashing
+    */
     class DescriptorHeap : public Extension
     {
     public:

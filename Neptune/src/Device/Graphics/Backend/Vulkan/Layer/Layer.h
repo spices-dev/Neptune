@@ -34,9 +34,10 @@ namespace Neptune::Vulkan::Layer {
         /**
         * @brief Constructor Function.
         * 
+        * @param[in] name Layer Name.
         * @param[in] state ELayerState.
         */
-        explicit Layer(ELayerState state = ELayerState::Extent) : m_State(state) {}
+        Layer(const std::string& name, ELayerState state = ELayerState::Extent) : m_State(state), m_InstanceLayer(name) {}
         
         /**
         * @brief Destructor Function.
@@ -49,10 +50,33 @@ namespace Neptune::Vulkan::Layer {
         * @return Returns ELayerState.
         */
         ELayerState GetState() const { return m_State; }
-        
+
+        /**
+        * @brief Add Layer Setting.
+        *
+        * @param[in] setting VkLayerSettingEXT.
+        */
+        void AddLayerSetting(const VkLayerSettingEXT& setting);
+
+        /**
+        * @brief Get VkInstance Layer Requirement.
+        * 
+        * @return Returns VkInstance Layer Requirement.
+        */
+        const std::string& GetInstanceLayer() const { return m_InstanceLayer; }
+
+        /**
+        * @brief Build Layer Setting Chain.
+        *
+        * @param[in,out] settings VkLayerSettingEXT.
+        */
+        void BuildLayerSettingChain(std::vector<VkLayerSettingEXT>& settings);
+
     private:
         
-        ELayerState m_State;                                             // @brief ELayerState.
+        ELayerState m_State;                        // @brief ELayerState.
+        std::string m_InstanceLayer;                // @brief VkInstance Layers.
+        std::vector<VkLayerSettingEXT> m_Settings;  // @brief VkLayerSettingEXT.
     };
 }
 

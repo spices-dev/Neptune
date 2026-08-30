@@ -26,6 +26,10 @@
 #include "Device/Graphics/Backend/Vulkan/Extension/Vulkan13.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Portability.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/LayerSetting.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/DynamicRendering.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/ExternalMemoryHost.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/CopyMemorytIndirect.h"
 
 // Instance
 //m_ExtensionProperties.push_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME);

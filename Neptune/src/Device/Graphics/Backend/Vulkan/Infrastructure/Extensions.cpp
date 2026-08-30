@@ -57,6 +57,7 @@ namespace Neptune::Vulkan {
 		m_Context.Registry<Extension::IVulkan13>                 (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IPortability>              (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IQueue>                    (Extension::EExtensionState::Core);
+		m_Context.Registry<Extension::ILayerSetting>             (Extension::EExtensionState::Extent);
 	}
 	
 	void Extensions::BuildFeatureChain(void** pNext)
@@ -73,31 +74,6 @@ namespace Neptune::Vulkan {
 
 			pNext = pNext ? pNext : last;
 		});
-	}
-	
-	void Extensions::BuildPropertyChain(void** pNext)
-	{
-		NEPTUNE_PROFILE_ZONE
-		
-		std::function filter = [](VkStructureType){ return true; };
-		
-		m_Context.View([&](const auto e, const auto& extension) {
-
-			auto last = pNext;
-			
-			extension->BuildPropertyChain(pNext, filter);
-
-			pNext = pNext ? pNext : last;
-		});
-	}
-	
-	std::unordered_set<VkQueueFlagBits> Extensions::BuildQueueChain(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const
-	{
-		NEPTUNE_PROFILE_ZONE
-		
-		const auto& queue = m_Context.Get<Extension::IQueue>();
-		
-		return queue->Query(device, surface);
 	}
 	
 	void Extensions::BuildFeatureChainWithoutRepeat(void** pNext)
@@ -123,6 +99,31 @@ namespace Neptune::Vulkan {
 
 			pNext = pNext ? pNext : last;
 		});
+	}
+
+	void Extensions::BuildPropertyChain(void** pNext)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		std::function filter = [](VkStructureType){ return true; };
+		
+		m_Context.View([&](const auto e, const auto& extension) {
+
+			auto last = pNext;
+			
+			extension->BuildPropertyChain(pNext, filter);
+
+			pNext = pNext ? pNext : last;
+		});
+	}
+	
+	std::unordered_set<VkQueueFlagBits> Extensions::BuildQueueChain(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		const auto& queue = m_Context.Get<Extension::IQueue>();
+		
+		return queue->Query(device, surface);
 	}
 }
 

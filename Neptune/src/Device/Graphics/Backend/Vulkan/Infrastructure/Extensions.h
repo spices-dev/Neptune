@@ -66,6 +66,13 @@ namespace Neptune::Vulkan {
 		void BuildFeatureChain(void** pNext);
 		
 		/**
+		* @brief Build Device Feature Chain(Contain Once).
+		*
+		* @param[in] pNext pNext Chain.
+		*/
+		void BuildFeatureChainWithoutRepeat(void** pNext);
+
+		/**
 		* @brief Build Device Property Chain.
 		* 
 		* @param[in] pNext pNext Chain.
@@ -81,14 +88,7 @@ namespace Neptune::Vulkan {
 		* @return Returns Required Chain.
 		*/
 		std::unordered_set<VkQueueFlagBits> BuildQueueChain(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const;
-		
-		/**
-		* @brief Build Device Feature Chain(Contain Once).
-		* 
-		* @param[in] pNext pNext Chain.
-		*/
-		void BuildFeatureChainWithoutRepeat(void** pNext);
-		
+
     private:
         
         /**

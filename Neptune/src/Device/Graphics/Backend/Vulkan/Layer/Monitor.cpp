@@ -13,7 +13,7 @@
 namespace Neptune::Vulkan::Layer {
 
     Monitor::Monitor(ELayerState state)
-        : Layer(state)
+        : Layer("VK_LAYER_LUNARG_monitor", state)
     {
         NEPTUNE_PROFILE_ZONE
     }

@@ -25,15 +25,26 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		m_Context.Registry<Layer::IApiDump>                   (Layer::ELayerState::Extent);
-		m_Context.Registry<Layer::ICrashDiagnostic>           (Layer::ELayerState::Extent);
-		m_Context.Registry<Layer::IGfxReconstruct>            (Layer::ELayerState::Extent);
-		m_Context.Registry<Layer::IMonitor>                   (Layer::ELayerState::Extent);
-		m_Context.Registry<Layer::IScreenShot>                (Layer::ELayerState::Extent);
+#ifdef NEPTUNE_DEBUG
+
+		m_Context.Registry<Layer::IValidation>                (Layer::ELayerState::Core);
+											                  
+#else										                  
+						                  
 		m_Context.Registry<Layer::IValidation>                (Layer::ELayerState::Extent);
-		m_Context.Registry<Layer::IProfiles>                  (Layer::ELayerState::Extent);
-		m_Context.Registry<Layer::IShaderObject>              (Layer::ELayerState::Extent);
-		m_Context.Registry<Layer::ISynchronization2>          (Layer::ELayerState::Extent);
+
+#endif
+
+	}
+
+	void Layers::BuildLayerSettingChain(std::vector<VkLayerSettingEXT>& settings)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_Context.View([&](const auto e, const auto& layer) {
+			
+			layer->BuildLayerSettingChain(settings);
+		});
 	}
 }
 

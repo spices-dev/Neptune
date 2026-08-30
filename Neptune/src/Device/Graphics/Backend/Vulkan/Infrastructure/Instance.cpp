@@ -11,8 +11,10 @@
 #include "Instance.h"
 #include "Functions.h"
 #include "Extensions.h"
+#include "Layers.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/DebugUtils.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Portability.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/LayerSetting.h"
 
 namespace Neptune::Vulkan {
 
@@ -28,14 +30,12 @@ namespace Neptune::Vulkan {
     {
 		NEPTUNE_PROFILE_ZONE
 
-    	if (!CheckExtensionRequirementsSatisfied())
-    	{
-    		NEPTUNE_LOG_CORE(E) << "Instance Extension not Satisfied";
-    		return;
-    	}
-    	
-    	GetLayerRequirements();
-    	
+        if (!CheckExtensionRequirementsSatisfied())
+        {
+            NEPTUNE_LOG_CORE(E) << "Instance Extension not Satisfied";
+            return;
+        }
+
     	if (!CheckLayerRequirementsSatisfied())
     	{
     		NEPTUNE_LOG_CORE(E) << "Instance Layer not Satisfied";
@@ -66,6 +66,19 @@ namespace Neptune::Vulkan {
 			debugInfo.pNext                                     = &validationFeatures;
 		}
     	
+        std::vector<VkLayerSettingEXT> settings;
+
+        if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::ILayerSetting>())
+        {
+            GetContext().Get<ILayers>()->BuildLayerSettingChain(settings);
+        }
+
+        VkLayerSettingsCreateInfoEXT               settingInfo = {};
+        settingInfo.sType                        = VK_STRUCTURE_TYPE_LAYER_SETTINGS_CREATE_INFO_EXT;
+        settingInfo.settingCount                 = settings.size();
+        settingInfo.pSettings                    = settings.data();
+        settingInfo.pNext                        = nullptr;
+
         VkApplicationInfo                          appInfo {};
 		appInfo.sType                            = VK_STRUCTURE_TYPE_APPLICATION_INFO;
 		appInfo.pApplicationName                 = "Neptune";
@@ -81,11 +94,11 @@ namespace Neptune::Vulkan {
 		createInfo.ppEnabledExtensionNames       = m_ExtensionProperties.data();
 		createInfo.enabledLayerCount             = static_cast<uint32_t>(m_LayerProperties.size());
 		createInfo.ppEnabledLayerNames           = m_LayerProperties.data();
-        createInfo.pNext                         = nullptr;
+        createInfo.pNext                         = &settingInfo;
 
         if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDebugUtils>())
         {
-		    createInfo.pNext                     = &debugInfo;
+            settingInfo.pNext                    = &debugInfo;
         }
 
     	if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IPortability>())
@@ -172,42 +185,51 @@ namespace Neptune::Vulkan {
     	return coreSatisfied;
 	}
 
-	void Instance::GetLayerRequirements()
-	{
-		NEPTUNE_PROFILE_ZONE
-
-    	if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDebugUtils>())
-    	{
-    		m_LayerProperties.push_back("VK_LAYER_KHRONOS_validation");
-    	}
-	}
-
 	bool Instance::CheckLayerRequirementsSatisfied()
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		uint32_t layerCount;
-		VULKAN_CHECK(vkEnumerateInstanceLayerProperties(&layerCount, nullptr))
+    	uint32_t layerCount;
+    	VULKAN_CHECK(vkEnumerateInstanceLayerProperties(&layerCount, nullptr))
 
 		std::vector<VkLayerProperties> availableLayers(layerCount);
-		VULKAN_CHECK(vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data()))
+    	VULKAN_CHECK(vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data()))
+    	
+		bool coreSatisfied = true;
+    	
+    	std::vector<ELayer> removedLayer;
+    	
+    	GetContext().Get<ILayers>()->GetContext().View([&](const auto e, const auto& layer) {
+    		
+			const auto& target = layer->GetInstanceLayer();
 
-		std::set<std::string> requiredLayers(m_LayerProperties.begin(), m_LayerProperties.end());
-
-		for (const auto& layer : availableLayers) 
-		{
-			requiredLayers.erase(layer.layerName);
-		}
-
-		if (!requiredLayers.empty())
-		{
-			for (auto& set : requiredLayers)
+			if (std::ranges::all_of(availableLayers, [&](const auto& lar) { return lar.layerName != target; }))
 			{
-				NEPTUNE_LOG_CORE(W) << "Instance Layer Required: " << set << ", Which is not satisfied";
-			}
-		}
+				if (layer->GetState() == Layer::ELayerState::Core)
+				{
+					coreSatisfied = false;
+                		
+					NEPTUNE_LOG_CORE(E) << "Instance Layer Required: " << target << ", Which is not satisfied";
+				}
+				else
+				{
+					NEPTUNE_LOG_CORE(W) << "Instance Layer Required: " << target << ", Which is not satisfied";
+				}
 
-		return requiredLayers.empty();
+                removedLayer.emplace_back(e);
+			}
+            else
+            {
+                m_LayerProperties.emplace_back(target);
+            }
+		});
+    	
+    	std::ranges::for_each(removedLayer, [&](const auto& e) {
+    		
+			GetContext().Get<ILayers>()->GetContext().UnRegistry(e);
+		});
+    	
+    	return coreSatisfied;
 	}
 
 }

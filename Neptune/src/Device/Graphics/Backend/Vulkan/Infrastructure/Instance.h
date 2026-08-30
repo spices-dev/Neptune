@@ -62,11 +62,6 @@ namespace Neptune::Vulkan {
 		bool CheckExtensionRequirementsSatisfied();
 
 		/**
-		* @brief Get Layer Requirements.
-		*/
-		void GetLayerRequirements();
-
-		/**
 		* @brief Check Layer Requirements Satisfied.
 		*/
 		bool CheckLayerRequirementsSatisfied();

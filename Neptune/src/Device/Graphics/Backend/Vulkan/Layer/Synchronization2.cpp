@@ -13,9 +13,22 @@
 namespace Neptune::Vulkan::Layer {
 
     Synchronization2::Synchronization2(ELayerState state)
-        : Layer(state)
+        : Layer("VK_LAYER_KHRONOS_synchronization2", state)
     {
         NEPTUNE_PROFILE_ZONE
+
+        {
+            static const VkBool32 data         = VK_FALSE;
+
+            VkLayerSettingEXT                    settings {};
+            settings.pLayerName                = GetInstanceLayer().c_str();
+            settings.pSettingName              = "force_enable";
+            settings.type                      = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
+            settings.valueCount                = 1;
+            settings.pValues                   = &data;
+
+            AddLayerSetting(settings);
+        }
     }
 
 }
