@@ -72,8 +72,13 @@ namespace Neptune::Vulkan {
 		description.initialLayout                   = ToVkImageLayout(info.inLayout);
 		description.finalLayout                     = ToVkImageLayout(info.outLayout);
 		
-		VkClearValue                                  clearValue{};
-		clearValue.color                            = { 0.0f, 0.0f, 0.0f, 1.0f };
+		if (info.loadOp == AttachmentOP::Clear)
+		{
+			VkClearValue                              clearValue{};
+			clearValue.color                        = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+			m_ClearValues.emplace_back(clearValue);
+		}
 
 		VkPipelineColorBlendAttachmentState           colorBlend{};
 		colorBlend.colorWriteMask                   = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
@@ -107,7 +112,6 @@ namespace Neptune::Vulkan {
 		m_AttachmentDescriptions.emplace_back(description);
 		m_ColorAttachmentReference.emplace_back(attachmentRef);
 		m_ColorBlends.emplace_back(colorBlend);
-		m_ClearValues.emplace_back(clearValue);
 		m_ImageViews.emplace_back(renderTarget->GetRHIImpl<RenderTarget>()->GetView());
 
 		StoreExtent({ renderTarget->GetWidth(), renderTarget->GetHeight() });
@@ -126,14 +130,23 @@ namespace Neptune::Vulkan {
 			description.inputAttachmentCount            = 0;
 			description.pInputAttachments               = nullptr;
 
+			VkSubpassDependency                           dependency{};
+			dependency.srcSubpass                       = VK_SUBPASS_EXTERNAL;
+			dependency.dstSubpass                       = 0;
+			dependency.srcStageMask                     = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT;
+			dependency.dstStageMask                     = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT;
+			dependency.srcAccessMask                    = 0;
+			dependency.dstAccessMask                    = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+			dependency.dependencyFlags                  = 0;
+
 			VkRenderPassCreateInfo		                  info{};
 			info.sType                                  = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
 			info.attachmentCount                        = m_AttachmentDescriptions.size();
 			info.pAttachments                           = m_AttachmentDescriptions.data();
 			info.subpassCount                           = 1;
 			info.pSubpasses                             = &description;
-			info.dependencyCount                        = 0;
-			info.pDependencies                          = nullptr;
+			info.dependencyCount                        = 1;
+			info.pDependencies                          = &dependency;
 		
 			m_RenderPass.CreateRenderPass(GetContext().Get<IDevice>()->Handle(), info);
 

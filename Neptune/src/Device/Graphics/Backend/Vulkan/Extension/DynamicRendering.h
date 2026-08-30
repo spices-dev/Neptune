@@ -23,6 +23,10 @@ namespace Neptune::Vulkan::Extension {
     class DynamicRendering : public Extension
     {
     public:
+        
+        static constexpr uint32_t CoreVersion = VK_MAKE_VERSION(1, 3, 0);
+        
+    public:
 
         /**
         * @brief Constructor Function.
@@ -53,7 +57,7 @@ namespace Neptune::Vulkan::Extension {
 
     private:
 
-        VkPhysicalDeviceDynamicRenderingFeatures m_DynamicRenderingFeatures{ VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DYNAMIC_RENDERING_FEATURES }; // @brief DynamicRenderingFeatures.
+        VkPhysicalDeviceVulkan13Features m_Vulkan13Features{ VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES };  // @brief Vulkan13Features.
     };
 }
 

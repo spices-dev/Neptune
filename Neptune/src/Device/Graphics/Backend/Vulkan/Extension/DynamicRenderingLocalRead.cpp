@@ -17,6 +17,8 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
+        if constexpr (IsCoreExtension<decltype(*this)>) return;
+
         AddDeviceExtensions(VK_KHR_DYNAMIC_RENDERING_LOCAL_READ_EXTENSION_NAME);
     }
 

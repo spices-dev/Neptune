@@ -41,8 +41,8 @@ namespace Neptune::Vulkan {
 		
 #endif
 		
-		m_Context.Registry<Extension::IDescriptorBuffer>                 (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IDescriptorHeap>                   (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IDescriptorBuffer>                 (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IDeviceFault>                      (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IMemoryBudget>                     (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IHDR>                              (Extension::EExtensionState::Extent);

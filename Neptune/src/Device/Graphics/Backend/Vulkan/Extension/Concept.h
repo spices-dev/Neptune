@@ -31,4 +31,16 @@ namespace Neptune::Vulkan::Extension {
         requires IsEnum<decltype(T::E)>;
     };
     
+    /**
+    * @brief Concept: Is IsCoreExtension.
+    * 
+    * @tparam T IsExtension.
+    */
+    template<typename T>
+    static constexpr bool IsCoreExtension = requires(T t) {
+        t.CoreVersion;
+        //requires IsExtension<T>;
+        VK_VERSION >= t.CoreVersion;
+    };
+    
 }

@@ -17,6 +17,8 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
         
+        if constexpr (IsCoreExtension<decltype(*this)>) return;
+
         AddInstanceExtensions(VK_EXT_SWAPCHAIN_COLOR_SPACE_EXTENSION_NAME);
         
         AddDeviceExtensions(VK_EXT_HDR_METADATA_EXTENSION_NAME);

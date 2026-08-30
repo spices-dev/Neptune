@@ -16,7 +16,9 @@ namespace Neptune::Vulkan::Extension {
         : Extension(state)
     {
         NEPTUNE_PROFILE_ZONE
-            
+
+        if constexpr (IsCoreExtension<decltype(*this)>) return;
+
         AddDeviceExtensions(VK_KHR_CREATE_RENDERPASS_2_EXTENSION_NAME);
     }
 

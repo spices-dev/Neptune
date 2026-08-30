@@ -17,6 +17,8 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
+        if constexpr (IsCoreExtension<decltype(*this)>) return;
+
         AddInstanceExtensions(VK_KHR_GET_SURFACE_CAPABILITIES_2_EXTENSION_NAME);
     }
 

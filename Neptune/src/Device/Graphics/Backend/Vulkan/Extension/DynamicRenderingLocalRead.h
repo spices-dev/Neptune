@@ -22,6 +22,10 @@ namespace Neptune::Vulkan::Extension {
     class DynamicRenderingLocalRead : public Extension
     {
     public:
+        
+        static constexpr uint32_t CoreVersion = VK_MAKE_VERSION(1, 4, 0);
+        
+    public:
 
         /**
         * @brief Constructor Function.

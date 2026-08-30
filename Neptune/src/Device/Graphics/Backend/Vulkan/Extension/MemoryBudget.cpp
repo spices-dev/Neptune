@@ -17,6 +17,8 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
         
+        if constexpr (IsCoreExtension<decltype(*this)>) return;
+
         AddDeviceExtensions(VK_EXT_MEMORY_BUDGET_EXTENSION_NAME);
     }
     

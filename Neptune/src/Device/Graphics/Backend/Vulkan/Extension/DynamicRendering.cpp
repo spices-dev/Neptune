@@ -17,6 +17,8 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
+        if constexpr (IsCoreExtension<decltype(*this)>) return;
+
         AddDeviceExtensions(VK_KHR_DYNAMIC_RENDERING_EXTENSION_NAME);
     }
 
@@ -24,11 +26,11 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        if (std::invoke(filter, m_DynamicRenderingFeatures.sType))
+        if (std::invoke(filter, m_Vulkan13Features.sType))
         {
-            *pNext = &m_DynamicRenderingFeatures;
+            *pNext = &m_Vulkan13Features;
 
-            pNext  = &m_DynamicRenderingFeatures.pNext;
+            pNext  = &m_Vulkan13Features.pNext;
         }
     }
     
@@ -36,9 +38,9 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
         
-        NEPTUNE_LOG_CORE(I) << "DynamicRendering [ dynamicRendering ] : " << m_DynamicRenderingFeatures.dynamicRendering;
+        NEPTUNE_LOG_CORE(I) << "Vulkan13 [ dynamicRendering ] : " << m_Vulkan13Features.dynamicRendering;
         
-        if (!m_DynamicRenderingFeatures.dynamicRendering)
+        if (!m_Vulkan13Features.dynamicRendering)
         {
             return false;
         }

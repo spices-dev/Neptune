@@ -18,6 +18,10 @@ namespace Neptune::Vulkan::Extension {
     class CreateRenderPass2 : public Extension
     {
     public:
+        
+        static constexpr uint32_t CoreVersion = VK_MAKE_VERSION(1, 2, 0);
+        
+    public:
 
         /**
         * @brief Constructor Function.

@@ -16,6 +16,8 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
+        if constexpr (IsCoreExtension<decltype(*this)>) return;
+
         if (std::invoke(filter, m_Vulkan13Features.sType))
         {
             *pNext = &m_Vulkan13Features;
