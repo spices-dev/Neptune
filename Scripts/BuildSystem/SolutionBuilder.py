@@ -79,13 +79,15 @@ action:
         
     --platform          Generate files for a different operating system; one of:
         windows         .exe
-        linux           Not support yet
-        macos           Not support yet
+        linux           
+        macos           
         emscripten      .wasm .js
+        android         
         
     --ide        
         vs              Generate Visual Studio project files
         xcode           Generate XCode project files
+        as              Generate Android Studio project files
         none            None defined ide(do not pass value)
 
     --toolset

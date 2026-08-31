@@ -69,6 +69,8 @@ class PremakeBuildSystem(BuildSystem):
             args.append("--os=linux")
         elif self.platform == "macos":
             args.append("--os=macosx")
+        elif self.platform == "android":
+            args
         else:
             print("Not support platform.")
             sys.exit(1)
@@ -77,6 +79,8 @@ class PremakeBuildSystem(BuildSystem):
             args.append("vs2026")
         elif self.ide == "xcode":
             args.append("xcode4")
+        elif self.ide == "as":
+            args.append("android-studio")
         elif self.ide == None:
             args.append("gmake")
         else:
