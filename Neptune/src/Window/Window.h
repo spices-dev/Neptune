@@ -39,8 +39,9 @@ namespace Neptune {
         * @param[in] initInfo WindowInfo.
         * @param[in] implement WindowImplement.
         * @param[in] backend RenderBackendEnum.
+        * @param[in] payload PayLoad.
         */
-        static void Create(const WindowInfo& initInfo, WindowImplement implement, RenderBackendEnum backend);
+        static void Create(const WindowInfo& initInfo, WindowImplement implement, RenderBackendEnum backend, void* payload = nullptr);
 
         /**
         * @brief Get Window Instance.

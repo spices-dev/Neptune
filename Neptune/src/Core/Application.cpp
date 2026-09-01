@@ -55,7 +55,9 @@ namespace Neptune {
 
         Log::SetInitialized(true);
         
-#ifdef NP_PLATFORM_EMSCRIPTEN
+#ifdef NP_PLATFORM_ANDROID
+        Window::Create(WindowInfo{ 0, 0, "Neptune" }, WindowImplement::AndroidNative, RenderBackendEnum::Vulkan);
+#elif defined(NP_PLATFORM_EMSCRIPTEN)
         Window::Create(WindowInfo{1920, 1080, "Neptune"}, WindowImplement::emscripten_glfw, RenderBackendEnum::WebGPU);
 #else
         Window::Create(WindowInfo{ 1920, 1080, "Neptune" }, WindowImplement::GLFW, RenderBackendEnum::Vulkan);

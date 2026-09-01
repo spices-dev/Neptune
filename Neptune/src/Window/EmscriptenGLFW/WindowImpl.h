@@ -20,8 +20,6 @@ namespace Neptune::EmscriptenGLFW {
 
     /**
     * @brief WindowImpl Class.
-    * This class defines the WindowImpl behaves.
-    * This class is just a wrapper of glfwWindow.
     */
     class WindowImpl : public Window, public EventProducer
     {
@@ -29,11 +27,13 @@ namespace Neptune::EmscriptenGLFW {
 
         /**
         * @brief Constructor Function.
+        * 
         * @param[in] initInfo WindowInfo.
         * @param[in] implement WindowImplement.
         * @param[in] backend RenderBackendEnum.
+        * @param[in] payload PayLoad.
         */
-        WindowImpl(const WindowInfo& initInfo, WindowImplement implement, RenderBackendEnum backend);
+        WindowImpl(const WindowInfo& initInfo, WindowImplement implement, RenderBackendEnum backend, void* payload = nullptr);
 
         /**
         * @brief Destructor Function.

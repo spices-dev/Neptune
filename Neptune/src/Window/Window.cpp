@@ -15,6 +15,10 @@
 #include "Window/GLFW/WindowImpl.h"
 #endif
 
+#ifdef NP_WINDOW_ANDROIDNATIVE
+#include "Window/AndroidNative/WindowImpl.h"
+#endif
+
 namespace Neptune {
 
     namespace {
@@ -22,7 +26,7 @@ namespace Neptune {
         UP<Window> S_Instance = nullptr;     // @brief World Instance.
     }
 
-    void Window::Create(const WindowInfo& initInfo, WindowImplement implement, RenderBackendEnum backend)
+    void Window::Create(const WindowInfo& initInfo, WindowImplement implement, RenderBackendEnum backend, void* payload)
     {
         NEPTUNE_PROFILE_ZONE
 
@@ -31,7 +35,7 @@ namespace Neptune {
 #ifdef NP_WINDOW_EMSCRIPTENGLFW
             case WindowImplement::emscripten_glfw:
             {
-                S_Instance = CreateUP<EmscriptenGLFW::WindowImpl>(initInfo, implement, backend);
+                S_Instance = CreateUP<EmscriptenGLFW::WindowImpl>(initInfo, implement, backend, payload);
                 break;
             }
 #endif
@@ -39,7 +43,15 @@ namespace Neptune {
 #ifdef NP_WINDOW_GLFW
             case WindowImplement::GLFW:
             {
-                S_Instance = CreateUP<GLFW::WindowImpl>(initInfo, implement, backend);
+                S_Instance = CreateUP<GLFW::WindowImpl>(initInfo, implement, backend, payload);
+                break;
+            }
+#endif
+
+#ifdef NP_WINDOW_ANDROIDNATIVE
+            case WindowImplement::AndroidNative:
+            {
+                S_Instance = CreateUP<AndroidNative::WindowImpl>(initInfo, implement, backend, payload);
                 break;
             }
 #endif

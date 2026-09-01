@@ -19,9 +19,11 @@ namespace Neptune {
         emscripten_glfw,
         SDL2,
         SDL3,
+        
         WindowsNative,
-        MacOSNative,
         LinuxNative,
+        MacOSNative,
+        AndroidNative,
 
         Count,
 

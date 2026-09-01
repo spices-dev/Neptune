@@ -6,7 +6,7 @@
 
 #pragma once
 
-#ifdef NP_GRAPHICS_VULKAN
+#if defined(NP_GRAPHICS_VULKAN) && defined(NP_WINDOW_GLFW)
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Surface.h"

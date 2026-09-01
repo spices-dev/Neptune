@@ -6,7 +6,7 @@
 
 #include "Pchheader.h"
 
-#ifdef NP_GRAPHICS_VULKAN
+#if defined(NP_GRAPHICS_VULKAN) && defined(NP_WINDOW_GLFW)
 
 #include "Surface.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Instance.h"

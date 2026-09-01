@@ -19,7 +19,7 @@
 
 namespace Neptune::EmscriptenGLFW {
 
-    WindowImpl::WindowImpl(const WindowInfo& initInfo, WindowImplement implement, RenderBackendEnum backend)
+    WindowImpl::WindowImpl(const WindowInfo& initInfo, WindowImplement implement, RenderBackendEnum backend, void* payload)
         : Window(implement)
         , EventProducer(EventType::Count)
         , m_APIInterface(CreateInterface(backend))
@@ -29,7 +29,7 @@ namespace Neptune::EmscriptenGLFW {
         // Initialize the library
         if(!glfwInit()) 
         {
-            NEPTUNE_CORE_CRITICAL("glfw init failed.")
+            NEPTUNE_CORE_CRITICAL("Emscripten GLFW Init Failed.")
         }
 
         // Set Hint
@@ -53,7 +53,7 @@ namespace Neptune::EmscriptenGLFW {
         m_Windows = glfwCreateWindow(initInfo.width, initInfo.height, initInfo.name.c_str(), nullptr, nullptr);
         if(!m_Windows) 
         {
-            NEPTUNE_CORE_CRITICAL("Window create failed.")
+            NEPTUNE_CORE_CRITICAL("Window Create Failed.")
         }
 
         // Load APIs.

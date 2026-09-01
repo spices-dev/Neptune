@@ -18,7 +18,7 @@
 
 namespace Neptune::GLFW {
 
-    WindowImpl::WindowImpl(const WindowInfo& initInfo, WindowImplement implement, RenderBackendEnum backend)
+    WindowImpl::WindowImpl(const WindowInfo& initInfo, WindowImplement implement, RenderBackendEnum backend, void* payload)
         : Window(implement)
         , EventProducer(EventType::Count)
         , m_APIInterface(CreateInterface(backend))
@@ -28,7 +28,7 @@ namespace Neptune::GLFW {
         // Initialize the library
         if(!glfwInit()) 
         {
-            NEPTUNE_LOG_CORE(C) << "glfw init failed.";
+            NEPTUNE_LOG_CORE(C) << "GLFW Init Failed.";
         }
 
         // Set Hint
@@ -50,7 +50,7 @@ namespace Neptune::GLFW {
         if(!m_Windows) 
         {
             glfwTerminate();
-            NEPTUNE_LOG_CORE(C) << "Window create failed.";
+            NEPTUNE_LOG_CORE(C) << "Window Create Failed.";
         }
 
         // Load APIs.

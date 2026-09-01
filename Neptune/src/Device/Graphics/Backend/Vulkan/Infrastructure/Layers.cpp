@@ -27,11 +27,7 @@ namespace Neptune::Vulkan {
 		
 #ifdef NEPTUNE_DEBUG
 
-		m_Context.Registry<Layer::IValidation>                (Layer::ELayerState::Core);
-											                  
-#else										                  
-						                  
-		m_Context.Registry<Layer::IValidation>                (Layer::ELayerState::Extent);
+		m_Context.Registry<Layer::IValidation>(Layer::ELayerState::Extent);
 
 #endif
 

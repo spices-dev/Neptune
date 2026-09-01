@@ -79,13 +79,16 @@ namespace Neptune::Vulkan {
         settingInfo.pSettings                    = settings.data();
         settingInfo.pNext                        = nullptr;
 
+    	uint32_t instanceVersion                 = VK_API_VERSION_1_0;
+    	VULKAN_CHECK(vkEnumerateInstanceVersion(&instanceVersion))
+    	
         VkApplicationInfo                          appInfo {};
 		appInfo.sType                            = VK_STRUCTURE_TYPE_APPLICATION_INFO;
 		appInfo.pApplicationName                 = "Neptune";
 		appInfo.applicationVersion               = VK_MAKE_VERSION(1, 0, 0);
 		appInfo.pEngineName                      = "Neptune";
 		appInfo.engineVersion                    = VK_MAKE_VERSION(1, 0, 0);
-		appInfo.apiVersion                       = VK_VERSION;
+		appInfo.apiVersion                       = std::min(VK_VERSION, instanceVersion);
 
         VkInstanceCreateInfo                       createInfo {};
 		createInfo.sType                         = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
@@ -108,6 +111,8 @@ namespace Neptune::Vulkan {
     	
 		m_Instance.CreateInstance(createInfo);
 
+    	NEPTUNE_LOG_CORE(I) << "Instance Create With apiVersion: [ " << appInfo.apiVersion << " ]";
+    	
 		GetContext().Registry<IFunctions>();
 
 		GetContext().Get<IFunctions>()->Init(Handle());

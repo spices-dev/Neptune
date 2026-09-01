@@ -9,7 +9,6 @@
 #ifdef NP_WINDOW_EMSCRIPTENGLFW
 
 #include "RenderBackendInterface.h"
-#include "Window/Core.h"
 
 #include <emscripten.h>
 #include <emscripten/emscripten.h>
