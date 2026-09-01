@@ -5,6 +5,9 @@
 */
 
 #include "Pchheader.h"
+
+#if defined(NP_WINDOW_GLFW) || defined(NP_WINDOW_EMSCRIPTENGLFW)
+
 #include "InputImpl.h"
 #include "Window/Window.h"
 
@@ -72,3 +75,5 @@ namespace Neptune::GLFW {
         return y;
     }
 }
+
+#endif

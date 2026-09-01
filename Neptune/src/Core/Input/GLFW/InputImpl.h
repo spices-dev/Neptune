@@ -5,6 +5,9 @@
 */
 
 #pragma once
+
+#if defined(NP_WINDOW_GLFW) || defined(NP_WINDOW_EMSCRIPTENGLFW)
+
 #include "Core/Core.h"
 #include "Core/Input/Input.h"
 
@@ -57,3 +60,5 @@ namespace Neptune::GLFW {
         float GetMouseYImpl() override;
     };
 }
+
+#endif
