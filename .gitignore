@@ -2,14 +2,10 @@
 
 /.vs
 /.idea
-/.gradle
 /obj
 /bin-int
 /bin
 /build
-/gradle
-/EditorAndroid
-/Editor-Android
 
 /Editor/cache
 /Editor/Layout.ini
@@ -24,11 +20,9 @@
 *.csproj
 *.vcxproj.filters
 *package-lock.json
-*.gradle
 *.properties
-gradlew
-gradlew.bat
-regen-android.sh
+*.Application.mk
+*.Android.mk
 
 /Neptune/*.json
 /Neptune/packages.config

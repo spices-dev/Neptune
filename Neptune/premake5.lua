@@ -122,7 +122,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		{}
 
 		-- Windows Specific build options
-		buildoptions 
+		buildoptions
 		{}
 
 		-- Windows Specific make settings
@@ -231,6 +231,37 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		makesettings 
 		{
             "LINKCMD = $(file > $(OBJDIR)objects.rsp,$(OBJECTS)) emar rcs $(TARGET) @$(OBJDIR)objects.rsp"       -- Enable response file
+        }
+
+	-- Platform: Android
+	filter "system:android"
+
+		-- The Solution Additional External Include Folder.
+		externalincludedirs
+		{
+			vendor.GLFW.includes,                                      -- Library: GLFW Source Folder.
+		}
+
+		-- Android Specific Additional Library Folder.
+		libdirs
+		{}
+
+		-- Android Specific Solution Macro Definitions.
+		defines
+		{}
+
+		-- Android Specific Solution Dependency.
+		links
+		{}
+
+		-- Android Specific build options
+		buildoptions 
+		{}
+
+		-- Android Specific make settings
+		makesettings 
+		{
+            "LINKCMD = $(file > $(OBJDIR)objects.rsp,$(OBJECTS)) $(AR) rcs $(TARGET) @$(OBJDIR)objects.rsp"     -- Enable response file
         }
 
 	-- Configuration: Debug
@@ -362,6 +393,16 @@ solution.DefineCppStaticLibrary("Neptune", function()
 			-- Emscripten Specific Solution Dependency.
 			links
 			{
+				"tracy",                                                   -- Dependency: tracy
+			}
+
+		-- Platform: Android
+		filter "system:android"
+
+			-- Android Specific Solution Dependency.
+			links
+			{
+				"GLFW",                                                    -- Dependency: GLFW
 				"tracy",                                                   -- Dependency: tracy
 			}
 

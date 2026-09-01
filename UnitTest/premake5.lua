@@ -186,6 +186,33 @@ solution.DefineCppExecutable("UnitTest", function()
 				"--emit-symbol-map",                                         -- Export symbol
 			}
 
+	-- Platform: Android
+	filter "system:android"
+
+		-- Android Specific DLLs.
+		files 
+		{}
+
+		-- Android Specific Additional External Include Folder.
+		externalincludedirs
+		{}
+
+		-- Android Specific Solution Macro Definitions.
+		defines
+		{}
+
+		-- Android Specific Solution Dependency.
+		links
+		{}
+
+		-- The Solution link options
+		linkoptions
+		{}
+
+		-- The Solution build options
+		buildoptions 
+		{}
+
 	-- Configuration: Debug
 	filter "configurations:Debug"
 

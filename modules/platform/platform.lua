@@ -14,6 +14,7 @@ local sub_platform  = {
     linux           = current_dir .. "linux.lua",
     macosx          = current_dir .. "macos.lua",
     emscripten      = current_dir .. "emscripten.lua",
+	android         = current_dir .. "android.lua",
 }
 
 -- @brief Get Compute Feature Lists.
@@ -150,6 +151,22 @@ module.Initialize = function()
 		{
 			-- Define Platform: Emscripten.
 			"NP_PLATFORM_EMSCRIPTEN"
+		}
+
+    -- Platform: Android
+	filter "system:android"
+
+        -- Architecture AARCH64
+        architecture "AARCH64"
+
+		-- Use Lastest SystemVersion
+		systemversion "latest"
+
+		-- Android Specific Solution Macro Definitions.
+		defines
+		{
+			-- Define Platform: Android.
+			"NP_PLATFORM_ANDROID"
 		}
 
     -- Configuration: Debug

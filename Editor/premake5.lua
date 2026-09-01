@@ -177,6 +177,33 @@ solution.DefineCppExecutable("Editor", function()
 				"--emit-symbol-map",                                         -- Export symbol
 			}
 
+	-- Platform: Android
+	filter "system:android"
+
+		-- Android Specific DLLs.
+		files 
+		{}
+
+		-- Android Specific Additional External Include Folder.
+		externalincludedirs
+		{}
+
+		-- Android Specific Solution Macro Definitions.
+		defines
+		{}
+
+		-- Android Specific Solution Dependency.
+		links
+		{}
+
+		-- The Solution link options
+		linkoptions
+		{}
+
+		-- The Solution build options
+		buildoptions 
+		{}
+
 	-- Configuration: Debug
 	filter "configurations:Debug"
 
@@ -220,6 +247,12 @@ solution.DefineCppExecutable("Editor", function()
 				--os.host() == "windows" and 'xcopy /Y /I "%{cfg.targetdir}\\" "%{wks.location}/Nepnep/public/wasm/Release\\"'
 				--	or 'cp -rf "%{cfg.targetdir}/." "%{wks.location}/Nepnep/public/wasm/Release/"'
 			}
+
+	-- Platform: Android
+	filter "system:android"
+
+		-- Android: shared library
+		kind "SharedLib"
 
 	filter {}
 

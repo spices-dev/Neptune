@@ -82,12 +82,11 @@ action:
         linux           
         macos           
         emscripten      .wasm .js
-        android         
+        android         .a .so
         
     --ide        
         vs              Generate Visual Studio project files
         xcode           Generate XCode project files
-        as              Generate Android Studio project files
         none            None defined ide(do not pass value)
 
     --toolset

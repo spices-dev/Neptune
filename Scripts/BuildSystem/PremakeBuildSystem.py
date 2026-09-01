@@ -70,7 +70,8 @@ class PremakeBuildSystem(BuildSystem):
         elif self.platform == "macos":
             args.append("--os=macosx")
         elif self.platform == "android":
-            args
+            #premkake not support --os=android
+            args.append("androidndk")
         else:
             print("Not support platform.")
             sys.exit(1)
@@ -79,8 +80,6 @@ class PremakeBuildSystem(BuildSystem):
             args.append("vs2026")
         elif self.ide == "xcode":
             args.append("xcode4")
-        elif self.ide == "as":
-            args.append("android-studio")
         elif self.ide == None:
             args.append("gmake")
         else:
@@ -116,7 +115,9 @@ class PremakeBuildSystem(BuildSystem):
         print(f"\nBuilding {config} configuration...")
         os.chdir(self.solutionDirectory)
 
-        if self.ide == None:
+        if self.platform == "android":
+            return self.build_ndk(config)
+        elif self.ide == None:
             return self.build_gmake(config)
         else:
             print("Please build it in ide.")
@@ -129,7 +130,7 @@ class PremakeBuildSystem(BuildSystem):
         """
         os.chdir(self.solutionDirectory)
 
-        if self.ide == None:
+        if self.ide == None and self.platform != "android":
             make_cmd = "make"
             try:
                 subprocess.run([make_cmd, "clean"], check=True)
@@ -154,6 +155,44 @@ class PremakeBuildSystem(BuildSystem):
         print("Running:", " ".join(args))
         try:
             subprocess.run(args, check=True)
+            print(f"{config} build completed successfully")
+            return True
+        except subprocess.CalledProcessError:
+            print(f"Error: {config} build failed!")
+            return False
+
+    def build_ndk(self, config: str) -> bool:
+        """
+        @brief build with ndk.
+        @param[in] config
+        @return Returns true in succeed.
+        """
+        os.chdir(self.solutionDirectory)
+
+        wks_mks = list(self.solutionDirectory.glob("*.wks.Android.mk"))
+        app_mks = list(self.solutionDirectory.glob("*.Application.mk"))
+        if not wks_mks or not app_mks:
+            print("Error: generated *.wks.Android.mk / *.Application.mk not found. Run generate first.")
+            return False
+        build_script = wks_mks[0].name
+        application_mk = app_mks[0].name
+
+        ndk = os.environ.get("ANDROID_NDK_HOME", "C:/Users/spices/AppData/Local/Android/Sdk/ndk/30.0.15729638")
+        ndk_build = str(Path(ndk) / "ndk-build.cmd")
+
+        args = [
+            f"NDK_PROJECT_PATH={self.solutionDirectory}",
+            f"APP_BUILD_SCRIPT={build_script}",
+            f"NDK_APPLICATION_MK={application_mk}",
+            f"PREMAKE_ANDROIDNDK_CONFIGURATIONS:={config.capitalize()}",
+            "APP_PLATFORM=android-24",
+            "APP_STL=c++_shared",
+            "-j" + str(os.cpu_count() or 8),
+        ]
+
+        print("Running:", " ".join(args))
+        try:
+            subprocess.run(["cmd", "/c", ndk_build] + args, check=True)
             print(f"{config} build completed successfully")
             return True
         except subprocess.CalledProcessError:
