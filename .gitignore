@@ -45,6 +45,8 @@ Makefile
 /Runtime/*.xcodeproj
 /UnitTest/*.xcodeproj
 
+/libs/arm64-v8a
+
 /Nepnep/.idea
 /Nepnep/next-env.d.ts
 /Nepnep/.next
