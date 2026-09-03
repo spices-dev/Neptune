@@ -59,6 +59,8 @@ namespace Neptune::imgui {
     */
     UP<WindowInterface> CreateWindowInterface(WindowImplement implement);
 
+#ifdef NP_WINDOW_GLFW
+    
     /**
     * @brief GLFW APIInterface.
     */
@@ -98,4 +100,6 @@ namespace Neptune::imgui {
         void MakeCurrent(void* window) const override;
     };
 
+#endif
+    
 }

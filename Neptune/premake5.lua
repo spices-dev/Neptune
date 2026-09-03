@@ -239,7 +239,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		-- The Solution Additional External Include Folder.
 		externalincludedirs
 		{
-			vendor.GLFW.includes,                                      -- Library: GLFW Source Folder.
+			vendor.Glad.includes,                                      -- Library: Glad Source Folder.
 		}
 
 		-- Android Specific Additional Library Folder.
@@ -402,7 +402,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 			-- Android Specific Solution Dependency.
 			links
 			{
-				"GLFW",                                                    -- Dependency: GLFW
+				"Glad",                                                    -- Dependency: Glad
 				"tracy",                                                   -- Dependency: tracy
 			}
 

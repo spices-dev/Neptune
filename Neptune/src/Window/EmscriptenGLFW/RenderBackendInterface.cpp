@@ -20,18 +20,18 @@
 
 namespace Neptune::EmscriptenGLFW {
 
-	SP<APIInterface> CreateInterface(RenderBackendEnum backend)
+	UP<APIInterface> CreateInterface(RenderBackendEnum backend)
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		switch (backend)
 		{
 #ifdef NP_GRAPHICS_WEBGL
-			case RenderBackendEnum::WebGL:      return CreateSP<WebGLInterface>();
+			case RenderBackendEnum::WebGL:      return CreateUP<WebGLInterface>();
 #endif
 			
 #ifdef NP_GRAPHICS_WEBGPU
-			case RenderBackendEnum::WebGPU:     return CreateSP<WebGPUInterface>();
+			case RenderBackendEnum::WebGPU:     return CreateUP<WebGPUInterface>();
 #endif
 			
 			default:

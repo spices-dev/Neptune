@@ -5,6 +5,9 @@
 */
 
 #include "Pchheader.h"
+
+#ifdef NP_PLATFORM_WINDOWS
+
 #include "Demuxer.h"
 #include "Converter.h"
 
@@ -190,3 +193,5 @@ namespace Neptune::FFmpeg {
         return packet;
     }
 }
+
+#endif

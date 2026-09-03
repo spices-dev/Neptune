@@ -5,6 +5,9 @@
 */
 
 #pragma once
+
+#ifdef NP_PLATFORM_WINDOWS
+
 #include "Core/Core.h"
 
 extern "C" {
@@ -35,3 +38,5 @@ namespace Neptune::FFmpeg {
 
 	#define FFMPEG_CHECK(expr)  { auto expr_value = expr; if (expr_value < 0) { HandleResult(expr_value); } }
 }
+
+#endif

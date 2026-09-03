@@ -5,6 +5,9 @@
 */
 
 #include "Pchheader.h"
+
+#ifdef NP_PLATFORM_WINDOWS
+
 #include "Core.h"
 #include "Converter.h"
 
@@ -22,3 +25,5 @@ namespace Neptune::FFmpeg {
 		NEPTUNE_LOG_CORE(E) << "FFmpeg Error Code: " << result << ", desc: "<< err_buf;
 	}
 }
+
+#endif

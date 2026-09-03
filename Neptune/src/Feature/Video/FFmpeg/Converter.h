@@ -5,6 +5,9 @@
 */
 
 #pragma once
+
+#ifdef NP_PLATFORM_WINDOWS
+
 #include "Core/Core.h"
 #include "Core.h"
 #include "Feature/Video/VideoOperation.h"
@@ -21,3 +24,5 @@ namespace Neptune::FFmpeg {
 	AVCodecID ToAVCodecID(VideoOperation op);
 
 }
+
+#endif

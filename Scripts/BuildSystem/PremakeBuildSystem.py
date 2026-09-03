@@ -187,6 +187,7 @@ class PremakeBuildSystem(BuildSystem):
             f"PREMAKE_ANDROIDNDK_CONFIGURATIONS:={config.capitalize()}",
             "APP_PLATFORM=android-24",
             "APP_STL=c++_shared",
+            "APP_SHORT_COMMANDS=true",
             "-j" + str(os.cpu_count() or 8),
         ]
 

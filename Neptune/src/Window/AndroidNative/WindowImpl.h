@@ -15,6 +15,8 @@ struct android_app;
 
 namespace Neptune::AndroidNative {
 
+    class APIInterface;
+    
     /**
     * @brief WindowImpl Class.
     */
@@ -35,7 +37,7 @@ namespace Neptune::AndroidNative {
         /**
         * @brief Destructor Function.
         */
-        ~WindowImpl() override = default;
+        ~WindowImpl() override;
 
         /**
         * @brief Interface of determine if window is still active.

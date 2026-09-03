@@ -8,8 +8,10 @@
 #include "WindowInterface.h"
 #include "Window/Window.h"
 
+#ifdef NP_WINDOW_GLFW
 #include <backends/imgui_impl_glfw.h>
 #include "GLFW/glfw3.h"
+#endif
 
 namespace Neptune::imgui {
 
@@ -19,7 +21,9 @@ namespace Neptune::imgui {
 
 		switch (implement)
 		{
+#ifdef NP_WINDOW_GLFW
 			case WindowImplement::GLFW: return CreateUP<GLFWInterface>();
+#endif
 			default:
 			{
 				NEPTUNE_LOG_CORE(C) << "Not supported WindowImplement in ImGui Slate Configuration.";
@@ -28,6 +32,8 @@ namespace Neptune::imgui {
 		}
 	}
 
+#ifdef NP_WINDOW_GLFW
+	
 	void GLFWInterface::OnInitialize(RenderBackendEnum e) const
 	{
 		NEPTUNE_PROFILE_ZONE
@@ -105,5 +111,7 @@ namespace Neptune::imgui {
 		
 		glfwMakeContextCurrent(static_cast<GLFWwindow*>(window));
 	}
+	
+#endif
 
 }

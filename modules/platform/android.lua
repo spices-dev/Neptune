@@ -75,12 +75,11 @@ module.GetExecutableLinkOptions = function()
 
     if table.contains(windows, "NP_WINDOW_ANDROIDNATIVE") then
         table.insert(linkoptions, "-landroid")                           -- Dependency: android
-        table.insert(linkoptions, "-lnativewindow")                      -- Dependency: nativewindow
     end
 
     if table.contains(graphics, "NP_GRAPHICS_OPENGL") then
-        table.insert(linkoptions, "-lEGL")                               -- Dependency: EGL
         table.insert(linkoptions, "-lGLESv2")                            -- Dependency: GLESv2
+        table.insert(linkoptions, "-lEGL")                               -- Dependency: EGL
     end
     
     if table.contains(graphics, "NP_GRAPHICS_VULKAN") then

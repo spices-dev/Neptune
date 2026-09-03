@@ -54,7 +54,7 @@ namespace Neptune::EmscriptenGLFW {
     * 
     * @return Returns APIInterface.
     */
-    SP<APIInterface> CreateInterface(RenderBackendEnum backend);
+    UP<APIInterface> CreateInterface(RenderBackendEnum backend);
 
 #ifdef NP_GRAPHICS_WEBGL
     

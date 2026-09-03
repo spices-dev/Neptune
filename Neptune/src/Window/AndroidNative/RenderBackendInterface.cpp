@@ -12,23 +12,23 @@
 
 namespace Neptune::AndroidNative {
 
-	SP<APIInterface> CreateInterface(RenderBackendEnum backend)
+	UP<APIInterface> CreateInterface(RenderBackendEnum backend)
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		switch (backend)
 		{
 #ifdef NP_GRAPHICS_OPENGL
-			case RenderBackendEnum::OpenGL:     return CreateSP<OpenGLInterface>();
+			case RenderBackendEnum::OpenGL:     return CreateUP<OpenGLInterface>();
 #endif
 			
 #ifdef NP_GRAPHICS_VULKAN
-			case RenderBackendEnum::Vulkan:     return CreateSP<VulkanInterface>();
+			case RenderBackendEnum::Vulkan:     return CreateUP<VulkanInterface>();
 #endif
 			
 			default:
 			{
-				NEPTUNE_CORE_CRITICAL("Not supported RenderBackend in Android Native Configuration.")
+				NEPTUNE_LOG_CORE(C) << "Not supported RenderBackend in Android Native Configuration.";
 				return nullptr;
 			}
 		}

@@ -5,6 +5,9 @@
 */
 
 #include "Pchheader.h"
+
+#ifdef NP_PLATFORM_WINDOWS
+
 #include "Converter.h"
 
 namespace Neptune::FFmpeg {
@@ -24,3 +27,5 @@ namespace Neptune::FFmpeg {
 		}
 	}
 }
+
+#endif

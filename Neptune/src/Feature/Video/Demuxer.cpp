@@ -6,7 +6,12 @@
 
 #include "Pchheader.h"
 #include "Demuxer.h"
+
+#ifdef NP_PLATFORM_WINDOWS
+
 #include "FFmpeg/Demuxer.h"
+
+#endif
 
 namespace Neptune::Video {
 
@@ -14,7 +19,15 @@ namespace Neptune::Video {
 	{
 		NEPTUNE_PROFILE_ZONE
 
+#ifdef NP_PLATFORM_WINDOWS
+		
 		return CreateUP<FFmpeg::Demuxer>();
+		
+#else
+		
+		return nullptr;
+		
+#endif
 	}
 
 	Demuxer::Demuxer() = default;

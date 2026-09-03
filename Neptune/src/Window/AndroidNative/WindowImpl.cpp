@@ -9,8 +9,8 @@
 #ifdef NP_WINDOW_ANDROIDNATIVE
 
 #include "WindowImpl.h"
+#include "RenderBackendInterface.h"
 
-#include <game-activity/native_app_glue/android_native_app_glue.h>
 #include <android/native_window.h>
 
 namespace Neptune::AndroidNative {
@@ -18,7 +18,7 @@ namespace Neptune::AndroidNative {
     WindowImpl::WindowImpl(const WindowInfo& initInfo, WindowImplement implement, RenderBackendEnum backend, void* payload)
         : Window(implement)
         , m_APIInterface(CreateInterface(backend))
-        , m_App(payload)
+        , m_App()
     {
         if (!payload)
         {
@@ -26,28 +26,31 @@ namespace Neptune::AndroidNative {
             return;
         }
         
-        m_App->onAppCmd = HandleAppCmd;
-        m_App->userData = nullptr;
+       // m_App->onAppCmd = HandleAppCmd;
+       // m_App->userData = nullptr;
     }
 
+    WindowImpl::~WindowImpl() = default;
+    
     bool WindowImpl::IsWindowActive() const
     {
         NEPTUNE_PROFILE_ZONE
 
-        return !m_App->destroyRequested;
+        return false;
+        //return !m_App->destroyRequested;
     }
 
     void WindowImpl::PollEvents() const
     {
         NEPTUNE_PROFILE_ZONE
         
-        int events;
+        /*int events;
         android_poll_source* source;
         while (ALooper_pollOnce(m_App->window ? 0 : -1, nullptr, &events, (void**)&source) >= 0)
         {
             if (source) source->process(m_App, source);
             
-            if (m_App->destroyRequested) return;
+            //if (m_App->destroyRequested) return;
         }
         
         auto* inputBuffer = android_app_swap_input_buffers(m_App);
@@ -55,7 +58,7 @@ namespace Neptune::AndroidNative {
         if (inputBuffer && inputBuffer->motionEventsCount)
         {
             android_app_clear_motion_events(inputBuffer);
-        }
+        }*/
     }
 
     glm::ivec2 WindowImpl::Extent() const
@@ -78,33 +81,29 @@ namespace Neptune::AndroidNative {
     {
         NEPTUNE_PROFILE_ZONE
 
-        return m_App->window;
+        return nullptr;
+        //return m_App->window;
     }
 
     void WindowImpl::HandleAppCmd(android_app* app, int32_t cmd)
     {
-        switch (cmd)
+        /*switch (cmd)
         {
             case APP_CMD_INIT_WINDOW:
                 break;
             case APP_CMD_TERM_WINDOW:
-                LOGI("Surface destroyed");
                 break;
             case APP_CMD_PAUSE:
-                LOGI("Application paused");
                 break;
             case APP_CMD_RESUME:
-                LOGI("Application resumed");
                 break;
             case APP_CMD_LOST_FOCUS:
-                LOGI("Application lost focus");
                 break;
             case APP_CMD_GAINED_FOCUS:
-                LOGI("Application gained focus");
                 break;
             default:
                 break;
-        }
+        }*/
     }
 
 }

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#ifdef NP_GRAPHICS_OPENGL
+#if defined(NP_GRAPHICS_OPENGL) && defined(NP_WINDOW_GLFW)
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/OpenGL/Infrastructure/WindowContext.h"

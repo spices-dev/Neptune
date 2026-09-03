@@ -5,6 +5,9 @@
 */
 
 #pragma once
+
+#ifdef NP_PLATFORM_WINDOWS
+
 #include "Core/Core.h"
 #include "Core.h"
 #include "Feature/Video/Demuxer.h"
@@ -59,3 +62,5 @@ namespace Neptune::FFmpeg {
         bool                          m_IsStreamDemuxer;
 	};
 }
+
+#endif
