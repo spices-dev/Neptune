@@ -23,6 +23,10 @@ namespace Neptune::Vulkan::Extension {
     class BufferDeviceAddress : public Extension
     {
     public:
+        
+        static constexpr uint32_t CoreVersion = VK_MAKE_VERSION(1, 2, 0);
+        
+    public:
 
         /**
         * @brief Constructor Function.

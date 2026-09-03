@@ -38,46 +38,57 @@ namespace Neptune::Vulkan {
     {
 		NEPTUNE_PROFILE_ZONE
 
-		const auto& graphicFamily     = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
-		const auto& presentFamily     = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetPresentQueueFamil();
-		const auto& computeFamily     = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_COMPUTE_BIT);
-		const auto& transferFamily    = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_TRANSFER_BIT);
-		const auto& videoEncodeFamily = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_VIDEO_ENCODE_BIT_KHR);
-		const auto& videoDecodeFamily = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_VIDEO_DECODE_BIT_KHR);
-		const auto& opticalFlowFamily = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_OPTICAL_FLOW_BIT_NV);
+    	std::vector<UP<std::vector<float>>> queuePriorities;
+    	std::unordered_map<uint32_t, VkDeviceQueueCreateInfo> queueInfoMap;
 
-		std::unordered_map<uint32_t, std::unordered_map<uint32_t, std::vector<VkQueue>>> queueFamilies;
+		auto queue = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>();
 
-		queueFamilies[graphicFamily][0]     = std::vector<VkQueue>(1 + NThreadQueue, VK_NULL_HANDLE);
-		queueFamilies[presentFamily][1]     = std::vector<VkQueue>(1,                VK_NULL_HANDLE);
-		queueFamilies[computeFamily][2]     = std::vector<VkQueue>(1 + NThreadQueue, VK_NULL_HANDLE);
-		queueFamilies[transferFamily][3]    = std::vector<VkQueue>(1,                VK_NULL_HANDLE);
-		queueFamilies[videoEncodeFamily][4] = std::vector<VkQueue>(1,                VK_NULL_HANDLE);
-		queueFamilies[videoDecodeFamily][5] = std::vector<VkQueue>(1,                VK_NULL_HANDLE);
-		queueFamilies[opticalFlowFamily][6] = std::vector<VkQueue>(1,                VK_NULL_HANDLE);
-
-		std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
-		std::vector<SP<std::vector<float>>> QueuePriorities;
-		for (auto& [family, idItems] : queueFamilies)
+		for (const auto& family : queue->GetQueueFamilies() | std::views::values)
 		{
-			uint32_t count = 0;
+			auto count = std::min(family.second, NThreadQueue + 1);
+			
+			auto priority = CreateUP<std::vector<float>>(count, 1.0f);
 
-			for (auto& queues : idItems | std::views::values)
+			if (queueInfoMap.contains(family.first))
 			{
-				count += queues.size();
+				if (queueInfoMap.at(family.first).queueCount >= count)
+				{
+					continue;
+				}
 			}
 
-			auto queuePriority = CreateSP<std::vector<float>>(count, 1.0f);
+			VkDeviceQueueCreateInfo                    info{};
+			info.sType                               = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+			info.queueFamilyIndex                    = family.first;
+			info.queueCount                          = count;
+			info.pQueuePriorities                    = priority->data();
 
-			VkDeviceQueueCreateInfo                               queueCreateInfo{};
-			queueCreateInfo.sType                               = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-			queueCreateInfo.queueFamilyIndex                    = family;
-			queueCreateInfo.queueCount                          = count;
-			queueCreateInfo.pQueuePriorities                    = queuePriority->data();
-
-			QueuePriorities.push_back(queuePriority);
-			queueCreateInfos.push_back(queueCreateInfo);
+			queuePriorities.emplace_back(std::move(priority));
+			queueInfoMap[family.first] = info;
 		}
+
+    	if (queue->HasPresentQueueFamil())
+    	{
+    		if (!std::ranges::any_of(queue->GetQueueFamilies(), [&](const auto& family) {
+    			return family.second.first == queue->GetPresentQueueFamil();
+    		}))
+    		{
+    			auto priority = CreateUP<std::vector<float>>(1, 1.0f);
+    			
+    			VkDeviceQueueCreateInfo                    info{};
+    			info.sType                               = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+    			info.queueFamilyIndex                    = queue->GetPresentQueueFamil();
+    			info.queueCount                          = 1;
+    			info.pQueuePriorities                    = priority->data();
+
+    			queuePriorities.emplace_back(std::move(priority));
+    			queueInfoMap[queue->GetPresentQueueFamil()] = info;
+    		}
+    	}
+    	
+    	std::vector<VkDeviceQueueCreateInfo> filtered;
+    	filtered.reserve(queueInfoMap.size());
+    	std::ranges::copy(std::views::values(queueInfoMap), std::back_inserter(filtered));
     	
     	const auto physicalDevice  = GetContext().Get<IPhysicalDevice>();
     	
@@ -91,8 +102,8 @@ namespace Neptune::Vulkan {
 
         VkDeviceCreateInfo                                        createInfo{};
 		createInfo.sType                                        = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-		createInfo.pQueueCreateInfos                            = queueCreateInfos.data();
-		createInfo.queueCreateInfoCount                         = queueCreateInfos.size();
+		createInfo.pQueueCreateInfos                            = filtered.data();
+		createInfo.queueCreateInfoCount                         = filtered.size();
 		createInfo.pEnabledFeatures                             = VK_NULL_HANDLE;
 		createInfo.enabledExtensionCount                        = physicalDevice->GetExtensionRequirements().size();
 		createInfo.ppEnabledExtensionNames                      = physicalDevice->GetExtensionRequirements().data();
@@ -102,65 +113,84 @@ namespace Neptune::Vulkan {
 		m_Device.CreateDevice(physicalDevice->Handle(), &createInfo);
 		DEBUGUTILS_SETOBJECTNAME(m_Device, physicalDevice->GetProperties().deviceName)
 
-		for (auto& [family, idItems] : queueFamilies)
-		{
-			int index = 0;
-			for (auto& items : idItems | std::views::values)
-			{
-				for (size_t i = 0; i < items.size(); i++)
-				{
-					items[i] = m_Device.GetDeviceQueue(family, index);
-					index++;
-				}
-			}
-		}
-
-#if 0 // Use One Queue for all commands. This method with higher fps.
-
-		auto graphic     = queueFamilies[graphicFamily    ][0][0];
-		auto present     = queueFamilies[presentFamily    ][0][0];
-		auto compute     = queueFamilies[computeFamily    ][0][0];
-		auto transfer    = queueFamilies[transferFamily   ][0][0];
-		auto videoEncode = queueFamilies[videoEncodeFamily][4][0];
-		auto videoDecode = queueFamilies[videoDecodeFamily][5][0];
-		auto opticalFlow = queueFamilies[opticalFlowFamily][6][0];
-
-#else // Split Commands to different Queues.
-
-		auto graphic     = queueFamilies[graphicFamily    ][0][0];
-		auto present     = queueFamilies[presentFamily    ][0][0];
-		auto compute     = queueFamilies[computeFamily    ][2][0];
-		auto transfer    = queueFamilies[transferFamily   ][3][0];
-		auto videoEncode = queueFamilies[videoEncodeFamily][4][0];
-		auto videoDecode = queueFamilies[videoDecodeFamily][5][0];
-		auto opticalFlow = queueFamilies[opticalFlowFamily][6][0];
-
-#endif
-
-		GetContext().Registry<IGraphicQueue>(graphic);
-		GetContext().Registry<IComputeQueue>(compute);
-    	if (GetContext().Has<ISurface>())
+    	for (const auto&[bit, family] : queue->GetQueueFamilies())
     	{
-    		GetContext().Registry<IPresentQueue>(present);
+    		switch (bit)
+    		{
+    			case VK_QUEUE_GRAPHICS_BIT:
+    			{
+    				GetContext().Registry<IGraphicQueue>(m_Device.GetDeviceQueue(family.first, 0));
+    				GetContext().Registry<IGraphicThreadQueue>();
+
+    				auto count = std::min(family.second, NThreadQueue + 1);
+
+    				if (count == 1)
+    				{
+    					GetContext().Get<IGraphicThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, 0));
+    					break;
+    				}
+    				
+    				for (int i = 1; i < count; ++i)
+    				{
+						GetContext().Get<IGraphicThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, i));
+					}
+    				break;
+    			}
+    			case VK_QUEUE_COMPUTE_BIT:
+    			{
+					GetContext().Registry<IComputeQueue>(m_Device.GetDeviceQueue(family.first, 0));
+					GetContext().Registry<IComputeThreadQueue>();
+
+					auto count = std::min(family.second, NThreadQueue + 1);
+
+    				if (count == 1)
+    				{
+    					GetContext().Get<IGraphicThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, 0));
+    					break;
+    				}
+    				
+					for (int i = 1; i < count; ++i)
+					{
+						GetContext().Get<IComputeThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, i));
+					}
+					break;
+				}
+    			case VK_QUEUE_TRANSFER_BIT:
+    			{
+					GetContext().Registry<ITransferThreadQueue>();
+    				GetContext().Get<ITransferThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, 0));
+    				
+					break;
+				}
+    			case VK_QUEUE_VIDEO_DECODE_BIT_KHR:
+    			{
+					GetContext().Registry<IVideoDecodeThreadQueue>();
+					GetContext().Get<IVideoDecodeThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, 0));
+    				
+					break;
+				}
+    			case VK_QUEUE_VIDEO_ENCODE_BIT_KHR:
+    			{
+					GetContext().Registry<IVideoEncodeThreadQueue>();
+					GetContext().Get<IVideoEncodeThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, 0));
+    				
+					break;
+				}
+    			case VK_QUEUE_OPTICAL_FLOW_BIT_NV:
+    			{
+					GetContext().Registry<IOpticalFlowThreadQueue>();
+					GetContext().Get<IOpticalFlowThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, 0));
+    				
+					break;
+				}
+    			default: break;
+    		}
     	}
 
-		GetContext().Registry<IGraphicThreadQueue>();
-		GetContext().Registry<IComputeThreadQueue>();
-		GetContext().Registry<ITransferThreadQueue>();
-		GetContext().Registry<IVideoEncodeThreadQueue>();
-		GetContext().Registry<IVideoDecodeThreadQueue>();
-		GetContext().Registry<IOpticalFlowThreadQueue>();
-
-		for (int i = 0; i < NThreadQueue; i++)
-		{
-			GetContext().Get<IGraphicThreadQueue>()->Add(queueFamilies[graphicFamily][0][i + 1]);
-			GetContext().Get<IComputeThreadQueue>()->Add(queueFamilies[computeFamily][2][i + 1]);
-		}
-
-		GetContext().Get<ITransferThreadQueue>()->Add(transfer);
-		GetContext().Get<IVideoEncodeThreadQueue>()->Add(videoEncode);
-		GetContext().Get<IVideoDecodeThreadQueue>()->Add(videoDecode);
-		GetContext().Get<IOpticalFlowThreadQueue>()->Add(opticalFlow);
+    	if (queue->HasPresentQueueFamil())
+    	{
+    		GetContext().Registry<IPresentQueue>(m_Device.GetDeviceQueue(queue->GetPresentQueueFamil(), 0));
+    	}
     }
 
 }

@@ -39,7 +39,7 @@ namespace Neptune::Vulkan::Extension {
     template<typename T>
     static constexpr bool IsCoreExtension = requires(T t) {
         t.CoreVersion;
-        //requires IsExtension<T>;
+        requires IsExtension<RemoveRef<T>>;
         VK_VERSION >= t.CoreVersion;
     };
     

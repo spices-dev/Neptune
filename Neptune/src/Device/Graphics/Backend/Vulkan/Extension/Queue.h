@@ -51,6 +51,22 @@ namespace Neptune::Vulkan::Extension {
         uint32_t GetQueueFamily(VkQueueFlagBits bit) const;
         
         /**
+        * @brief Get Queue Families.
+        * 
+        * @return Returns Queue Families.
+        */
+        const std::unordered_map<VkQueueFlagBits, std::pair<uint32_t, uint32_t>>& GetQueueFamilies() const { return m_QueueFamilies; }
+        
+        /**
+        * @brief Is Queue Family Valid.
+        * 
+        * @param[in] bit VkQueueFlagBits.
+        * 
+        * @return Returns True if valid.
+        */
+        bool HasQueueFamily(VkQueueFlagBits bit) const { return m_QueueFamilies.contains(bit); }
+        
+        /**
         * @brief Get Queue Family Count.
         * 
         * @param[in] bit VkQueueFlagBits.
@@ -65,6 +81,13 @@ namespace Neptune::Vulkan::Extension {
         * @return Returns Present Queue Family.
         */
         uint32_t GetPresentQueueFamil() const { return m_PresentQueueFamily.value_or(UINT32_MAX); }
+        
+        /**
+        * @brief Is Present Queue Family Valid.
+        * 
+        * @return Returns True if valid.
+        */
+        bool HasPresentQueueFamil() const { return m_PresentQueueFamily.has_value(); }
         
     private:
         

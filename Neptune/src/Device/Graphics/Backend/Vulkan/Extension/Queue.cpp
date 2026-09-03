@@ -19,12 +19,12 @@ namespace Neptune::Vulkan::Extension {
             VK_QUEUE_GRAPHICS_BIT,
             VK_QUEUE_COMPUTE_BIT,
             VK_QUEUE_TRANSFER_BIT,
-          //VK_QUEUE_SPARSE_BINDING_BIT,
-          //VK_QUEUE_PROTECTED_BIT,
+            VK_QUEUE_SPARSE_BINDING_BIT,
+            VK_QUEUE_PROTECTED_BIT,
             VK_QUEUE_VIDEO_DECODE_BIT_KHR,
             VK_QUEUE_VIDEO_ENCODE_BIT_KHR,
             VK_QUEUE_OPTICAL_FLOW_BIT_NV,
-          //VK_QUEUE_DATA_GRAPH_BIT_ARM
+            VK_QUEUE_DATA_GRAPH_BIT_ARM
         };
     }
     
@@ -44,13 +44,13 @@ namespace Neptune::Vulkan::Extension {
         
         std::ranges::for_each(s_Chains, [&](const auto& bit) {
             
-            bool support = false;
-            
             for (uint32_t i = 0; i < queueFamilies.size(); ++i)
             {
                 if (used.contains(i)) continue;
                 
                 const auto& property = queueFamilies[i].queueFamilyProperties;
+                
+                if (property.queueCount == 0) continue;
                 
                 if (property.queueFlags & bit)
                 {
@@ -58,18 +58,33 @@ namespace Neptune::Vulkan::Extension {
                     
                     used.insert(i);
                     
-                    support = true;
-                    
                     NEPTUNE_LOG_CORE(I) << "Queue [ " << Vulkan::ToString(bit) << " ] : " << i;
                     
-                    break;
+                    return;
                 }
             }
             
-            if (!support)
+            for (uint32_t i = 0; i < queueFamilies.size(); ++i)
             {
-                found.erase(bit);
+                if (!used.contains(i)) continue;
+                
+                const auto& property = queueFamilies[i].queueFamilyProperties;
+                
+                if (property.queueCount == 0) continue;
+                
+                if (property.queueFlags & bit)
+                {
+                    m_QueueFamilies[bit] = { i, property.queueCount };
+                    
+                    used.insert(i);
+                    
+                    NEPTUNE_LOG_CORE(I) << "Queue [ " << Vulkan::ToString(bit) << " ] : " << i;
+                    
+                    return;
+                }
             }
+            
+            found.erase(bit);
         });
         
         if (surface)
@@ -92,6 +107,10 @@ namespace Neptune::Vulkan::Extension {
             {
                 for (uint32_t i = 0; i < queueFamilies.size(); ++i)
                 {
+                    const auto& property = queueFamilies[i].queueFamilyProperties;
+                    
+                    if (property.queueCount == 0) continue;
+                    
                     VkBool32 presentSupport = false;
                 
                     VULKAN_CHECK(vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupport))

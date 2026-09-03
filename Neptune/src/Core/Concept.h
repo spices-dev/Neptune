@@ -109,4 +109,12 @@ namespace Neptune {
     template<typename T>
     concept IntegerWrapper = IsWrapperOf<T, int> || IsWrapperOf<T, short> ||
         IsWrapperOf<T, long> || IsWrapperOf<T, long long> || IsWrapperOf<T, short>;
+    
+    /**
+    * @brief Using: Remove Reference.
+    * 
+    * @tparam T .
+    */
+    template<typename T>
+    using RemoveRef = std::remove_reference_t<T>;
 }
