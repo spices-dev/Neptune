@@ -21,6 +21,7 @@ namespace Neptune::RHI {
         RenderTarget,
         VertexBuffer,
         IndexBuffer,
+        Buffer,
         CmdList,
         CmdList2,
         Decoder,

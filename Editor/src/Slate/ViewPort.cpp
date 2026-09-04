@@ -5,7 +5,7 @@
 */
 
 #include "ViewPort.h"
-#include <Resource/ResourcePool.h>
+#include <Resource/ResourcePool/ResourcePool.h>
 #include <Resource/Texture/RenderTarget.h>
 #include <Device/Graphics/Frontend/RHI/RenderTarget.h>
 #include <Core/Event/ViewEvent.h>
@@ -59,7 +59,7 @@ namespace Neptune::Editor::View {
 				Dispatch(event);
 			}
 
-			s_TextureID = (ImTextureID)ResourcePool<RenderTarget>::Instance().GetResource("Scene")->GetRHIResource()->CreateBindingID();
+			s_TextureID = (ImTextureID)ResourcePool<RenderTarget>::Instance().Access("Scene")->GetRHIResource()->CreateBindingID();
 		}
 
 		s_SlateSize = tempSize;

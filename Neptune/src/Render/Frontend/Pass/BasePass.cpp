@@ -13,7 +13,7 @@
 #include "Device/Graphics/Frontend/RHI/RenderTarget.h"
 #include "Resource/Shader/Shader.h"
 #include "Resource/Texture/RenderTarget.h"
-#include "Resource/ResourcePool.h"
+#include "Resource/ResourcePool/ResourcePool.h"
 #include "Resource/Mesh/Mesh.h"
 #include "World/Scene/Scene.h"
 #include "Data/Clock.h"
@@ -34,11 +34,13 @@ namespace Neptune::Render {
 			info.width              = m_RTSize.x;
 			info.height             = m_RTSize.y;
 
-			resourcePool.CreateResource("Scene", info);
-			
-			if (!resourcePool.HasResource("CurrDecodeRT"))
+			auto scene = CreateSP<RenderTarget>(info);
+
+			resourcePool.Registry("Scene", scene);
+
+			if (!resourcePool.Has("CurrDecodeRT"))
 			{
-				resourcePool.CreateResource("CurrDecodeRT");
+				resourcePool.Load<RenderTarget>("CurrDecodeRT");
 			}
 		}
 
@@ -49,11 +51,11 @@ namespace Neptune::Render {
 		info.outLayout                            = AttachmentLayout::ColorAttachment;
 
 		m_RenderPass = CreateSP<RHI::RenderPass>();
-		m_RenderPass->AddColorAttachment(ResourcePool<RenderTarget>::Instance().GetResource("Scene")->GetRHIResource(), info);
+		m_RenderPass->AddColorAttachment(ResourcePool<RenderTarget>::Instance().Access("Scene")->GetRHIResource(), info);
 		m_RenderPass->Build();
 		
 		m_DescriptorList = CreateSP<RHI::DescriptorList>();
-		m_DescriptorList->AddUniformTexture(1, 0, ResourcePool<RenderTarget>::Instance().GetResource("CurrDecodeRT")->GetRHIResource());
+		m_DescriptorList->AddUniformTexture(1, 0, ResourcePool<RenderTarget>::Instance().Access("CurrDecodeRT")->GetRHIResource());
 		m_DescriptorList->CombineSharedLayout();
 		m_DescriptorList->Build();
 
@@ -66,15 +68,15 @@ namespace Neptune::Render {
 		{
 			auto& resourcePool = ResourcePool<Shader>::Instance();
 
-			if (!resourcePool.HasResource("BasePassVert"))
+			if (!resourcePool.Has("BasePassVert"))
 			{
-				auto s = resourcePool.CreateResource("BasePassVert");
+				auto s = resourcePool.Load<Shader>("BasePassVert");
 
 				s->SetStage(ShaderStage::Vertex);
 				s->SetSource("Shaders/src/BasePass.vert.spv");
 			}
 
-            auto shader = resourcePool.GetResource("BasePassVert");
+            auto shader = resourcePool.Access("BasePassVert");
 
 			m_Pipeline->AddShader(shader->GetStage(), shader->GetRHIResource());
 		}
@@ -82,15 +84,15 @@ namespace Neptune::Render {
 		{
 			auto& resourcePool = ResourcePool<Shader>::Instance();
 
-			if (!resourcePool.HasResource("BasePassFrag"))
+			if (!resourcePool.Has("BasePassFrag"))
 			{
-				auto s = resourcePool.CreateResource("BasePassFrag");
+				auto s = resourcePool.Load<Shader>("BasePassFrag");
 
 				s->SetStage(ShaderStage::Fragment);
 				s->SetSource("Shaders/src/BasePass.frag.spv");
 			}
 
-            auto shader = resourcePool.GetResource("BasePassFrag");
+            auto shader = resourcePool.Access("BasePassFrag");
 
 			m_Pipeline->AddShader(shader->GetStage(), shader->GetRHIResource());
 		}
@@ -104,7 +106,7 @@ namespace Neptune::Render {
 		
 		const auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
 
-		m_DescriptorList->UpdateUniformTexture(1, 0, ResourcePool<RenderTarget>::Instance().GetResource("CurrDecodeRT")->GetRHIResource());
+		m_DescriptorList->UpdateUniformTexture(1, 0, ResourcePool<RenderTarget>::Instance().Access("CurrDecodeRT")->GetRHIResource());
 
 		RHI::CmdList cmdList;
 

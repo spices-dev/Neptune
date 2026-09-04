@@ -8,7 +8,7 @@
 
 #include <Feature/Video/Demuxer.h>
 #include <Feature/Video/Decoder.h>
-#include <Resource/ResourcePool.h>
+#include <Resource/ResourcePool/ResourcePool.h>
 #include <Resource/Texture/RenderTarget.h>
 #include <Device/Graphics/Frontend/RHI/RenderTarget.h>
 
@@ -28,7 +28,7 @@ namespace Neptune::Editor {
 
 		m_Decoder = CreateUP<Video::Decoder>(VideoOperation::DecodeH265);
 		
-		m_Decoder->SetDecodeRenderTarget(ResourcePool<RenderTarget>::Instance().GetResource("CurrDecodeRT"));
+		m_Decoder->SetDecodeRenderTarget(ResourcePool<RenderTarget>::Instance().Access("CurrDecodeRT"));
 	}
 	
 	void VideoPlayer::OnTick()

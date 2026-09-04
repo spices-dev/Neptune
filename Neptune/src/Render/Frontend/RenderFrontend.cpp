@@ -44,7 +44,7 @@
 #include "Window/Window.h"
 #include "Core/Event/WindowEvent.h"
 #include "Resource/Texture/RenderTarget.h"
-#include "Resource/ResourcePool.h"
+#include "Resource/ResourcePool/ResourcePool.h"
 #include "Resource/Shader/Shader.h"
 
 namespace Neptune {
@@ -114,8 +114,8 @@ namespace Neptune {
 
         m_RenderPasses.clear();
 
-        ResourcePool<RenderTarget>::Instance().Reset();
-        ResourcePool<Shader>::Instance().Reset();
+        ResourcePool<RenderTarget>::Instance().Destroy();
+        ResourcePool<Shader>::Instance().Destroy();
     }
 
     void RenderFrontend::RenderFrame(Scene* scene)

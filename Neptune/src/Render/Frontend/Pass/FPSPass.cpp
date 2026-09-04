@@ -12,7 +12,7 @@
 #include "Device/Graphics/Frontend/RHI/CmdList.h"
 #include "Resource/Shader/Shader.h"
 #include "Resource/Texture/RenderTarget.h"
-#include "Resource/ResourcePool.h"
+#include "Resource/ResourcePool/ResourcePool.h"
 #include "Resource/Mesh/Mesh.h"
 #include "World/Scene/Scene.h"
 #include "Data/Clock.h"
@@ -31,7 +31,7 @@ namespace Neptune::Render {
 		info.outLayout             = AttachmentLayout::ShaderRead;
 
 		m_RenderPass = CreateSP<RHI::RenderPass>();
-		m_RenderPass->AddColorAttachment(ResourcePool<RenderTarget>::Instance().GetResource("Scene")->GetRHIResource(), info);
+		m_RenderPass->AddColorAttachment(ResourcePool<RenderTarget>::Instance().Access("Scene")->GetRHIResource(), info);
 		m_RenderPass->Build();
 		
 		m_DescriptorList = CreateSP<RHI::DescriptorList>();
@@ -47,15 +47,15 @@ namespace Neptune::Render {
 		{
 			auto& resourcePool = ResourcePool<Shader>::Instance();
 
-			if (!resourcePool.HasResource("FPSPassVert"))
+			if (!resourcePool.Has("FPSPassVert"))
 			{
-				auto s = resourcePool.CreateResource("FPSPassVert");
+				auto s = resourcePool.Load<Shader>("FPSPassVert");
 
 				s->SetStage(ShaderStage::Vertex);
 				s->SetSource("Shaders/src/FPSPass.vert.spv");
 			}
 
-            auto shader = resourcePool.GetResource("FPSPassVert");
+            auto shader = resourcePool.Access("FPSPassVert");
 
 			m_Pipeline->AddShader(shader->GetStage(), shader->GetRHIResource());
 		}
@@ -63,15 +63,15 @@ namespace Neptune::Render {
 		{
 			auto& resourcePool = ResourcePool<Shader>::Instance();
 
-			if (!resourcePool.HasResource("FPSPassFrag"))
+			if (!resourcePool.Has("FPSPassFrag"))
 			{
-				auto s = resourcePool.CreateResource("FPSPassFrag");
+				auto s = resourcePool.Load<Shader>("FPSPassFrag");
 
 				s->SetStage(ShaderStage::Fragment);
 				s->SetSource("Shaders/src/FPSPass.frag.spv");
 			}
 
-            auto shader = resourcePool.GetResource("FPSPassFrag");
+            auto shader = resourcePool.Access("FPSPassFrag");
 
 			m_Pipeline->AddShader(shader->GetStage(), shader->GetRHIResource());
 		}
