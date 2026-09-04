@@ -3,7 +3,7 @@
 -- @author Spices.
 
 -- Define module
-local module = {}
+local module = loadfile(current_dir .. "vender_base.lua")().NewModule("tracy")
 
 -- Solution Root
 local solution_root = _MAIN_SCRIPT_DIR

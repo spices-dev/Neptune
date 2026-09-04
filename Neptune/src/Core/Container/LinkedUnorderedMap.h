@@ -125,7 +125,7 @@ namespace Neptune::Container {
 		V& End();
 
 		/**
-		* @breif Get the end key of this container.
+		* @brief Get the end key of this container.
 		* 
 		* @return Returns the end key found.
 		*/
@@ -134,7 +134,7 @@ namespace Neptune::Container {
 	private:
 		
 		std::list<K> m_Keys;                 // @brief The container keeps iter in order.
-		std::unordered_map<K, V> m_Map;      // @breif The container keeps quick search.
+		std::unordered_map<K, V> m_Map;      // @brief The container keeps quick search.
 		mutable std::shared_mutex m_Mutex;   // @brief Mutex for this container.
 		std::atomic_int m_Size = 0;          // @brief This container size.
 	};

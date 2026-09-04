@@ -17,7 +17,7 @@ namespace Neptune::Vulkan::Extension {
 
     /**
     * @brief Used In:
-    * Seperate Pipeline State
+    * Separate Pipeline State
     * VK_LAYER_LUNARG_crash_diagnostic sync_after_commands
     */
     class DynamicRendering : public Extension

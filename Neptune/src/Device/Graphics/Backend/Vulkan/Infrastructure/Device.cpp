@@ -67,22 +67,22 @@ namespace Neptune::Vulkan {
 			queueInfoMap[family.first] = info;
 		}
 
-    	if (queue->HasPresentQueueFamil())
+    	if (queue->HasPresentQueueFamily())
     	{
     		if (!std::ranges::any_of(queue->GetQueueFamilies(), [&](const auto& family) {
-    			return family.second.first == queue->GetPresentQueueFamil();
+    			return family.second.first == queue->GetPresentQueueFamily();
     		}))
     		{
     			auto priority = CreateUP<std::vector<float>>(1, 1.0f);
     			
     			VkDeviceQueueCreateInfo                    info{};
     			info.sType                               = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-    			info.queueFamilyIndex                    = queue->GetPresentQueueFamil();
+    			info.queueFamilyIndex                    = queue->GetPresentQueueFamily();
     			info.queueCount                          = 1;
     			info.pQueuePriorities                    = priority->data();
 
     			queuePriorities.emplace_back(std::move(priority));
-    			queueInfoMap[queue->GetPresentQueueFamil()] = info;
+    			queueInfoMap[queue->GetPresentQueueFamily()] = info;
     		}
     	}
     	
@@ -187,9 +187,9 @@ namespace Neptune::Vulkan {
     		}
     	}
 
-    	if (queue->HasPresentQueueFamil())
+    	if (queue->HasPresentQueueFamily())
     	{
-    		GetContext().Registry<IPresentQueue>(m_Device.GetDeviceQueue(queue->GetPresentQueueFamil(), 0));
+    		GetContext().Registry<IPresentQueue>(m_Device.GetDeviceQueue(queue->GetPresentQueueFamily(), 0));
     	}
     }
 

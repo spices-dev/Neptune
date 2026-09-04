@@ -1,6 +1,6 @@
 /**
-* @file CopyMemorytIndirect.cpp.
-* @brief The CopyMemorytIndirect Class Implementation.
+* @file CopyMemoryIndirect.cpp.
+* @brief The CopyMemoryIndirect Class Implementation.
 * @author Spices.
 */
 
@@ -8,11 +8,11 @@
 
 #ifdef NP_GRAPHICS_VULKAN
 
-#include "CopyMemorytIndirect.h"
+#include "CopyMemoryIndirect.h"
 
 namespace Neptune::Vulkan::Extension {
 
-    CopyMemorytIndirect::CopyMemorytIndirect(EExtensionState state)
+    CopyMemoryIndirect::CopyMemoryIndirect(EExtensionState state)
         : Extension(state)
     {
         NEPTUNE_PROFILE_ZONE

@@ -153,13 +153,13 @@ namespace Neptune::Vulkan {
 			DEBUGUTILS_SETOBJECTNAME(m_RenderPass, "RenderPass")
 		}
 
-		const bool swapChianInUsed = m_ImageViews.size() < m_AttachmentDescriptions.size();
+		const bool swapChainInUsed = m_ImageViews.size() < m_AttachmentDescriptions.size();
 
 		for (size_t i = 0; i < count; i++)
 		{
 			auto imageViews = m_ImageViews;
 
-			if (swapChianInUsed)
+			if (swapChainInUsed)
 			{
 				imageViews.insert(imageViews.begin(), GetContext().Get<ISwapChain>()->GetView(i));
 			}

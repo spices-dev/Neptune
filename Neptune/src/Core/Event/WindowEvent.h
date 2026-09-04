@@ -116,7 +116,7 @@ namespace Neptune {
     };
 
     /**
-    * @breif This Class is inherited from Event Class.
+    * @brief This Class is inherited from Event Class.
     * Called when window resized.
     * This Event register by Swapchain.
     */

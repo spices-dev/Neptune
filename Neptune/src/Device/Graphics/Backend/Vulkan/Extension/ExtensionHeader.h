@@ -29,7 +29,7 @@
 #include "Device/Graphics/Backend/Vulkan/Extension/LayerSetting.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/DynamicRendering.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/ExternalMemoryHost.h"
-#include "Device/Graphics/Backend/Vulkan/Extension/CopyMemorytIndirect.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/CopyMemoryIndirect.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/DeviceGeneratedCommands.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/GetPhysicalDeviceProperties2.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/PageableDeviceLocalMemory.h"

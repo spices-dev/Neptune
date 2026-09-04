@@ -137,7 +137,7 @@ namespace Neptune::Test {
 		{
 			uint32_t count = 0;
 
-			m_Tree.ViewDSF([&](const auto& data, uint32_t depth) {
+			m_Tree.ViewDFS([&](const auto& data, uint32_t depth) {
 
 				++count;
 				return true;
@@ -149,7 +149,7 @@ namespace Neptune::Test {
 		{
 			uint32_t count = 0;
 
-			m_Tree.ViewWSF([&](const auto& data, uint32_t depth) {
+			m_Tree.ViewWFS([&](const auto& data, uint32_t depth) {
 
 				++count;
 				return true;
@@ -161,7 +161,7 @@ namespace Neptune::Test {
 		{
 			uint32_t count = 0;
 
-			m_Tree.ViewDSF([&](const auto& data, uint32_t depth) {
+			m_Tree.ViewDFS([&](const auto& data, uint32_t depth) {
 
 				if (depth == 3)
 				{
@@ -178,7 +178,7 @@ namespace Neptune::Test {
 		{
 			uint32_t count = 0;
 
-			m_Tree.ViewWSF([&](const auto& data, uint32_t depth) {
+			m_Tree.ViewWFS([&](const auto& data, uint32_t depth) {
 
 				if (depth == 3)
 				{

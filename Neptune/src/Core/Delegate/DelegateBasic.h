@@ -107,7 +107,7 @@ namespace Neptune {
 		NEPTUNE_PROFILE_ZONE
 
 		auto addr = reinterpret_cast<const uint64_t*>(&func);
-		if (!m_Agents->has_key(*addr))
+		if (!m_Agents->Contains(*addr))
 		{
 			NEPTUNE_LOG_CORE(W) << "Agent Function not bound yet.";
 			

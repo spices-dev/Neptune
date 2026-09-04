@@ -130,7 +130,7 @@ namespace Neptune {
         glm::mat4 m_ProjectionMatrix = glm::mat4(1.0f);
 
         /**
-        * @breif ProjectionType.
+        * @brief ProjectionType.
         * Init with Perspective.
         */
         ProjectionType m_ProjectionType = ProjectionType::Perspective;

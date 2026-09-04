@@ -36,7 +36,7 @@ namespace Neptune::Vulkan {
         LayerSetting,                               // @brief LayerSetting.
         DynamicRendering,                           // @brief DynamicRendering.
         ExternalMemoryHost,                         // @brief ExternalMemoryHost.
-        CopyMemorytIndirect,                        // @brief CopyMemorytIndirect.
+        CopyMemoryIndirect,                         // @brief CopyMemoryIndirect.
         DeviceGeneratedCommands,                    // @brief DeviceGeneratedCommands.
         GetPhysicalDeviceProperties2,               // @brief GetPhysicalDeviceProperties2.
         PageableDeviceLocalMemory,                  // @brief PageableDeviceLocalMemory.
@@ -76,7 +76,7 @@ namespace Neptune::Vulkan {
             case LayerSetting:                    return "LayerSetting";
             case DynamicRendering:                return "DynamicRendering";
             case ExternalMemoryHost:              return "ExternalMemoryHost";
-            case CopyMemorytIndirect:             return "CopyMemorytIndirect";
+            case CopyMemoryIndirect:              return "CopyMemoryIndirect";
             case DeviceGeneratedCommands:         return "DeviceGeneratedCommands";
             case GetPhysicalDeviceProperties2:    return "GetPhysicalDeviceProperties2";
             case PageableDeviceLocalMemory:       return "PageableDeviceLocalMemory";

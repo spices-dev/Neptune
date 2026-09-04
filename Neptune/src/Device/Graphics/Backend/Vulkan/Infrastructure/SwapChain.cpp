@@ -51,7 +51,7 @@ namespace Neptune::Vulkan {
 			uint32_t queueFamilyIndices[2] = 
 			{ 
 				GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT),
-				GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetPresentQueueFamil()
+				GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetPresentQueueFamily()
 			};
 
 			if (queueFamilyIndices[0] != queueFamilyIndices[1])

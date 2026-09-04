@@ -1,6 +1,6 @@
 /**
-* @file CopyMemorytIndirect.h.
-* @brief The CopyMemorytIndirect Class Definitions.
+* @file CopyMemoryIndirect.h.
+* @brief The CopyMemoryIndirect Class Definitions.
 * @author Spices.
 */
 
@@ -13,13 +13,13 @@
 
 namespace Neptune::Vulkan::Extension {
 
-    using ICopyMemorytIndirect = IExtension<class CopyMemorytIndirect, EExtension::CopyMemorytIndirect>;
+    using ICopyMemoryIndirect = IExtension<class CopyMemoryIndirect, EExtension::CopyMemoryIndirect>;
 
     /**
     * @brief Used In:
     * VK_LAYER_KHRONOS_validation gpu_dump_copy_memory_indirect
     */
-    class CopyMemorytIndirect : public Extension
+    class CopyMemoryIndirect : public Extension
     {
     public:
 
@@ -28,12 +28,12 @@ namespace Neptune::Vulkan::Extension {
         *
         * @param[in] state EExtensionState.
         */
-        explicit CopyMemorytIndirect(EExtensionState state = EExtensionState::Core);
+        explicit CopyMemoryIndirect(EExtensionState state = EExtensionState::Core);
 
         /**
         * @brief Destructor Function.
         */
-        ~CopyMemorytIndirect() override = default;
+        ~CopyMemoryIndirect() override = default;
     };
 }
 

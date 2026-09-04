@@ -64,7 +64,7 @@ namespace Neptune::Container {
         }
 
         /**
-        * @breif Visit this data.
+        * @brief Visit this data.
         *
         * @param[in] fn Visitor.
         * @param[in] args Visitor params.
@@ -78,13 +78,13 @@ namespace Neptune::Container {
         }
         
         /**
-        * @breif Visit child with DSF.
+        * @brief Visit child with DFS.
         *
         * @param[in] fn Visitor.
         * @param[in] args Visitor params.
         */
         template<typename F, typename ...Args>
-        void ViewDSF(F&& fn, Args&&...  args) const
+        void ViewDFS(F&& fn, Args&&...  args) const
         {
             std::shared_lock lock(m_Mutex);
             
@@ -93,17 +93,17 @@ namespace Neptune::Container {
                 return std::invoke(std::forward<F>(fn), std::forward<T0>(data), std::forward<T1>(depth), std::forward<Args>(args)...);
             };
             
-            ViewDSFImpl(visitor, 0);
+            ViewDFSImpl(visitor, 0);
         }
 
         /**
-        * @breif Visit child with WSF.
+        * @brief Visit child with WSF.
         *
         * @param[in] fn Visitor.
         * @param[in] args Visitor params.
         */
         template<typename F, typename ...Args>
-        void ViewWSF(F&& fn, Args&&...  args) const
+        void ViewWFS(F&& fn, Args&&...  args) const
         {
             std::shared_lock lock(m_Mutex);
             
@@ -112,11 +112,11 @@ namespace Neptune::Container {
                 return std::invoke(std::forward<F>(fn), std::forward<T0>(data), std::forward<T1>(depth), std::forward<Args>(args)...);
             };
             
-            ViewWSFImpl(visitor);
+            ViewWFSImpl(visitor);
         }
 
         /**
-        * @breif Set this node data.
+        * @brief Set this node data.
         * 
         * @param[in] data The data.
         */
@@ -128,7 +128,7 @@ namespace Neptune::Container {
         }
 
         /**
-        * @breif Get this node data.
+        * @brief Get this node data.
         *
         * @return Returns this node data.
         */
@@ -137,19 +137,19 @@ namespace Neptune::Container {
     private:
 
         /**
-        * @breif Visit child with DSF Implementation.
+        * @brief Visit child with DFS Implementation.
         *
         * @param[in] fn Visitor.
         * @param[in] depth Visitor depth.
         *
-        * @return Returns true if needs to continue.
+        * @return Returns true if it needs to continue.
         */
         template<typename F>
         requires std::is_same_v<std::invoke_result_t<F, T, uint32_t>, bool>
-        bool ViewDSFImpl(F&& fn, uint32_t depth) const;
+        bool ViewDFSImpl(F&& fn, uint32_t depth) const;
 
         /**
-        * @breif Visit child with WSF Implementation.
+        * @brief Visit child with WFS Implementation.
         *
         * @param[in] fn Visitor.
         *
@@ -157,7 +157,7 @@ namespace Neptune::Container {
         */
         template<typename F>
         requires std::is_same_v<std::invoke_result_t<F, T, uint32_t>, bool>
-        bool ViewWSFImpl(F&& fn) const;
+        bool ViewWFSImpl(F&& fn) const;
 
     private:
         
@@ -170,7 +170,7 @@ namespace Neptune::Container {
     template <typename T>
     template <typename F>
     requires std::is_same_v<std::invoke_result_t<F, T, uint32_t>, bool>
-    bool Tree<T>::ViewDSFImpl(F&& fn, uint32_t depth) const
+    bool Tree<T>::ViewDFSImpl(F&& fn, uint32_t depth) const
     {
         if (!std::invoke(std::forward<F>(fn), m_Data, depth))
         {
@@ -179,7 +179,7 @@ namespace Neptune::Container {
         
         for (auto& child : m_Child)
         {
-            if (!child->ViewDSFImpl(std::forward<F>(fn), depth + 1))
+            if (!child->ViewDFSImpl(std::forward<F>(fn), depth + 1))
             {
                 return false;
             }
@@ -191,7 +191,7 @@ namespace Neptune::Container {
     template <typename T>
     template <typename F>
     requires std::is_same_v<std::invoke_result_t<F, T, uint32_t>, bool>
-    bool Tree<T>::ViewWSFImpl(F&& fn) const
+    bool Tree<T>::ViewWFSImpl(F&& fn) const
     {
         std::queue<std::pair<const Tree*, uint32_t>> queue;
 
