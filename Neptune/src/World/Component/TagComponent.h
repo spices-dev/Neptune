@@ -25,6 +25,8 @@ namespace Neptune {
 
         /**
         * @brief Constructor Function.
+        * 
+        * @param[in] tag Component Tag.
         */
         TagComponent(const std::string& tag) : Component(tag) {}
 

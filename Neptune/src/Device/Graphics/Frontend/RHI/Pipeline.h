@@ -6,7 +6,7 @@
 
 #pragma once
 #include "Core/Core.h"
-#include "Resource/Mesh/Mesh.h"
+#include "Resource/SOP/Enum.h"
 #include "Resource/Shader/Shader.h"
 #include "RHI.h"
 

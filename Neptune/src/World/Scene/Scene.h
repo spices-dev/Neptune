@@ -305,10 +305,7 @@ namespace Neptune {
     {
         NEPTUNE_PROFILE_ZONE
 
-        /**
-        * @note lock cause bug here.
-        */
-        //std::shared_lock<std::shared_mutex> lock(m_Mutex);
+        std::shared_lock lock(m_Mutex);
 
         return m_Registry.get<T>(static_cast<entt::entity>(e));
     }

@@ -8,7 +8,7 @@
 #include "Core/Core.h"
 #include "Device/Graphics/Frontend/RHI/Buffer.h"
 
-namespace Neptune {
+namespace Neptune::SOP {
 
 	/**
 	* @brief MeshResource's item template.
@@ -28,7 +28,7 @@ namespace Neptune {
 		*/
 		virtual ~Attribute() = default;
 		
-		UP<std::vector<T>> attributes = CreateUP<std::vector<T>>();  // @brief Attribute Data Array.
-		UP<RHI::Buffer> buffer = CreateUP<RHI::Buffer>();            // @brief Attribute RHI Buffer.
+		UP<std::vector<T>> host = CreateUP<std::vector<T>>();  // @brief Attribute Host Data.
+		UP<RHI::Buffer> device  = CreateUP<RHI::Buffer>();     // @brief Attribute Device Data.
 	};
 }

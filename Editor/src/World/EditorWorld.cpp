@@ -13,7 +13,9 @@
 #include <World/Entity/Entity.h>
 #include <World/Component/TransformComponent.h>
 #include <World/Component/ScriptComponent.h>
+#include <World/Component/SOPComponent.h>
 #include <Scripts/NativeScripts/EngineClock.h>
+#include <Resource/SOP/GS3D.h>
 
 namespace Neptune::Editor {
 
@@ -63,12 +65,20 @@ namespace Neptune::Editor {
             entity.AddComponent<TransformComponent>();
         }
         
-        {
+        /*{
             auto entity = scene->Create("video_plane");
             auto& component = entity.AddComponent<ScriptComponent>();
             
             component.AddScript(CreateSP<RHICapturer>());
             component.AddScript(CreateSP<VideoPlayer>("C:/Users/spices/Desktop/hevc_8k60P_bilibili_1.mp4"));
+        }*/
+        
+        {
+            auto gs3d = CreateSP<SOP::GS3D>("xx.asset");
+            gs3d->Load();
+            
+            auto entity = scene->Create("gs3d");
+            entity.AddComponent<SOPComponent>(gs3d);
         }
     }
 }

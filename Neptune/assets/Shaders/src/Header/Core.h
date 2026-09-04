@@ -131,7 +131,7 @@ struct MaterialAttributes
 struct View 
 {
 	mat4  projection;          /* @brief Projection Matrix from major Camera Entity.                   */
-	mat4  nprojection;         /* @brief Negative y axis Projection Matrix from major Camera Entity.   */
+	mat4  nprojection;         /* @brief Negative y-axis Projection Matrix from major Camera Entity.   */
 	mat4  view;                /* @brief View Matrix from major Camera Entity.                         */
 	mat4  inView;              /* @brief Inverse View Matrix from major Camera Entity.                 */
 	vec4  sceneTextureSize;    /* @brief Scene Texture Size.                                           */
@@ -181,14 +181,14 @@ struct PointLight
 /*****************************************************************************************/
 
 
-/*********************************RayTracing Renderer Data********************************/
+/***********************************SOP Description Data**********************************/
 
 /**
-* @brief Mesh Description Struct.
+* @brief Polygon Description Struct.
 */
-struct MeshDesc
+struct PolygonDesc
 {
-	uint64_t modelAddress;                    /* @brief Address of the Model Matrix.                      */																									  
+	uint64_t modelAddress;                    /* @brief Address of the Model Matrix.                      */
 	uint64_t positionsAddress;                /* @brief Address of the Positions buffer.                  */
 	uint64_t normalsAddress;                  /* @brief Address of the Normals buffer.                    */
 	uint64_t colorsAddress;                   /* @brief Address of the Colors buffer.                     */
@@ -197,11 +197,32 @@ struct MeshDesc
 	uint64_t primitivePointsAddress;          /* @brief Address of the PrimitivePoints buffer.            */
 	uint64_t primitiveVerticesAddress;        /* @brief Address of the PrimitiveVertices buffer.          */
 	uint64_t primitiveLocationsAddress;       /* @brief Address of the PrimitiveLocationsAddress buffer.  */
-	uint64_t materialParameterAddress;        /* @brief Address of the Material Parameter buffer.         */
 	uint64_t meshletsAddress;                 /* @brief Address of the Meshlet Buffer.                    */
-	uint     nMeshlets;                       /* @brief Meshlets Count.                                   */
-	uint     entityID;                        /* @brief EntityId, cast from entt::entity.                 */
+	uint64_t materialParameterAddress;        /* @brief Address of the Material Parameter buffer.         */
+	uint64_t nMeshlets;                       /* @brief Meshlets Count.                                   */
+	uint64_t entityID;                        /* @brief EntityId, cast from entt::entity.                 */
 };
+
+/**
+* @brief GS3D Description Struct.
+*/
+struct GS3DDesc
+{
+	uint64_t modelAddress;                    /* @brief Address of the Model Matrix.                      */
+	uint64_t positionsAddress;                /* @brief Address of the Positions buffer.                  */
+	uint64_t normalsAddress;                  /* @brief Address of the Normals buffer.                    */
+	uint64_t colorsAddress;                   /* @brief Address of the Colors buffer.                     */
+	uint64_t alphasAddress;                   /* @brief Address of the Alphas buffer.                     */
+	uint64_t scalesAddress;                   /* @brief Address of the Scales buffer.                     */
+	uint64_t orientationsAddress;             /* @brief Address of the Orientations buffer.               */
+	uint64_t albedosAddress;                  /* @brief Address of the Albedos buffer.                    */
+	uint64_t entityID;                        /* @brief EntityId, cast from entt::entity.                 */
+};
+
+/*****************************************************************************************/
+
+
+/*********************************RayTracing Renderer Data********************************/
 
 /**
 * @brief Ray Tracing Shader Data Location 0. 

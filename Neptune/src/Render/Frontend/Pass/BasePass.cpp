@@ -14,7 +14,6 @@
 #include "Resource/Shader/Shader.h"
 #include "Resource/Texture/RenderTarget.h"
 #include "Resource/ResourcePool/ResourcePool.h"
-#include "Resource/Mesh/Mesh.h"
 #include "World/Scene/Scene.h"
 #include "Data/Clock.h"
 #include "World/Component/Component.h"

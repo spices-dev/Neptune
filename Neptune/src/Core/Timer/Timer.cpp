@@ -24,9 +24,9 @@ namespace Neptune {
 		
 		const auto nowTime = std::chrono::steady_clock::now();
 
-		m_SegmentTime = std::chrono::duration<float, std::chrono::seconds::period>(nowTime - m_LastTime).count();
+		m_SegmentTime = std::chrono::duration<float>(nowTime - m_LastTime).count();
 
-		m_DurationTime = std::chrono::duration<float, std::chrono::seconds::period>(nowTime - m_StartTime).count();
+		m_DurationTime = std::chrono::duration<float>(nowTime - m_StartTime).count();
 
 		m_LastTime = nowTime;
 	}
