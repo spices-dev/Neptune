@@ -18,185 +18,87 @@ namespace Neptune::Vulkan::Layer {
         NEPTUNE_PROFILE_ZONE
 
         {
-            static const VkBool32 data         = VK_FALSE;
+            static constexpr VkBool32 data = VK_FALSE;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "sync_after_commands";
-            settings.type                      = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("sync_after_commands", data);
         }
 
         {
-            static const VkBool32 data         = VK_TRUE;
+            static constexpr VkBool32 data = VK_TRUE;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "instrument_all_commands";
-            settings.type                      = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("instrument_all_commands", data);
         }
 
         {
-            static const char* data            = "cache/CrashDiagnostic";
+            static constexpr char data[] = "cache/CrashDiagnostic";
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "output_path";
-            settings.type                      = VK_LAYER_SETTING_TYPE_STRING_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("output_path", data);
         }
 
         {
-            static const VkBool32 data         = VK_TRUE;
+            static constexpr VkBool32 data = VK_TRUE;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "trigger_watchdog_timeout";
-            settings.type                      = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("trigger_watchdog_timeout", data);
         }
 
         {
-            static const int64_t data          = 30000;
+            static constexpr int64_t data = 30000;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "watchdog_timeout_ms";
-            settings.type                      = VK_LAYER_SETTING_TYPE_INT64_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("watchdog_timeout_ms", data);
         }
 
         {
-            static const VkBool32 data         = VK_FALSE;
+            static constexpr VkBool32 data = VK_FALSE;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "track_semaphores";
-            settings.type                      = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("track_semaphores", data);
         }
 
         {
-            static const char* data            = "running";
+            static constexpr char data[] = "running";
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "dump_queue_submits";
-            settings.type                      = VK_LAYER_SETTING_TYPE_STRING_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("dump_queue_submits", data);
         }
 
         {
-            static const char* data            = "all";
+            static constexpr char data[] = "all";
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "dump_command_buffers";
-            settings.type                      = VK_LAYER_SETTING_TYPE_STRING_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("dump_command_buffers", data);
         }
 
         {
-            static const char* data            = "all";
+            static constexpr char data[] = "all";
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "dump_commands";
-            settings.type                      = VK_LAYER_SETTING_TYPE_STRING_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("dump_commands", data);
         }
 
         {
-            static const char* data            = "all";
+            static constexpr char data[] = "all";
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "dump_shaders";
-            settings.type                      = VK_LAYER_SETTING_TYPE_STRING_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("dump_shaders", data);
         }
 
         {
-            static const char* data            = "vk_crash_diagnostic.txt";
+            static constexpr char data[] = "vk_crash_diagnostic.txt";
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "log_file";
-            settings.type                      = VK_LAYER_SETTING_TYPE_STRING_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("log_file", data);
         }
 
         {
-            static const VkBool32 data         = VK_TRUE;
+            static constexpr VkBool32 data = VK_TRUE;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "trace_on";
-            settings.type                      = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("trace_on", data);
         }
 
         {
-            static const VkBool32 data         = VK_TRUE;
+            static constexpr VkBool32 data = VK_TRUE;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "trace_all_semaphores";
-            settings.type                      = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("trace_all_semaphores", data);
         }
 
         {
-            static const char* data            = "error";
+            static constexpr char data[] = "error";
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "message_severity";
-            settings.type                      = VK_LAYER_SETTING_TYPE_STRING_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("message_severity", data);
         }
     }
 

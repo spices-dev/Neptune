@@ -18,42 +18,21 @@ namespace Neptune::Vulkan::Layer {
         NEPTUNE_PROFILE_ZONE
 
         {
-            static const char* data            = "";
+            static constexpr char data[] = "";
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "frames";
-            settings.type                      = VK_LAYER_SETTING_TYPE_STRING_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("frames", data);
         }
 
         {
-            static const char* data            = "cache/ScreenShot";
+            static constexpr char data[] = "cache/ScreenShot";
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "dir";
-            settings.type                      = VK_LAYER_SETTING_TYPE_STRING_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("dir", data);
         }
 
         {
-            static const char* data            = "USE_SWAPCHAIN_COLORSPACE";
+            static constexpr char data[] = "USE_SWAPCHAIN_COLORSPACE";
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "format";
-            settings.type                      = VK_LAYER_SETTING_TYPE_STRING_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("format", data);
         }
     }
 

@@ -18,16 +18,9 @@ namespace Neptune::Vulkan::Layer {
         NEPTUNE_PROFILE_ZONE
 
         {
-            static const VkBool32 data         = VK_FALSE;
+            static constexpr VkBool32 data = VK_FALSE;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "force_enable";
-            settings.type                      = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("force_enable", data);
         }
     }
 

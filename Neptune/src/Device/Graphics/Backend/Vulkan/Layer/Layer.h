@@ -59,6 +59,30 @@ namespace Neptune::Vulkan::Layer {
         void AddLayerSetting(const VkLayerSettingEXT& setting);
 
         /**
+        * @brief Add Layer Setting.
+        *
+        * @param[in] name Config Name.
+        * @param[in] data Data.
+        */
+        void AddLayerSetting(const char* name, const VkBool32& data);
+        
+        /**
+        * @brief Add Layer Setting.
+        *
+        * @param[in] name Config Name.
+        * @param[in] data Data.
+        */
+        void AddLayerSetting(const char* name, const char* data);
+        
+        /**
+        * @brief Add Layer Setting.
+        *
+        * @param[in] name Config Name.
+        * @param[in] data Data.
+        */
+        void AddLayerSetting(const char* name, const int64_t& data);
+        
+        /**
         * @brief Get VkInstance Layer Requirement.
         * 
         * @return Returns VkInstance Layer Requirement.

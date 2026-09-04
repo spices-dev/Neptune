@@ -18,6 +18,48 @@ namespace Neptune::Vulkan::Layer {
 
 		m_Settings.emplace_back(setting);
 	}
+	
+	void Layer::AddLayerSetting(const char* name, const VkBool32& data)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		VkLayerSettingEXT                    settings {};
+		settings.pLayerName                = GetInstanceLayer().c_str();
+		settings.pSettingName              = name;
+		settings.type                      = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
+		settings.valueCount                = 1;
+		settings.pValues                   = &data;
+		
+		AddLayerSetting(settings);
+	}
+	
+	void Layer::AddLayerSetting(const char* name, const char* data)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		VkLayerSettingEXT                    settings {};
+		settings.pLayerName                = GetInstanceLayer().c_str();
+		settings.pSettingName              = name;
+		settings.type                      = VK_LAYER_SETTING_TYPE_STRING_EXT;
+		settings.valueCount                = 1;
+		settings.pValues                   = &data;
+		
+		AddLayerSetting(settings);
+	}
+	
+	void Layer::AddLayerSetting(const char* name, const int64_t& data)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		VkLayerSettingEXT                    settings {};
+		settings.pLayerName                = GetInstanceLayer().c_str();
+		settings.pSettingName              = name;
+		settings.type                      = VK_LAYER_SETTING_TYPE_INT64_EXT;
+		settings.valueCount                = 1;
+		settings.pValues                   = &data;
+		
+		AddLayerSetting(settings);
+	}
 
 	void Layer::BuildLayerSettingChain(std::vector<VkLayerSettingEXT>& settings)
 	{

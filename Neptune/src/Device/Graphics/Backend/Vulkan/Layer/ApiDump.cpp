@@ -18,211 +18,99 @@ namespace Neptune::Vulkan::Layer {
         NEPTUNE_PROFILE_ZONE
 
         {
-            static const char* data            = "0-0";
+            static const char* data = "0-0";
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "output_range";
-            settings.type                      = VK_LAYER_SETTING_TYPE_STRING_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("output_range", data);
         }
 
         {
-            static const char* data            = "text";
+            static const char* data = "text";
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "output_format";
-            settings.type                      = VK_LAYER_SETTING_TYPE_STRING_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("output_format", data);
         }
 
         {
-            static const VkBool32 data         = VK_TRUE;
+            static constexpr VkBool32 data = VK_TRUE;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "pre_dump";
-            settings.type                      = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("pre_dump", data);
         }
 
         {
-            static const VkBool32 data         = VK_TRUE;
+            static constexpr VkBool32 data = VK_TRUE;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "file";
-            settings.type                      = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("file", data);
         }
 
         {
-            static const char* data            = "cache/vk_api_dump.txt";
+            static constexpr char data[] = "cache/vk_api_dump.txt";
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "log_filename";
-            settings.type                      = VK_LAYER_SETTING_TYPE_STRING_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("log_filename", data);
         }
 
         {
-            static const VkBool32 data         = VK_TRUE;
+            static constexpr VkBool32 data = VK_TRUE;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "flush";
-            settings.type                      = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("flush", data);
         }
 
         {
-            static const int64_t data          = 32;
+            static constexpr int64_t data = 32;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "name_size";
-            settings.type                      = VK_LAYER_SETTING_TYPE_INT64_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("name_size", data);
         }
 
         {
-            static const VkBool32 data         = VK_TRUE;
+            static constexpr VkBool32 data = VK_TRUE;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "show_types";
-            settings.type                      = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("show_types", data);
         }
 
         {
-            static const int64_t data          = 0;
+            static constexpr int64_t data = 0;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "type_size";
-            settings.type                      = VK_LAYER_SETTING_TYPE_INT64_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("type_size", data);
         }
 
         {
-            static const VkBool32 data         = VK_TRUE;
+            static constexpr VkBool32 data = VK_TRUE;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "timestamp";
-            settings.type                      = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("timestamp", data);
         }
 
         {
-            static const VkBool32 data         = VK_TRUE;
+            static constexpr VkBool32 data = VK_TRUE;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "show_shader";
-            settings.type                      = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("show_shader", data);
         }
 
         {
-            static const VkBool32 data         = VK_TRUE;
+            static constexpr VkBool32 data = VK_TRUE;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "detailed";
-            settings.type                      = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("detailed", data);
         }
 
         {
-            static const VkBool32 data         = VK_FALSE;
+            static constexpr VkBool32 data = VK_FALSE;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "no_addr";
-            settings.type                      = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("no_addr", data);
         }
 
         {
-            static const VkBool32 data         = VK_TRUE;
+            static constexpr VkBool32 data = VK_TRUE;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "use_spaces";
-            settings.type                      = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("use_spaces", data);
         }
 
         {
-            static const int64_t data          = 4;
+            static constexpr int64_t data = 4;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "indent_size";
-            settings.type                      = VK_LAYER_SETTING_TYPE_INT64_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("indent_size", data);
         }
 
         {
-            static const VkBool32 data         = VK_TRUE;
+            static constexpr VkBool32 data = VK_TRUE;
 
-            VkLayerSettingEXT                    settings {};
-            settings.pLayerName                = GetInstanceLayer().c_str();
-            settings.pSettingName              = "show_thread_and_frame";
-            settings.type                      = VK_LAYER_SETTING_TYPE_BOOL32_EXT;
-            settings.valueCount                = 1;
-            settings.pValues                   = &data;
-
-            AddLayerSetting(settings);
+            AddLayerSetting("show_thread_and_frame", data);
         }
     }
 
