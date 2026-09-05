@@ -33,6 +33,7 @@ local module                          = {
     ["metal_cpp"]                     = loadfile(current_dir .. "metal-cpp.lua")(),                                    -- Third Party: metal-cpp
     ["AdaptiveCpp"]                   = loadfile(current_dir .. "AdaptiveCpp.lua")(),                                  -- Third Party: AdaptiveCpp
     ["ffmpeg"]                        = loadfile(current_dir .. "ffmpeg.lua")(),                                       -- Third Party: ffmpeg
+    ["tinyply"]                       = loadfile(current_dir .. "tinyply.lua")(),                                      -- Third Party: tinyply
     ["RenderDoc"]                     = loadfile(current_dir .. "RenderDoc.lua")(),                                    -- Third Party: RenderDoc
     ["googletest"]                    = loadfile(current_dir .. "googletest.lua")(),                                   -- Third Party: googletest
 }

@@ -45,6 +45,13 @@ namespace Neptune::SOP
 		const std::filesystem::path& FilePath() const { return m_FilePath; }
 		
 		/**
+		* @brief Set EObject.
+		* 
+		* @param[in] e EObject.
+		*/
+		void SetEObject(EObject e) { m_Enum = e; }
+		
+		/**
 		* @brief Load Data from Disk.
 		* 
 		* @return Returns true if succeeded.
@@ -60,7 +67,5 @@ namespace Neptune::SOP
 
 		EObject m_Enum = EObject::Undefined;      // @brief EMesh.
 		std::filesystem::path m_FilePath;         // @brief Description.
-		
-		friend class Loader;
 	};
 }

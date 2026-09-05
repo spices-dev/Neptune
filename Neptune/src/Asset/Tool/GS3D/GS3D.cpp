@@ -31,7 +31,7 @@ namespace Neptune::Tool {
 		
         if (std::strncmp(file.extension().string().c_str(), kPly, sizeof(kPly)) == 0)
         {
-            return Ply::Load(file, obj);
+            return Ply::Load(file, static_cast<SOP::GS3D*>(obj));
         }
         
         NEPTUNE_LOG_CORE(E) << "File: [ " << file << " ] has an unknown extension: " << file.extension().string();

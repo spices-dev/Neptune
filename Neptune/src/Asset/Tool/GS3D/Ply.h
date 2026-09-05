@@ -9,7 +9,7 @@
 
 namespace Neptune::SOP {
     
-    class Object;
+    class GS3D;
 }
 
 namespace Neptune::Tool {
@@ -25,11 +25,11 @@ namespace Neptune::Tool {
         * @brief Load SOP data from external file.
         * 
         * @param[in] file mesh file path.
-        * @param[in,out] obj Object.
+        * @param[in,out] obj GS3D.
         * 
         * @return Returns true if load data successfully.
         */
-        static bool Load(const std::filesystem::path& file, SOP::Object* obj);
+        static bool Load(const std::filesystem::path& file, SOP::GS3D* obj);
     };
     
 }

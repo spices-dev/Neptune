@@ -52,3 +52,6 @@
 [submodule "Neptune/vendor/metal-cpp"]
 	path = Neptune/vendor/metal-cpp
 	url = https://github.com/apple/metal-cpp.git
+[submodule "Neptune/vendor/tinyply"]
+	path = Neptune/vendor/tinyply
+	url = https://github.com/ddiakopoulos/tinyply.git

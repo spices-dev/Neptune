@@ -10,6 +10,11 @@
 #include "Object.h"
 #include "Attribute.h"
 
+namespace Neptune::Tool {
+	
+	class Ply;
+}
+
 namespace Neptune::SOP {
 	
 	/**
@@ -85,5 +90,6 @@ namespace Neptune::SOP {
 		GS3DDesc m_Desc{};   // @brief GS3D Description.
 		
 		friend class Loader;
+		friend class Tool::Ply;
 	};
 }

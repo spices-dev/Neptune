@@ -248,7 +248,7 @@ namespace Neptune::SOP {
 			stream.read(reinterpret_cast<char*>(lods->data()), sizeof(lods));
 		}
 		
-		obj->m_Enum = EObject::Polygon;
+		obj->SetEObject(EObject::Polygon);
 		
 		obj->CreateRHIBuffer();
 		
@@ -319,7 +319,7 @@ namespace Neptune::SOP {
 			stream.read(reinterpret_cast<char*>(albedos->data()), sizeof(*albedos));
 		}
 		
-		obj->m_Enum = EObject::GS3D;
+		obj->SetEObject(EObject::GS3D);
 		
 		obj->CreateRHIBuffer();
 		

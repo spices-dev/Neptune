@@ -35,6 +35,9 @@ solution.DefineCppStaticLibrary("Neptune", function()
 
 		-- Library: IconFontCppHeaders Files.
 		"vendor/IconFontCppHeaders/**.h",
+
+		-- Library: tinyply Files.
+		"vendor/tinyply/source/tinyply.h",
 	}
 
 	-- Macros Definitions
@@ -75,6 +78,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		vendor.ImGuizmo.includes,                             -- Library: ImGuizmo Source Folder.
 		vendor.tracy.includes,                                -- Library: tracy Source Folder.
 		vendor.IconFontCppHeaders.includes,                   -- Library: IconFontCppHeaders Source Folder.
+		vendor.tinyply.includes,                              -- Library: tinyply Source Folder.
 	}
 
 	-- The Solution Dependency
