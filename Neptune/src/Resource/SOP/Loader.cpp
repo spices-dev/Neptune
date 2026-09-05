@@ -73,12 +73,12 @@ namespace Neptune::SOP {
 		
 		if (std::strncmp(header.SecondaryType, kPolygon, sizeof(header.SecondaryType)) == 0)
 		{
-			return Load(stream, static_cast<SOP::Polygon*>(obj));
+			return Load(stream, static_cast<Polygon*>(obj));
 		}
 		
 		if (std::strncmp(header.SecondaryType, kGS3D, sizeof(header.SecondaryType)) == 0)
 		{
-			return Load(stream, static_cast<SOP::GS3D*>(obj));
+			return Load(stream, static_cast<GS3D*>(obj));
 		}
 		
 		NEPTUNE_LOG_CORE(E) << "File: [ " << file << " ] has an unknown SecondaryType: " << header.SecondaryType;
@@ -212,6 +212,8 @@ namespace Neptune::SOP {
 		
 		obj->m_Enum = EObject::Polygon;
 		
+		obj->CreateRHIBuffer();
+		
 		return true;
 	}
 
@@ -280,6 +282,8 @@ namespace Neptune::SOP {
 		}
 		
 		obj->m_Enum = EObject::GS3D;
+		
+		obj->CreateRHIBuffer();
 		
 		return true;
 	}

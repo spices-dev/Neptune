@@ -12,7 +12,7 @@ namespace Neptune {
     /**
     * @brief Enum of Memory.
     */
-    enum class MemoryEnum : uint8_t
+    enum class EMemory : uint8_t
     {
         Host,            // @brief Host RAM
         Device,          // @brief Device VRAM
@@ -30,11 +30,11 @@ namespace Neptune {
     *
     * @return Returns string.
     */
-    inline const char* ToString(MemoryEnum memory)
+    inline const char* ToString(EMemory memory)
     {
         NEPTUNE_PROFILE_ZONE
         
-        using enum MemoryEnum;
+        using enum EMemory;
         
         switch (memory)
         {

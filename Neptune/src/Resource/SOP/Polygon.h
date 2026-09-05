@@ -38,6 +38,11 @@ namespace Neptune::SOP {
 		*/
 		virtual ~PolygonDesc() = default;
 		
+		/**
+		* @brief Upload Host data to Device.
+		*/
+		void UploadToDevice() const;
+		
 		using Positions           = Attribute<glm::vec3>;               
 		using Normals             = Attribute<glm::vec3>;               
 		using Colors              = Attribute<glm::vec3>;               
@@ -81,9 +86,14 @@ namespace Neptune::SOP {
 		*/
 		~Polygon() override = default;
 
+		/**
+		* @brief Create RHI Buffer.
+		*/
+		void CreateRHIBuffer() const override;
+		
 	private:
 
-		PolygonDesc m_Desc;    // @brief Description.
+		PolygonDesc m_Desc{};    // @brief Polygon Description.
 		
 		friend class Loader;
 	};

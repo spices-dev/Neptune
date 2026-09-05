@@ -40,7 +40,7 @@ namespace Neptune::Vulkan {
 				auto* p = aligned_alloc(alignment, size);
 #endif
 				
-				NEPTUNE_PROFILE_ALLOC_N(p, size, ToString(MemoryEnum::Host))
+				NEPTUNE_PROFILE_ALLOC_N(p, size, ToString(EMemory::Host))
 				
 				return p;
 			};
@@ -50,7 +50,7 @@ namespace Neptune::Vulkan {
 		{
 			s_Allocator.pfnFree = +[](void* pUserData, void* pMemory) -> void {
 				
-				NEPTUNE_PROFILE_FREE_N(pMemory, ToString(MemoryEnum::Host))
+				NEPTUNE_PROFILE_FREE_N(pMemory, ToString(EMemory::Host))
 				
 #ifdef NP_PLATFORM_WINDOWS
 				_aligned_free(pMemory);
@@ -72,7 +72,7 @@ namespace Neptune::Vulkan {
 						auto* p = aligned_alloc(alignment, size);
 #endif
 
-						NEPTUNE_PROFILE_ALLOC_N(p, size, ToString(MemoryEnum::Host))
+						NEPTUNE_PROFILE_ALLOC_N(p, size, ToString(EMemory::Host))
 
 						return p;
 					}
@@ -97,9 +97,9 @@ namespace Neptune::Vulkan {
 
 						if (p && p != pOriginal)
 						{
-							NEPTUNE_PROFILE_FREE_N(pOriginal, ToString(MemoryEnum::Host))
+							NEPTUNE_PROFILE_FREE_N(pOriginal, ToString(EMemory::Host))
 
-							NEPTUNE_PROFILE_ALLOC_N(p, size, ToString(MemoryEnum::Host))
+							NEPTUNE_PROFILE_ALLOC_N(p, size, ToString(EMemory::Host))
 						}
 
 						return p;
@@ -130,26 +130,26 @@ namespace Neptune::Vulkan {
 		
 #else
 		
-		auto type = MemoryEnum::Other;
+		auto type = EMemory::Other;
 			
 		if (flags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) 
 		{
 			if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) 
 			{
-				type = MemoryEnum::Shared;
+				type = EMemory::Shared;
 			} 
 			else 
 			{
-				type = MemoryEnum::Device;
+				type = EMemory::Device;
 			}
 		}
 		else if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) 
 		{
-			type = MemoryEnum::HostDevice;
+			type = EMemory::HostDevice;
 		}
 		else 
 		{
-			type = MemoryEnum::Other;
+			type = EMemory::Other;
 		}
 
 		VULKAN_CHECK(vkAllocateMemory(device, pAllocateInfo, pAllocator, pMemory))
@@ -170,26 +170,26 @@ namespace Neptune::Vulkan {
 		
 #ifdef NEPTUNE_DEBUG
 		
-		auto type = MemoryEnum::Other;
+		auto type = EMemory::Other;
 			
 		if (flags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) 
 		{
 			if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) 
 			{
-				type = MemoryEnum::Shared;
+				type = EMemory::Shared;
 			} 
 			else 
 			{
-				type = MemoryEnum::Device;
+				type = EMemory::Device;
 			}
 		}
 		else if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) 
 		{
-			type = MemoryEnum::HostDevice;
+			type = EMemory::HostDevice;
 		}
 		else 
 		{
-			type = MemoryEnum::Other;
+			type = EMemory::Other;
 		}
 		
 		NEPTUNE_PROFILE_FREE_N(memory, ToString(type))

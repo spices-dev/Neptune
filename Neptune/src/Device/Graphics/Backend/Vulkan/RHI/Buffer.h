@@ -10,7 +10,7 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
-#include "Device/Graphics/Backend/Vulkan/Unit/Buffer.h"
+#include "Device/Graphics/Backend/Vulkan/Resource/Buffer.h"
 #include "Device/Graphics/Frontend/RHI/Buffer.h"
 
 namespace Neptune::Vulkan {
@@ -28,16 +28,48 @@ namespace Neptune::Vulkan {
         *
         * @param[in] context Context.
         */
-        explicit Buffer(Context& context) : ContextAccessor(context) {}
+        explicit Buffer(Context& context) : ContextAccessor(context), m_Buffer(context) {}
 
         /**
         * @brief Destructor Function.
         */
         ~Buffer() override = default;
 
+        /**
+        * @brief Get Buffer Size.
+        *
+        * @return Returns Buffer Size.
+        */
+        const uint64_t& Size() const override { return m_Buffer.Size(); }
+
+        /**
+        * @brief Create Buffer.
+        *
+        * @param[in] size Buffer Size.
+        */
+        void CreateBuffer(uint64_t size) override;
+
+        /**
+        * @brief Write host data to Buffer.
+        *
+        * @param[in] data Host data.
+        * @param[in] size Buffer size.
+        * @param[in] offset Buffer offset.
+        */
+        void WriteToBuffer(const void* data, uint64_t size = UINT64_MAX, uint64_t offset = 0) override;
+
+        /**
+        * @brief Flush Buffer data.
+        *
+        * @param[in] size Buffer size.
+        * @param[in] offset Buffer offset.
+        */
+        void Flush(uint64_t size = UINT64_MAX, uint64_t offset = 0) override;
+        
     private:
 
-        Unit::Buffer m_Buffer;            // @brief This Buffer.
+        Resource::Buffer m_Buffer;                 // @brief This Buffer.
+        UP<Resource::Buffer> m_StagingBuffer;       // @brief This Staging Buffer.
     };
 }
 

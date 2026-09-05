@@ -191,6 +191,8 @@ namespace Neptune::Vulkan::Unit {
 	{
 		NEPTUNE_PROFILE_ZONE
 
+		size = std::min(m_Size, size);
+		
 		if (auto* p = std::get_if<vkAlloc>(&m_Alloc))
 		{
 			if (!p->hostMemory)
@@ -199,16 +201,9 @@ namespace Neptune::Vulkan::Unit {
 				return;
 			}
 
-			if (size == VK_WHOLE_SIZE) 
-			{
-				memcpy(p->hostMemory, data, m_Size);
-			}
-			else 
-			{
-				char* memOffset = static_cast<char*>(p->hostMemory);
-				memOffset += offset;
-				memcpy(memOffset, data, size);
-			}
+			char* memOffset = static_cast<char*>(p->hostMemory);
+			memOffset += offset;
+			memcpy(memOffset, data, size);
 		}
 		else if (auto* p = std::get_if<vmaAlloc>(&m_Alloc))
 		{
@@ -218,14 +213,7 @@ namespace Neptune::Vulkan::Unit {
 				return;
 			}
 
-			if (size == VK_WHOLE_SIZE)
-			{
-				VULKAN_CHECK(vmaCopyMemoryToAllocation(p->vma, data, p->alloc, offset, m_Size))
-			}
-			else
-			{
-				VULKAN_CHECK(vmaCopyMemoryToAllocation(p->vma, data, p->alloc, offset, size))
-			}
+			VULKAN_CHECK(vmaCopyMemoryToAllocation(p->vma, data, p->alloc, offset, size))
 		}
 		else
 		{
@@ -237,7 +225,7 @@ namespace Neptune::Vulkan::Unit {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		size = size == VK_WHOLE_SIZE ? m_Size : size;
+		size = std::min(m_Size, size);
 
 		if (auto* p = std::get_if<vkAlloc>(&m_Alloc))
 		{

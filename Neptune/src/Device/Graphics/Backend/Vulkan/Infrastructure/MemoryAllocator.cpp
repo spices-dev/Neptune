@@ -42,26 +42,26 @@ namespace Neptune::Vulkan {
 			
 			auto flags = self->GetProps().memoryTypes[memoryType].propertyFlags;
 			
-			auto type = MemoryEnum::Other;
+			auto type = EMemory::Other;
 			
 			if (flags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) 
 			{
 				if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) 
 				{
-					type = MemoryEnum::Shared;
+					type = EMemory::Shared;
 				} 
 				else 
 				{
-					type = MemoryEnum::Device;
+					type = EMemory::Device;
 				}
 			}
 			else if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) 
 			{
-				type = MemoryEnum::HostDevice;
+				type = EMemory::HostDevice;
 			}
 			else 
 			{
-				type = MemoryEnum::Other;
+				type = EMemory::Other;
 			}
 			
 			NEPTUNE_PROFILE_ALLOC_N(memory, size, ToString(type))
@@ -87,26 +87,26 @@ namespace Neptune::Vulkan {
 			
 			auto flags = self->GetProps().memoryTypes[memoryType].propertyFlags;
 			
-			auto type = MemoryEnum::Other;
+			auto type = EMemory::Other;
 			
 			if (flags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) 
 			{
 				if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) 
 				{
-					type = MemoryEnum::Shared;
+					type = EMemory::Shared;
 				} 
 				else 
 				{
-					type = MemoryEnum::Device;
+					type = EMemory::Device;
 				}
 			}
 			else if (flags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT) 
 			{
-				type = MemoryEnum::HostDevice;
+				type = EMemory::HostDevice;
 			}
 			else 
 			{
-				type = MemoryEnum::Other;
+				type = EMemory::Other;
 			}
 			
 			NEPTUNE_PROFILE_FREE_N(memory, ToString(type))

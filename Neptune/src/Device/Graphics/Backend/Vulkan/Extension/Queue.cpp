@@ -132,7 +132,7 @@ namespace Neptune::Vulkan::Extension {
         return found;
     }
     
-    uint32_t Queue::GetQueueFamily(VkQueueFlagBits bit) const
+    const uint32_t& Queue::GetQueueFamily(VkQueueFlagBits bit) const
     {
         NEPTUNE_PROFILE_ZONE
         

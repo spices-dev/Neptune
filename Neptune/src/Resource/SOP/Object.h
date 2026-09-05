@@ -8,7 +8,15 @@
 #include "Core/Core.h"
 #include "Enum.h"
 
-namespace Neptune::SOP {
+namespace Neptune::SOP
+{
+
+#define Update_Attribute(item)                              \
+	{                                                       \
+		item.device->CreateBuffer(sizeof(*item.host));      \
+		item.device->WriteToBuffer(item.host->data());      \
+		item.device->Flush();                               \
+	}
 
 	/**
 	* @brief Object Class.
@@ -41,7 +49,12 @@ namespace Neptune::SOP {
 		* 
 		* @return Returns true if succeeded.
 		*/
-		bool Load();
+		bool LoadFromDisk();
+
+		/**
+		* @brief Create RHI Buffer.
+		*/
+		virtual void CreateRHIBuffer() const = 0;
 
 	private:
 

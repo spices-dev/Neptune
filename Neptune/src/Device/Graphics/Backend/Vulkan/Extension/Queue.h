@@ -48,7 +48,7 @@ namespace Neptune::Vulkan::Extension {
         * 
         * @return Returns Queue Family.
         */
-        uint32_t GetQueueFamily(VkQueueFlagBits bit) const;
+        const uint32_t& GetQueueFamily(VkQueueFlagBits bit) const;
         
         /**
         * @brief Get Queue Families.

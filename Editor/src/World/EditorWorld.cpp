@@ -75,7 +75,7 @@ namespace Neptune::Editor {
         
         {
             auto gs3d = CreateSP<SOP::GS3D>("xx.asset");
-            gs3d->Load();
+            gs3d->LoadFromDisk();
             
             auto entity = scene->Create("gs3d");
             entity.AddComponent<SOPComponent>(gs3d);

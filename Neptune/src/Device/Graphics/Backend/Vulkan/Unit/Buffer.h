@@ -79,7 +79,7 @@ namespace Neptune::Vulkan::Unit {
 		* @param[in] size VkDeviceSize.
 		* @param[in] offset VkDeviceSize.
 		*/
-		void WriteToBuffer(const void* data, VkDeviceSize size = VK_WHOLE_SIZE, VkDeviceSize offset = 0);
+		void WriteToBuffer(const void* data, VkDeviceSize size = UINT64_MAX, VkDeviceSize offset = 0);
 
 		/**
 		* @brief Flush Buffer data.
@@ -87,7 +87,7 @@ namespace Neptune::Vulkan::Unit {
 		* @param[in] size VkDeviceSize.
 		* @param[in] offset VkDeviceSize.
 		*/
-		void Flush(VkDeviceSize size = VK_WHOLE_SIZE, VkDeviceSize offset = 0);
+		void Flush(VkDeviceSize size = UINT64_MAX, VkDeviceSize offset = 0);
 
 	private:
 

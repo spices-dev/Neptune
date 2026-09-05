@@ -10,7 +10,7 @@
 
 namespace Neptune::SOP {
     
-    bool Object::Load()
+    bool Object::LoadFromDisk()
     {
         NEPTUNE_PROFILE_ZONE
         

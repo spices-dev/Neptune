@@ -9,6 +9,7 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "CommandBuffer.h"
+
 #include <functional>
 
 namespace Neptune::Vulkan::Unit {
@@ -137,6 +138,13 @@ namespace Neptune::Vulkan::Unit {
 		NEPTUNE_PROFILE_ZONE
 
 		vkCmdCopyImage(m_Handle, src, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, dst, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
+	}
+	
+	void CommandBuffer::CopyBuffer(VkBuffer src, VkBuffer dst, const VkBufferCopy& region) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdCopyBuffer(m_Handle, src, dst, 1, &region);
 	}
 
 	void CommandBuffer::PipelineBarrier(VkPipelineStageFlags srcMask, VkPipelineStageFlags dstMask, const VkImageMemoryBarrier& barrier) const

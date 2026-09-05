@@ -27,6 +27,11 @@ namespace Neptune::SOP {
 		*/
 		virtual ~GS3DDesc() = default;
 		
+		/**
+		* @brief Upload Host data to Device.
+		*/
+		void UploadToDevice() const;
+		
 		using Positions           = Attribute<glm::vec3>;               
 		using Normals             = Attribute<glm::vec3>;               
 		using Colors              = Attribute<glm::vec3>;               
@@ -63,9 +68,14 @@ namespace Neptune::SOP {
 		*/
 		~GS3D() override = default;
 
+		/**
+		* @brief Create RHI Buffer.
+		*/
+		void CreateRHIBuffer() const override;
+		
 	private:
 
-		GS3DDesc m_Desc;   // @brief Description.
+		GS3DDesc m_Desc{};   // @brief GS3D Description.
 		
 		friend class Loader;
 	};

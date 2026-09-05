@@ -161,6 +161,15 @@ namespace Neptune::Vulkan::Unit {
 		void CopyImage(VkImage src, VkImage dst, const VkImageCopy& region) const;
 
 		/**
+		* @brief Copy Buffer.
+		*
+		* @param[in] src VkBuffer.
+		* @param[in] dst VkBuffer.
+		* @param[in] region VkBufferCopy.
+		*/
+		void CopyBuffer(VkBuffer src, VkBuffer dst, const VkBufferCopy& region) const;
+		
+		/**
 		* @brief Pipeline Barrier.
 		*
 		* @param[in] srcMask VkPipelineStageFlags.
