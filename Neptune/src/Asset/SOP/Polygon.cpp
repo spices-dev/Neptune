@@ -9,7 +9,7 @@
 
 namespace Neptune::SOP {
     
-    void PolygonDesc::UploadToDevice() const
+    void PolygonDesc::UploadToDevice()
     {
         NEPTUNE_PROFILE_ZONE
         
@@ -23,7 +23,9 @@ namespace Neptune::SOP {
         Update_Attribute(primitiveLocations)
         Update_Attribute(primitiveLocations)
         Update_Attribute(meshlets)
-        Update_Attribute(lods)
+        //Update_Attribute(lods)
+        
+        DescBase::UploadToDevice();
     }
     
     bool Polygon::LoadFromDisk()
@@ -38,7 +40,7 @@ namespace Neptune::SOP {
         return false;
     }
     
-    void Polygon::CreateRHIBuffer() const
+    void Polygon::CreateRHIBuffer()
     {
         NEPTUNE_PROFILE_ZONE
 

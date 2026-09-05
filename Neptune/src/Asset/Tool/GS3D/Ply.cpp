@@ -26,11 +26,11 @@ namespace Neptune::Tool {
         tinyply::PlyFile splat;
         splat.parse_header(stream);
 
-        SP<tinyply::PlyData> position, normal, f_dc, f_rest, alpha, scale, orientation;
+        SP<tinyply::PlyData> p, n, opacity, scale, rot, f_dc, f_rest;
 
         try
         {
-            position = splat.request_properties_from_element("vertex", { "x", "y", "z" });
+            p = splat.request_properties_from_element("vertex", { "x", "y", "z" });
         }
         catch (const std::exception & e)
         {
@@ -41,7 +41,7 @@ namespace Neptune::Tool {
 
         try
         {
-            normal = splat.request_properties_from_element("vertex", { "nx", "ny", "nz" });
+            n = splat.request_properties_from_element("vertex", { "nx", "ny", "nz" });
         }
         catch (const std::exception& e)
         {
@@ -52,7 +52,7 @@ namespace Neptune::Tool {
 
         try
         {
-            alpha = splat.request_properties_from_element("vertex", { "opacity" });
+            opacity = splat.request_properties_from_element("vertex", { "opacity" });
         }
         catch (const std::exception & e)
         {
@@ -74,7 +74,7 @@ namespace Neptune::Tool {
 
         try
         {
-            orientation = splat.request_properties_from_element("vertex", { "rot_0", "rot_1", "rot_2", "rot_3" });
+            rot = splat.request_properties_from_element("vertex", { "rot_0", "rot_1", "rot_2", "rot_3" });
         }
         catch (const std::exception & e)
         {
@@ -130,65 +130,187 @@ namespace Neptune::Tool {
         
         splat.read(stream);
         
+        if (!BakeGSplat(p, n, opacity, scale, rot, f_dc, f_rest, obj))
         {
-			auto& positions = obj->m_Desc.positions.host;
-			
-			positions->resize(position->count);
-			
-			memcpy(positions->data(), position->buffer.get(), position->buffer.size_bytes());
-		}
-        
-        {
-            auto& normals = obj->m_Desc.normals.host;
-			
-            normals->resize(normal->count);
-			
-            memcpy(normals->data(), normal->buffer.get(), normal->buffer.size_bytes());
+            NEPTUNE_LOG_CORE(E) << "BakeGSplat failed.";
+
+            return false;
         }
-        
-        /*{
-            auto& colors = obj->m_Desc.colors.host;
-			
-            colors->resize(color->count);
-			
-            memcpy(colors->data(), color->buffer.get(), color->buffer.size_bytes());
-        }*/
-        
-        {
-            auto& alphas = obj->m_Desc.alphas.host;
-			
-            alphas->resize(alpha->count);
-			
-            memcpy(alphas->data(), alpha->buffer.get(), alpha->buffer.size_bytes());
-        }
-        
-        {
-            auto& scales = obj->m_Desc.scales.host;
-			
-            scales->resize(scale->count);
-			
-            memcpy(scales->data(), scale->buffer.get(), scale->buffer.size_bytes());
-        }
-        
-        {
-            auto& orientations = obj->m_Desc.orientations.host;
-			
-            orientations->resize(orientation->count);
-			
-            memcpy(orientations->data(), orientation->buffer.get(), orientation->buffer.size_bytes());
-        }
-        
-        /*{
-            auto& albedos = obj->m_Desc.albedos.host;
-			
-            albedos->resize(albedo->count);
-			
-            memcpy(albedos->data(), albedo->buffer.get(), albedo->buffer.size_bytes());
-        }*/
 
 		obj->SetEObject(EObject::Polygon);
 		
 		obj->CreateRHIBuffer();
+        
+        return true;
+    }
+    
+    bool Ply::BakeGSplat(
+        const SP<tinyply::PlyData>& p, 
+        const SP<tinyply::PlyData>& n, 
+        const SP<tinyply::PlyData>& opacity, 
+        const SP<tinyply::PlyData>& scale, 
+        const SP<tinyply::PlyData>& rot, 
+        const SP<tinyply::PlyData>& f_dc, 
+        const SP<tinyply::PlyData>& f_rest,
+        SOP::GS3D* obj
+    ) {
+        NEPTUNE_PROFILE_ZONE
+        
+        {
+            auto& positions = obj->m_Desc.positions.host;
+			
+            positions->resize(p->count);
+			
+            memcpy(positions->data(), p->buffer.get(), p->buffer.size_bytes());
+        }
+        
+        {
+            auto addr = f_dc->buffer.get();
+            
+            static constexpr float SH_C0 = 0.28209479177387814f;
+            
+            auto& colors = obj->m_Desc.colors.host;
+            
+            colors->resize(f_dc->count);
+            
+            for (int i = 0; i < f_dc->count; ++i)
+            {
+                auto r = *reinterpret_cast<float*>(addr + 12 * i) * SH_C0 + 0.5f;
+                auto g = *reinterpret_cast<float*>(addr + 12 * i + 4) * SH_C0 + 0.5f;
+                auto b = *reinterpret_cast<float*>(addr + 12 * i + 8) * SH_C0 + 0.5f;
+                
+                (*colors)[i] = { r, g, b };
+            }
+        }
+        
+        {
+            auto addr = opacity->buffer.get();
+                            
+            auto& alphas = obj->m_Desc.alphas.host;
+                            
+            alphas->resize(opacity->count);
+                            
+            for (int i = 0; i < opacity->count; ++i)
+            {
+                auto r = *reinterpret_cast<float*>(addr + 4 * i);
+                                
+                (*alphas)[i] = 1 / (1 + glm::exp(-r));
+            }
+        }
+
+        {
+            auto addr = scale->buffer.get();
+                                            
+            auto& scales = obj->m_Desc.scales.host;
+                                            
+            scales->resize(scale->count);
+                                            
+            for (int i = 0; i < scale->count; ++i)
+            {
+                auto r = glm::exp(*reinterpret_cast<float*>(addr + 4 * i));
+                auto g = glm::exp(*reinterpret_cast<float*>(addr + 12 * i + 4));
+                auto b = glm::exp(*reinterpret_cast<float*>(addr + 12 * i + 8));
+                                                
+                (*scales)[i] = { r, g, b };
+            }
+        }
+
+        {
+            auto addr = rot->buffer.get();
+                    
+            auto& orientations = obj->m_Desc.orientations.host;
+                    
+            orientations->resize(rot->count);
+                    
+            for (int i = 0; i < rot->count; ++i)
+            {
+                auto w = *reinterpret_cast<float*>(addr + 16 * i);
+                auto r = *reinterpret_cast<float*>(addr + 16 * i + 4);
+                auto g = *reinterpret_cast<float*>(addr + 16 * i + 8);
+                auto b = *reinterpret_cast<float*>(addr + 16 * i + 12);
+                        
+                (*orientations)[i] = glm::normalize(glm::vec4{ r, g, b, w });
+            }
+        }
+        
+        {
+            auto addr = f_rest->buffer.get();
+                                          
+            auto f_dc_addr = f_dc->buffer.get();
+            
+            auto& sphr = obj->m_Desc.sphr.host;
+                                            
+            sphr->resize(f_rest->count);
+                                            
+            for (int i = 0; i < f_rest->count; ++i)
+            {
+                auto rest_0 = addr + 180 * i;
+                                                
+                auto r = *reinterpret_cast<float*>(f_dc_addr + 12 * i);
+                
+                (*sphr)[i][0][0] = r;
+                
+                memcpy(reinterpret_cast<char*>(sphr->data()) + 64 * i + 4, rest_0, 60);
+            }
+        }
+        
+        {
+            auto addr = f_rest->buffer.get();
+                                          
+            auto f_dc_addr = f_dc->buffer.get();
+            
+            auto& sphg = obj->m_Desc.sphg.host;
+                                            
+            sphg->resize(f_rest->count);
+                                            
+            for (int i = 0; i < f_rest->count; ++i)
+            {
+                auto rest_15 = addr + 180 * i + 60;
+                     
+                auto g = *reinterpret_cast<float*>(f_dc_addr + 12 * i + 4);
+                
+                (*sphg)[i][0][0] = g;
+                
+                memcpy(reinterpret_cast<char*>(sphg->data()) + 64 * i + 4, rest_15, 60);
+            }
+        }
+        
+        {
+            auto addr = f_rest->buffer.get();
+                                          
+            auto f_dc_addr = f_dc->buffer.get();
+            
+            auto& sphb = obj->m_Desc.sphb.host;
+                                            
+            sphb->resize(f_rest->count);
+                                            
+            for (int i = 0; i < f_rest->count; ++i)
+            {
+                auto rest_30 = addr + 180 * i + 120;
+                 
+                auto b = *reinterpret_cast<float*>(f_dc_addr + 12 * i + 8);
+                
+                (*sphb)[i][0][0] = b;
+                
+                memcpy(reinterpret_cast<char*>(sphb->data()) + 64 * i + 4, rest_30, 60);
+            }
+        }
+        
+        {
+            auto& normals = obj->m_Desc.normals.host;
+			
+            normals->resize(n->count);
+			
+            memcpy(normals->data(), n->buffer.get(), n->buffer.size_bytes());
+        }
+        
+        {
+            auto& albedos = obj->m_Desc.albedos.host;
+			
+            albedos->resize(n->count);
+            
+            memcpy(albedos->data(), obj->m_Desc.colors.host->data(), f_dc->buffer.size_bytes());
+        }
         
         return true;
     }

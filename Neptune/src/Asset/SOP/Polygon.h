@@ -6,9 +6,8 @@
 
 #pragma once
 #include "Core/Core.h"
-#include "Header/Core.h"
+#include "DescBase.h"
 #include "Object.h"
-#include "Attribute.h"
 
 namespace Neptune::SOP {
 	
@@ -26,7 +25,7 @@ namespace Neptune::SOP {
 	/**
 	* @brief Polygon Description.
 	*/
-	struct PolygonDesc : ShaderCore::PolygonDesc
+	struct PolygonDesc : DescBase<ShaderCore::PolygonDesc>
 	{
 		/**
 		* @brief Constructor Function.
@@ -36,12 +35,12 @@ namespace Neptune::SOP {
 		/**
 		* @brief Destructor Function.
 		*/
-		virtual ~PolygonDesc() = default;
+		~PolygonDesc() override = default;
 		
 		/**
 		* @brief Upload Host data to Device.
 		*/
-		void UploadToDevice() const;
+		void UploadToDevice() override;
 		
 		using Positions           = Attribute<glm::vec3>;               
 		using Normals             = Attribute<glm::vec3>;               
@@ -96,7 +95,7 @@ namespace Neptune::SOP {
 		/**
 		* @brief Create RHI Buffer.
 		*/
-		void CreateRHIBuffer() const override;
+		void CreateRHIBuffer() override;
 		
 	private:
 

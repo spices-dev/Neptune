@@ -95,9 +95,32 @@ namespace Neptune::RHI {
 		virtual void CmdBindPipeline(const SP<class Pipeline>& pipeline) = 0;
 
 		/**
-		* @brief Interface of DrawFullScreenTriangle.
+		* @brief Bind IndexBuffer.
+		*
+		* @param[in] buffer IndexBuffer.
 		*/
-		virtual void CmdDrawFullScreenTriangle() const = 0;
+		virtual void CmdBindIndexBuffer(const SP<class IndexBuffer>& buffer) const = 0;
+		
+		/**
+		* @brief Interface of Draw.
+		* 
+		* @param[in] vertexCount .
+		* @param[in] instanceCount .
+		* @param[in] firstVertex .
+		* @param[in] firstInstance .
+		*/
+		virtual void CmdDraw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) const = 0;
+
+		/**
+		* @brief Interface of DrawInstance.
+		* 
+		* @param[in] indexCount .
+		* @param[in] instanceCount .
+		* @param[in] firstIndex .
+		* @param[in] vertexOffset .
+		* @param[in] firstInstance .
+		*/
+		virtual void CmdDrawInstance(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const = 0;
 
 		/**
 		* @brief Interface of SetViewport.
@@ -172,9 +195,32 @@ namespace Neptune::RHI {
 		void CmdBindPipeline(const SP<class Pipeline>& pipeline) const { RHICmdList::m_Impl->CmdBindPipeline(pipeline); }
 
 		/**
-		* @brief Interface of DrawFullScreenTriangle.
+		* @brief Bind IndexBuffer.
+		*
+		* @param[in] buffer IndexBuffer.
 		*/
-		void CmdDrawFullScreenTriangle() const { RHICmdList::m_Impl->CmdDrawFullScreenTriangle(); }
+		void CmdBindIndexBuffer(const SP<class IndexBuffer>& buffer) const { RHICmdList::m_Impl->CmdBindIndexBuffer(buffer); }
+		
+		/**
+		* @brief Interface of Draw.
+		* 
+		* @param[in] vertexCount .
+		* @param[in] instanceCount .
+		* @param[in] firstVertex .
+		* @param[in] firstInstance .
+		*/
+		void CmdDraw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) const { RHICmdList::m_Impl->CmdDraw(vertexCount, instanceCount, firstVertex, firstInstance); }
+
+		/**
+		* @brief Interface of DrawInstance.
+		* 
+		* @param[in] indexCount .
+		* @param[in] instanceCount .
+		* @param[in] firstIndex .
+		* @param[in] vertexOffset .
+		* @param[in] firstInstance .
+		*/
+		void CmdDrawInstance(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const { RHICmdList::m_Impl->CmdDrawInstance(indexCount, instanceCount, firstIndex, vertexOffset, firstInstance); }
 
 		/**
 		* @brief Interface of SetViewport.

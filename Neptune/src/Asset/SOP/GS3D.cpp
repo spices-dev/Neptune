@@ -10,17 +10,24 @@
 
 namespace Neptune::SOP
 {
-    void GS3DDesc::UploadToDevice() const
+    void GS3DDesc::UploadToDevice()
     {
         NEPTUNE_PROFILE_ZONE
         
         Update_Attribute(positions)
-        Update_Attribute(normals)
         Update_Attribute(colors)
         Update_Attribute(alphas)
         Update_Attribute(scales)
         Update_Attribute(orientations)
+        
+        Update_Attribute(sphr)
+        Update_Attribute(sphg)
+        Update_Attribute(sphb)
+        
+        Update_Attribute(normals)
         Update_Attribute(albedos)
+        
+        DescBase::UploadToDevice();
     }
     
     bool GS3D::LoadFromDisk()
@@ -35,7 +42,7 @@ namespace Neptune::SOP
         return Tool::GS3D::Load(FilePath(), this);
     }
     
-    void GS3D::CreateRHIBuffer() const
+    void GS3D::CreateRHIBuffer()
     {
         NEPTUNE_PROFILE_ZONE
 

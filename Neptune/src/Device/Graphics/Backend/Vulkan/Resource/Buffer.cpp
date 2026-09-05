@@ -38,6 +38,13 @@ namespace Neptune::Vulkan::Resource {
 
 		m_Buffer.Flush(size, offset);
 	}
+	
+	VkDeviceAddress Buffer::GetDeviceAddress() const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		return m_Buffer.GetDeviceAddress();
+	}
 
 	void Buffer::SetName(const std::string& name) const
 	{

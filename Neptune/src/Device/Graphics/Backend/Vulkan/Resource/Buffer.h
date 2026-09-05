@@ -81,6 +81,13 @@ namespace Neptune::Vulkan::Resource {
 		void Flush(VkDeviceSize size = UINT64_MAX, VkDeviceSize offset = 0);
 
 		/**
+		* @brief Get Buffer Device Address.
+		*
+		* @return Returns Buffer Device Address.
+		*/
+		VkDeviceAddress GetDeviceAddress() const;
+		
+		/**
 		* @brief Set Buffer name.
 		*
 		* @param[in] name Buffer name.

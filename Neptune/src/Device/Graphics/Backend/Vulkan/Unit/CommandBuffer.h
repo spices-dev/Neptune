@@ -101,6 +101,15 @@ namespace Neptune::Vulkan::Unit {
 		void SetScissor(const VkRect2D& scissor) const;
 
 		/**
+		* @brief Bind IndexBuffer.
+		*
+		* @param[in] buffer VkBuffer.
+		* @param[in] offset VkDeviceSize.
+		* @param[in] indexType VkIndexType.
+		*/
+		void CmdBindIndexBuffer(VkBuffer buffer, VkDeviceSize offset, VkIndexType indexType) const;
+		
+		/**
 		* @brief Draw.
 		*
 		* @param[in] vertexCount .
@@ -110,6 +119,17 @@ namespace Neptune::Vulkan::Unit {
 		*/
 		void Draw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) const;
 
+		/**
+		* @brief DrawInstance.
+		*
+		* @param[in] indexCount .
+		* @param[in] instanceCount .
+		* @param[in] firstIndex .
+		* @param[in] vertexOffset .
+		* @param[in] firstInstance .
+		*/
+		void DrawInstance(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const;
+		
 		/**
 		* @brief Begin VideoCoding.
 		*

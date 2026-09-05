@@ -35,6 +35,7 @@
 #include "Render/Backend/Vulkan/RenderBackend.h"
 #endif
 
+#include "Render/Frontend/Pass/TransparentPass.h"
 #include "Render/Frontend/Pass/FPSPass.h"
 #include "Render/Frontend/Pass/BasePass.h"
 #include "Render/Frontend/Pass/SlatePass.h"
@@ -154,6 +155,12 @@ namespace Neptune {
         {
             auto pass = CreateSP<Render::BasePass>();
             pass->SetRTSize(rtSize);
+
+            AddPass(pass);
+        }
+        
+        {
+            auto pass = CreateSP<Render::TransparentPass>();
 
             AddPass(pass);
         }

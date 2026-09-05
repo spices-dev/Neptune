@@ -54,9 +54,8 @@ namespace Neptune::Vulkan {
         *
         * @param[in] data Host data.
         * @param[in] size Buffer size.
-        * @param[in] offset Buffer offset.
         */
-        void WriteToBuffer(const void* data, uint64_t size = UINT64_MAX, uint64_t offset = 0) override;
+        void WriteToBuffer(const void* data, uint64_t size = UINT64_MAX) override;
 
         /**
         * @brief Flush Buffer data.
@@ -64,11 +63,25 @@ namespace Neptune::Vulkan {
         * @param[in] size Buffer size.
         * @param[in] offset Buffer offset.
         */
-        void Flush(uint64_t size = UINT64_MAX, uint64_t offset = 0) override;
+        void Flush(uint64_t size = UINT64_MAX, uint64_t offset = 0) const override;
+        
+        /**
+        * @brief Get Buffer Device Address.
+        *
+        * @return Returns Buffer Device Address.
+        */
+        uint64_t GetDeviceAddress() const override;
+        
+        /**
+        * @brief Set Buffer Name.
+        *
+        * @param[in] name Buffer Name.
+        */
+        void SetName(const std::string& name) const override;
         
     private:
 
-        Resource::Buffer m_Buffer;                 // @brief This Buffer.
+        Resource::Buffer m_Buffer;                  // @brief This Buffer.
         UP<Resource::Buffer> m_StagingBuffer;       // @brief This Staging Buffer.
     };
 }

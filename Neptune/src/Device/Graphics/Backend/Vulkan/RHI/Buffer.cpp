@@ -30,7 +30,7 @@ namespace Neptune::Vulkan {
         m_Buffer.CreateBuffer(info, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
     }
 
-    void Buffer::WriteToBuffer(const void* data, uint64_t size, uint64_t offset)
+    void Buffer::WriteToBuffer(const void* data, uint64_t size)
     {
         NEPTUNE_PROFILE_ZONE
         
@@ -51,7 +51,7 @@ namespace Neptune::Vulkan {
         m_StagingBuffer->Flush();
     }
 
-    void Buffer::Flush(uint64_t size, uint64_t offset)
+    void Buffer::Flush(uint64_t size, uint64_t offset) const
     {
         NEPTUNE_PROFILE_ZONE
         
@@ -71,6 +71,20 @@ namespace Neptune::Vulkan {
         cmdList.End();
 
         cmdList.SubmitWait();
+    }
+    
+    uint64_t Buffer::GetDeviceAddress() const
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        return m_Buffer.GetDeviceAddress();
+    }
+    
+    void Buffer::SetName(const std::string& name) const
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        m_Buffer.SetName(name);
     }
     
 }

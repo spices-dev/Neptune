@@ -13,6 +13,7 @@
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderPass.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/Pipeline.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/DescriptorList.h"
+#include "Device/Graphics/Backend/Vulkan/RHI/IndexBuffer.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/VideoSession.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/QueryPool.h"
 #include "Device/Graphics/Frontend/RHI/RenderPass.h"
@@ -85,13 +86,27 @@ namespace Neptune::Vulkan {
 		m_CommandBuffer->BindPipeline(rhi->GetBindPoint(), rhi->Handle());
 	}
 
-	void CmdList::CmdDrawFullScreenTriangle() const
+	void CmdList::CmdBindIndexBuffer(const SP<RHI::IndexBuffer>& buffer) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_CommandBuffer->CmdBindIndexBuffer(buffer->GetRHIImpl<IndexBuffer>()->Handle(), 0, VK_INDEX_TYPE_UINT32);
+	}
+
+	void CmdList::CmdDraw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		m_CommandBuffer->Draw(3, 1, 0, 0);
+		m_CommandBuffer->Draw(vertexCount, instanceCount, firstVertex, firstInstance);
 	}
 
+	void CmdList::CmdDrawInstance(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_CommandBuffer->DrawInstance(indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
+	}
+	
 	void CmdList::CmdSetViewport(const glm::vec2& viewPortSize) const
 	{
 		NEPTUNE_PROFILE_ZONE

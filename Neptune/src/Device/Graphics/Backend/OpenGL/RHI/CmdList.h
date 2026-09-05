@@ -17,6 +17,7 @@ namespace Neptune::RHI {
 	class RenderPass;
 	class Pipeline;
 	class DescriptorList;
+	class IndexBuffer;
 }
 
 namespace Neptune::OpenGL {
@@ -94,9 +95,32 @@ namespace Neptune::OpenGL {
 		void CmdBindPipeline(const SP<RHI::Pipeline>& pipeline) override;
 
 		/**
-		* @brief Interface of DrawFullScreenTriangle.
+		* @brief Bind IndexBuffer.
+		*
+		* @param[in] buffer IndexBuffer.
 		*/
-		void CmdDrawFullScreenTriangle() const override;
+		void CmdBindIndexBuffer(const SP<RHI::IndexBuffer>& buffer) const override;
+		
+		/**
+		* @brief Interface of Draw.
+		* 
+		* @param[in] vertexCount .
+		* @param[in] instanceCount .
+		* @param[in] firstVertex .
+		* @param[in] firstInstance .
+		*/
+		void CmdDraw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) const override;
+
+		/**
+		* @brief Interface of DrawInstance.
+		* 
+		* @param[in] indexCount .
+		* @param[in] instanceCount .
+		* @param[in] firstIndex .
+		* @param[in] vertexOffset .
+		* @param[in] firstInstance .
+		*/
+		void CmdDrawInstance(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const override;
 
 		/**
 		* @brief Interface of SetViewport.

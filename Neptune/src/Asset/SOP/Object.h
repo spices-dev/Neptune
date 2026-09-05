@@ -11,13 +11,6 @@
 namespace Neptune::SOP
 {
 
-#define Update_Attribute(item)                              \
-	{                                                       \
-		item.device->CreateBuffer(sizeof(*item.host));      \
-		item.device->WriteToBuffer(item.host->data());      \
-		item.device->Flush();                               \
-	}
-
 	/**
 	* @brief Object Class.
 	*/
@@ -61,7 +54,7 @@ namespace Neptune::SOP
 		/**
 		* @brief Create RHI Buffer.
 		*/
-		virtual void CreateRHIBuffer() const = 0;
+		virtual void CreateRHIBuffer() = 0;
 
 	private:
 

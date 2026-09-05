@@ -210,11 +210,14 @@ struct GS3DDesc
 {
 	uint64_t modelAddress;                    /* @brief Address of the Model Matrix.                      */
 	uint64_t positionsAddress;                /* @brief Address of the Positions buffer.                  */
-	uint64_t normalsAddress;                  /* @brief Address of the Normals buffer.                    */
 	uint64_t colorsAddress;                   /* @brief Address of the Colors buffer.                     */
 	uint64_t alphasAddress;                   /* @brief Address of the Alphas buffer.                     */
 	uint64_t scalesAddress;                   /* @brief Address of the Scales buffer.                     */
 	uint64_t orientationsAddress;             /* @brief Address of the Orientations buffer.               */
+	uint64_t sphrAddress;                     /* @brief Address of the SPH R buffer.                      */
+	uint64_t sphgAddress;                     /* @brief Address of the SPH G buffer.                      */
+	uint64_t sphbAddress;                     /* @brief Address of the SPH B buffer.                      */
+	uint64_t normalsAddress;                  /* @brief Address of the Normals buffer.                    */
 	uint64_t albedosAddress;                  /* @brief Address of the Albedos buffer.                    */
 	uint64_t entityID;                        /* @brief EntityId, cast from entt::entity.                 */
 };

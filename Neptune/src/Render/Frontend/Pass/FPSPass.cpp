@@ -96,7 +96,7 @@ namespace Neptune::Render {
 
 		cmdList.CmdBindDescriptor(m_DescriptorList);
 
-		cmdList.CmdDrawFullScreenTriangle();
+		cmdList.CmdDraw(3, 1, 0, 0);
 
 		cmdList.CmdEndRenderPass();
 	}

@@ -6,9 +6,8 @@
 
 #pragma once
 #include "Core/Core.h"
-#include "Header/Core.h"
+#include "DescBase.h"
 #include "Object.h"
-#include "Attribute.h"
 
 namespace Neptune::Tool {
 	
@@ -20,7 +19,7 @@ namespace Neptune::SOP {
 	/**
 	* @brief GS3D Description.
 	*/
-	struct GS3DDesc : ShaderCore::GS3DDesc
+	struct GS3DDesc : DescBase<ShaderCore::GS3DDesc>
 	{
 		/**
 		* @brief Constructor Function.
@@ -30,27 +29,37 @@ namespace Neptune::SOP {
 		/**
 		* @brief Destructor Function.
 		*/
-		virtual ~GS3DDesc() = default;
+		~GS3DDesc() override = default;
 		
 		/**
 		* @brief Upload Host data to Device.
 		*/
-		void UploadToDevice() const;
+		void UploadToDevice() override;
 		
 		using Positions           = Attribute<glm::vec3>;               
-		using Normals             = Attribute<glm::vec3>;               
 		using Colors              = Attribute<glm::vec3>;               
-		using Alphas              = Attribute<glm::vec3>;               
+		using Alphas              = Attribute<float>;
 		using Scales              = Attribute<glm::vec3>;               
-		using Orientations        = Attribute<glm::vec4>;               
-		using Albedos             = Attribute<glm::vec3>;               
+		using Orientations        = Attribute<glm::vec4>;   
+
+		using SPHR                = Attribute<glm::mat4>;      
+		using SPHG                = Attribute<glm::mat4>;      
+		using SPHB                = Attribute<glm::mat4>;      
+
+		using Normals             = Attribute<glm::vec3>;  
+		using Albedos             = Attribute<glm::vec3>;
 		
 		Positions                   positions;                           // @brief Position.
-		Normals                     normals;                             // @brief Normal.
 		Colors                      colors;                              // @brief Color.
 		Alphas                      alphas;                              // @brief Alphas.
 		Scales                      scales;                              // @brief Scales.
 		Orientations                orientations;                        // @brief Orientations.
+		
+		SPHR                        sphr;                                // @brief SPH R.
+		SPHG                        sphg;                                // @brief SPH G.
+		SPHB                        sphb;                                // @brief SPH B.
+		
+		Normals                     normals;                             // @brief Normal.
 		Albedos                     albedos;                             // @brief Albedos.
 	};
 	
@@ -83,7 +92,14 @@ namespace Neptune::SOP {
 		/**
 		* @brief Create RHI Buffer.
 		*/
-		void CreateRHIBuffer() const override;
+		void CreateRHIBuffer() override;
+		
+		/**
+		* @brief Get Point Count.
+		* 
+		* @return Returns Point Count.
+		*/
+		uint32_t GetPointCount() const { return m_Desc.positions.host->size(); }
 		
 	private:
 

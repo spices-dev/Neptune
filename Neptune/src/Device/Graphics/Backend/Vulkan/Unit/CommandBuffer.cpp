@@ -90,6 +90,13 @@ namespace Neptune::Vulkan::Unit {
 
 		vkCmdSetScissor(m_Handle, 0, 1, &scissor);
 	}
+	
+	void CommandBuffer::CmdBindIndexBuffer(VkBuffer buffer, VkDeviceSize offset, VkIndexType indexType) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdBindIndexBuffer(m_Handle, buffer, offset, indexType);
+	}
 
 	void CommandBuffer::Draw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) const
 	{
@@ -98,6 +105,13 @@ namespace Neptune::Vulkan::Unit {
 		vkCmdDraw(m_Handle, vertexCount, instanceCount, firstVertex, firstInstance);
 	}
 
+	void CommandBuffer::DrawInstance(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawIndexed(m_Handle, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
+	}
+	
 	void CommandBuffer::BeginVideoCoding(const PFN_vkCmdBeginVideoCodingKHR& fn, const VkVideoBeginCodingInfoKHR& info) const
 	{
 		NEPTUNE_PROFILE_ZONE

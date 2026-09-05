@@ -18,6 +18,8 @@ namespace Neptune::SOP {
 	template<typename T>
 	struct Attribute
 	{
+		using T = T;
+		
 		/**
 		* @brief Constructor Function.
 		*/
