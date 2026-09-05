@@ -8,14 +8,18 @@
 #include "Layout.h"
 #include "Scripts/VideoPlayer.h"
 #include "Scripts/RHICapturer.h"
+#include "Scripts/CameraController.h"
 
 #include <World/Scene/Scene.h>
 #include <World/Entity/Entity.h>
 #include <World/Component/TransformComponent.h>
 #include <World/Component/ScriptComponent.h>
 #include <World/Component/SOPComponent.h>
+#include <World/Component/CameraComponent.h>
 #include <Scripts/NativeScripts/EngineClock.h>
 #include <Asset/SOP/GS3D.h>
+#include <GamePlay/Camera/Camera.h>
+#include <Data/Transform.h>
 
 namespace Neptune::Editor {
 
@@ -55,6 +59,21 @@ namespace Neptune::Editor {
 
         scriptComponent.AddScript(CreateSP<EngineClock>(scene));
 
+        {
+            auto entity = scene->Create("camera");
+            
+            auto& camera = entity.AddComponent<CameraComponent>(Camera::CreatePerspective({}));
+            
+            auto& transform = entity.AddComponent<TransformComponent>();
+            
+            transform.GetModel()->position = { 30.0f, 6.0f, 15.0f };
+            transform.GetModel()->rotation = {8.0f, -90.0f, 0.0f};
+            
+            auto& scripts = entity.AddComponent<ScriptComponent>();
+            
+            scripts.AddScript(CreateSP<CameraController>(camera.GetModel(), transform.GetModel()));
+        }
+        
         {
             auto entity = scene->Create("cube");
             entity.AddComponent<TransformComponent>();

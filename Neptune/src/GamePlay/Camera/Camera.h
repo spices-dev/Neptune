@@ -27,8 +27,8 @@ namespace Neptune {
     struct OrthographicParam
     {
         float left      = -10.0f;            /* @brief Left Plane of Camera.               */
-        float right     = 10.0f;             /* @brief Right Plane of Camera.              */
-        float top       = 10.0f;             /* @brief Top Plane of Camera.                */
+        float right     =  10.0f;            /* @brief Right Plane of Camera.              */
+        float top       =  10.0f;            /* @brief Top Plane of Camera.                */
         float bottom    = -10.0f;            /* @brief Bottom Plane of Camera.             */
         float nearPlane = 0.01f;             /* @brief Near Plane of Camera.               */
         float farPlane  = 1000.0f;           /* @brief Far Plane of Camera.                */

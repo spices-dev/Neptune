@@ -11,7 +11,10 @@
 #include "Header/Core.h"
 #include "World/Scene/Scene.h"
 #include "World/Component/Component.h"
+#include "World/Component/CameraComponent.h"
 #include "Data/Clock.h"
+#include "Core/Math/Transform.h"
+#include "World/Component/TransformComponent.h"
 
 namespace Neptune::Render {
 
@@ -41,6 +44,21 @@ namespace Neptune::Render {
 			1.0f / m_RTSize.y
 		};
 
+		scene->ViewComponent<CameraComponent>([&](auto e, auto& component) {
+			
+			const auto& item = component.GetModel();
+			const auto& model = scene->GetComponent<TransformComponent>(e).GetModelMatrix();
+			
+			view.projection  = item->GetPMatrixReverseZ();
+			view.nprojection = item->GetPMatrixReverseZ();
+			view.nprojection[1][1] *= -1.0f;
+			
+			view.view   = glm::inverse(model);
+			view.inView = model;
+			
+			return true;
+		});
+		
 		m_DescriptorList->UpdateUniformBuffer(0, 0, &view);
 
 		ShaderCore::Input      input{};

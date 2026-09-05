@@ -39,7 +39,16 @@ layout(location = 0) out vec4 outSceneColor;
         
 void main()
 {
-    outSceneColor = texture(videoImage, texCoord);
+    //outSceneColor = texture(videoImage, texCoord);
+
+    if(prd.rayDirection.y > 0.0f)
+    {
+        outSceneColor = mix(vec3(1.0f), vec3(0.25f, 0.5f, 1.0f), prd.rayDirection.y);
+    }
+    else
+    {
+        outSceneColor   = vec3(1.0f);
+    }
 }
 
 /*****************************************************************************************/

@@ -36,12 +36,5 @@ namespace Neptune {
         */
         ~SOPComponent() override = default;
 
-        /**
-        * @brief Rename first element in tags.
-        * 
-        * @param[in] tag new name.
-        */
-        void Rename(const std::string& tag);
-
     };
 }

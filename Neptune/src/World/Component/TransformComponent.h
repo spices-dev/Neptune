@@ -16,7 +16,7 @@ namespace Neptune {
     * @brief TransformComponent Class.
     * This class defines the specific behaves of TransformComponent.
     */
-    class TransformComponent : public Component<Transform>
+    class TransformComponent : public Component<SP<Data::Transform>>
     {
     public:
 
@@ -33,7 +33,7 @@ namespace Neptune {
         /**
         * @brief Constructor Function.
         */
-        TransformComponent();
+        TransformComponent() : Component(CreateSP<Data::Transform>()) {}
 
         /**
         * @brief Destructor Function.
@@ -41,87 +41,11 @@ namespace Neptune {
         ~TransformComponent() override = default;
 
         /**
-        * @brief Set the position this component handled.
-        * Call CalMatrix() during this API.
-        * 
-        * @param[in] position The entity's world position.
-        */
-        void SetPosition(const glm::vec3& position) { GetModel().position = position; CalMatrix(); }
-
-        /**
-        * @brief Set the rotation this component handled.
-        * Call CalMatrix() during this API.
-        * 
-        * @param[in] rotation The entity's world rotation.
-        */
-        void SetRotation(const glm::vec3& rotation) { GetModel().rotation = rotation; CalMatrix(); }
-
-        /**
-        * @brief Set the scale this component handled.
-        * Call CalMatrix() during this API.
-        * 
-        * @param[in] scale The entity's world scale.
-        */
-        void SetScale(const glm::vec3& scale) { GetModel().scale = scale; CalMatrix(); }
-
-        /**
-        * @brief Add the position to this component handled.
-        * Call CalMatrix() during this API.
-        * 
-        * @param[in] position The entity's world position.
-        */
-        void AddPosition(const glm::vec3& position) { GetModel().position += position; CalMatrix(); }
-
-        /**
-        * @brief Add the rotation to this component handled.
-        * Call CalMatrix() during this API.
-        * 
-        * @param[in] rotation The entity's world rotation.
-        */
-        void AddRotation(const glm::vec3& rotation) { GetModel().rotation += rotation; CalMatrix(); }
-
-        /**
-        * @brief Add the scale to this component handled.
-        * Call CalMatrix() during this API.
-        * 
-        * @param[in] scale The entity's world scale.
-        */
-        void AddScale(const glm::vec3& scale) { GetModel().scale += scale; CalMatrix(); }
-
-        /**
         * @brief Get the modelMatrix variable.
         * 
         * @return Returns the modelMatrix variable.
         */
-        const glm::mat4& GetModelMatrix() { CalMatrix(); return m_ModelMatrix; }
-
-        /**
-        * @brief Get Rotate Matrix.
-        * 
-        * @return Returns the Rotate Matrix.
-        */
-        glm::mat4 GetRotateMatrix() const;
-
-        /**
-        * @brief Get the position variable.
-        * 
-        * @return Returns the position variable.
-        */
-        const glm::vec3& GetPosition() const { return GetModel().position; }
-
-        /**
-        * @brief Get the rotation variable.
-        * 
-        * @return Returns the rotation variable.
-        */
-        const glm::vec3& GetRotation() const { return GetModel().rotation; }
-
-        /**
-        * @brief Get the scale variable.
-        * 
-        * @return Returns the scale variable.
-        */
-        const glm::vec3& GetScale() const { return GetModel().scale; }
+        const glm::mat4& GetModelMatrix() { m_ModelMatrix = ToMatrix(*GetModel()); return m_ModelMatrix; }
 
         /**
         * @brief Get WorldMarkFlags this frame.
@@ -150,13 +74,6 @@ namespace Neptune {
         * @param[in] flags In flags.
         */
         void ClearMarkerWithBits(const Container::BitSet<TransformComponentBits>& flags) { m_Marker ^= flags; }
-
-    private:
-
-        /**
-        * @brief Calculate Model Matrix.
-        */
-        void CalMatrix();
 
     private:
 
