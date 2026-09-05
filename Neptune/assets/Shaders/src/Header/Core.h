@@ -214,9 +214,9 @@ struct GS3DDesc
 	uint64_t alphasAddress;                   /* @brief Address of the Alphas buffer.                     */
 	uint64_t scalesAddress;                   /* @brief Address of the Scales buffer.                     */
 	uint64_t orientationsAddress;             /* @brief Address of the Orientations buffer.               */
-	uint64_t sphrAddress;                     /* @brief Address of the SPH R buffer.                      */
-	uint64_t sphgAddress;                     /* @brief Address of the SPH G buffer.                      */
-	uint64_t sphbAddress;                     /* @brief Address of the SPH B buffer.                      */
+	uint64_t sphrsAddress;                    /* @brief Address of the SPH_Rs buffer.                     */
+	uint64_t sphgsAddress;                    /* @brief Address of the SPH_Gs buffer.                     */
+	uint64_t sphbsAddress;                    /* @brief Address of the SPH_Bs buffer.                     */
 	uint64_t normalsAddress;                  /* @brief Address of the Normals buffer.                    */
 	uint64_t albedosAddress;                  /* @brief Address of the Albedos buffer.                    */
 	uint64_t entityID;                        /* @brief EntityId, cast from entt::entity.                 */

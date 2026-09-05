@@ -69,7 +69,7 @@ namespace Neptune::Vulkan {
 		* @param[in] binding .
 		* @param[in] data UniformBuffer data.
 		*/
-		void UpdateUniformBuffer(uint32_t set, uint32_t binding, void* data) override;
+		void UpdateUniformBuffer(uint32_t set, uint32_t binding, const void* data) override;
 
 		/**
 		* @brief Interface of Update UniformTexture.

@@ -56,7 +56,7 @@ namespace Neptune::Vulkan {
 		descriptorSet->AddBinding(info, layoutBinding);
 	}
 
-	void DescriptorList::UpdateUniformBuffer(uint32_t set, uint32_t binding, void* data)
+	void DescriptorList::UpdateUniformBuffer(uint32_t set, uint32_t binding, const void* data)
 	{
 		NEPTUNE_PROFILE_ZONE
 

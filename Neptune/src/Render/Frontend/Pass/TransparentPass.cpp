@@ -37,6 +37,7 @@ namespace Neptune::Render {
 		m_RenderPass->Build();
 		
 		m_DescriptorList = CreateSP<RHI::DescriptorList>();
+		m_DescriptorList->AddUniformBuffer(1, 0, sizeof(uint64_t));
 		m_DescriptorList->CombineSharedLayout();
 		m_DescriptorList->Build();
 
@@ -112,6 +113,8 @@ namespace Neptune::Render {
 		});
 
 		if (!item) return;
+		
+		m_DescriptorList->UpdateUniformBuffer(1, 0, &item->GetDescDeviceAddress());
 		
 		const auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
 

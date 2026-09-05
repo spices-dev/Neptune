@@ -137,7 +137,7 @@ namespace Neptune::Tool {
             return false;
         }
 
-		obj->SetEObject(EObject::Polygon);
+		obj->SetEObject(EObject::GS3D);
 		
 		obj->CreateRHIBuffer();
         
@@ -238,7 +238,7 @@ namespace Neptune::Tool {
                                           
             auto f_dc_addr = f_dc->buffer.get();
             
-            auto& sphr = obj->m_Desc.sphr.host;
+            auto& sphr = obj->m_Desc.sphrs.host;
                                             
             sphr->resize(f_rest->count);
                                             
@@ -259,7 +259,7 @@ namespace Neptune::Tool {
                                           
             auto f_dc_addr = f_dc->buffer.get();
             
-            auto& sphg = obj->m_Desc.sphg.host;
+            auto& sphg = obj->m_Desc.sphgs.host;
                                             
             sphg->resize(f_rest->count);
                                             
@@ -280,7 +280,7 @@ namespace Neptune::Tool {
                                           
             auto f_dc_addr = f_dc->buffer.get();
             
-            auto& sphb = obj->m_Desc.sphb.host;
+            auto& sphb = obj->m_Desc.sphbs.host;
                                             
             sphb->resize(f_rest->count);
                                             

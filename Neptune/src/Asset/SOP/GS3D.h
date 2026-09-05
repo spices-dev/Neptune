@@ -42,9 +42,9 @@ namespace Neptune::SOP {
 		using Scales              = Attribute<glm::vec3>;               
 		using Orientations        = Attribute<glm::vec4>;   
 
-		using SPHR                = Attribute<glm::mat4>;      
-		using SPHG                = Attribute<glm::mat4>;      
-		using SPHB                = Attribute<glm::mat4>;      
+		using SPH_R               = Attribute<glm::mat4>;      
+		using SPH_G               = Attribute<glm::mat4>;      
+		using SPH_B               = Attribute<glm::mat4>;      
 
 		using Normals             = Attribute<glm::vec3>;  
 		using Albedos             = Attribute<glm::vec3>;
@@ -55,9 +55,9 @@ namespace Neptune::SOP {
 		Scales                      scales;                              // @brief Scales.
 		Orientations                orientations;                        // @brief Orientations.
 		
-		SPHR                        sphr;                                // @brief SPH R.
-		SPHG                        sphg;                                // @brief SPH G.
-		SPHB                        sphb;                                // @brief SPH B.
+		SPH_R                       sphrs;                               // @brief SPH_R.
+		SPH_G                       sphgs;                               // @brief SPH_G.
+		SPH_B                       sphbs;                               // @brief SPH_B.
 		
 		Normals                     normals;                             // @brief Normal.
 		Albedos                     albedos;                             // @brief Albedos.
@@ -100,6 +100,13 @@ namespace Neptune::SOP {
 		* @return Returns Point Count.
 		*/
 		uint32_t GetPointCount() const { return m_Desc.positions.host->size(); }
+		
+		/**
+		* @brief Get Desc Device Address.
+		* 
+		* @return Returns Desc Device Address.
+		*/
+		const uint64_t& GetDescDeviceAddress() const { return m_Desc.descAddress; }
 		
 	private:
 

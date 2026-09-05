@@ -1,13 +1,13 @@
 /**
-* @file ShaderMeshDescLayout.glsl.
-* @brief This Shader Header File Defines Mesh Descriptions.
+* @file PolygonDescLayout.glsl.
+* @brief This Shader Header File Defines Polygon Descriptions.
 * @author Spices.
 */
 
 /************************************Pre Compile*******************************************/
 
-#ifndef MESHDESC_LAYOUT_H
-#define MESHDESC_LAYOUT_H
+#ifndef POLYGONDESC_LAYOUT_H
+#define POLYGONDESC_LAYOUT_H
 
 #include "Core.h"
 
@@ -16,16 +16,16 @@
 /****************************************Buffer Data**************************************/
 
 /**
-* @brief Mesh Desciption Buffer.
+* @brief Polygon Desciption Buffer.
 */
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer MeshDescs
+layout(buffer_reference, scalar, buffer_reference_align = 8) buffer PolygonDescs
 {
-    MeshDesc i[];             /* @see MeshDesc. */
+    PolygonDesc i[];             /* @see PolygonDesc. */
 };
-MeshDesc desc;
+PolygonDesc desc;
 
 /**
-* @brief Mesh Model Matrix Buffer.
+* @brief Polygon Model Matrix Buffer.
 */
 layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Models
 {
@@ -119,12 +119,13 @@ Meshlets meshlets;
 /******************************************Functions**************************************/
 
 /**
-* @brief Explain Mesh Desciption to split variable.
-* @param[in] meshDescAddress the Mesh Desciption Buffer Address address.
+* @brief Explain Polygon Desciption to split variable.
+* 
+* @param[in] polygonDescAddress The Polygon Desciption Buffer Address address.
 */
-void ExplainMeshDesciption(const in uint64_t meshDescAddress)
+void ExplainPolygonDesciption(const in uint64_t polygonDescAddress)
 {
-    desc                = MeshDescs(meshDescAddress).i[0];
+    desc                = PolygonDescs(polygonDescAddress).i[0];
     model               = Models(desc.modelAddress).i[0];
     positions           = Positions(desc.positionsAddress);
     normals             = Normals(desc.normalsAddress);
@@ -146,8 +147,10 @@ void ExplainMeshDesciption(const in uint64_t meshDescAddress)
 
 /**
 * @brief Transform a Vertex to World.
+* 
 * @param[in] vertex Vertex.
 * @param[in] model model matrix.
+* 
 * @return Returns Transformed Vertex.
 */
 Vertex TransformVertexToWorld(const in Vertex vertex, const in mat4 model)
@@ -166,7 +169,9 @@ Vertex TransformVertexToWorld(const in Vertex vertex, const in mat4 model)
 
 /**
 * @brief Get Vertices from PrimitiveVerteces.
+* 
 * @param[in] primitiveID Primitive index.
+* 
 * @return Returns Primitive Vertices.
 */
 Vertex[3] GetVerticesUsingPrimitive(const in uint primitiveID)
@@ -202,8 +207,11 @@ Vertex[3] GetVerticesUsingPrimitive(const in uint primitiveID)
 
 /**
 * @brief Sort PrimLocation from min to max.
+* 
 * @param[in] primLocation Primitive Location.
+* 
 * @return Returns PrimLocation Order.
+* 
 * @attention Not in use right now.
 */
 uvec3 GetPrimLocationOrder(const in uvec3 primLocation)
@@ -231,9 +239,12 @@ uvec3 GetPrimLocationOrder(const in uvec3 primLocation)
 
 /**
 * @brief Get Pixel from Primitive Barycentric.
+* 
 * @param[in] primitiveID Primitive index.
 * @param[in] baryCoord Barycentric Coord.
+* 
 * @return Returns Barycentric Pxiel.
+* 
 * @attention Not in use right now.
 */
 Pixel GetPixelUsingPrimitiveBarycentric(const in uint primitiveID, const in vec3 baryCoord)

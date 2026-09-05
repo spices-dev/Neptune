@@ -55,7 +55,7 @@ namespace Neptune::RHI {
 		* @param[in] binding .
 		* @param[in] data UniformBuffer data.
 		*/
-		virtual void UpdateUniformBuffer(uint32_t set, uint32_t binding, void* data) = 0;
+		virtual void UpdateUniformBuffer(uint32_t set, uint32_t binding, const void* data) = 0;
 
 		/**
 		* @brief Interface of Update UniformTexture.
@@ -135,7 +135,7 @@ namespace Neptune::RHI {
 		* @param[in] binding .
 		* @param[in] data UniformBuffer data.
 		*/
-		void UpdateUniformBuffer(uint32_t set, uint32_t binding, void* data) const { m_Impl->UpdateUniformBuffer(set, binding, data); }
+		void UpdateUniformBuffer(uint32_t set, uint32_t binding, const void* data) const { m_Impl->UpdateUniformBuffer(set, binding, data); }
 
 		/**
 		* @brief Interface of Update UniformTexture.

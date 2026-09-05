@@ -24,7 +24,7 @@ namespace Neptune::Direct3D11 {
 
 	}
 
-	void DescriptorList::UpdateUniformBuffer(uint32_t set, uint32_t binding, void* data)
+	void DescriptorList::UpdateUniformBuffer(uint32_t set, uint32_t binding, const void* data)
 	{
 		NEPTUNE_PROFILE_ZONE
 

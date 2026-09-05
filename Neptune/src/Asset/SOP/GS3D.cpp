@@ -20,9 +20,9 @@ namespace Neptune::SOP
         Update_Attribute(scales)
         Update_Attribute(orientations)
         
-        Update_Attribute(sphr)
-        Update_Attribute(sphg)
-        Update_Attribute(sphb)
+        Update_Attribute(sphrs)
+        Update_Attribute(sphgs)
+        Update_Attribute(sphbs)
         
         Update_Attribute(normals)
         Update_Attribute(albedos)
