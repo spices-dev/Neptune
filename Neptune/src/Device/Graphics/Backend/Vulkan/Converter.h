@@ -10,7 +10,7 @@
 
 #include "Core.h"
 #include "Resource/Texture/RenderTarget.h"
-#include "Resource/SOP/Enum.h"
+#include "Asset/SOP/Enum.h"
 #include "Resource/Shader/Shader.h"
 
 #include <vk_mem_alloc.h>

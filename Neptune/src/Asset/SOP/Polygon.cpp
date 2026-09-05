@@ -26,6 +26,18 @@ namespace Neptune::SOP {
         Update_Attribute(lods)
     }
     
+    bool Polygon::LoadFromDisk()
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        if (Object::LoadFromDisk())
+        {
+            return true;
+        }
+        
+        return false;
+    }
+    
     void Polygon::CreateRHIBuffer() const
     {
         NEPTUNE_PROFILE_ZONE

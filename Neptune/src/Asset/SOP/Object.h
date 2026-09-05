@@ -45,11 +45,11 @@ namespace Neptune::SOP
 		const std::filesystem::path& FilePath() const { return m_FilePath; }
 		
 		/**
-		* @brief Load Asset from Disk.
+		* @brief Load Data from Disk.
 		* 
 		* @return Returns true if succeeded.
 		*/
-		bool LoadFromDisk();
+		virtual bool LoadFromDisk();
 
 		/**
 		* @brief Create RHI Buffer.

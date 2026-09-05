@@ -6,6 +6,7 @@
 
 #pragma once
 #include "Core/Core.h"
+#include "Core/Container/MemoryBuffer.h"
 
 namespace Neptune::SOP {
 	
@@ -26,26 +27,36 @@ namespace Neptune::SOP {
 		*/
 		static bool Load(const std::filesystem::path& file, class Object* obj);
 
+		/**
+		* @brief Load SOP data from memory data.
+		* 
+		* @param[in] memory mesh memory buffer.
+		* @param[in,out] obj Object.
+		* 
+		* @return Returns true if load data successfully.
+		*/
+		static bool Load(MemoryBuffer& memory, class Object* obj);
+		
 	private:
 
 		/**
-		* @brief Load Polygon data from a .asset file.
+		* @brief Load Polygon data from stream.
 		* 
-		* @param[in] stream file stream.
+		* @param[in] stream stream.
 		* @param[in,out] obj Polygon.
 		* 
 		* @return Returns true if load data successfully.
 		*/
-		static bool Load(std::ifstream& stream, class Polygon* obj);
+		static bool Load(std::istream& stream, class Polygon* obj);
 		
 		/**
-		* @brief Load GS3D data from a .asset file.
+		* @brief Load GS3D data from stream.
 		* 
-		* @param[in] stream file stream.
+		* @param[in] stream stream.
 		* @param[in,out] obj Mesh GS3D.
 		* 
 		* @return Returns true if load data successfully.
 		*/
-		static bool Load(std::ifstream& stream, class GS3D* obj);
+		static bool Load(std::istream& stream, class GS3D* obj);
 	};
 }

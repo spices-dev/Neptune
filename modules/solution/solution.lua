@@ -126,17 +126,23 @@ module.DefineCppExecutable = function(name, callback)
 end
 
 -- Projects
-module.projects             = {
-	["Neptune"]             = solution_root .. "/Neptune",            -- Project: Neptune
-	["Editor"]              = solution_root .. "/Editor",             -- Project: Editor
-	["Runtime"]             = solution_root .. "/Runtime",            -- Project: Runtime
-    ["UnitTest"]            = solution_root .. "/UnitTest",           -- Project: UnitTest
-}
+module.projects = function()
+
+    local list = {}
+
+    table.insert(list, solution_root .. "/Neptune")                   -- Project: Neptune
+    table.insert(list, solution_root .. "/Editor")                    -- Project: Editor
+    table.insert(list, solution_root .. "/Runtime")                   -- Project: Runtime
+    table.insert(list, solution_root .. "/UnitTest")                  -- Project: UnitTest
+
+    return list
+
+end
 
 -- @brief Load all Projects.
 module.LoadProjects = function()
 
-    for name, path in pairs(module.projects) do
+    for _, path in ipairs(module.projects()) do
         include(path)
     end
 

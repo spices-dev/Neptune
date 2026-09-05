@@ -15,7 +15,7 @@
 #include <World/Component/ScriptComponent.h>
 #include <World/Component/SOPComponent.h>
 #include <Scripts/NativeScripts/EngineClock.h>
-#include <Resource/SOP/GS3D.h>
+#include <Asset/SOP/GS3D.h>
 
 namespace Neptune::Editor {
 

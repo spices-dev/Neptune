@@ -7,7 +7,7 @@ solution.DefineCppExecutable("Editor", function()
 	-- The Solution Files.
 	files
 	{
-		-- SandBox Source Files.
+		-- Editor Source Files.
 		"src/**.h",
 		"src/**.cpp",
 	}

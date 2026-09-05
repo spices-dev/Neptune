@@ -69,6 +69,13 @@ namespace Neptune::SOP {
 		~GS3D() override = default;
 
 		/**
+		* @brief Load Data from Disk.
+		* 
+		* @return Returns true if succeeded.
+		*/
+		bool LoadFromDisk() override;
+		
+		/**
 		* @brief Create RHI Buffer.
 		*/
 		void CreateRHIBuffer() const override;

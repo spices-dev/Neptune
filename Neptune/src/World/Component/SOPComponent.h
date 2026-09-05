@@ -7,7 +7,7 @@
 #pragma once
 #include "Core/Core.h"
 #include "Component.h"
-#include "Resource/SOP/Object.h"
+#include "Asset/SOP/Object.h"
 
 namespace Neptune {
 

@@ -7,7 +7,7 @@ solution.DefineCppExecutable("Runtime", function()
 	-- The Solution Files.
 	files
 	{
-		-- SandBox Source Files.
+		-- Runtime Source Files.
 		"src/**.h",
 		"src/**.cpp",
 	}

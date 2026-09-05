@@ -31,7 +31,7 @@ namespace Neptune {
         /**
         * @brief Destructor Function.
         */
-        ~LogicalSystem();
+        ~LogicalSystem() override;
 
         /**
         * @brief Interface of system initialize.

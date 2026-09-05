@@ -7,7 +7,7 @@ solution.DefineCppExecutable("UnitTest", function()
 	-- The Solution Files.
 	files
 	{
-		-- Game Source Files.
+		-- UnitTest Files.
 		"src/**.h",
 		"src/**.cpp",
 	}

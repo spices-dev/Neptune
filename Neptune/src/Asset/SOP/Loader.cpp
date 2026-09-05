@@ -6,8 +6,8 @@
 
 #include "Pchheader.h"
 #include "Loader.h"
-#include "Resource/SOP/Polygon.h"
-#include "Resource/SOP/GS3D.h"
+#include "Asset/SOP/Polygon.h"
+#include "Asset/SOP/GS3D.h"
 
 namespace Neptune::SOP {
 
@@ -86,7 +86,45 @@ namespace Neptune::SOP {
 		return false;
 	}
 
-	bool Loader::Load(std::ifstream& stream, Polygon* obj)
+	bool Loader::Load(MemoryBuffer& memory, Object* obj)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		std::istream stream(&memory);
+		
+		AssetHeader header;
+		stream.read(reinterpret_cast<char*>(&header), sizeof(AssetHeader));
+		
+		if (!stream)
+		{
+			NEPTUNE_LOG_CORE(E) << "Memory data corruption.";
+			
+			return false;
+		}
+		
+		if (std::strncmp(header.PrimaryType, kSOP, sizeof(header.PrimaryType)) != 0)
+		{
+			NEPTUNE_LOG_CORE(E) << "Memory data is not a SOP asset. PrimaryType: " << header.PrimaryType;
+			
+			return false;
+		}
+		
+		if (std::strncmp(header.SecondaryType, kPolygon, sizeof(header.SecondaryType)) == 0)
+		{
+			return Load(stream, static_cast<Polygon*>(obj));
+		}
+		
+		if (std::strncmp(header.SecondaryType, kGS3D, sizeof(header.SecondaryType)) == 0)
+		{
+			return Load(stream, static_cast<GS3D*>(obj));
+		}
+		
+		NEPTUNE_LOG_CORE(E) << "Memory data has an unknown SecondaryType: " << header.SecondaryType;
+		
+		return false;
+	}
+	
+	bool Loader::Load(std::istream& stream, Polygon* obj)
 	{
 		NEPTUNE_PROFILE_ZONE
 		
@@ -217,7 +255,7 @@ namespace Neptune::SOP {
 		return true;
 	}
 
-	bool Loader::Load(std::ifstream& stream, GS3D* obj)
+	bool Loader::Load(std::istream& stream, GS3D* obj)
 	{
 		NEPTUNE_PROFILE_ZONE
 
