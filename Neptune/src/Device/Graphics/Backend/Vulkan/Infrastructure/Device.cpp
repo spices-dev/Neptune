@@ -120,66 +120,62 @@ namespace Neptune::Vulkan {
     			case VK_QUEUE_GRAPHICS_BIT:
     			{
     				GetContext().Registry<IGraphicQueue>(m_Device.GetDeviceQueue(family.first, 0));
-    				GetContext().Registry<IGraphicThreadQueue>();
+    				auto threadQueue = GetContext().Registry<IGraphicThreadQueue>();
 
     				auto count = std::min(family.second, NThreadQueue + 1);
 
     				if (count == 1)
     				{
-    					GetContext().Get<IGraphicThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, 0));
+    					threadQueue->Add(m_Device.GetDeviceQueue(family.first, 0));
     					break;
     				}
     				
     				for (int i = 1; i < count; ++i)
     				{
-						GetContext().Get<IGraphicThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, i));
+						threadQueue->Add(m_Device.GetDeviceQueue(family.first, i));
 					}
     				break;
     			}
     			case VK_QUEUE_COMPUTE_BIT:
     			{
 					GetContext().Registry<IComputeQueue>(m_Device.GetDeviceQueue(family.first, 0));
-					GetContext().Registry<IComputeThreadQueue>();
+					auto threadQueue = GetContext().Registry<IComputeThreadQueue>();
 
 					auto count = std::min(family.second, NThreadQueue + 1);
 
     				if (count == 1)
     				{
-    					GetContext().Get<IGraphicThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, 0));
+    					threadQueue->Add(m_Device.GetDeviceQueue(family.first, 0));
     					break;
     				}
     				
 					for (int i = 1; i < count; ++i)
 					{
-						GetContext().Get<IComputeThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, i));
+						threadQueue->Add(m_Device.GetDeviceQueue(family.first, i));
 					}
 					break;
 				}
     			case VK_QUEUE_TRANSFER_BIT:
     			{
-					GetContext().Registry<ITransferThreadQueue>();
-    				GetContext().Get<ITransferThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, 0));
+					GetContext().Registry<ITransferThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, 0));
     				
 					break;
 				}
     			case VK_QUEUE_VIDEO_DECODE_BIT_KHR:
     			{
-					GetContext().Registry<IVideoDecodeThreadQueue>();
-					GetContext().Get<IVideoDecodeThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, 0));
+					GetContext().Registry<IVideoDecodeThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, 0));
     				
 					break;
 				}
     			case VK_QUEUE_VIDEO_ENCODE_BIT_KHR:
     			{
-					GetContext().Registry<IVideoEncodeThreadQueue>();
-					GetContext().Get<IVideoEncodeThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, 0));
+					GetContext().Registry<IVideoEncodeThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, 0));
     				
 					break;
 				}
     			case VK_QUEUE_OPTICAL_FLOW_BIT_NV:
     			{
-					GetContext().Registry<IOpticalFlowThreadQueue>();
-					GetContext().Get<IOpticalFlowThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, 0));
+					GetContext().Registry<IOpticalFlowThreadQueue>()->Add(m_Device.GetDeviceQueue(family.first, 0));
     				
 					break;
 				}

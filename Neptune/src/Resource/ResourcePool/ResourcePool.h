@@ -12,6 +12,7 @@
 #include <any>
 #include <unordered_map>
 #include <memory>
+#include <cassert>
 
 namespace Neptune {
 

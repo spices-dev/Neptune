@@ -92,10 +92,12 @@ namespace Neptune::Render::Common {
         *
         * @tparam I Infrastructure Definitions.
         * @param[in] args Infrastructure Construct Params.
+        * 
+        * @return Returns registry Infrastructure.
         */
         template<IsIInfrastructure I, typename... Args>
         requires IsNotEmptyEnum<E>
-        void Registry(Args&&... args);
+        typename I::T* Registry(Args&&... args);
 
         /**
         * @brief Unregister Infrastructure.
@@ -147,7 +149,7 @@ namespace Neptune::Render::Common {
     template<typename E> requires IsEnum<E>
     template<IsIInfrastructure I, typename... Args>
     requires IsNotEmptyEnum<E>
-    inline void Context<E>::Registry(Args&&... args)
+    inline typename I::T* Context<E>::Registry(Args&&... args)
     {
         NEPTUNE_PROFILE_ZONE
 
@@ -157,10 +159,12 @@ namespace Neptune::Render::Common {
         {
             NEPTUNE_LOG_CORE(E) << "Infrastructure Already Registered.";
 
-            return;
+            return nullptr;
         }
 
         m_Infrastructures[position] = InfrastructureFactory<typename I::T>(*this, I::E, std::forward<Args>(args)...);
+        
+        return Get<I>();
     }
 
     template<typename E> requires IsEnum<E>

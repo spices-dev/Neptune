@@ -93,5 +93,12 @@ namespace Neptune {
                 default:              log->CoreTrace(msg);      break;
             }
         }
+        
+        if (m_Level == LogLevel::C)
+        {
+            NEPTUNE_DEBUG_BREAK
+            
+            std::abort();
+        }
     }
 }

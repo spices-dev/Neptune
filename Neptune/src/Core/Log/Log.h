@@ -10,6 +10,7 @@
 #include <iostream>
 #include <memory>
 #include <sstream>
+#include <cstdlib>
 
 namespace Neptune {
 
@@ -141,6 +142,16 @@ namespace Neptune {
         
     }
 }
+
+// Cross-platform debug break
+#ifdef _MSC_VER
+#define NEPTUNE_DEBUG_BREAK __debugbreak();
+#elif defined(__GNUC__) || defined(__clang__)
+#include <csignal>
+#define NEPTUNE_DEBUG_BREAK raise(SIGTRAP);
+#else
+#define NEPTUNE_DEBUG_BREAK
+#endif
 
 // Core log macros
 #define NEPTUNE_LOG_CORE(level)                                              \

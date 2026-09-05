@@ -81,7 +81,7 @@ namespace Neptune::Render::Common {
         */
         template<IsAInfrastructure A>
         requires IsNotEmptyEnum<E>
-        void Registry(const A::T& t);
+        void Registry(const typename A::T& t);
 
         /**
         * @brief Get registry AccessibleInfrastructure.
