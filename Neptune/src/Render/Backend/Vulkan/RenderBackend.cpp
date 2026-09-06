@@ -125,7 +125,7 @@ namespace Neptune::Vulkan {
 
 			VkSemaphore waitSemaphores[]         = { context.Get<IComputeQueueSemaphore>()->Handle(clock.m_FrameIndex) };
 			VkSemaphore signalSemaphores[]       = { context.Get<IGraphicQueueSemaphore>()->Handle(clock.m_ImageIndex) };
-			VkPipelineStageFlags waitStages[]    = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+			VkPipelineStageFlags waitStages[]    = { VK_PIPELINE_STAGE_VERTEX_SHADER_BIT };
 
 			VkSubmitInfo                           submitInfo{};
 			submitInfo.sType                     = VK_STRUCTURE_TYPE_SUBMIT_INFO;

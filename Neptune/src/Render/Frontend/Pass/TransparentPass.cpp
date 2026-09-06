@@ -11,6 +11,7 @@
 #include "Device/Graphics/Frontend/RHI/DescriptorList.h"
 #include "Device/Graphics/Frontend/RHI/CmdList.h"
 #include "Device/Graphics/Frontend/RHI/IndexBuffer.h"
+#include "Device/Graphics/Frontend/RHI/Buffer.h"
 #include "Resource/Shader/Shader.h"
 #include "Resource/Texture/RenderTarget.h"
 #include "Resource/ResourcePool/ResourcePool.h"
@@ -27,6 +28,20 @@ namespace Neptune::Render {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		{
+			auto& resourcePool = ResourcePool<Buffer>::Instance();
+
+			for (int i = 0; i < MaxFrameInFlight; ++i)
+			{
+				std::stringstream ss;
+				ss << "TransparentSortBuffer_" << i;
+				
+				auto s = resourcePool.Access(ss.str());
+			
+				m_SortBuffer.Get(i) = s->GetRHIResource();
+			}
+		}
+		
 		RenderTargetAttachmentInfo   info{};
 		info.loadOp                = AttachmentOP::Load;
 		info.enableBlend           = true;
@@ -37,16 +52,20 @@ namespace Neptune::Render {
 		m_RenderPass->AddColorAttachment(ResourcePool<RenderTarget>::Instance().Access("Scene")->GetRHIResource(), info);
 		m_RenderPass->Build();
 		
-		m_DescriptorList = CreateSP<RHI::DescriptorList>();
-		m_DescriptorList->AddUniformBuffer(1, 0, sizeof(uint64_t));
-		m_DescriptorList->AddUniformBuffer(1, 1, sizeof(uint64_t));
-		m_DescriptorList->CombineSharedLayout();
-		m_DescriptorList->Build();
+		for (int i = 0; i < MaxFrameInFlight; ++i)
+		{
+			m_DescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
+			m_DescriptorList.Get(i)->AddShaderConstant(sizeof(uint32_t));
+			m_DescriptorList.Get(i)->AddUniformBuffer(1, 0, sizeof(uint64_t));
+			m_DescriptorList.Get(i)->AddUniformBuffer(1, 1, sizeof(uint64_t));
+			m_DescriptorList.Get(i)->CombineSharedLayout();
+			m_DescriptorList.Get(i)->Build();
+		}
 
 		m_Pipeline = CreateSP<RHI::Pipeline>();
 		m_Pipeline->SetDefault();
 		m_Pipeline->SetRenderPass(m_RenderPass);
-		m_Pipeline->SetDescriptorList(m_DescriptorList);
+		m_Pipeline->SetDescriptorList(m_DescriptorList.Get(0));
 		m_Pipeline->SetCullMode(ECullMode::None);
 		m_Pipeline->SetTopology(ETopology::TriangleStrip);
 		
@@ -117,13 +136,15 @@ namespace Neptune::Render {
 
 		if (!item) return;
 		
-		auto sortBufferAddress = ResourcePool<Buffer>::Instance().Access("TransparentSortBuffer")->GetRHIResource()->GetDeviceAddress();
-		
-		m_DescriptorList->UpdateUniformBuffer(1, 0, &item->GetDescDeviceAddress());
-		
-		m_DescriptorList->UpdateUniformBuffer(1, 1, &sortBufferAddress);
+		auto gsCount = item->GetPointCount();
 		
 		const auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
+		
+		auto sortBufferAddress = m_SortBuffer.Get(clock.m_FrameIndex)->GetDeviceAddress();
+		
+		m_DescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 0, &item->GetDescDeviceAddress());
+		
+		m_DescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 1, &sortBufferAddress);
 
 		RHI::CmdList cmdList;
 
@@ -135,11 +156,13 @@ namespace Neptune::Render {
 
 		cmdList.CmdBindPipeline(m_Pipeline);
 
-		cmdList.CmdBindDescriptor(m_DescriptorList);
+		cmdList.CmdBindDescriptor(m_DescriptorList.Get(clock.m_FrameIndex));
 
 		cmdList.CmdBindIndexBuffer(m_IndexBuffer);
 		
-		cmdList.CmdDrawInstance(4, item->GetPointCount(), 0, 0, 0);
+		cmdList.CmdUpdateShaderConstant(&gsCount, sizeof(gsCount));
+		
+		cmdList.CmdDrawInstance(4, gsCount, 0, 0, 0);
 
 		cmdList.CmdEndRenderPass();
 	}

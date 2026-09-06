@@ -22,11 +22,14 @@ namespace Neptune::Render {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		m_DescriptorList = CreateSP<RHI::DescriptorList>();
-		m_DescriptorList->SetSharedLayout();
-		m_DescriptorList->AddUniformBuffer(0, 0, sizeof(ShaderCore::View));
-		m_DescriptorList->AddUniformBuffer(0, 1, sizeof(ShaderCore::Input));
-		m_DescriptorList->Build();
+		for (int i = 0; i < MaxFrameInFlight; ++i)
+		{
+			m_DescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
+			m_DescriptorList.Get(i)->SetSharedLayout();
+			m_DescriptorList.Get(i)->AddUniformBuffer(0, 0, sizeof(ShaderCore::View));
+			m_DescriptorList.Get(i)->AddUniformBuffer(0, 1, sizeof(ShaderCore::Input));
+			m_DescriptorList.Get(i)->Build();
+		}
 	}
 
 	void PrePass::OnCollectRHI(Scene* scene)
@@ -60,13 +63,13 @@ namespace Neptune::Render {
 			return true;
 		});
 		
-		m_DescriptorList->UpdateUniformBuffer(0, 0, &view);
+		m_DescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(0, 0, &view);
 
 		ShaderCore::Input      input{};
 		input.engineTime     = clock.m_EngineTime;
 		input.frameTime      = clock.m_FrameTime;
 
-		m_DescriptorList->UpdateUniformBuffer(0, 1, &input);
+		m_DescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(0, 1, &input);
 	}
 
 }

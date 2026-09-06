@@ -32,6 +32,11 @@ vertOut;
 /*****************************************************************************************/
 
 /********************************Descriptor List******************************************/
+
+/**
+* @brief push constant.
+*/
+layout(push_constant) uniform Push { uint gsCount; };
         
 /**
 * @brief GS3DDesc Address.
@@ -128,7 +133,7 @@ void main()
     uint gID = uint(entry & 0xFFFFFFFFu);
     uint cID = gl_VertexIndex;
 
-    if (gID >= 500000)
+    if (gID >= gsCount)
     {
         return;
     }

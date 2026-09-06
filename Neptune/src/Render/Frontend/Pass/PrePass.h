@@ -7,6 +7,7 @@
 #pragma once
 #include "Core/Core.h"
 #include "Pass.h"
+#include "Render/Frontend/Core.h"
 
 #include <glm/vec2.hpp>
 
@@ -55,7 +56,7 @@ namespace Neptune::Render {
 
 	private:
 
-		SP<RHI::DescriptorList>  m_DescriptorList;                   // @brief DescriptorList
-		glm::vec2                m_RTSize{ 100.0f, 100.0f };     // @brief FrameBuffer Attachment Size
+		InFlightResource<RHI::DescriptorList> m_DescriptorList;      // @brief DescriptorList
+		glm::vec2 m_RTSize{ 100.0f, 100.0f };                    // @brief FrameBuffer Attachment Size
 	};
 }

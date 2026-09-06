@@ -50,10 +50,10 @@ namespace Neptune::Render {
 
     private:
 
-        SP<RHI::RenderPass>      m_RenderPass;         // @brief RenderPass
-        SP<RHI::DescriptorList>  m_DescriptorList;     // @brief DescriptorList
-        SP<RHI::Pipeline>        m_Pipeline;           // @brief Pipeline
-        SP<RHI::IndexBuffer>     m_IndexBuffer;        // @brief IndexBuffer
-        SP<RHI::Buffer>          m_SortBuffer;         // @brief SortBuffer
+        SP<RHI::RenderPass>                    m_RenderPass;         // @brief RenderPass
+        InFlightResource<RHI::DescriptorList>  m_DescriptorList;     // @brief DescriptorList
+        SP<RHI::Pipeline>                      m_Pipeline;           // @brief Pipeline
+        SP<RHI::IndexBuffer>                   m_IndexBuffer;        // @brief IndexBuffer
+        InFlightResource<RHI::Buffer>          m_SortBuffer;         // @brief SortBuffer
     };
 }

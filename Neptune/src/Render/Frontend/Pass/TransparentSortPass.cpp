@@ -81,25 +81,36 @@ namespace Neptune::Render {
 		{
 			auto& resourcePool = ResourcePool<Buffer>::Instance();
 
-			if (!resourcePool.Has("TransparentSortBuffer"))
+			for (int i = 0; i < MaxFrameInFlight; ++i)
 			{
-				auto s = resourcePool.Load<Buffer>("TransparentSortBuffer", BufferCreateInfo{ kMaxTransparent * sizeof(uint64_t) } );
+				std::stringstream ss;
+				ss << "TransparentSortBuffer_" << i;
 				
-				s->GetRHIResource()->SetName("TransparentSortBuffer");
+				if (!resourcePool.Has(ss.str()))
+				{
+					auto s = resourcePool.Load<Buffer>(ss.str(), BufferCreateInfo{ kMaxTransparent * sizeof(uint64_t) } );
+				
+					s->GetRHIResource()->SetName(ss.str());
+				}
+				
+				m_SortBuffer.Get(i) = resourcePool.Access(ss.str())->GetRHIResource();
 			}
 		}
 		
 		{
-			m_KDescriptorList = CreateSP<RHI::DescriptorList>();
-			m_KDescriptorList->AddShaderConstant(2 * sizeof(uint32_t));
-			m_KDescriptorList->AddUniformBuffer(1, 0, sizeof(uint64_t));
-			m_KDescriptorList->AddUniformBuffer(1, 1, sizeof(uint64_t));
-			m_KDescriptorList->CombineSharedLayout();
-			m_KDescriptorList->Build();
+			for (int i = 0; i < MaxFrameInFlight; ++i)
+			{
+				m_KDescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
+				m_KDescriptorList.Get(i)->AddShaderConstant(2 * sizeof(uint32_t));
+				m_KDescriptorList.Get(i)->AddUniformBuffer(1, 0, sizeof(uint64_t));
+				m_KDescriptorList.Get(i)->AddUniformBuffer(1, 1, sizeof(uint64_t));
+				m_KDescriptorList.Get(i)->CombineSharedLayout();
+				m_KDescriptorList.Get(i)->Build();
+			}
 			
 			m_KPipeline = CreateSP<RHI::Pipeline>();
 			m_KPipeline->SetDefault();
-			m_KPipeline->SetDescriptorList(m_KDescriptorList);
+			m_KPipeline->SetDescriptorList(m_KDescriptorList.Get(0));
 			
 			auto& resourcePool = ResourcePool<Shader>::Instance();
 
@@ -117,19 +128,21 @@ namespace Neptune::Render {
 			
 			m_KPipeline->BuildComputePipeline();
 		}
-		
-		
+
 		{
-			m_SDescriptorList = CreateSP<RHI::DescriptorList>();
-			m_SDescriptorList->AddShaderConstant(sizeof(uint32_t));
-			m_SDescriptorList->AddUniformBuffer(1, 0, sizeof(uint64_t));
-			m_SDescriptorList->AddUniformBuffer(1, 1, sizeof(sortParams));
-			m_SDescriptorList->CombineSharedLayout();
-			m_SDescriptorList->Build();
+			for (int i = 0; i < MaxFrameInFlight; ++i)
+			{
+				m_SDescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
+				m_SDescriptorList.Get(i)->AddShaderConstant(sizeof(uint32_t));
+				m_SDescriptorList.Get(i)->AddUniformBuffer(1, 0, sizeof(uint64_t));
+				m_SDescriptorList.Get(i)->AddUniformBuffer(1, 1, sizeof(sortParams));
+				m_SDescriptorList.Get(i)->CombineSharedLayout();
+				m_SDescriptorList.Get(i)->Build();
+			}
 			
 			m_SPipeline = CreateSP<RHI::Pipeline>();
 			m_SPipeline->SetDefault();
-			m_SPipeline->SetDescriptorList(m_SDescriptorList);
+			m_SPipeline->SetDescriptorList(m_SDescriptorList.Get(0));
 			
 			auto& resourcePool = ResourcePool<Shader>::Instance();
 
@@ -177,11 +190,11 @@ namespace Neptune::Render {
 		const auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
 		
 		{
-			auto sortBufferAddress = ResourcePool<Buffer>::Instance().Access("TransparentSortBuffer")->GetRHIResource()->GetDeviceAddress();
+			auto sortBufferAddress = m_SortBuffer.Get(clock.m_FrameIndex)->GetDeviceAddress();
 		
-			m_KDescriptorList->UpdateUniformBuffer(1, 0, &item->GetDescDeviceAddress());
+			m_KDescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 0, &item->GetDescDeviceAddress());
 			
-			m_KDescriptorList->UpdateUniformBuffer(1, 1, &sortBufferAddress);
+			m_KDescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 1, &sortBufferAddress);
 			
 			RHI::CmdList cmdList;
 
@@ -189,7 +202,7 @@ namespace Neptune::Render {
 
 			cmdList.CmdBindPipeline(m_KPipeline);
 
-			cmdList.CmdBindDescriptor(m_KDescriptorList);
+			cmdList.CmdBindDescriptor(m_KDescriptorList.Get(clock.m_FrameIndex));
 			
 			cmdList.CmdUpdateShaderConstant(&paddedN, sizeof(uint32_t));
 			
@@ -207,11 +220,11 @@ namespace Neptune::Render {
 		}
 		
 		{
-			auto sortBufferAddress = ResourcePool<Buffer>::Instance().Access("TransparentSortBuffer")->GetRHIResource()->GetDeviceAddress();
+			auto sortBufferAddress = m_SortBuffer.Get(clock.m_FrameIndex)->GetDeviceAddress();
 		
-			m_SDescriptorList->UpdateUniformBuffer(1, 0, &sortBufferAddress);
+			m_SDescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 0, &sortBufferAddress);
 		
-			m_SDescriptorList->UpdateUniformBuffer(1, 1, sortParams.data());
+			m_SDescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 1, sortParams.data());
 		
 			RHI::CmdList cmdList;
 
@@ -219,11 +232,15 @@ namespace Neptune::Render {
 
 			cmdList.CmdBindPipeline(m_SPipeline);
 
-			cmdList.CmdBindDescriptor(m_SDescriptorList);
+			cmdList.CmdBindDescriptor(m_SDescriptorList.Get(clock.m_FrameIndex));
 		
 			uint32_t iter = 0;
 		
-			uint32_t numStages = (uint32_t)std::log2(paddedN);
+			uint32_t numStages = 0;
+			for (uint32_t v = paddedN; v > 1; v >>= 1)
+			{
+				++numStages;
+			}
 
 			for (uint32_t stage = 1; stage <= numStages; ++stage)
 			{
@@ -246,6 +263,14 @@ namespace Neptune::Render {
 					++iter;
 				}
 			}
+			
+			MemoryBarrierdDesc          barrier{};
+			barrier.srcAccess         = EPipelineAccess::ShaderWrite;
+			barrier.dstAccess         = EPipelineAccess::ShaderRead;
+			barrier.srcStage          = EPipelineStage::ComputeShader;
+			barrier.dstStage          = EPipelineStage::VertexShader;
+				
+			cmdList.CmdInsertBarrier(barrier);
 		}
 	}
 

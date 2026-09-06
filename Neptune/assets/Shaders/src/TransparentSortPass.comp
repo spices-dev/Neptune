@@ -88,8 +88,9 @@ void main()
     uint rightKey = uint(rightEntry >> 32);
         
     bool ascending = ((idx / (1u << p.stage)) % 2u) == 0u;
-    bool needSwap  = ascending ? (leftKey > rightKey) : (leftKey < rightKey);
-    
+    //bool needSwap  = ascending ? (leftKey > rightKey) : (leftKey < rightKey);
+    bool needSwap  = ascending ? (leftEntry > rightEntry) : (leftEntry < rightEntry);
+
     if (needSwap)
     {
         sorts.i[leftId]  = rightEntry;

@@ -60,7 +60,7 @@ void main()
         discard;
     }
 
-    outSceneColor = vec4(fragIn.color * alpha, alpha);
+    outSceneColor = vec4(fragIn.color, alpha);
 }
 
 /*****************************************************************************************/

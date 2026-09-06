@@ -58,10 +58,16 @@ Sorts sorts;
 */
 uint EncodeDepthKey(float depth)
 {
-    uint bits = floatBitsToUint(depth);
-    return (bits & 0x80000000u) != 0u
-        ? ~bits
-        : (bits | 0x80000000u);
+    depth = 1.0 - 1.0 / depth;
+            
+    float nearPlane = 0.001f;
+    float depthSafe = max(depth, nearPlane);
+    float logDepth = log2(depthSafe / nearPlane);
+        
+    const float logRange = 24.0;
+    float normalized = clamp(logDepth / logRange, 0.0, 1.0);
+    
+    return uint(normalized * 4294967295.0);
 }
         
 /**********************************Shader Entry*******************************************/

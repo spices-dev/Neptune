@@ -12,6 +12,7 @@ namespace Neptune::RHI {
     
     class Pipeline;
     class DescriptorList;
+    class Buffer;
 }
 
 namespace Neptune::Render { 
@@ -48,11 +49,13 @@ namespace Neptune::Render {
     private:
         
         // KeyGen
-        SP<RHI::DescriptorList>  m_KDescriptorList;     // @brief KeyGen DescriptorList
-        SP<RHI::Pipeline>        m_KPipeline;           // @brief KeyGen Pipeline
+        InFlightResource<RHI::DescriptorList> m_KDescriptorList;     // @brief KeyGen DescriptorList
+        SP<RHI::Pipeline> m_KPipeline;                               // @brief KeyGen Pipeline
         
         // Sort
-        SP<RHI::DescriptorList>  m_SDescriptorList;     // @brief Sort DescriptorList
-        SP<RHI::Pipeline>        m_SPipeline;           // @brief Sort Pipeline
+        InFlightResource<RHI::DescriptorList> m_SDescriptorList;     // @brief Sort DescriptorList
+        SP<RHI::Pipeline> m_SPipeline;                               // @brief Sort Pipeline
+
+        InFlightResource<RHI::Buffer> m_SortBuffer;                  // @brief Sort Buffer
     };
 }
