@@ -22,7 +22,7 @@ namespace Neptune::Render {
 
 	namespace {
 		
-		constexpr uint32_t kMaxTransparent = 1000000;
+		constexpr uint32_t kMaxTransparent = 18000000;
 		
 		struct UBO {
 			uint64_t sortAddress;
@@ -35,7 +35,7 @@ namespace Neptune::Render {
 			uint32_t numElements = 0;
 		};
 		
-		std::array<SortParam, 300> sortParams{};
+		SP<std::array<SortParam, 30000>> sortParams{};
 		
 		uint32_t NextPowerOfTwo(uint32_t n)
 		{
@@ -50,9 +50,9 @@ namespace Neptune::Render {
 			return n + 1;
 		}
 		
-		std::array<SortParam, 300> BuildBitonicSortParams(uint32_t paddedN)
+		decltype(sortParams) BuildBitonicSortParams(uint32_t paddedN)
 		{
-			std::array<SortParam, 300> allParams;
+			decltype(sortParams) allParams = CreateSP<std::array<SortParam, 30000>>();
 			
 			uint32_t numStages = 0;
 			for (uint32_t v = paddedN; v > 1; v >>= 1)
@@ -66,7 +66,7 @@ namespace Neptune::Render {
 			{
 				for (uint32_t passOfStage = 0; passOfStage < stage; ++passOfStage)
 				{
-					allParams[iter++] = SortParam{ stage, passOfStage, paddedN };
+					(*allParams)[iter++] = SortParam{ stage, passOfStage, paddedN };
 				}
 			}
 
@@ -135,7 +135,7 @@ namespace Neptune::Render {
 				m_SDescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
 				m_SDescriptorList.Get(i)->AddShaderConstant(sizeof(uint32_t));
 				m_SDescriptorList.Get(i)->AddUniformBuffer(1, 0, sizeof(uint64_t));
-				m_SDescriptorList.Get(i)->AddUniformBuffer(1, 1, sizeof(sortParams));
+				m_SDescriptorList.Get(i)->AddUniformBuffer(1, 1, sizeof(uint64_t));
 				m_SDescriptorList.Get(i)->CombineSharedLayout();
 				m_SDescriptorList.Get(i)->Build();
 			}
@@ -185,7 +185,20 @@ namespace Neptune::Render {
 		
 		uint32_t paddedN = NextPowerOfTwo(gsCount);
 		
-		sortParams = BuildBitonicSortParams(paddedN);
+		{
+			if (!m_SortParam)
+			{
+				sortParams = BuildBitonicSortParams(paddedN);
+				
+				m_SortParam = CreateSP<RHI::Buffer>();
+				
+				m_SortParam->CreateBuffer(sizeof(sortParams));
+				
+				m_SortParam->WriteToBuffer(sortParams->data(), sizeof(sortParams));
+				
+				m_SortParam->Flush(sizeof(sortParams));
+			}
+		}
 		
 		const auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
 		
@@ -224,7 +237,9 @@ namespace Neptune::Render {
 		
 			m_SDescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 0, &sortBufferAddress);
 		
-			m_SDescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 1, sortParams.data());
+			auto sortParamAddress = m_SortParam->GetDeviceAddress();
+			
+			m_SDescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 1, &sortParamAddress);
 		
 			RHI::CmdList cmdList;
 

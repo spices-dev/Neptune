@@ -42,9 +42,7 @@ layout(set = 1, binding = 0) uniform UBO1 { uint64_t sortAddress; };  /* @see So
 /**
 * @brief SortParam.
 */
-layout(set = 1, binding = 1, scalar) uniform UBO2 {
-    SortParam i[300];
-} sortParams;
+layout(set = 1, binding = 1) uniform UBO2 { uint64_t sortParamAddress; };
 
 /**
 * @brief Sort Buffer.
@@ -55,6 +53,15 @@ layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Sorts
 };
 Sorts sorts;
 
+/**
+* @brief SortParams Buffer.
+*/
+layout(buffer_reference, scalar, buffer_reference_align = 8) buffer SortParams
+{
+    SortParam i[];             /* @biref SortParams. */
+};
+SortParams sortParams;
+        
 /*****************************************************************************************/
 
 /**********************************Shader Entry*******************************************/
@@ -62,7 +69,7 @@ Sorts sorts;
 void main()
 {
     sorts       = Sorts(sortAddress);
-    SortParam p = sortParams.i[iter];
+    SortParam p = SortParams(sortParamAddress).i[iter];
     
     uint pairDistance = 1u << (p.stage - p.passOfStage);
     uint blockWidth   = 2u * pairDistance;
