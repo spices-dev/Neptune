@@ -107,8 +107,8 @@ namespace Neptune::Vulkan {
 
 			VkSubmitInfo                           submitInfo{};
 			submitInfo.sType                     = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-			submitInfo.waitSemaphoreCount        = 1;
-			submitInfo.pWaitSemaphores           = waitSemaphores;
+			submitInfo.waitSemaphoreCount        = 0;
+			submitInfo.pWaitSemaphores           = nullptr;
 			submitInfo.pWaitDstStageMask         = waitStages;
 			submitInfo.commandBufferCount        = 1;
 			submitInfo.pCommandBuffers           = &context.Get<IComputeCommandBuffer>()->Handle(clock.m_FrameIndex);
