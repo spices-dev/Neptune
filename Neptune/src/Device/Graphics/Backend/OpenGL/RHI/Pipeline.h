@@ -70,9 +70,16 @@ namespace Neptune::OpenGL {
 		/**
 		* @brief Interface of Set CullMode.
 		*
-		* @param[in] mode CullMode.
+		* @param[in] mode ECullMode.
 		*/
-		void SetCullMode(CullMode mode) override;
+		void SetCullMode(ECullMode mode) override;
+
+		/**
+		* @brief Interface of Set Topology.
+		* 
+		* @param[in] topology ETopology.
+		*/
+		void SetTopology(ETopology topology) override;
 
 		/**
 		* @brief Interface of Add Shader.
@@ -87,6 +94,11 @@ namespace Neptune::OpenGL {
 		*/
 		void BuildGraphicPipeline() override;
 
+		/**
+		* @brief Interface of Build ComputePipeline.
+		*/
+		void BuildComputePipeline() override;
+		
 	};
 }
 

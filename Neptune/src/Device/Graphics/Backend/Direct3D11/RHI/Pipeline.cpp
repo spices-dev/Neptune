@@ -35,11 +35,16 @@ namespace Neptune::Direct3D11 {
 
 	}
 
-	void Pipeline::SetCullMode(CullMode mode)
+	void Pipeline::SetCullMode(ECullMode mode)
 	{
 		NEPTUNE_PROFILE_ZONE
 	}
 
+	void Pipeline::SetTopology(ETopology topology)
+	{
+		NEPTUNE_PROFILE_ZONE
+	}
+	
 	void Pipeline::AddShader(ShaderStage stage, const SP<RHI::Shader>& shader)
 	{
 		NEPTUNE_PROFILE_ZONE
@@ -52,6 +57,11 @@ namespace Neptune::Direct3D11 {
 
 	}
 	
+	void Pipeline::BuildComputePipeline()
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+	}
 }
 
 #endif

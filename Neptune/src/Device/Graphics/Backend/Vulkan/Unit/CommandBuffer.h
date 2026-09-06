@@ -87,6 +87,17 @@ namespace Neptune::Vulkan::Unit {
 		void BindDescriptorSet(VkPipelineBindPoint bindPoint, VkPipelineLayout layout, uint32_t set, VkDescriptorSet descriptorSet) const;
 
 		/**
+		* @brief Bind DescriptorSet with offset.
+		*
+		* @param[in] bindPoint VkPipelineBindPoint.
+		* @param[in] layout VkPipelineLayout.
+		* @param[in] set .
+		* @param[in] descriptorSet VkDescriptorSet.
+		* @param[in] offset Binding Offset.
+		*/
+		void BindDescriptorSet(VkPipelineBindPoint bindPoint, VkPipelineLayout layout, uint32_t set, VkDescriptorSet descriptorSet, uint32_t offset) const;
+		
+		/**
 		* @brief Set Viewport.
 		*
 		* @param[in] viewport VkViewport.
@@ -129,6 +140,45 @@ namespace Neptune::Vulkan::Unit {
 		* @param[in] firstInstance .
 		*/
 		void DrawInstance(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const;
+		
+		/**
+		* @brief Dispatch.
+		* 
+		* @param[in] groupCountX .
+		* @param[in] groupCountY .
+		* @param[in] groupCountZ .
+		*/
+		void Dispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const;
+		
+		/**
+		* @brief PipelineBarrier.
+		* 
+		* @param[in] srcStage VkPipelineStageFlags.
+		* @param[in] dstStage VkPipelineStageFlags.
+		* @param[in] flags VkDependencyFlags.
+		* @param[in] barrier barrier.
+		*/
+		void CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const VkMemoryBarrier& barrier) const;
+		
+		/**
+		* @brief PipelineBarrier.
+		* 
+		* @param[in] srcStage VkPipelineStageFlags.
+		* @param[in] dstStage VkPipelineStageFlags.
+		* @param[in] flags VkDependencyFlags.
+		* @param[in] barrier VkBufferMemoryBarrier.
+		*/
+		void CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const VkBufferMemoryBarrier& barrier) const;
+		
+		/**
+		* @brief PipelineBarrier.
+		* 
+		* @param[in] srcStage VkPipelineStageFlags.
+		* @param[in] dstStage VkPipelineStageFlags.
+		* @param[in] flags VkDependencyFlags.
+		* @param[in] barrier VkImageMemoryBarrier.
+		*/
+		void CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const VkImageMemoryBarrier& barrier) const;
 		
 		/**
 		* @brief Begin VideoCoding.

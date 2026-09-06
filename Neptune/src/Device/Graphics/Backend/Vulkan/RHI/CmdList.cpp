@@ -18,6 +18,7 @@
 #include "Device/Graphics/Backend/Vulkan/Resource/QueryPool.h"
 #include "Device/Graphics/Frontend/RHI/RenderPass.h"
 #include "Data/Clock.h"
+#include "Device/Graphics/Backend/Vulkan/Converter.h"
 
 namespace Neptune::Vulkan {
 
@@ -31,6 +32,18 @@ namespace Neptune::Vulkan {
 		m_CommandBuffer = GetContext().Get<IGraphicCommandBuffer>()->IHandle(m_FrameIndex);
 
 		m_BindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+	}
+	
+	void CmdList::SetComputeCmdList(const Data::Clock& clock)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_FrameIndex = clock.m_FrameIndex;
+		m_ImageIndex = clock.m_ImageIndex;
+
+		m_CommandBuffer = GetContext().Get<IComputeCommandBuffer>()->IHandle(m_FrameIndex);
+
+		m_BindPoint = VK_PIPELINE_BIND_POINT_COMPUTE;
 	}
 
 	void* CmdList::GetCommandList() const
@@ -69,7 +82,14 @@ namespace Neptune::Vulkan {
 
 		for (const auto& [fst, snd] : rhi->GetSets())
 		{
-			m_CommandBuffer->BindDescriptorSet(m_BindPoint, m_PipelineLayout, fst, snd->Handle());
+			if (snd->GetOffset())
+			{
+				m_CommandBuffer->BindDescriptorSet(m_BindPoint, m_PipelineLayout, fst, snd->Handle(), *snd->GetOffset());
+			}
+			else
+			{
+				m_CommandBuffer->BindDescriptorSet(m_BindPoint, m_PipelineLayout, fst, snd->Handle());
+			}
 		}
 	}
 
@@ -105,6 +125,25 @@ namespace Neptune::Vulkan {
 		NEPTUNE_PROFILE_ZONE
 		
 		m_CommandBuffer->DrawInstance(indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
+	}
+	
+	void CmdList::CmdDispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_CommandBuffer->Dispatch(groupCountX, groupCountY, groupCountZ);
+	}
+	
+	void CmdList::CmdInsertBarrier(const MemoryBarrier& barrier) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		VkMemoryBarrier                  memory{};
+		memory.sType                   = VK_STRUCTURE_TYPE_MEMORY_BARRIER;
+		memory.srcAccessMask           = ToVkAccessFlags(barrier.srcAccess);
+		memory.dstAccessMask           = ToVkAccessFlags(barrier.dstAccess);
+		
+		m_CommandBuffer->CmdPipelineBarrier(ToVkPipelineStageFlags(barrier.srcStage), ToVkPipelineStageFlags(barrier.dstStage), 0, memory);
 	}
 	
 	void CmdList::CmdSetViewport(const glm::vec2& viewPortSize) const

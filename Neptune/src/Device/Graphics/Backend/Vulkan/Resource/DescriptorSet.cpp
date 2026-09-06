@@ -78,6 +78,13 @@ namespace Neptune::Vulkan::Resource {
 		m_DescriptorSet.UpdateDescriptorSet(write);
 	}
 
+	void DescriptorSet::UpdateDynamicUniformBufferOffset(uint32_t offset)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_Offset = offset;
+	}
+	
 	void DescriptorSet::BuildDescriptorSet()
 	{
 		NEPTUNE_PROFILE_ZONE

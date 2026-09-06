@@ -49,7 +49,8 @@ namespace Neptune::Render {
 			const auto& item = component.GetModel();
 			const auto& model = scene->GetComponent<TransformComponent>(e).GetModelMatrix();
 			
-			view.projection  = item->GetPMatrixReverseZ();
+			view.projection    = item->GetPMatrixReverseZ();
+			view.inProjection  = glm::inverse(view.projection);
 			view.nprojection = item->GetPMatrixReverseZ();
 			view.nprojection[1][1] *= -1.0f;
 			

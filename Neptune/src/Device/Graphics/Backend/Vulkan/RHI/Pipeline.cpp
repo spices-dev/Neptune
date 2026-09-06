@@ -155,11 +155,18 @@ namespace Neptune::Vulkan {
 		DEBUGUTILS_SETOBJECTNAME(m_PipelineLayout, "PipelineLayout")
 	}
 
-	void Pipeline::SetCullMode(CullMode mode)
+	void Pipeline::SetCullMode(ECullMode mode)
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		m_RasterizationInfo.cullMode = ToVkCullModeFlags(mode);
+	}
+	
+	void Pipeline::SetTopology(ETopology topology)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_InputAssemblyInfo.topology = ToVkPrimitiveTopology(topology);
 	}
 
 	void Pipeline::AddShader(ShaderStage stage, const SP<RHI::Shader>& shader)
@@ -215,6 +222,25 @@ namespace Neptune::Vulkan {
 		DEBUGUTILS_SETOBJECTNAME(m_Pipeline, "GraphicPipeline")
 
 		m_BindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+	}
+	
+	void Pipeline::BuildComputePipeline()
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		VkComputePipelineCreateInfo                          info{};
+		info.sType                                          = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+		info.flags                                          = 0;
+		info.layout                                         = m_PipelineLayout.GetHandle();
+		info.stage                                          = m_ShaderStages[0];
+		info.basePipelineIndex                              = -1;
+		info.basePipelineHandle                             = VK_NULL_HANDLE;
+
+		m_Pipeline.CreateComputePipeline(GetContext().Get<IDevice>()->Handle(), info);
+
+		DEBUGUTILS_SETOBJECTNAME(m_Pipeline, "ComputePipeline")
+
+		m_BindPoint = VK_PIPELINE_BIND_POINT_COMPUTE;
 	}
 	
 }

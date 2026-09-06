@@ -18,7 +18,7 @@ namespace Neptune::SOP {
 	template<typename T>
 	struct Attribute
 	{
-		using T = T;
+		using T_ = T;
 		
 		/**
 		* @brief Constructor Function.
@@ -30,7 +30,7 @@ namespace Neptune::SOP {
 		*/
 		virtual ~Attribute() = default;
 		
-		UP<std::vector<T>> host = CreateUP<std::vector<T>>();  // @brief Attribute Host Data.
-		UP<RHI::Buffer> device  = CreateUP<RHI::Buffer>();     // @brief Attribute Device Data.
+		UP<std::vector<T_>> host = CreateUP<std::vector<T_>>();  // @brief Attribute Host Data.
+		UP<RHI::Buffer> device  = CreateUP<RHI::Buffer>();       // @brief Attribute Device Data.
 	};
 }

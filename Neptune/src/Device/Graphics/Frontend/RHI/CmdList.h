@@ -7,6 +7,7 @@
 #pragma once
 #include "Core/Core.h"
 #include "RHI.h"
+#include "Device/Graphics/Frontend/Memory.h"
 
 #include <glm/ext/vector_float2.hpp>
 
@@ -48,6 +49,13 @@ namespace Neptune::RHI {
 		*/
 		virtual void SetGraphicCmdList(const Data::Clock& clock) = 0;
 
+		/**
+		* @brief Interface of Set Compute CommandList Context.
+		* 
+		* @param[in] clock Clock.
+		*/
+		virtual void SetComputeCmdList(const Data::Clock& clock) = 0;
+		
 		/**
 		* @brief Interface of Get Current CommandList.
 		* 
@@ -123,6 +131,22 @@ namespace Neptune::RHI {
 		virtual void CmdDrawInstance(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const = 0;
 
 		/**
+		* @brief Interface of Dispatch.
+		* 
+		* @param[in] groupCountX .
+		* @param[in] groupCountY .
+		* @param[in] groupCountZ .
+		*/
+		virtual void CmdDispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const = 0;
+		
+		/**
+		* @brief Interface of Insert Barrier.
+		* 
+		* @param[in] barrier MemoryBarrier.
+		*/
+		virtual void CmdInsertBarrier(const MemoryBarrier& barrier) const = 0;
+		
+		/**
 		* @brief Interface of SetViewport.
 		* 
 		* @param[in] viewPortSize .
@@ -156,6 +180,13 @@ namespace Neptune::RHI {
 		*/
 		void SetGraphicCmdList(const Data::Clock& clock) const { RHICmdList::m_Impl->SetGraphicCmdList(clock); }
 
+		/**
+		* @brief Interface of Set Graphic Compute Context.
+		*
+		* @param[in] clock Clock.
+		*/
+		void SetComputeCmdList(const Data::Clock& clock) const { RHICmdList::m_Impl->SetComputeCmdList(clock); }
+		
 		/**
 		* @brief Interface of Get Current CommandList.
 		* 
@@ -222,6 +253,22 @@ namespace Neptune::RHI {
 		*/
 		void CmdDrawInstance(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const { RHICmdList::m_Impl->CmdDrawInstance(indexCount, instanceCount, firstIndex, vertexOffset, firstInstance); }
 
+		/**
+		* @brief Interface of Dispatch.
+		* 
+		* @param[in] groupCountX .
+		* @param[in] groupCountY .
+		* @param[in] groupCountZ .
+		*/
+		void CmdDispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const { RHICmdList::m_Impl->CmdDispatch(groupCountX, groupCountY, groupCountZ); }
+		
+		/**
+		* @brief Interface of Insert Barrier.
+		* 
+		* @param[in] barrier MemoryBarrier.
+		*/
+		void CmdInsertBarrier(const MemoryBarrier& barrier) const { RHICmdList::m_Impl->CmdInsertBarrier(barrier); }
+		
 		/**
 		* @brief Interface of SetViewport.
 		*

@@ -67,54 +67,70 @@ namespace Neptune::Vulkan {
 		}
 	}
 
-	VkMemoryPropertyFlags ToVkMemoryPropertyFlags(RHIMemoryUsage u)
+	VkMemoryPropertyFlags ToVkMemoryPropertyFlags(EMemory m)
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		switch (u)
+		switch (m)
 		{
-			case RHIMemoryUsage::Device:    return VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
-			case RHIMemoryUsage::Host:      return VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
-			case RHIMemoryUsage::Shared:    return VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
-			case RHIMemoryUsage::Preserved: return VK_MEMORY_PROPERTY_PROTECTED_BIT;
+			case EMemory::Device:    return VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
+			case EMemory::Host:      return VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
+			case EMemory::Shared:    return VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
+			case EMemory::Other:     return VK_MEMORY_PROPERTY_PROTECTED_BIT;
 			default:
 			{
-				NEPTUNE_LOG_CORE(W) << "Unsupported RHIMemoryUsage To VkMemoryPropertyFlags.";
+				NEPTUNE_LOG_CORE(W) << "Unsupported EMemory To VkMemoryPropertyFlags.";
 				return VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
 			}
 		}
 	}
 
-	VmaMemoryUsage ToVmaMemoryUsage(RHIMemoryUsage u)
+	VmaMemoryUsage ToVmaMemoryUsage(EMemory m)
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		switch (u)
+		switch (m)
 		{
-			case RHIMemoryUsage::Device:    return VMA_MEMORY_USAGE_GPU_ONLY;
-			case RHIMemoryUsage::Host:      return VMA_MEMORY_USAGE_CPU_ONLY;
-			case RHIMemoryUsage::Shared:    return VMA_MEMORY_USAGE_CPU_TO_GPU;
+			case EMemory::Device:    return VMA_MEMORY_USAGE_GPU_ONLY;
+			case EMemory::Host:      return VMA_MEMORY_USAGE_CPU_ONLY;
+			case EMemory::Shared:    return VMA_MEMORY_USAGE_CPU_TO_GPU;
 			default:
 			{
-				NEPTUNE_LOG_CORE(W) << "Unsupported RHIMemoryUsage To VmaMemoryUsage.";
+				NEPTUNE_LOG_CORE(W) << "Unsupported EMemory To VmaMemoryUsage.";
 				return VMA_MEMORY_USAGE_GPU_ONLY;
 			}
 		}
 	}
 
-	VkCullModeFlags ToVkCullModeFlags(CullMode c)
+	VkCullModeFlags ToVkCullModeFlags(ECullMode c)
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		switch (c)
 		{
-			case CullMode::None:    return VK_CULL_MODE_NONE;
-			case CullMode::Front:   return VK_CULL_MODE_FRONT_BIT;
-			case CullMode::Back:    return VK_CULL_MODE_BACK_BIT;
+			case ECullMode::None:    return VK_CULL_MODE_NONE;
+			case ECullMode::Front:   return VK_CULL_MODE_FRONT_BIT;
+			case ECullMode::Back:    return VK_CULL_MODE_BACK_BIT;
 			default:
 			{
-				NEPTUNE_LOG_CORE(W) << "Unsupported CullMode To VkCullModeFlags.";
+				NEPTUNE_LOG_CORE(W) << "Unsupported ECullMode To VkCullModeFlags.";
 				return VK_CULL_MODE_NONE;
+			}
+		}
+	}
+	
+	VkPrimitiveTopology ToVkPrimitiveTopology(ETopology t)
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		switch (t)
+		{
+			case ETopology::TriangleList:     return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+			case ETopology::TriangleStrip:    return VK_PRIMITIVE_TOPOLOGY_TRIANGLE_STRIP;
+			default:
+			{
+				NEPTUNE_LOG_CORE(W) << "Unsupported ETopology To VkCullModeFlags.";
+				return VK_PRIMITIVE_TOPOLOGY_MAX_ENUM;
 			}
 		}
 	}
@@ -127,6 +143,7 @@ namespace Neptune::Vulkan {
 		{
 			case ShaderStage::Vertex:    return VK_SHADER_STAGE_VERTEX_BIT;
 			case ShaderStage::Fragment:  return VK_SHADER_STAGE_FRAGMENT_BIT;
+			case ShaderStage::Compute:   return VK_SHADER_STAGE_COMPUTE_BIT;
 			default:
 			{
 				NEPTUNE_LOG_CORE(W) << "Unsupported ShaderStage To VkShaderStageFlagBits.";
@@ -164,6 +181,39 @@ namespace Neptune::Vulkan {
 			{
 				NEPTUNE_LOG_CORE(W) << "Unsupported AttachmentLayout To VkImageLayout.";
 				return VK_IMAGE_LAYOUT_UNDEFINED;
+			}
+		}
+	}
+	
+	VkAccessFlags ToVkAccessFlags(EPipelineAccess a)
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		switch (a)
+		{
+			case EPipelineAccess::ShaderRead:           return VK_ACCESS_SHADER_READ_BIT;
+			case EPipelineAccess::ShaderWrite:          return VK_ACCESS_SHADER_WRITE_BIT;
+			default:
+			{
+				NEPTUNE_LOG_CORE(W) << "Unsupported EPipelineAccess To VkAccessFlagBits.";
+				return VK_ACCESS_NONE;
+			}
+		}
+	}
+	
+	VkPipelineStageFlags ToVkPipelineStageFlags(EPipelineStage s)
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		switch (s)
+		{
+			case EPipelineStage::VertexShader:           return VK_PIPELINE_STAGE_VERTEX_SHADER_BIT;
+			case EPipelineStage::FragmentShader:         return VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+			case EPipelineStage::ComputeShader:          return VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT;
+			default:
+			{
+				NEPTUNE_LOG_CORE(W) << "Unsupported EPipelineStage To VkPipelineStageFlagBits.";
+				return VK_PIPELINE_STAGE_NONE;
 			}
 		}
 	}

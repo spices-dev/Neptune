@@ -1,6 +1,7 @@
 #pragma once
 #include "Core/Core.h"
 #include "Texture.h"
+#include "Core/Memory/Enum.h"
 
 namespace Neptune {
 
@@ -9,21 +10,13 @@ namespace Neptune {
 		class RenderTarget;
 	}
 
-	enum class RHIMemoryUsage
-	{
-		Device = 0,
-		Host,
-		Shared,
-		Preserved,
-	};
-
 	struct RenderTargetCreateInfo
 	{
 		uint32_t          width        = 100;
 		uint32_t          height       = 100;
 		TextureDomain     domain       = TextureDomain::Texture2D;
 		TextureFormat     format       = TextureFormat::RGBA8_UNORM;
-		RHIMemoryUsage    memoryUsage  = RHIMemoryUsage::Device;
+		EMemory           memoryUsage  = EMemory::Device;
 	};
 
 	enum class AttachmentOP : uint8_t

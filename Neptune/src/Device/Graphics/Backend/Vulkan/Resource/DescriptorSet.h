@@ -84,6 +84,13 @@ namespace Neptune::Vulkan::Resource {
 		void UpdateTexture(uint32_t binding, const RenderTarget* renderTarget);
 
 		/**
+		* @brief Update DynamicUniformBufferOffset.
+		*
+		* @param[in] offset .
+		*/
+		void UpdateDynamicUniformBufferOffset(uint32_t offset);
+		
+		/**
 		* @brief Build DescriptorSet.
 		*/
 		void BuildDescriptorSet();
@@ -100,6 +107,13 @@ namespace Neptune::Vulkan::Resource {
 		*/
 		const Unit::DescriptorSetLayout::Handle& GetDescriptorSetLayout() const { return m_Layout.GetHandle(); }
 
+		/**
+		* @brief Get Binding Offset.
+		*
+		* @return Returns Binding Offset.
+		*/
+		const std::optional<uint32_t>& GetOffset() const { return m_Offset; }
+		
 	private:
 
 		/**
@@ -138,6 +152,7 @@ namespace Neptune::Vulkan::Resource {
 		Unit::DescriptorSet                       m_DescriptorSet;      // @brief This DescriptorSet.
 		Unit::DescriptorSetLayout                 m_Layout;             // @brief This DescriptorSetLayout.
 		std::map<uint32_t, BindingData>           m_Bindings;           // @brief This Binding.
+		std::optional<uint32_t>                   m_Offset;             // @brief This Binding Offset.
 	};
 }
 

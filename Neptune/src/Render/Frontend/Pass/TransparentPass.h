@@ -14,6 +14,7 @@ namespace Neptune::RHI {
     class Pipeline;
     class DescriptorList;
     class IndexBuffer;
+    class Buffer;
 }
 
 namespace Neptune::Render { 
@@ -53,5 +54,6 @@ namespace Neptune::Render {
         SP<RHI::DescriptorList>  m_DescriptorList;     // @brief DescriptorList
         SP<RHI::Pipeline>        m_Pipeline;           // @brief Pipeline
         SP<RHI::IndexBuffer>     m_IndexBuffer;        // @brief IndexBuffer
+        SP<RHI::Buffer>          m_SortBuffer;         // @brief SortBuffer
     };
 }

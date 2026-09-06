@@ -11,8 +11,9 @@ namespace Neptune {
 
 	enum class ShaderStage : uint8_t 
 	{
-		Vertex = 0,
-		Fragment,
+		Vertex = 0,      // @brief Vertex Shader.
+		Fragment,        // @brief Fragment Shader.
+		Compute,         // @brief Compute Shader.
 
 		Count
 	};

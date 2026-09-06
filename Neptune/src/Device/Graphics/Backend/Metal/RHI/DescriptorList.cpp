@@ -17,6 +17,12 @@ namespace Neptune::Metal {
 		NEPTUNE_PROFILE_ZONE
 
 	}
+	
+	void DescriptorList::AddDynamicUniformBuffer(uint32_t set, uint32_t binding, uint32_t bytes)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+	}
 
 	void DescriptorList::AddUniformTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget)
 	{
@@ -36,6 +42,12 @@ namespace Neptune::Metal {
 
 	}
 
+	void DescriptorList::UpdateDynamicUniformBufferOffset(uint32_t set, uint32_t offset)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+	}
+	
 	void DescriptorList::CombineSharedLayout(const RHI::RHIDescriptorList::Impl* shared)
 	{
 		NEPTUNE_PROFILE_ZONE

@@ -67,6 +67,14 @@ namespace Neptune::Vulkan {
 
             poolSizes.emplace_back(poolSize);
         }
+        
+        {
+            VkDescriptorPoolSize             poolSize{};
+            poolSize.type                  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
+            poolSize.descriptorCount       = DescriptorPoolSize; 
+
+            poolSizes.emplace_back(poolSize);
+        }
 
         {
             VkDescriptorPoolSize             poolSize{};

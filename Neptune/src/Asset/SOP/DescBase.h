@@ -13,7 +13,7 @@ namespace Neptune::SOP {
 	
 #define Update_Attribute(item)                                                   \
 	{                                                                            \
-		uint64_t size = item.host->size() * sizeof(decltype(item)::T);           \
+		uint64_t size = item.host->size() * sizeof(decltype(item)::T_);          \
 		item.device->CreateBuffer(size);                                         \
 		item.device->WriteToBuffer(item.host->data(), size);                     \
 		item.device->Flush(size);                                                \
@@ -23,7 +23,7 @@ namespace Neptune::SOP {
 	
 #define Update_Desc(item)                                                        \
 	{                                                                            \
-		uint64_t size = item.host->size() * sizeof(decltype(item)::T);           \
+		uint64_t size = item.host->size() * sizeof(decltype(item)::T_);          \
 		item.device->CreateBuffer(size);                                         \
 		item.device->WriteToBuffer(item.host->data(), size);                     \
 		item.device->Flush(size);                                                \

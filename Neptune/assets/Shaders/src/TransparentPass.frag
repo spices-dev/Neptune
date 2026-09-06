@@ -20,7 +20,14 @@
 /**
 * @brief Fragment Shader Input From Vertex Shader.
 */
-layout(location = 0) in vec2 texCoord;
+layout(location = 0) in struct FragInput
+{
+    vec2  localOffset;
+    vec3  color;
+    float opacity;
+    vec3  conic;
+}
+fragIn;
 
 /*****************************************************************************************/
 
@@ -37,7 +44,23 @@ layout(location = 0) out vec4 outSceneColor;
 
 void main()
 {
-    outSceneColor = vec4(1.0f, 1.0f, 1.0f, 0.4f);
+    vec2 d = fragIn.localOffset;
+    vec3 conic = fragIn.conic;
+
+    float power = -0.5 * (conic.x * d.x * d.x + conic.z * d.y * d.y) - conic.y * d.x * d.y;
+    
+    if (power > 0.0)
+    {
+        discard;
+    }
+
+    float alpha = min(0.99, fragIn.opacity * exp(power));
+    if (alpha < 1.0 / 255.0)
+    {
+        discard;
+    }
+
+    outSceneColor = vec4(fragIn.color * alpha, alpha);
 }
 
 /*****************************************************************************************/

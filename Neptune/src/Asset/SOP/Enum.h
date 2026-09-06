@@ -24,11 +24,22 @@ namespace Neptune {
     /**
     * @brief Enum of CullMode.
     */
-    enum class CullMode : uint8_t
+    enum class ECullMode : uint8_t
     {
         None = 0,       // @brief Cull None.
         Front,          // @brief Cull Front.
         Back,           // @brief Cull Back.
+
+        Count
+    };
+    
+    /**
+    * @brief Enum of CullMode.
+    */
+    enum class ETopology : uint8_t
+    {
+        TriangleList = 0,       // @brief TriangleList.
+        TriangleStrip,          // @brief TriangleStrip.
 
         Count
     };

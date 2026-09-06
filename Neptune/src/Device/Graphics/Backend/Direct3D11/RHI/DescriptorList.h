@@ -51,6 +51,15 @@ namespace Neptune::Direct3D11 {
 		void AddUniformBuffer(uint32_t set, uint32_t binding, uint32_t bytes) override;
 
 		/**
+		* @brief Interface of Add Dynamic UniformBuffer.
+		* 
+		* @param[in] set .
+		* @param[in] binding .
+		* @param[in] bytes UniformBuffer bytes.
+		*/
+		void AddDynamicUniformBuffer(uint32_t set, uint32_t binding, uint32_t bytes) override;
+		
+		/**
 		* @brief Interface of Add UniformTexture.
 		*
 		* @param[in] set .
@@ -77,6 +86,14 @@ namespace Neptune::Direct3D11 {
 		*/
 		void UpdateUniformTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget) override;
 
+		/**
+		* @brief Interface of Update DynamicUniformBufferOffset.
+		*
+		* @param[in] set .
+		* @param[in] offset .
+		*/
+		void UpdateDynamicUniformBufferOffset(uint32_t set, uint32_t offset) override;
+		
 		/**
 		* @brief Interface of Combine Shared DescriptorList.
 		*

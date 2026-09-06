@@ -40,6 +40,11 @@ namespace Neptune::Metal {
 		NEPTUNE_PROFILE_ZONE
 	}
 
+	void Pipeline::SetTopology(ETopology topology)
+	{
+		NEPTUNE_PROFILE_ZONE
+	}
+	
 	void Pipeline::AddShader(ShaderStage stage, const SP<RHI::Shader>& shader)
 	{
 		NEPTUNE_PROFILE_ZONE
@@ -50,6 +55,12 @@ namespace Neptune::Metal {
 	{
 		NEPTUNE_PROFILE_ZONE
 
+	}
+	
+	void Pipeline::BuildComputePipeline()
+	{
+		NEPTUNE_PROFILE_ZONE
+		
 	}
 	
 }

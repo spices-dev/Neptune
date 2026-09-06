@@ -1,0 +1,46 @@
+/**
+* @file TransparentSortPass.comp.
+* @brief This Shader Defines TransparentSortPass Compute Shader Behaver.
+* @author Spices.
+*/
+
+/************************************Pre Compile*******************************************/
+
+#version 460
+
+#extension GL_GOOGLE_include_directive : enable    /* @brief Enable include Macro. */
+
+#include "Header/PreRendererLayout.glsl"
+
+/*****************************************************************************************/
+
+/********************************Descriptor List******************************************/
+
+/**
+* @brief GS3DDesc Address.
+*/
+layout(set = 1, binding = 0) uniform UBO1 { uint64_t descAddress; };  /* @see GS3DDesc */
+
+/**
+* @brief Sort Address.
+*/
+layout(set = 2, binding = 0) uniform UBO2 { uint64_t sortAddress; };  /* @see Sort */
+
+/**
+* @brief Sort Buffer.
+*/
+layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Sorts
+{
+    uint i[];             /* @biref Sort list. */
+};
+Sorts sorts;
+
+/*****************************************************************************************/
+
+/**********************************Shader Entry*******************************************/
+
+void main()
+{
+}
+
+/*****************************************************************************************/

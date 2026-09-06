@@ -57,6 +57,13 @@ namespace Neptune::Direct3D12 {
 		void SetGraphicCmdList(const Data::Clock& clock) override;
 
 		/**
+		* @brief Interface of Set Compute CommandList Context.
+		*
+		* @param[in] clock Clock.
+		*/
+		void SetComputeCmdList(const Data::Clock& clock) override;
+		
+		/**
 		* @brief Interface of Get Current CommandList.
 		* 
 		* @return Returns Current CommandList.
@@ -122,6 +129,22 @@ namespace Neptune::Direct3D12 {
 		*/
 		void CmdDrawInstance(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const override;
 
+		/**
+		* @brief Interface of Dispatch.
+		* 
+		* @param[in] groupCountX .
+		* @param[in] groupCountY .
+		* @param[in] groupCountZ .
+		*/
+		void CmdDispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const override;
+		
+		/**
+		* @brief Interface of Insert Barrier.
+		* 
+		* @param[in] barrier MemoryBarrier.
+		*/
+		void CmdInsertBarrier(const MemoryBarrier& barrier) const override;
+		
 		/**
 		* @brief Interface of SetViewport.
 		*

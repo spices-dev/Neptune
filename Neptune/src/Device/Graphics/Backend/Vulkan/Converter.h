@@ -12,6 +12,7 @@
 #include "Resource/Texture/RenderTarget.h"
 #include "Asset/SOP/Enum.h"
 #include "Resource/Shader/Shader.h"
+#include "Device/Graphics/Frontend/Memory.h"
 
 #include <vk_mem_alloc.h>
 
@@ -47,29 +48,38 @@ namespace Neptune::Vulkan {
 	/**
 	* @brief Convert RHIMemoryUsage to VkMemoryPropertyFlags.
 	*
-	* @param[in] u RHIMemoryUsage.
+	* @param[in] m EMemory.
 	*
 	* @return Returns VkMemoryPropertyFlags.
 	*/
-	VkMemoryPropertyFlags ToVkMemoryPropertyFlags(RHIMemoryUsage u);
+	VkMemoryPropertyFlags ToVkMemoryPropertyFlags(EMemory m);
 
 	/**
 	* @brief Convert RHIMemoryUsage to VmaMemoryUsage.
 	*
-	* @param[in] u RHIMemoryUsage.
+	* @param[in] m EMemory.
 	*
 	* @return Returns VmaMemoryUsage.
 	*/
-	VmaMemoryUsage ToVmaMemoryUsage(RHIMemoryUsage u);
+	VmaMemoryUsage ToVmaMemoryUsage(EMemory m);
 
 	/**
-	* @brief Convert CullMode to VkCullModeFlags.
+	* @brief Convert ECullMode to VkCullModeFlags.
 	*
-	* @param[in] c CullMode.
+	* @param[in] c ECullMode.
 	*
 	* @return Returns VkCullModeFlags.
 	*/
-	VkCullModeFlags ToVkCullModeFlags(CullMode c);
+	VkCullModeFlags ToVkCullModeFlags(ECullMode c);
+
+	/**
+	* @brief Convert ETopology to VkPrimitiveTopology.
+	*
+	* @param[in] t ETopology.
+	*
+	* @return Returns VkPrimitiveTopology.
+	*/
+	VkPrimitiveTopology ToVkPrimitiveTopology(ETopology t);
 
 	/**
 	* @brief Convert ShaderStage to VkShaderStageFlagBits.
@@ -98,6 +108,24 @@ namespace Neptune::Vulkan {
 	*/
 	VkImageLayout ToVkImageLayout(AttachmentLayout l);
 
+	/**
+	* @brief Convert EPipelineAccess to VkAccessFlags.
+	*
+	* @param[in] a EPipelineAccess.
+	*
+	* @return Returns VkAccessFlags.
+	*/
+	VkAccessFlags ToVkAccessFlags(EPipelineAccess a);
+	
+	/**
+	* @brief Convert EPipelineStage to VkPipelineStageFlags.
+	*
+	* @param[in] s EPipelineStage.
+	*
+	* @return Returns VkPipelineStageFlags.
+	*/
+	VkPipelineStageFlags ToVkPipelineStageFlags(EPipelineStage s);
+	
 	/**
 	* @brief Convert VkFormat to TextureFormat.
 	*

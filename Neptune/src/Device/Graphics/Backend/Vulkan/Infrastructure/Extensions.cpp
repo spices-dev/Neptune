@@ -65,6 +65,7 @@ namespace Neptune::Vulkan {
 		m_Context.Registry<Extension::IGetSurfaceCapabilities2>          (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::ICreateRenderPass2>                (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IDynamicRenderingLocalRead>        (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IScalarBlockLayout>                (Extension::EExtensionState::Core);
 	}
 	
 	void Extensions::BuildFeatureChain(void** pNext)

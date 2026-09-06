@@ -43,6 +43,7 @@ namespace Neptune::Vulkan {
         GetSurfaceCapabilities2,                    // @brief GetSurfaceCapabilities2.
         CreateRenderPass2,                          // @brief CreateRenderPass2.
         DynamicRenderingLocalRead,                  // @brief DynamicRenderingLocalRead.
+        ScalarBlockLayout,                          // @brief ScalarBlockLayout.
 
         Count
     };
@@ -83,6 +84,7 @@ namespace Neptune::Vulkan {
             case GetSurfaceCapabilities2:         return "GetSurfaceCapabilities2";
             case CreateRenderPass2:               return "CreateRenderPass2";
             case DynamicRenderingLocalRead:       return "DynamicRenderingLocalRead";
+            case ScalarBlockLayout:               return "ScalarBlockLayout";
             default:                              return "NonNamed";
         }
     }

@@ -131,6 +131,7 @@ struct MaterialAttributes
 struct View 
 {
 	mat4  projection;          /* @brief Projection Matrix from major Camera Entity.                   */
+	mat4  inProjection;        /* @brief Inverse Projection Matrix from major Camera Entity.                   */
 	mat4  nprojection;         /* @brief Negative y-axis Projection Matrix from major Camera Entity.   */
 	mat4  view;                /* @brief View Matrix from major Camera Entity.                         */
 	mat4  inView;              /* @brief Inverse View Matrix from major Camera Entity.                 */

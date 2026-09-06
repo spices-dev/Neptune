@@ -41,13 +41,25 @@ void main()
 {
     //outSceneColor = texture(videoImage, texCoord);
 
-    if(prd.rayDirection.y > 0.0f)
+    vec2 ndcDir  = vec2(2.0 * texCoord.x - 1.0, 2.0 * texCoord.y - 1.0);
+        
+    vec4 clipDir = vec4(ndcDir, 1.0, 1.0);
+
+    vec4 viewDir = view.inProjection * clipDir;
+
+    viewDir /= viewDir.w;
+
+    vec3 worldDir = normalize(view.inView * vec4(viewDir.xyz, 0.0)).xyz;
+
+    worldDir.y *= -1;
+        
+    if(worldDir.y > 0.0f)
     {
-        outSceneColor = mix(vec3(1.0f), vec3(0.25f, 0.5f, 1.0f), prd.rayDirection.y);
+        outSceneColor = mix(vec4(1.0f), vec4(0.25f, 0.5f, 1.0f, 1.0f), worldDir.y);
     }
     else
     {
-        outSceneColor   = vec3(1.0f);
+        outSceneColor   = vec4(1.0f);
     }
 }
 

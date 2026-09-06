@@ -40,6 +40,15 @@ namespace Neptune::RHI {
 		virtual void AddUniformBuffer(uint32_t set, uint32_t binding, uint32_t bytes) = 0;
 
 		/**
+		* @brief Interface of Add Dynamic UniformBuffer.
+		* 
+		* @param[in] set .
+		* @param[in] binding .
+		* @param[in] bytes UniformBuffer bytes.
+		*/
+		virtual void AddDynamicUniformBuffer(uint32_t set, uint32_t binding, uint32_t bytes) = 0;
+		
+		/**
 		* @brief Interface of Add UniformTexture.
 		*
 		* @param[in] set .
@@ -65,6 +74,14 @@ namespace Neptune::RHI {
 		* @param[in] renderTarget RenderTarget.
 		*/
 		virtual void UpdateUniformTexture(uint32_t set, uint32_t binding, const SP<class RenderTarget>& renderTarget) = 0;
+		
+		/**
+		* @brief Interface of Update DynamicUniformBufferOffset.
+		*
+		* @param[in] set .
+		* @param[in] offset .
+		*/
+		virtual void UpdateDynamicUniformBufferOffset(uint32_t set, uint32_t offset) = 0;
 
 		/**
 		* @brief Interface of Combine Shared DescriptorList.
@@ -120,6 +137,15 @@ namespace Neptune::RHI {
 		void AddUniformBuffer(uint32_t set, uint32_t binding, uint32_t bytes) const { m_Impl->AddUniformBuffer(set, binding, bytes); }
 
 		/**
+		* @brief Interface of Add Dynamic UniformBuffer.
+		* 
+		* @param[in] set .
+		* @param[in] binding .
+		* @param[in] bytes UniformBuffer bytes.
+		*/
+		void AddDynamicUniformBuffer(uint32_t set, uint32_t binding, uint32_t bytes) const { m_Impl->AddDynamicUniformBuffer(set, binding, bytes); }
+		
+		/**
 		* @brief Interface of Add UniformTexture.
 		*
 		* @param[in] set .
@@ -137,6 +163,14 @@ namespace Neptune::RHI {
 		*/
 		void UpdateUniformBuffer(uint32_t set, uint32_t binding, const void* data) const { m_Impl->UpdateUniformBuffer(set, binding, data); }
 
+		/**
+		* @brief Interface of Update DynamicUniformBufferOffset.
+		*
+		* @param[in] set .
+		* @param[in] offset .
+		*/
+		void UpdateDynamicUniformBufferOffset(uint32_t set, uint32_t offset) const { m_Impl->UpdateDynamicUniformBufferOffset(set, offset); }
+		
 		/**
 		* @brief Interface of Update UniformTexture.
 		*

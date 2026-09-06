@@ -59,9 +59,16 @@ namespace Neptune::RHI {
 		/**
 		* @brief Interface of Set CullMode.
 		* 
-		* @param[in] mode CullMode.
+		* @param[in] mode ECullMode.
 		*/
-		virtual void SetCullMode(CullMode mode) = 0;
+		virtual void SetCullMode(ECullMode mode) = 0;
+
+		/**
+		* @brief Interface of Set Topology.
+		* 
+		* @param[in] topology ETopology.
+		*/
+		virtual void SetTopology(ETopology topology) = 0;
 
 		/**
 		* @brief Interface of Add Shader.
@@ -75,6 +82,11 @@ namespace Neptune::RHI {
 		* @brief Interface of Build GraphicPipeline.
 		*/
 		virtual void BuildGraphicPipeline() = 0;
+		
+		/**
+		* @brief Interface of Build ComputePipeline.
+		*/
+		virtual void BuildComputePipeline() = 0;
 	};
 
 	/**
@@ -121,9 +133,16 @@ namespace Neptune::RHI {
 		/**
 		* @brief Interface of Set CullMode.
 		*
-		* @param[in] mode CullMode.
+		* @param[in] mode ECullMode.
 		*/
-		void SetCullMode(CullMode mode) const { m_Impl->SetCullMode(mode); }
+		void SetCullMode(ECullMode mode) const { m_Impl->SetCullMode(mode); }
+
+		/**
+		* @brief Interface of Set Topology.
+		* 
+		* @param[in] topology ETopology.
+		*/
+		void SetTopology(ETopology topology) const { m_Impl->SetTopology(topology); }
 
 		/**
 		* @brief Interface of Add Shader.
@@ -137,6 +156,11 @@ namespace Neptune::RHI {
 		* @brief Interface of Build GraphicPipeline.
 		*/
 		void BuildGraphicPipeline() const { m_Impl->BuildGraphicPipeline(); }
+		
+		/**
+		* @brief Interface of Build ComputePipeline.
+		*/
+		void BuildComputePipeline() const { m_Impl->BuildComputePipeline(); }
 
 	};
 

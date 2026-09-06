@@ -20,6 +20,14 @@ namespace Neptune::Direct3D11 {
 		m_FrameIndex = clock.m_FrameIndex;
 		m_ImageIndex = clock.m_ImageIndex;
 	}
+	
+	void CmdList::SetComputeCmdList(const Data::Clock& clock)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_FrameIndex = clock.m_FrameIndex;
+		m_ImageIndex = clock.m_ImageIndex;
+	}
 
 	void* CmdList::GetCommandList() const
 	{
@@ -65,6 +73,18 @@ namespace Neptune::Direct3D11 {
 	}
 	
 	void CmdList::CmdDrawInstance(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+	}
+	
+	void CmdList::CmdDispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+	}
+	
+	void CmdList::CmdInsertBarrier(const MemoryBarrier& barrier) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		

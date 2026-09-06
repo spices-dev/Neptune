@@ -19,6 +19,7 @@
 #include "World/Component/Component.h"
 #include "World/Component/SOPComponent.h"
 #include "Asset/SOP/GS3D.h"
+#include "Resource/Buffer/Buffer.h"
 
 namespace Neptune::Render {
 
@@ -38,6 +39,7 @@ namespace Neptune::Render {
 		
 		m_DescriptorList = CreateSP<RHI::DescriptorList>();
 		m_DescriptorList->AddUniformBuffer(1, 0, sizeof(uint64_t));
+		m_DescriptorList->AddUniformBuffer(1, 1, sizeof(uint64_t));
 		m_DescriptorList->CombineSharedLayout();
 		m_DescriptorList->Build();
 
@@ -45,7 +47,8 @@ namespace Neptune::Render {
 		m_Pipeline->SetDefault();
 		m_Pipeline->SetRenderPass(m_RenderPass);
 		m_Pipeline->SetDescriptorList(m_DescriptorList);
-		m_Pipeline->SetCullMode(CullMode::None);
+		m_Pipeline->SetCullMode(ECullMode::None);
+		m_Pipeline->SetTopology(ETopology::TriangleStrip);
 		
 		{
 			auto& resourcePool = ResourcePool<Shader>::Instance();
@@ -114,7 +117,11 @@ namespace Neptune::Render {
 
 		if (!item) return;
 		
+		auto sortBufferAddress = ResourcePool<Buffer>::Instance().Access("TransparentSortBuffer")->GetRHIResource()->GetDeviceAddress();
+		
 		m_DescriptorList->UpdateUniformBuffer(1, 0, &item->GetDescDeviceAddress());
+		
+		m_DescriptorList->UpdateUniformBuffer(1, 1, &sortBufferAddress);
 		
 		const auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
 

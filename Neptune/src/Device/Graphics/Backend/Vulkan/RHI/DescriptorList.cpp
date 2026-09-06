@@ -34,6 +34,29 @@ namespace Neptune::Vulkan {
 
 		descriptorSet->AddBinding(info, layoutBinding);
 	}
+	
+	void DescriptorList::AddDynamicUniformBuffer(uint32_t set, uint32_t binding, uint32_t bytes)
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		auto descriptorSet = AccessSet(set);
+
+		VkBufferCreateInfo                    info{};
+		info.sType                          = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+		info.size                           = bytes;
+		info.usage                          = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
+		info.sharingMode                    = VK_SHARING_MODE_EXCLUSIVE;
+
+		VkDescriptorSetLayoutBinding          layoutBinding{};
+		layoutBinding.binding               = binding;
+		layoutBinding.descriptorType        = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
+		layoutBinding.descriptorCount       = 1;
+		layoutBinding.stageFlags            = VK_SHADER_STAGE_ALL;
+
+		descriptorSet->AddBinding(info, layoutBinding);
+		
+		descriptorSet->UpdateDynamicUniformBufferOffset(0);
+	}
 
 	void DescriptorList::AddUniformTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget)
 	{
@@ -68,6 +91,13 @@ namespace Neptune::Vulkan {
 		NEPTUNE_PROFILE_ZONE
 
 		m_DescriptorSets[set]->UpdateTexture(binding, renderTarget->GetRHIImpl<RenderTarget>());
+	}
+	
+	void DescriptorList::UpdateDynamicUniformBufferOffset(uint32_t set, uint32_t offset)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_DescriptorSets[set]->UpdateDynamicUniformBufferOffset(offset);
 	}
 
 	void DescriptorList::CombineSharedLayout(const RHI::RHIDescriptorList::Impl* shared)

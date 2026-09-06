@@ -76,6 +76,13 @@ namespace Neptune::Vulkan::Unit {
 
 		vkCmdBindDescriptorSets(m_Handle, bindPoint, layout, set, 1, &descriptorSet, 0, nullptr);
 	}
+	
+	void CommandBuffer::BindDescriptorSet(VkPipelineBindPoint bindPoint, VkPipelineLayout layout, uint32_t set, VkDescriptorSet descriptorSet, uint32_t offset) const
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		vkCmdBindDescriptorSets(m_Handle, bindPoint, layout, set, 1, &descriptorSet, 1, &offset);
+	}
 
 	void CommandBuffer::SetViewport(const VkViewport& viewport) const
 	{
@@ -110,6 +117,34 @@ namespace Neptune::Vulkan::Unit {
 		NEPTUNE_PROFILE_ZONE
 		
 		vkCmdDrawIndexed(m_Handle, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
+	}
+	
+	void CommandBuffer::Dispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDispatch(m_Handle, groupCountX, groupCountY, groupCountZ);
+	}
+	
+	void CommandBuffer::CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const VkMemoryBarrier& barrier) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdPipelineBarrier(m_Handle, srcStage, dstStage, flags, 1, &barrier, 0, nullptr, 0, nullptr);
+	}
+	
+	void CommandBuffer::CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const VkBufferMemoryBarrier& barrier) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdPipelineBarrier(m_Handle, srcStage, dstStage, flags, 0, nullptr, 1, &barrier, 0, nullptr);
+	}
+	
+	void CommandBuffer::CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const VkImageMemoryBarrier& barrier) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdPipelineBarrier(m_Handle, srcStage, dstStage, flags, 0, nullptr, 0, nullptr, 1, &barrier);
 	}
 	
 	void CommandBuffer::BeginVideoCoding(const PFN_vkCmdBeginVideoCodingKHR& fn, const VkVideoBeginCodingInfoKHR& info) const

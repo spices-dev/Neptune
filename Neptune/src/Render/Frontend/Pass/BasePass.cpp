@@ -62,7 +62,7 @@ namespace Neptune::Render {
 		m_Pipeline->SetDefault();
 		m_Pipeline->SetRenderPass(m_RenderPass);
 		m_Pipeline->SetDescriptorList(m_DescriptorList);
-		m_Pipeline->SetCullMode(CullMode::None);
+		m_Pipeline->SetCullMode(ECullMode::None);
 		
 		{
 			auto& resourcePool = ResourcePool<Shader>::Instance();

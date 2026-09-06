@@ -22,7 +22,7 @@ namespace Neptune {
 
 namespace Neptune::Data {
 	
-	class Transform;
+	struct Transform;
 }
 
 namespace Neptune::Editor {
