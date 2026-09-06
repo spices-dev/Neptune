@@ -16,8 +16,6 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        if constexpr (IsCoreExtension<decltype(*this)>) return;
-
         if (std::invoke(filter, m_BufferDeviceAddressFeatures.sType))
         {
             *pNext = &m_BufferDeviceAddressFeatures;

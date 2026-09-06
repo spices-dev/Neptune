@@ -35,7 +35,7 @@ namespace Neptune::Render {
 			uint32_t numElements = 0;
 		};
 		
-		std::array<SortParam, 50> sortParams{};
+		std::array<SortParam, 300> sortParams{};
 		
 		uint32_t NextPowerOfTwo(uint32_t n)
 		{
@@ -50,9 +50,9 @@ namespace Neptune::Render {
 			return n + 1;
 		}
 		
-		std::array<SortParam, 50> BuildBitonicSortParams(uint32_t paddedN)
+		std::array<SortParam, 300> BuildBitonicSortParams(uint32_t paddedN)
 		{
-			std::array<SortParam, 50> allParams;
+			std::array<SortParam, 300> allParams;
 			
 			uint32_t numStages = 0;
 			for (uint32_t v = paddedN; v > 1; v >>= 1)
@@ -78,17 +78,59 @@ namespace Neptune::Render {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		m_DescriptorList = CreateSP<RHI::DescriptorList>();
-		m_DescriptorList->AddDynamicUniformBuffer(1, 0, sizeof(sortParams));
-		m_DescriptorList->AddUniformBuffer(2, 0, sizeof(uint64_t));
-		m_DescriptorList->CombineSharedLayout();
-		m_DescriptorList->Build();
+		{
+			auto& resourcePool = ResourcePool<Buffer>::Instance();
 
-		m_Pipeline = CreateSP<RHI::Pipeline>();
-		m_Pipeline->SetDefault();
-		m_Pipeline->SetDescriptorList(m_DescriptorList);
+			if (!resourcePool.Has("TransparentSortBuffer"))
+			{
+				auto s = resourcePool.Load<Buffer>("TransparentSortBuffer", BufferCreateInfo{ kMaxTransparent * sizeof(uint64_t) } );
+				
+				s->GetRHIResource()->SetName("TransparentSortBuffer");
+			}
+		}
 		
 		{
+			m_KDescriptorList = CreateSP<RHI::DescriptorList>();
+			m_KDescriptorList->AddShaderConstant(2 * sizeof(uint32_t));
+			m_KDescriptorList->AddUniformBuffer(1, 0, sizeof(uint64_t));
+			m_KDescriptorList->AddUniformBuffer(1, 1, sizeof(uint64_t));
+			m_KDescriptorList->CombineSharedLayout();
+			m_KDescriptorList->Build();
+			
+			m_KPipeline = CreateSP<RHI::Pipeline>();
+			m_KPipeline->SetDefault();
+			m_KPipeline->SetDescriptorList(m_KDescriptorList);
+			
+			auto& resourcePool = ResourcePool<Shader>::Instance();
+
+			if (!resourcePool.Has("TransparentSortPassKeyGenComp"))
+			{
+				auto s = resourcePool.Load<Shader>("TransparentSortPassKeyGenComp");
+
+				s->SetStage(ShaderStage::Compute);
+				s->SetSource("Shaders/src/TransparentSortPassKeyGenComp.comp.spv");
+			}
+
+			auto shader = resourcePool.Access("TransparentSortPassKeyGenComp");
+
+			m_KPipeline->AddShader(shader->GetStage(), shader->GetRHIResource());
+			
+			m_KPipeline->BuildComputePipeline();
+		}
+		
+		
+		{
+			m_SDescriptorList = CreateSP<RHI::DescriptorList>();
+			m_SDescriptorList->AddShaderConstant(sizeof(uint32_t));
+			m_SDescriptorList->AddUniformBuffer(1, 0, sizeof(uint64_t));
+			m_SDescriptorList->AddUniformBuffer(1, 1, sizeof(sortParams));
+			m_SDescriptorList->CombineSharedLayout();
+			m_SDescriptorList->Build();
+			
+			m_SPipeline = CreateSP<RHI::Pipeline>();
+			m_SPipeline->SetDefault();
+			m_SPipeline->SetDescriptorList(m_SDescriptorList);
+			
 			auto& resourcePool = ResourcePool<Shader>::Instance();
 
 			if (!resourcePool.Has("TransparentSortPassComp"))
@@ -101,20 +143,9 @@ namespace Neptune::Render {
 
             auto shader = resourcePool.Access("TransparentSortPassComp");
 
-			m_Pipeline->AddShader(shader->GetStage(), shader->GetRHIResource());
-		}
-
-		m_Pipeline->BuildComputePipeline();
-		
-		{
-			auto& resourcePool = ResourcePool<Buffer>::Instance();
-
-			if (!resourcePool.Has("TransparentSortBuffer"))
-			{
-				auto s = resourcePool.Load<Buffer>("TransparentSortBuffer", BufferCreateInfo{ kMaxTransparent * sizeof(uint32_t) } );
-			}
-
-			auto shader = resourcePool.Access("TransparentSortBuffer");
+			m_SPipeline->AddShader(shader->GetStage(), shader->GetRHIResource());
+			
+			m_SPipeline->BuildComputePipeline();
 		}
 	}
 
@@ -137,48 +168,83 @@ namespace Neptune::Render {
 
 		if (!item) return;
 
-		uint32_t paddedN = NextPowerOfTwo(item->GetPointCount());
+		uint32_t gsCount = item->GetPointCount();
+		
+		uint32_t paddedN = NextPowerOfTwo(gsCount);
 		
 		sortParams = BuildBitonicSortParams(paddedN);
 		
-		auto sortBufferAddress = ResourcePool<Buffer>::Instance().Access("TransparentSortBuffer")->GetRHIResource()->GetDeviceAddress();
-		
-		m_DescriptorList->UpdateUniformBuffer(1, 0, sortParams.data());
-		
-		m_DescriptorList->UpdateUniformBuffer(2, 0, &sortBufferAddress);
-		
 		const auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
 		
-		RHI::CmdList cmdList;
-
-		cmdList.SetComputeCmdList(clock);
-
-		cmdList.CmdBindPipeline(m_Pipeline);
-
-		cmdList.CmdBindDescriptor(m_DescriptorList);
-		
-		uint32_t iter = 0;
-		
-		uint32_t numStages = (uint32_t)std::log2(paddedN);
-
-		for (uint32_t stage = 1; stage <= numStages; ++stage)
 		{
-			for (uint32_t passOfStage = 0; passOfStage < stage; ++passOfStage)
+			auto sortBufferAddress = ResourcePool<Buffer>::Instance().Access("TransparentSortBuffer")->GetRHIResource()->GetDeviceAddress();
+		
+			m_KDescriptorList->UpdateUniformBuffer(1, 0, &item->GetDescDeviceAddress());
+			
+			m_KDescriptorList->UpdateUniformBuffer(1, 1, &sortBufferAddress);
+			
+			RHI::CmdList cmdList;
+
+			cmdList.SetComputeCmdList(clock);
+
+			cmdList.CmdBindPipeline(m_KPipeline);
+
+			cmdList.CmdBindDescriptor(m_KDescriptorList);
+			
+			cmdList.CmdUpdateShaderConstant(&paddedN, sizeof(uint32_t));
+			
+			cmdList.CmdUpdateShaderConstant(&gsCount, sizeof(uint32_t), sizeof(uint32_t));
+			
+			cmdList.CmdDispatch((paddedN + 255) / 256, 1, 1);
+			
+			MemoryBarrierdDesc      barrier{};
+			barrier.srcAccess     = EPipelineAccess::ShaderWrite;
+			barrier.dstAccess     = EPipelineAccess::ShaderRead;
+			barrier.srcStage      = EPipelineStage::ComputeShader;
+			barrier.dstStage      = EPipelineStage::ComputeShader;
+
+			cmdList.CmdInsertBarrier(barrier);
+		}
+		
+		{
+			auto sortBufferAddress = ResourcePool<Buffer>::Instance().Access("TransparentSortBuffer")->GetRHIResource()->GetDeviceAddress();
+		
+			m_SDescriptorList->UpdateUniformBuffer(1, 0, &sortBufferAddress);
+		
+			m_SDescriptorList->UpdateUniformBuffer(1, 1, sortParams.data());
+		
+			RHI::CmdList cmdList;
+
+			cmdList.SetComputeCmdList(clock);
+
+			cmdList.CmdBindPipeline(m_SPipeline);
+
+			cmdList.CmdBindDescriptor(m_SDescriptorList);
+		
+			uint32_t iter = 0;
+		
+			uint32_t numStages = (uint32_t)std::log2(paddedN);
+
+			for (uint32_t stage = 1; stage <= numStages; ++stage)
 			{
-				m_DescriptorList->UpdateDynamicUniformBufferOffset(1, sizeof(SortParam) * iter++);
+				for (uint32_t passOfStage = 0; passOfStage < stage; ++passOfStage)
+				{
+					cmdList.CmdUpdateShaderConstant(&iter, sizeof(iter));
 				
-				cmdList.CmdBindDescriptor(m_DescriptorList);
+					uint32_t groupCount = (paddedN / 2 + 255) / 256;
+					
+					cmdList.CmdDispatch(groupCount, 1, 1);
 				
-				uint32_t groupCount = (paddedN / 2 + 255) / 256;
-				cmdList.CmdDispatch(groupCount, 1, 1);
+					MemoryBarrierdDesc          barrier{};
+					barrier.srcAccess         = EPipelineAccess::ShaderWrite;
+					barrier.dstAccess         = EPipelineAccess::ShaderRead;
+					barrier.srcStage          = EPipelineStage::ComputeShader;
+					barrier.dstStage          = EPipelineStage::ComputeShader;
 				
-				MemoryBarrier          barrier{};
-				barrier.srcAccess    = EPipelineAccess::ShaderWrite;
-				barrier.dstAccess    = EPipelineAccess::ShaderRead;
-				barrier.srcStage     = EPipelineStage::ComputeShader;
-				barrier.dstStage     = EPipelineStage::ComputeShader;
+					cmdList.CmdInsertBarrier(barrier);
 				
-				cmdList.CmdInsertBarrier(barrier);
+					++iter;
+				}
 			}
 		}
 	}

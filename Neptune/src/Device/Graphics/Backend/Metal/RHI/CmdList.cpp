@@ -66,6 +66,12 @@ namespace Neptune::Metal {
 		
 	}
 	
+	void CmdList::CmdUpdateShaderConstant(const void* data, uint32_t size, uint32_t offset) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+	}
+	
 	void CmdList::CmdDraw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) const
 	{
 		NEPTUNE_PROFILE_ZONE

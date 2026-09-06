@@ -121,6 +121,16 @@ namespace Neptune::Vulkan::Unit {
 		void CmdBindIndexBuffer(VkBuffer buffer, VkDeviceSize offset, VkIndexType indexType) const;
 		
 		/**
+		* @brief PushConstants.
+		*
+		* @param[in] layout VkPipelineLayout.
+		* @param[in] data data.
+		* @param[in] size size.
+		* @param[in] offset offset.
+		*/
+		void CmdPushConstants(VkPipelineLayout layout, const void* data, uint32_t size, uint32_t offset = 0) const;
+		
+		/**
 		* @brief Draw.
 		*
 		* @param[in] vertexCount .

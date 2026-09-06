@@ -47,7 +47,12 @@ namespace Neptune::Render {
 
     private:
         
-        SP<RHI::DescriptorList>  m_DescriptorList;     // @brief DescriptorList
-        SP<RHI::Pipeline>        m_Pipeline;           // @brief Pipeline
+        // KeyGen
+        SP<RHI::DescriptorList>  m_KDescriptorList;     // @brief KeyGen DescriptorList
+        SP<RHI::Pipeline>        m_KPipeline;           // @brief KeyGen Pipeline
+        
+        // Sort
+        SP<RHI::DescriptorList>  m_SDescriptorList;     // @brief Sort DescriptorList
+        SP<RHI::Pipeline>        m_SPipeline;           // @brief Sort Pipeline
     };
 }

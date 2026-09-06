@@ -114,6 +114,15 @@ namespace Neptune::Vulkan {
 		void CmdBindIndexBuffer(const SP<RHI::IndexBuffer>& buffer) const override;
 		
 		/**
+		* @brief Interface of Update ShaderConstant.
+		*
+		* @param[in] data ShaderConstant data.
+		* @param[in] size ShaderConstant size.
+		* @param[in] offset ShaderConstant offset.
+		*/
+		void CmdUpdateShaderConstant(const void* data, uint32_t size, uint32_t offset = 0) const override;
+		
+		/**
 		* @brief Interface of Draw.
 		* 
 		* @param[in] vertexCount .
@@ -146,9 +155,9 @@ namespace Neptune::Vulkan {
 		/**
 		* @brief Interface of Insert Barrier.
 		* 
-		* @param[in] barrier MemoryBarrier.
+		* @param[in] barrier MemoryBarrierdDesc.
 		*/
-		void CmdInsertBarrier(const MemoryBarrier& barrier) const override;
+		void CmdInsertBarrier(const MemoryBarrierdDesc& barrier) const override;
 		
 		/**
 		* @brief Interface of SetViewport.

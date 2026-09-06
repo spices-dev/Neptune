@@ -14,24 +14,44 @@
 
 /*****************************************************************************************/
 
+/*************************************Comp Input******************************************/
+
+layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+
+/*****************************************************************************************/
+
 /********************************Descriptor List******************************************/
 
 /**
-* @brief GS3DDesc Address.
+* @brief push constant.
 */
-layout(set = 1, binding = 0) uniform UBO1 { uint64_t descAddress; };  /* @see GS3DDesc */
+layout(push_constant) uniform Push { uint iter; };
+        
+struct SortParam
+{
+    uint stage;
+    uint passOfStage;
+    uint numElements;
+};
 
 /**
 * @brief Sort Address.
 */
-layout(set = 2, binding = 0) uniform UBO2 { uint64_t sortAddress; };  /* @see Sort */
+layout(set = 1, binding = 0) uniform UBO1 { uint64_t sortAddress; };  /* @see Sort */
+
+/**
+* @brief SortParam.
+*/
+layout(set = 1, binding = 1, scalar) uniform UBO2 {
+    SortParam i[300];
+} sortParams;
 
 /**
 * @brief Sort Buffer.
 */
 layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Sorts
 {
-    uint i[];             /* @biref Sort list. */
+    uint64_t i[];             /* @biref Sort list. */
 };
 Sorts sorts;
 
@@ -41,6 +61,40 @@ Sorts sorts;
 
 void main()
 {
+    sorts       = Sorts(sortAddress);
+    SortParam p = sortParams.i[iter];
+    
+    uint pairDistance = 1u << (p.stage - p.passOfStage);
+    uint blockWidth   = 2u * pairDistance;
+    
+    uint idx = gl_GlobalInvocationID.x;
+    if (idx >= p.numElements / 2u)
+    {
+        return;
+    }
+        
+    uint leftId  = (idx % pairDistance) + (idx / pairDistance) * blockWidth;
+    uint rightId = leftId + pairDistance;
+    
+    if (rightId >= p.numElements)
+    {
+        return;
+    }
+
+    uint64_t leftEntry  = sorts.i[leftId];
+    uint64_t rightEntry = sorts.i[rightId];
+    
+    uint leftKey  = uint(leftEntry >> 32);
+    uint rightKey = uint(rightEntry >> 32);
+        
+    bool ascending = ((idx / (1u << p.stage)) % 2u) == 0u;
+    bool needSwap  = ascending ? (leftKey > rightKey) : (leftKey < rightKey);
+    
+    if (needSwap)
+    {
+        sorts.i[leftId]  = rightEntry;
+        sorts.i[rightId] = leftEntry;
+    }
 }
 
 /*****************************************************************************************/

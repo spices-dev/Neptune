@@ -31,6 +31,13 @@ namespace Neptune::RHI {
 		virtual ~Impl() = default;
 
 		/**
+		* @brief Interface of Add ShaderConstant.
+		*
+		* @param[in] bytes bytes.
+		*/
+		virtual void AddShaderConstant(uint32_t bytes) = 0;
+		
+		/**
 		* @brief Interface of Add UniformBuffer.
 		* 
 		* @param[in] set .
@@ -127,6 +134,13 @@ namespace Neptune::RHI {
 
 	public:
 
+		/**
+		* @brief Interface of Add ShaderConstant.
+		*
+		* @param[in] bytes bytes.
+		*/
+		void AddShaderConstant(uint32_t bytes) const { m_Impl->AddShaderConstant(bytes); }
+		
 		/**
 		* @brief Interface of Add UniformBuffer.
 		*

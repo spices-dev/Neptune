@@ -14,6 +14,18 @@
 
 namespace Neptune::Vulkan {
 
+	void DescriptorList::AddShaderConstant(uint32_t bytes)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		VkPushConstantRange                   range{};
+		range.stageFlags                    = VK_SHADER_STAGE_ALL;
+		range.offset                        = 0;
+		range.size                          = bytes;
+		
+		m_PushConstantRange = range;
+	}
+	
 	void DescriptorList::AddUniformBuffer(uint32_t set, uint32_t binding, uint32_t bytes)
 	{
 		NEPTUNE_PROFILE_ZONE
@@ -49,7 +61,7 @@ namespace Neptune::Vulkan {
 
 		VkDescriptorSetLayoutBinding          layoutBinding{};
 		layoutBinding.binding               = binding;
-		layoutBinding.descriptorType        = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
+		layoutBinding.descriptorType        = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC; // Conflict with [Update after Bind] Feature.
 		layoutBinding.descriptorCount       = 1;
 		layoutBinding.stageFlags            = VK_SHADER_STAGE_ALL;
 

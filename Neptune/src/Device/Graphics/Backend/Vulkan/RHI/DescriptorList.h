@@ -45,6 +45,13 @@ namespace Neptune::Vulkan {
 	public:
 
 		/**
+		* @brief Interface of Add ShaderConstant.
+		*
+		* @param[in] bytes bytes.
+		*/
+		void AddShaderConstant(uint32_t bytes) override;
+		
+		/**
 		* @brief Interface of Add UniformBuffer.
 		*
 		* @param[in] set .
@@ -125,6 +132,13 @@ namespace Neptune::Vulkan {
 		*/
 		const std::map<uint32_t, SP<Resource::DescriptorSet>>& GetSets() const { return m_DescriptorSets; }
 
+		/**
+		* @brief Get VkPushConstantRange.
+		*
+		* @return Returns VkPushConstantRange.
+		*/
+		const std::optional<VkPushConstantRange>& GetPushConstantRange() const { return m_PushConstantRange; }
+		
 	private:
 		
 		/**
@@ -140,7 +154,7 @@ namespace Neptune::Vulkan {
 
 		std::map<uint32_t, SP<Resource::DescriptorSet>> m_DescriptorSets;         // @brief Container of DescriptorSet.
 		std::vector<VkDescriptorSetLayout> m_DescriptorSetLayouts;                // @brief Container of VkDescriptorSetLayout.
-
+		std::optional<VkPushConstantRange> m_PushConstantRange;                   // @brief VkPushConstantRange.
 	};
 }
 

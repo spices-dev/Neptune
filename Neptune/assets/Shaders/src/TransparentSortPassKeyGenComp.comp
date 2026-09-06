@@ -1,0 +1,101 @@
+/**
+* @file TransparentSortPassKeyGenComp.comp.
+* @brief This Shader Defines TransparentSortPassKeyGenComp Compute Shader Behaver.
+* @author Spices.
+*/
+
+/************************************Pre Compile*******************************************/
+
+#version 460
+
+#extension GL_GOOGLE_include_directive : enable    /* @brief Enable include Macro. */
+
+#include "Header/PreRendererLayout.glsl"
+#include "Header/GS3DDescLayout.glsl"
+
+/*****************************************************************************************/
+
+/*************************************Comp Input******************************************/
+
+layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+
+/*****************************************************************************************/
+
+/********************************Descriptor List******************************************/
+
+/**
+* @brief push constant.
+*/
+layout(push_constant) uniform Push 
+{ 
+    uint paddedN;
+    uint gsCount;
+};
+        
+/**
+* @brief GS3DDesc Address.
+*/
+layout(set = 1, binding = 0) uniform UBO1 { uint64_t descAddress; };  /* @see GS3DDesc */
+
+/**
+* @brief Sort Address.
+*/
+layout(set = 1, binding = 1) uniform UBO2 { uint64_t sortAddress; };  /* @see Sort */
+
+/**
+* @brief Sort Buffer.
+*/
+layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Sorts
+{
+    uint64_t i[];             /* @biref Sort list. */
+};
+Sorts sorts;
+
+/*****************************************************************************************/
+
+/**
+* @brief Encode depth from float to int.
+*/
+uint EncodeDepthKey(float depth)
+{
+    uint bits = floatBitsToUint(depth);
+    return (bits & 0x80000000u) != 0u
+        ? ~bits
+        : (bits | 0x80000000u);
+}
+        
+/**********************************Shader Entry*******************************************/
+
+void main()
+{
+    ExplainGS3DDesciption(descAddress);
+
+    sorts = Sorts(sortAddress);
+
+    uint idx = gl_GlobalInvocationID.x;
+    if (idx >= paddedN)
+    {
+        return;
+    }
+
+    if (idx < gsCount)
+    {
+        model = mat4(1.0, 0.0,   0.0,   0.0,
+                     0.0,   1.0, 0.0,   0.0,
+                     0.0,   0.0,   1.0, 0.0,
+                     0.0,   0.0,   0.0,   1.0);
+            
+        vec3 worldPos = (model * vec4(positions.i[idx], 1.0)).xyz;
+        vec4 viewPos  =  view.view * vec4(worldPos, 1.0);
+        float depth   = -viewPos.z;
+        
+        uint key = EncodeDepthKey(depth);
+        sorts.i[idx] = (uint64_t(key) << 32) | uint64_t(idx);
+    }
+    else
+    {
+        sorts.i[idx] = (uint64_t(0xFFFFFFFFu) << 32) | uint64_t(0xFFFFFFFFu);
+    }
+}
+
+/*****************************************************************************************/

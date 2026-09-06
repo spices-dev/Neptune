@@ -150,6 +150,12 @@ namespace Neptune::Vulkan {
 		info.pushConstantRangeCount                   = 0;
 		info.pPushConstantRanges                      = nullptr;
 
+		if (descriptorList->GetRHIImpl<DescriptorList>()->GetPushConstantRange())
+		{
+			info.pushConstantRangeCount               = 1;
+			info.pPushConstantRanges                  = &*descriptorList->GetRHIImpl<DescriptorList>()->GetPushConstantRange();
+		}
+		
 		m_PipelineLayout.CreatePipelineLayout(GetContext().Get<IDevice>()->Handle(), info);
 
 		DEBUGUTILS_SETOBJECTNAME(m_PipelineLayout, "PipelineLayout")
@@ -229,7 +235,7 @@ namespace Neptune::Vulkan {
 		NEPTUNE_PROFILE_ZONE
 		
 		VkComputePipelineCreateInfo                          info{};
-		info.sType                                          = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+		info.sType                                          = VK_STRUCTURE_TYPE_COMPUTE_PIPELINE_CREATE_INFO;
 		info.flags                                          = 0;
 		info.layout                                         = m_PipelineLayout.GetHandle();
 		info.stage                                          = m_ShaderStages[0];

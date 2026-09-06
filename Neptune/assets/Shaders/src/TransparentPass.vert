@@ -48,7 +48,7 @@ layout(set = 1, binding = 1) uniform UBO2 { uint64_t sortAddress; };  /* @see So
 */
 layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Sorts
 {
-    uint i[];             /* @biref Sort list. */
+    uint64_t i[];             /* @biref Sort list. */
 };
 Sorts sorts;
 
@@ -123,10 +123,16 @@ void main()
     ExplainGS3DDesciption(descAddress);
 
     sorts = Sorts(sortAddress);
-            
-    uint gID = sorts.i[gl_InstanceIndex];
+
+    uint64_t entry = sorts.i[gl_InstanceIndex];
+    uint gID = uint(entry & 0xFFFFFFFFu);
     uint cID = gl_VertexIndex;
 
+    if (gID >= 500000)
+    {
+        return;
+    }
+        
     model = mat4(1.0, 0.0,   0.0,   0.0,
                 0.0,   1.0, 0.0,   0.0,
                 0.0,   0.0,   1.0, 0.0,

@@ -42,6 +42,13 @@ namespace Neptune::Direct3D11 {
 	public:
 
 		/**
+		* @brief Interface of Add ShaderConstant.
+		*
+		* @param[in] bytes bytes.
+		*/
+		void AddShaderConstant(uint32_t bytes) override;
+		
+		/**
 		* @brief Interface of Add UniformBuffer.
 		*
 		* @param[in] set .

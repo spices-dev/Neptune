@@ -12,6 +12,12 @@
 
 namespace Neptune::Metal {
 
+	void DescriptorList::AddShaderConstant(uint32_t bytes)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+	}
+	
 	void DescriptorList::AddUniformBuffer(uint32_t set, uint32_t binding, uint32_t bytes)
 	{
 		NEPTUNE_PROFILE_ZONE

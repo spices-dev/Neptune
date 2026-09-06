@@ -112,6 +112,13 @@ namespace Neptune::Vulkan {
 		
 		m_CommandBuffer->CmdBindIndexBuffer(buffer->GetRHIImpl<IndexBuffer>()->Handle(), 0, VK_INDEX_TYPE_UINT32);
 	}
+	
+	void CmdList::CmdUpdateShaderConstant(const void* data, uint32_t size, uint32_t offset) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_CommandBuffer->CmdPushConstants(m_PipelineLayout, data, size, offset);
+	}
 
 	void CmdList::CmdDraw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) const
 	{
@@ -134,7 +141,7 @@ namespace Neptune::Vulkan {
 		m_CommandBuffer->Dispatch(groupCountX, groupCountY, groupCountZ);
 	}
 	
-	void CmdList::CmdInsertBarrier(const MemoryBarrier& barrier) const
+	void CmdList::CmdInsertBarrier(const MemoryBarrierdDesc& barrier) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		

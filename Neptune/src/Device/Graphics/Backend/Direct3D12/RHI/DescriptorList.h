@@ -40,6 +40,13 @@ namespace Neptune::Direct3D12 {
 		~DescriptorList() override = default;
 
 	public:
+		
+		/**
+		* @brief Interface of Add ShaderConstant.
+		*
+		* @param[in] bytes bytes.
+		*/
+		void AddShaderConstant(uint32_t bytes) override;
 
 		/**
 		* @brief Interface of Add UniformBuffer.

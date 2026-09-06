@@ -33,9 +33,9 @@ namespace Neptune {
     };
     
     /**
-    * @brief MemoryBarrier.
+    * @brief MemoryBarrier Description.
     */
-    struct MemoryBarrier
+    struct MemoryBarrierdDesc
     {
         EPipelineAccess srcAccess;      // @brief src EPipelineAccess.
         EPipelineAccess dstAccess;      // @brief dst EPipelineAccess.

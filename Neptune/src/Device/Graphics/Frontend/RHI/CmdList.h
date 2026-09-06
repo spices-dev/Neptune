@@ -110,6 +110,15 @@ namespace Neptune::RHI {
 		virtual void CmdBindIndexBuffer(const SP<class IndexBuffer>& buffer) const = 0;
 		
 		/**
+		* @brief Interface of Update ShaderConstant.
+		*
+		* @param[in] data ShaderConstant data.
+		* @param[in] size ShaderConstant size.
+		* @param[in] offset ShaderConstant offset.
+		*/
+		virtual void CmdUpdateShaderConstant(const void* data, uint32_t size, uint32_t offset = 0) const = 0;
+		
+		/**
 		* @brief Interface of Draw.
 		* 
 		* @param[in] vertexCount .
@@ -142,9 +151,9 @@ namespace Neptune::RHI {
 		/**
 		* @brief Interface of Insert Barrier.
 		* 
-		* @param[in] barrier MemoryBarrier.
+		* @param[in] barrier MemoryBarrierdDesc.
 		*/
-		virtual void CmdInsertBarrier(const MemoryBarrier& barrier) const = 0;
+		virtual void CmdInsertBarrier(const MemoryBarrierdDesc& barrier) const = 0;
 		
 		/**
 		* @brief Interface of SetViewport.
@@ -231,6 +240,15 @@ namespace Neptune::RHI {
 		* @param[in] buffer IndexBuffer.
 		*/
 		void CmdBindIndexBuffer(const SP<class IndexBuffer>& buffer) const { RHICmdList::m_Impl->CmdBindIndexBuffer(buffer); }
+
+		/**
+		* @brief Interface of Update ShaderConstant.
+		*
+		* @param[in] data ShaderConstant data.
+		* @param[in] size ShaderConstant size.
+		* @param[in] offset ShaderConstant offset.
+		*/
+		void CmdUpdateShaderConstant(const void* data, uint32_t size, uint32_t offset = 0) const { RHICmdList::m_Impl->CmdUpdateShaderConstant(data, size, offset); }
 		
 		/**
 		* @brief Interface of Draw.
@@ -265,9 +283,9 @@ namespace Neptune::RHI {
 		/**
 		* @brief Interface of Insert Barrier.
 		* 
-		* @param[in] barrier MemoryBarrier.
+		* @param[in] barrier MemoryBarrierdDesc.
 		*/
-		void CmdInsertBarrier(const MemoryBarrier& barrier) const { RHICmdList::m_Impl->CmdInsertBarrier(barrier); }
+		void CmdInsertBarrier(const MemoryBarrierdDesc& barrier) const { RHICmdList::m_Impl->CmdInsertBarrier(barrier); }
 		
 		/**
 		* @brief Interface of SetViewport.
