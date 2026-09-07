@@ -101,15 +101,13 @@ namespace Neptune::Vulkan {
 		{
 			DEBUGUTILS_BEGINQUEUELABEL(context.Get<IComputeQueue>()->Handle(), "MainComputeQueue")
 
-			VkSemaphore waitSemaphores[]         = { context.Get<IGraphicImageSemaphore>()->Handle(clock.m_FrameIndex) };
 			VkSemaphore signalSemaphores[]       = { context.Get<IComputeQueueSemaphore>()->Handle(clock.m_FrameIndex) };
-			VkPipelineStageFlags waitStages[]    = { VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT };
 
 			VkSubmitInfo                           submitInfo{};
 			submitInfo.sType                     = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-			submitInfo.waitSemaphoreCount        = 1;
-			submitInfo.pWaitSemaphores           = waitSemaphores;
-			submitInfo.pWaitDstStageMask         = waitStages;
+			submitInfo.waitSemaphoreCount        = 0;
+			submitInfo.pWaitSemaphores           = nullptr;
+			submitInfo.pWaitDstStageMask         = nullptr;
 			submitInfo.commandBufferCount        = 1;
 			submitInfo.pCommandBuffers           = &context.Get<IComputeCommandBuffer>()->Handle(clock.m_FrameIndex);
 			submitInfo.signalSemaphoreCount      = 1;
@@ -123,13 +121,15 @@ namespace Neptune::Vulkan {
 		{
 			DEBUGUTILS_BEGINQUEUELABEL(context.Get<IGraphicQueue>()->Handle(), "MainGraphicQueue")
 
-			VkSemaphore waitSemaphores[]         = { context.Get<IComputeQueueSemaphore>()->Handle(clock.m_FrameIndex) };
+			VkSemaphore waitSemaphores[]         = { context.Get<IGraphicImageSemaphore>()->Handle(clock.m_FrameIndex), 
+													 context.Get<IComputeQueueSemaphore>()->Handle(clock.m_FrameIndex) };
 			VkSemaphore signalSemaphores[]       = { context.Get<IGraphicQueueSemaphore>()->Handle(clock.m_ImageIndex) };
-			VkPipelineStageFlags waitStages[]    = { VK_PIPELINE_STAGE_VERTEX_SHADER_BIT };
+			VkPipelineStageFlags waitStages[]    = { VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT, 
+													 VK_PIPELINE_STAGE_VERTEX_SHADER_BIT };
 
 			VkSubmitInfo                           submitInfo{};
 			submitInfo.sType                     = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-			submitInfo.waitSemaphoreCount        = 1;
+			submitInfo.waitSemaphoreCount        = 2;
 			submitInfo.pWaitSemaphores           = waitSemaphores;
 			submitInfo.pWaitDstStageMask         = waitStages;
 			submitInfo.commandBufferCount        = 1;

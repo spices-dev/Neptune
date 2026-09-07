@@ -104,7 +104,7 @@ namespace Neptune::Render::Common::Test {
 				EXPECT_EQ(size, static_cast<uint8_t>(EInfrastructure::Count));
 
 				// Context bytes equals to EInfrastructure::Count * sizeof(size_t)
-				EXPECT_EQ(sizeof(decltype(context)), size * sizeof(SP<Infrastructure<EInfrastructure>>));
+				EXPECT_EQ(sizeof(decltype(context)), size * sizeof(UP<Infrastructure<EInfrastructure>>));
 			}
 			else
 			{
