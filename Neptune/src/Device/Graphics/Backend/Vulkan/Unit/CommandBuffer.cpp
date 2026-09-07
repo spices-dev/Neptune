@@ -119,11 +119,144 @@ namespace Neptune::Vulkan::Unit {
 		vkCmdDraw(m_Handle, vertexCount, instanceCount, firstVertex, firstInstance);
 	}
 
-	void CommandBuffer::DrawInstance(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const
+	void CommandBuffer::DrawIndexed(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
 		vkCmdDrawIndexed(m_Handle, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
+	}
+	
+	void CommandBuffer::DrawIndexedIndirect(VkBuffer buffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawIndexedIndirect(m_Handle, buffer, offset, drawCount, stride);
+	}
+	
+	void CommandBuffer::DrawIndexedIndirect2(PFN_vkCmdDrawIndexedIndirect2KHR vkCmdDrawIndexedIndirect2KHR, const VkDrawIndirect2InfoKHR& info) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawIndexedIndirect2KHR(m_Handle, &info);
+	}
+	
+	void CommandBuffer::DrawIndexedIndirectCount(VkBuffer buffer, VkDeviceSize offset, VkBuffer countBuffer, VkDeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawIndexedIndirectCount(m_Handle, buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
+	}
+	
+	void CommandBuffer::DrawIndexedIndirectCount2(PFN_vkCmdDrawIndexedIndirectCount2KHR vkCmdDrawIndexedIndirectCount2KHR, const VkDrawIndirectCount2InfoKHR& info) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawIndexedIndirectCount2KHR(m_Handle, &info);
+	}
+	
+	void CommandBuffer::DrawIndirect(VkBuffer buffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawIndirect(m_Handle, buffer, offset, drawCount, stride);
+	}
+	
+	void CommandBuffer::DrawIndirect2(PFN_vkCmdDrawIndirect2KHR vkCmdDrawIndirect2KHR, const VkDrawIndirect2InfoKHR& info) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawIndirect2KHR(m_Handle, &info);
+	}
+	
+	void CommandBuffer::DrawIndirectCount(VkBuffer buffer, VkDeviceSize offset, VkBuffer countBuffer, VkDeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawIndirectCount(m_Handle, buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
+	}
+	
+	void CommandBuffer::DrawIndirectCount2(PFN_vkCmdDrawIndirectCount2KHR vkCmdDrawIndirectCount2KHR, const VkDrawIndirectCount2InfoKHR& info) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawIndirectCount2KHR(m_Handle, &info);
+	}
+	
+	void CommandBuffer::DrawIndirectByteCount(PFN_vkCmdDrawIndirectByteCountEXT vkCmdDrawIndirectByteCountEXT, uint32_t instanceCount, uint32_t firstInstance, VkBuffer counterBuffer, VkDeviceSize counterBufferOffset, uint32_t counterOffset, uint32_t vertexStride) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawIndirectByteCountEXT(m_Handle, instanceCount, firstInstance, counterBuffer, counterBufferOffset, counterOffset, vertexStride);
+	}
+	
+	void CommandBuffer::DrawIndirectByteCount2(PFN_vkCmdDrawIndirectByteCount2EXT vkCmdDrawIndirectByteCount2EXT, uint32_t instanceCount, uint32_t firstInstance, const VkBindTransformFeedbackBuffer2InfoEXT& info, uint32_t counterOffset, uint32_t vertexStride) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawIndirectByteCount2EXT(m_Handle, instanceCount, firstInstance, &info, counterOffset, vertexStride);
+	}
+	
+	void CommandBuffer::DrawMeshTasks(PFN_vkCmdDrawMeshTasksEXT vkCmdDrawMeshTasksEXT, uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawMeshTasksEXT(m_Handle, groupCountX, groupCountY, groupCountZ);
+	}
+	
+	void CommandBuffer::DrawMeshTasksIndirect(PFN_vkCmdDrawMeshTasksIndirectEXT vkCmdDrawMeshTasksIndirectEXT, VkBuffer buffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawMeshTasksIndirectEXT(m_Handle, buffer, offset, drawCount, stride);
+	}
+	
+	void CommandBuffer::DrawMeshTasksIndirect2(PFN_vkCmdDrawMeshTasksIndirect2EXT vkCmdDrawMeshTasksIndirect2EXT, const VkDrawIndirect2InfoKHR& info) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawMeshTasksIndirect2EXT(m_Handle, &info);
+	}
+	
+	void CommandBuffer::DrawMeshTasksIndirectCount(PFN_vkCmdDrawMeshTasksIndirectCountEXT vkCmdDrawMeshTasksIndirectCountEXT, VkBuffer buffer, VkDeviceSize offset, VkBuffer countBuffer, VkDeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawMeshTasksIndirectCountEXT(m_Handle, buffer, offset, countBuffer, countBufferOffset, maxDrawCount, stride);
+	}
+	
+	void CommandBuffer::DrawMeshTasksIndirectCount2(PFN_vkCmdDrawMeshTasksIndirectCount2EXT vkCmdDrawMeshTasksIndirectCount2EXT, const VkDrawIndirectCount2InfoKHR& info) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawMeshTasksIndirectCount2EXT(m_Handle, &info);
+	}
+	
+	void CommandBuffer::DrawMulti(PFN_vkCmdDrawMultiEXT vkCmdDrawMultiEXT, uint32_t drawCount, const VkMultiDrawInfoEXT& info, uint32_t instanceCount, uint32_t firstInstance, uint32_t stride) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawMultiEXT(m_Handle, drawCount, &info, instanceCount, firstInstance, stride);
+	}
+	
+	void CommandBuffer::DrawMultiIndexed(PFN_vkCmdDrawMultiIndexedEXT vkCmdDrawMultiIndexedEXT, uint32_t drawCount, const VkMultiDrawIndexedInfoEXT& info, uint32_t instanceCount, uint32_t firstInstance, uint32_t stride, const int32_t* vertexOffset) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawMultiIndexedEXT(m_Handle, drawCount, &info, instanceCount, firstInstance, stride, vertexOffset);
+	}
+	
+	void CommandBuffer::DrawCluster(PFN_vkCmdDrawClusterHUAWEI vkCmdDrawClusterHUAWEI, uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawClusterHUAWEI(m_Handle, groupCountX, groupCountY, groupCountZ);
+	}
+	
+	void CommandBuffer::DrawClusterIndirect(PFN_vkCmdDrawClusterIndirectHUAWEI vkCmdDrawClusterIndirectHUAWEI, VkBuffer buffer, VkDeviceSize offset) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDrawClusterIndirectHUAWEI(m_Handle, buffer, offset);
 	}
 	
 	void CommandBuffer::Dispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const

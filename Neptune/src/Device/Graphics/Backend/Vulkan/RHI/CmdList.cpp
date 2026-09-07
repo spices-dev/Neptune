@@ -127,11 +127,11 @@ namespace Neptune::Vulkan {
 		m_CommandBuffer->Draw(vertexCount, instanceCount, firstVertex, firstInstance);
 	}
 
-	void CmdList::CmdDrawInstance(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const
+	void CmdList::CmdDrawIndexed(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		m_CommandBuffer->DrawInstance(indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
+		m_CommandBuffer->DrawIndexed(indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
 	}
 	
 	void CmdList::CmdDispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const

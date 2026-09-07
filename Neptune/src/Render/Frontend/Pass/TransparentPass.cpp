@@ -162,7 +162,7 @@ namespace Neptune::Render {
 		
 		cmdList.CmdUpdateShaderConstant(&gsCount, sizeof(gsCount));
 		
-		cmdList.CmdDrawInstance(4, gsCount, 0, 0, 0);
+		cmdList.CmdDrawIndexed(4, gsCount, 0, 0, 0);
 
 		cmdList.CmdEndRenderPass();
 	}

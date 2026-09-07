@@ -141,7 +141,7 @@ namespace Neptune::Vulkan::Unit {
 		void Draw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) const;
 
 		/**
-		* @brief DrawInstance.
+		* @brief DrawIndexed.
 		*
 		* @param[in] indexCount .
 		* @param[in] instanceCount .
@@ -149,7 +149,202 @@ namespace Neptune::Vulkan::Unit {
 		* @param[in] vertexOffset .
 		* @param[in] firstInstance .
 		*/
-		void DrawInstance(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const;
+		void DrawIndexed(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const;
+		
+		/**
+		* @brief DrawIndexedIndirect.
+		*
+		* @param[in] buffer VkBuffer.
+		* @param[in] offset .
+		* @param[in] drawCount .
+		* @param[in] stride .
+		*/
+		void DrawIndexedIndirect(VkBuffer buffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride) const;
+		
+		/**
+		* @brief DrawIndexedIndirect2.
+		*
+		* @param[in] vkCmdDrawIndexedIndirect2KHR PFN_vkCmdDrawIndexedIndirect2KHR.
+		* @param[in] info VkDrawIndirect2InfoKHR.
+		*/
+		void DrawIndexedIndirect2(PFN_vkCmdDrawIndexedIndirect2KHR vkCmdDrawIndexedIndirect2KHR, const VkDrawIndirect2InfoKHR& info) const;
+		
+		/**
+		* @brief DrawIndexedIndirectCount.
+		*
+		* @param[in] buffer VkBuffer.
+		* @param[in] offset .
+		* @param[in] countBuffer .
+		* @param[in] countBufferOffset .
+		* @param[in] maxDrawCount .
+		* @param[in] stride .
+		*/
+		void DrawIndexedIndirectCount(VkBuffer buffer, VkDeviceSize offset, VkBuffer countBuffer, VkDeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) const;
+		
+		/**
+		* @brief DrawIndexedIndirectCount2.
+		*
+		* @param[in] vkCmdDrawIndexedIndirectCount2KHR PFN_vkCmdDrawIndexedIndirectCount2KHR.
+		* @param[in] info VkDrawIndirectCount2InfoKHR.
+		*/
+		void DrawIndexedIndirectCount2(PFN_vkCmdDrawIndexedIndirectCount2KHR vkCmdDrawIndexedIndirectCount2KHR, const VkDrawIndirectCount2InfoKHR& info) const;
+		
+		/**
+		* @brief DrawIndirect.
+		*
+		* @param[in] buffer VkBuffer.
+		* @param[in] offset .
+		* @param[in] drawCount .
+		* @param[in] stride .
+		*/
+		void DrawIndirect(VkBuffer buffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride) const;
+		
+		/**
+		* @brief DrawIndirect2.
+		*
+		* @param[in] vkCmdDrawIndirect2KHR PFN_vkCmdDrawIndirect2KHR.
+		* @param[in] info VkDrawIndirect2InfoKHR.
+		*/
+		void DrawIndirect2(PFN_vkCmdDrawIndirect2KHR vkCmdDrawIndirect2KHR, const VkDrawIndirect2InfoKHR& info) const;
+		
+		/**
+		* @brief DrawIndirectCount.
+		*
+		* @param[in] buffer VkBuffer.
+		* @param[in] offset .
+		* @param[in] countBuffer VkBuffer.
+		* @param[in] countBufferOffset .
+		* @param[in] maxDrawCount .
+		* @param[in] stride .
+		*/
+		void DrawIndirectCount(VkBuffer buffer, VkDeviceSize offset, VkBuffer countBuffer, VkDeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) const;
+		
+		/**
+		* @brief DrawIndirectCount2.
+		*
+		* @param[in] vkCmdDrawIndirectCount2KHR PFN_vkCmdDrawIndirectCount2KHR.
+		* @param[in] info VkDrawIndirectCount2InfoKHR.
+		*/
+		void DrawIndirectCount2(PFN_vkCmdDrawIndirectCount2KHR vkCmdDrawIndirectCount2KHR, const VkDrawIndirectCount2InfoKHR& info) const;
+		
+		/**
+		* @brief DrawIndirectByteCount.
+		*
+		* @param[in] vkCmdDrawIndirectByteCountEXT PFN_vkCmdDrawIndirectByteCountEXT.
+		* @param[in] instanceCount .
+		* @param[in] firstInstance .
+		* @param[in] counterBuffer .
+		* @param[in] counterBufferOffset .
+		* @param[in] counterOffset .
+		* @param[in] vertexStride .
+		*/
+		void DrawIndirectByteCount(PFN_vkCmdDrawIndirectByteCountEXT vkCmdDrawIndirectByteCountEXT, uint32_t instanceCount, uint32_t firstInstance, VkBuffer counterBuffer, VkDeviceSize counterBufferOffset, uint32_t counterOffset, uint32_t vertexStride) const;
+		
+		/**
+		* @brief DrawIndirectByteCount2.
+		*
+		* @param[in] vkCmdDrawIndirectByteCount2EXT PFN_vkCmdDrawIndirectByteCount2EXT.
+		* @param[in] instanceCount .
+		* @param[in] firstInstance .
+		* @param[in] info VkBindTransformFeedbackBuffer2InfoEXT.
+		* @param[in] counterOffset .
+		* @param[in] vertexStride .
+		*/
+		void DrawIndirectByteCount2(PFN_vkCmdDrawIndirectByteCount2EXT vkCmdDrawIndirectByteCount2EXT, uint32_t instanceCount, uint32_t firstInstance, const VkBindTransformFeedbackBuffer2InfoEXT& info, uint32_t counterOffset, uint32_t vertexStride) const;
+		
+		/**
+		* @brief DrawMeshTasks.
+		*
+		* @param[in] vkCmdDrawMeshTasksEXT PFN_vkCmdDrawMeshTasksEXT.
+		* @param[in] groupCountX .
+		* @param[in] groupCountY .
+		* @param[in] groupCountZ .
+		*/
+		void DrawMeshTasks(PFN_vkCmdDrawMeshTasksEXT vkCmdDrawMeshTasksEXT, uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const;
+		
+		/**
+		* @brief DrawMeshTasksIndirect.
+		*
+		* @param[in] vkCmdDrawMeshTasksIndirectEXT PFN_vkCmdDrawMeshTasksIndirectEXT.
+		* @param[in] buffer VkBuffer.
+		* @param[in] offset .
+		* @param[in] drawCount .
+		* @param[in] stride .
+		*/
+		void DrawMeshTasksIndirect(PFN_vkCmdDrawMeshTasksIndirectEXT vkCmdDrawMeshTasksIndirectEXT, VkBuffer buffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride) const;
+		
+		/**
+		* @brief DrawMeshTasksIndirect2.
+		*
+		* @param[in] vkCmdDrawMeshTasksIndirect2EXT PFN_vkCmdDrawMeshTasksIndirect2EXT.
+		* @param[in] info VkDrawIndirect2InfoKHR.
+		*/
+		void DrawMeshTasksIndirect2(PFN_vkCmdDrawMeshTasksIndirect2EXT vkCmdDrawMeshTasksIndirect2EXT, const VkDrawIndirect2InfoKHR& info) const;
+		
+		/**
+		* @brief DrawMeshTasksIndirectCount.
+		*
+		* @param[in] vkCmdDrawMeshTasksIndirectCountEXT PFN_vkCmdDrawMeshTasksIndirectCountEXT.
+		* @param[in] buffer VkBuffer.
+		* @param[in] offset .
+		* @param[in] countBuffer VkBuffer.
+		* @param[in] countBufferOffset .
+		* @param[in] maxDrawCount .
+		* @param[in] stride .
+		*/
+		void DrawMeshTasksIndirectCount(PFN_vkCmdDrawMeshTasksIndirectCountEXT vkCmdDrawMeshTasksIndirectCountEXT, VkBuffer buffer, VkDeviceSize offset, VkBuffer countBuffer, VkDeviceSize countBufferOffset, uint32_t maxDrawCount, uint32_t stride) const;
+		
+		/**
+		* @brief DrawMeshTasksIndirectCount2.
+		*
+		* @param[in] vkCmdDrawMeshTasksIndirectCount2EXT PFN_vkCmdDrawMeshTasksIndirectCount2EXT.
+		* @param[in] info VkDrawIndirectCount2InfoKHR.
+		*/
+		void DrawMeshTasksIndirectCount2(PFN_vkCmdDrawMeshTasksIndirectCount2EXT vkCmdDrawMeshTasksIndirectCount2EXT, const VkDrawIndirectCount2InfoKHR& info) const;
+		
+		/**
+		* @brief DrawMulti.
+		*
+		* @param[in] vkCmdDrawMultiEXT PFN_vkCmdDrawMultiEXT.
+		* @param[in] drawCount .
+		* @param[in] info VkMultiDrawInfoEXT.
+		* @param[in] instanceCount .
+		* @param[in] firstInstance .
+		* @param[in] stride .
+		*/
+		void DrawMulti(PFN_vkCmdDrawMultiEXT vkCmdDrawMultiEXT, uint32_t drawCount, const VkMultiDrawInfoEXT& info, uint32_t instanceCount, uint32_t firstInstance, uint32_t stride) const;
+		
+		/**
+		* @brief DrawMultiIndexed.
+		*
+		* @param[in] vkCmdDrawMultiIndexedEXT PFN_vkCmdDrawMultiIndexedEXT.
+		* @param[in] drawCount .
+		* @param[in] info VkMultiDrawInfoEXT.
+		* @param[in] instanceCount .
+		* @param[in] firstInstance .
+		* @param[in] stride .
+		* @param[in] vertexOffset .
+		*/
+		void DrawMultiIndexed(PFN_vkCmdDrawMultiIndexedEXT vkCmdDrawMultiIndexedEXT, uint32_t drawCount, const VkMultiDrawIndexedInfoEXT& info, uint32_t instanceCount, uint32_t firstInstance, uint32_t stride, const int32_t* vertexOffset) const;
+		
+		/**
+		* @brief DrawCluster.
+		*
+		* @param[in] vkCmdDrawClusterHUAWEI PFN_vkCmdDrawClusterHUAWEI.
+		* @param[in] groupCountX .
+		* @param[in] groupCountY .
+		* @param[in] groupCountZ .
+		*/
+		void DrawCluster(PFN_vkCmdDrawClusterHUAWEI vkCmdDrawClusterHUAWEI, uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const;
+		
+		/**
+		* @brief DrawClusterIndirect.
+		*
+		* @param[in] vkCmdDrawClusterIndirectHUAWEI PFN_vkCmdDrawClusterIndirectHUAWEI.
+		* @param[in] buffer VkBuffer.
+		* @param[in] offset .
+		*/
+		void DrawClusterIndirect(PFN_vkCmdDrawClusterIndirectHUAWEI vkCmdDrawClusterIndirectHUAWEI, VkBuffer buffer, VkDeviceSize offset) const;
 		
 		/**
 		* @brief Dispatch.

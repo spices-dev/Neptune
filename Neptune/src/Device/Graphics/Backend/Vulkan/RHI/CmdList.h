@@ -133,7 +133,7 @@ namespace Neptune::Vulkan {
 		void CmdDraw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) const override;
 
 		/**
-		* @brief Interface of DrawInstance.
+		* @brief Interface of DrawIndexed.
 		* 
 		* @param[in] indexCount .
 		* @param[in] instanceCount .
@@ -141,7 +141,7 @@ namespace Neptune::Vulkan {
 		* @param[in] vertexOffset .
 		* @param[in] firstInstance .
 		*/
-		void CmdDrawInstance(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const override;
+		void CmdDrawIndexed(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const override;
 
 		/**
 		* @brief Interface of Dispatch.

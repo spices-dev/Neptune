@@ -129,7 +129,7 @@ namespace Neptune::RHI {
 		virtual void CmdDraw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) const = 0;
 
 		/**
-		* @brief Interface of DrawInstance.
+		* @brief Interface of DrawIndexed.
 		* 
 		* @param[in] indexCount .
 		* @param[in] instanceCount .
@@ -137,7 +137,7 @@ namespace Neptune::RHI {
 		* @param[in] vertexOffset .
 		* @param[in] firstInstance .
 		*/
-		virtual void CmdDrawInstance(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const = 0;
+		virtual void CmdDrawIndexed(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const = 0;
 
 		/**
 		* @brief Interface of Dispatch.
@@ -261,7 +261,7 @@ namespace Neptune::RHI {
 		void CmdDraw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) const { RHICmdList::m_Impl->CmdDraw(vertexCount, instanceCount, firstVertex, firstInstance); }
 
 		/**
-		* @brief Interface of DrawInstance.
+		* @brief Interface of DrawIndexed.
 		* 
 		* @param[in] indexCount .
 		* @param[in] instanceCount .
@@ -269,7 +269,7 @@ namespace Neptune::RHI {
 		* @param[in] vertexOffset .
 		* @param[in] firstInstance .
 		*/
-		void CmdDrawInstance(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const { RHICmdList::m_Impl->CmdDrawInstance(indexCount, instanceCount, firstIndex, vertexOffset, firstInstance); }
+		void CmdDrawIndexed(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const { RHICmdList::m_Impl->CmdDrawIndexed(indexCount, instanceCount, firstIndex, vertexOffset, firstInstance); }
 
 		/**
 		* @brief Interface of Dispatch.
