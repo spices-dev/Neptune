@@ -15,6 +15,12 @@
 
 /*****************************************************************************************/
 
+/***************************************Constant******************************************/
+
+const float kGSMaxRadiusRatio = 0.35;
+        
+/*****************************************************************************************/
+        
 /************************************Vertex Output****************************************/
 
 /**
@@ -121,6 +127,16 @@ vec3 EvalSH(vec3 dir, mat4 shR, mat4 shG, mat4 shB)
     return max(color, vec3(0.0));
 }
         
+void CullSplat()
+{
+    gl_Position = vec4(0.0, 0.0, 2.0, 1.0);
+
+    vertOut.localOffset = vec2(0.0);
+    vertOut.color       = vec3(0.0);
+    vertOut.opacity     = 0.0;
+    vertOut.conic       = vec3(0.0);
+}
+
 /**********************************Shader Entry*******************************************/
 
 void main()
@@ -135,6 +151,8 @@ void main()
 
     if (gID >= gsCount)
     {
+        CullSplat();
+                
         return;
     }
         
@@ -152,11 +170,11 @@ void main()
     vec4 viewPos = view.view * vec4(worldPos, 1.0);
     vec4 clipPos = view.projection * viewPos;
 
-    if (viewPos.z >= -0.2)
+    if (viewPos.z <= 0.01f)
     {
-        gl_Position = vec4(0.0, 0.0, 2.0, 1.0);
+        CullSplat();
             
-        //return;
+        return;
     }
 
     mat3 R = QuatToMat3(quat);
@@ -171,9 +189,9 @@ void main()
 
     float invZ  = 1.0 / viewPos.z;
     float invZ2 = invZ * invZ;
-    mat3 J = mat3(focalX * invZ, 0.0,           -focalX * viewPos.x * invZ2,
-                  0.0,           focalY * invZ, -focalY * viewPos.y * invZ2,
-                  0.0,           0.0,            0.0);
+    mat3 J = mat3(focalX * invZ              , 0.0                        , 0.0,
+                  0.0                        , focalY * invZ              , 0.0,
+                  -focalX * viewPos.x * invZ2, -focalY * viewPos.y * invZ2, 0.0);
     
     mat3 T   = J * W;
     mat3 cov = T * Sigma * transpose(T);
@@ -188,8 +206,8 @@ void main()
     float det = a * c - b * b;
     if (det <= 0.0)
     {
-        gl_Position = vec4(0.0, 0.0, 2.0, 1.0);
-        //return;
+        CullSplat();
+        return;
     }
     
     float mid     = 0.5 * (a + c);
@@ -197,6 +215,14 @@ void main()
     float lambda2 = mid - sqrt(max(0.1, mid * mid - det));
     float radius  = ceil(3.0 * sqrt(max(lambda1, lambda2)));
 
+    float maxRadius = kGSMaxRadiusRatio * min(view.sceneTextureSize.x, view.sceneTextureSize.y);
+        
+    if (!(radius > 0.0 && radius <= maxRadius))
+    {
+        CullSplat();
+        return;
+    }
+        
     float invDet = 1.0 / det;
     vec3 conic = vec3(c * invDet, -b * invDet, a * invDet);
 

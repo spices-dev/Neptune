@@ -74,7 +74,7 @@ namespace Neptune::Vulkan {
 		{
 			VkCommandBufferBeginInfo               beginInfo{};
 			beginInfo.sType                      = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-			beginInfo.flags                      = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
+			beginInfo.flags                      = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
 			beginInfo.pInheritanceInfo           = nullptr;
 
             context.Get<IComputeCommandBuffer>()->Begin(beginInfo, clock.m_FrameIndex);
@@ -203,9 +203,7 @@ namespace Neptune::Vulkan {
 
 		GetContext().Get<IGraphicQueue>()->Wait();
 
-		GetContext().UnRegistry<ISwapChain>();
-
-		GetContext().Registry<ISwapChain>(SwapChainImageCount);
+		GetContext().Registry<ISwapChain>(SwapChainImageCount, GetContext().Get<ISwapChain>()->Handle());
 
 		RenderFrontend::RecreateSwapChain();
 	}

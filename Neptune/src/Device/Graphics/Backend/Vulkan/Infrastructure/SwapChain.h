@@ -31,8 +31,9 @@ namespace Neptune::Vulkan {
 		* @param[in] context Context.
 		* @param[in] e EInfrastructure.
 		* @param[in] count SwapChain image Count.
+		* @param[in] handle Old SwapChain Handle.
 		*/
-		SwapChain(Context& context, EInfrastructure e, uint32_t count);
+		SwapChain(Context& context, EInfrastructure e, uint32_t count, Unit::SwapChain::Handle handle = VK_NULL_HANDLE);
 
 		/**
 		* @brief Destructor Function.
@@ -80,13 +81,14 @@ namespace Neptune::Vulkan {
 		* @brief Create SwapChain.
 		*
 		* @param[in] count SwapChain image count.
+		* @param[in] handle Old SwapChain Handle.
 		*/
-		void Create(uint32_t count);
+		void Create(uint32_t count, Unit::SwapChain::Handle handle = VK_NULL_HANDLE);
 
 	private:
 
 		UP<Unit::SwapChain> m_SwapChain;                     // @brief This SwapChain.
-		std::vector<UP<Resource::Image>> m_SwapChainImage;   // @brief Containor of SwapChainImage.
+		std::vector<UP<Resource::Image>> m_SwapChainImage;   // @brief Container of SwapChainImage.
 
 	};
 

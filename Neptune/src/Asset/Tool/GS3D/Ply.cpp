@@ -207,7 +207,7 @@ namespace Neptune::Tool {
                                             
             for (int i = 0; i < scale->count; ++i)
             {
-                auto r = glm::exp(*reinterpret_cast<float*>(addr + 4 * i));
+                auto r = glm::exp(*reinterpret_cast<float*>(addr + 12 * i));
                 auto g = glm::exp(*reinterpret_cast<float*>(addr + 12 * i + 4));
                 auto b = glm::exp(*reinterpret_cast<float*>(addr + 12 * i + 8));
                                                 

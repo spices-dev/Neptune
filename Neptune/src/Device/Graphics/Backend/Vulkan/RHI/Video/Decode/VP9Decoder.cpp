@@ -3,7 +3,7 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "VP9Decoder.h"
-#include "Device/Graphics/Backend/Vulkan/VideoParser/Decoder/VulkanAV1Decoder.h"
+#include "Device/Graphics/Backend/Vulkan/VideoParser/Decoder/VulkanVP9Decoder.h"
 
 namespace Neptune::Vulkan {
 
@@ -16,7 +16,7 @@ namespace Neptune::Vulkan {
         client.AllocPictureBuffer                      = [&](VkPicIf** picIf) { return AllocPictureBuffer(picIf); };
         client.DisplayPicture                          = [&](VkPicIf* pPicBuff, int64_t timestamp) { return DisplayPicture(pPicBuff, timestamp); };
 
-		m_Decoder = CreateSP<VulkanAV1Decoder>(GetContext(), *m_VideoSession, client);
+		m_Decoder = CreateSP<VulkanVP9Decoder>(GetContext(), *m_VideoSession, client);
 
 		VkParserInitDecodeParameters                     parameters{};
         parameters.interfaceVersion                    = VK_MAKE_VIDEO_STD_VERSION(0, 9, 9);

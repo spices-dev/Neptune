@@ -20,15 +20,15 @@
 
 namespace Neptune::Vulkan {
 
-    SwapChain::SwapChain(Context& context, EInfrastructure e, uint32_t count)
+    SwapChain::SwapChain(Context& context, EInfrastructure e, uint32_t count, Unit::SwapChain::Handle handle)
         : Infrastructure(context, e)
     {
 		NEPTUNE_PROFILE_ZONE
 
-        Create(count);
+        Create(count, handle);
     }
 
-	void SwapChain::Create(uint32_t count)
+	void SwapChain::Create(uint32_t count, Unit::SwapChain::Handle handle)
     {
 		NEPTUNE_PROFILE_ZONE
 
@@ -71,7 +71,7 @@ namespace Neptune::Vulkan {
 			createInfo.compositeAlpha              = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
 			createInfo.presentMode                 = property.presentMode;
 			createInfo.clipped                     = VK_TRUE;
-			createInfo.oldSwapchain                = VK_NULL_HANDLE;
+			createInfo.oldSwapchain                = handle;
 
 			m_SwapChain = CreateUP<Unit::SwapChain>();
 
@@ -83,7 +83,7 @@ namespace Neptune::Vulkan {
 		if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IHDR>())
 		{
 			VkHdrMetadataEXT                    meta {};
-			meta.sType                           = VK_STRUCTURE_TYPE_HDR_METADATA_EXT;
+			meta.sType                        = VK_STRUCTURE_TYPE_HDR_METADATA_EXT;
 			meta.displayPrimaryRed            = { 0.708, 0.292 };
 			meta.displayPrimaryGreen          = { 0.170, 0.797 };
 			meta.displayPrimaryBlue           = { 0.131, 0.046 };
@@ -92,7 +92,7 @@ namespace Neptune::Vulkan {
 			meta.minLuminance                 = 0.001f;
 			meta.maxContentLightLevel         = 1000.0f;
 			meta.maxFrameAverageLightLevel    = 100.0f;
-			
+
 			m_SwapChain->SetFunctor(GetContext().Get<IFunctions>()->vkSetHdrMetadataEXT);
 			
 			m_SwapChain->SetHdrMetadata(meta);
@@ -166,18 +166,26 @@ namespace Neptune::Vulkan {
 
 		const auto result = m_SwapChain->GetNextImage(semaphore, imageIndex);
 
-		VULKAN_CHECK(result)
-
-		if (result == VK_ERROR_OUT_OF_DATE_KHR)
+		if (result == VK_SUCCESS)
 		{
+			return true;
+		}
+		else if (result == VK_ERROR_OUT_OF_DATE_KHR)
+		{
+			NEPTUNE_LOG_CORE(W) << "Failed to Acquire SwapChain Image: Out of Data.";
+			
 			return false;
 		}
-    	if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
+		else if (result == VK_SUBOPTIMAL_KHR)
 		{
-			NEPTUNE_LOG_CORE(E) << "Failed to Acquire SwapChain Image.";
+			NEPTUNE_LOG_CORE(W) << "Failed to Acquire SwapChain Image: SubOptimal.";
+    		
+    		return true;
 		}
 
-		return true;
+    	VULKAN_CHECK(result)
+
+		return false;
 	}
 
 	bool SwapChain::Present(VkPresentInfoKHR& info) const

@@ -101,7 +101,7 @@ namespace Neptune::Vulkan {
 			colorBlend.dstColorBlendFactor          = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
 			colorBlend.colorBlendOp                 = VK_BLEND_OP_ADD;
 			colorBlend.srcAlphaBlendFactor          = VK_BLEND_FACTOR_ONE;
-			colorBlend.dstAlphaBlendFactor          = VK_BLEND_FACTOR_ONE;
+			colorBlend.dstAlphaBlendFactor          = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
 			colorBlend.alphaBlendOp                 = VK_BLEND_OP_ADD;
 		}
 

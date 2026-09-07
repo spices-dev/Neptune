@@ -100,7 +100,7 @@ namespace Neptune::Vulkan {
 		else
 		{
 			VkImageCopy                                     region{};
-			region.srcSubresource.aspectMask              = VK_IMAGE_ASPECT_PLANE_0_BIT;
+			region.srcSubresource.aspectMask              = VK_IMAGE_ASPECT_COLOR_BIT;
 			region.srcSubresource.layerCount              = m_Image->GetLayerCount();
 			region.srcSubresource.baseArrayLayer          = 0;
 			region.srcSubresource.mipLevel                = 0;

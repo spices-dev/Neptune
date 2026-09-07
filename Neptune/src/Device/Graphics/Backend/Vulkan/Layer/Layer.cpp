@@ -42,7 +42,7 @@ namespace Neptune::Vulkan::Layer {
 		settings.pSettingName              = name;
 		settings.type                      = VK_LAYER_SETTING_TYPE_STRING_EXT;
 		settings.valueCount                = 1;
-		settings.pValues                   = &data;
+		settings.pValues                   = static_cast<void*>(&data);
 		
 		AddLayerSetting(settings);
 	}

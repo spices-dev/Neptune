@@ -155,14 +155,9 @@ namespace Neptune::Render::Common {
 
         const auto position = static_cast<uint8_t>(I::E);
 
-        if (m_Infrastructures[position])
-        {
-            NEPTUNE_LOG_CORE(E) << "Infrastructure Already Registered.";
+        auto infrastructure = InfrastructureFactory<typename I::T>(*this, I::E, std::forward<Args>(args)...);
 
-            return nullptr;
-        }
-
-        m_Infrastructures[position] = InfrastructureFactory<typename I::T>(*this, I::E, std::forward<Args>(args)...);
+        m_Infrastructures[position] = std::move(infrastructure);
         
         return Get<I>();
     }

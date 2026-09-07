@@ -18,13 +18,13 @@ namespace Neptune::Vulkan::Layer {
         NEPTUNE_PROFILE_ZONE
 
         {
-            static const char* data = "0-0";
+            static constexpr char data[] = "0-0";
 
             AddLayerSetting("output_range", data);
         }
 
         {
-            static const char* data = "text";
+            static constexpr char data[] = "text";
 
             AddLayerSetting("output_format", data);
         }

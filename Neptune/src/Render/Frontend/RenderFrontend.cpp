@@ -48,6 +48,7 @@
 #include "Resource/Texture/RenderTarget.h"
 #include "Resource/ResourcePool/ResourcePool.h"
 #include "Resource/Shader/Shader.h"
+#include "Resource/Buffer/Buffer.h"
 
 namespace Neptune {
 
@@ -118,6 +119,7 @@ namespace Neptune {
 
         ResourcePool<RenderTarget>::Instance().Destroy();
         ResourcePool<Shader>::Instance().Destroy();
+        ResourcePool<Buffer>::Instance().Destroy();
     }
 
     void RenderFrontend::RenderFrame(Scene* scene)

@@ -62,9 +62,9 @@ namespace Neptune::Render {
 
 			uint32_t iter = 0;
 			
-			for (uint32_t stage = 1; stage <= numStages; ++stage)
+			for (uint32_t stage = 0; stage < numStages; ++stage)
 			{
-				for (uint32_t passOfStage = 0; passOfStage < stage; ++passOfStage)
+				for (uint32_t passOfStage = 0; passOfStage <= stage; ++passOfStage)
 				{
 					(*allParams)[iter++] = SortParam{ stage, passOfStage, paddedN };
 				}
@@ -192,11 +192,11 @@ namespace Neptune::Render {
 				
 				m_SortParam = CreateSP<RHI::Buffer>();
 				
-				m_SortParam->CreateBuffer(sizeof(sortParams));
+				m_SortParam->CreateBuffer(sizeof(*sortParams));
 				
-				m_SortParam->WriteToBuffer(sortParams->data(), sizeof(sortParams));
+				m_SortParam->WriteToBuffer(sortParams->data(), sizeof(*sortParams));
 				
-				m_SortParam->Flush(sizeof(sortParams));
+				m_SortParam->Flush(sizeof(*sortParams));
 			}
 		}
 		
@@ -257,9 +257,9 @@ namespace Neptune::Render {
 				++numStages;
 			}
 
-			for (uint32_t stage = 1; stage <= numStages; ++stage)
+			for (uint32_t stage = 0; stage < numStages; ++stage)
 			{
-				for (uint32_t passOfStage = 0; passOfStage < stage; ++passOfStage)
+				for (uint32_t passOfStage = 0; passOfStage <= stage; ++passOfStage)
 				{
 					cmdList.CmdUpdateShaderConstant(&iter, sizeof(iter));
 				
@@ -278,14 +278,6 @@ namespace Neptune::Render {
 					++iter;
 				}
 			}
-			
-			MemoryBarrierdDesc          barrier{};
-			barrier.srcAccess         = EPipelineAccess::ShaderWrite;
-			barrier.dstAccess         = EPipelineAccess::ShaderRead;
-			barrier.srcStage          = EPipelineStage::ComputeShader;
-			barrier.dstStage          = EPipelineStage::VertexShader;
-				
-			cmdList.CmdInsertBarrier(barrier);
 		}
 	}
 
