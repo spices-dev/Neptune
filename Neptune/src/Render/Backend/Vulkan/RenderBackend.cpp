@@ -79,7 +79,6 @@ namespace Neptune::Vulkan {
 
             context.Get<IComputeCommandBuffer>()->Begin(beginInfo, clock.m_FrameIndex);
 
-            beginInfo.flags |= VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT;
             context.Get<IGraphicCommandBuffer>()->Begin(beginInfo, clock.m_FrameIndex);
 		}
     }
