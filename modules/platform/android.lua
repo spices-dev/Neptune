@@ -22,7 +22,7 @@ end
 module.GetGraphicsFeatures = function()
 
     local list = {
-        "NP_GRAPHICS_OPENGL",                              -- Graphics: OpenGL
+        "NP_GRAPHICS_OPENGLES",                            -- Graphics: OpenGLES
         "NP_GRAPHICS_VULKAN",                              -- Graphics: Vulkan
         "VK_ENABLE_BETA_EXTENSIONS",                       -- Enable Vulkan Beta Extensions
     }
@@ -77,8 +77,8 @@ module.GetExecutableLinkOptions = function()
         table.insert(linkoptions, "-landroid")                           -- Dependency: android
     end
 
-    if table.contains(graphics, "NP_GRAPHICS_OPENGL") then
-        table.insert(linkoptions, "-lGLESv2")                            -- Dependency: GLESv2
+    if table.contains(graphics, "NP_GRAPHICS_OPENGLES") then
+        table.insert(linkoptions, "-lGLESv3")                            -- Dependency: GLESv3
         table.insert(linkoptions, "-lEGL")                               -- Dependency: EGL
     end
     

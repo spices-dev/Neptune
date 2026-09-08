@@ -31,6 +31,10 @@
 #include "Render/Backend/OpenGL/RenderBackend.h"
 #endif
 
+#ifdef NP_GRAPHICS_OPENGLES
+#include "Render/Backend/OpenGLES/RenderBackend.h"
+#endif
+
 #ifdef NP_GRAPHICS_VULKAN
 #include "Render/Backend/Vulkan/RenderBackend.h"
 #endif
@@ -82,6 +86,10 @@ namespace Neptune {
             
 #ifdef NP_GRAPHICS_OPENGL
             case RenderBackendEnum::OpenGL: sp = CreateUP<OpenGL::RenderBackend>(); break;
+#endif
+   
+#ifdef NP_GRAPHICS_OPENGLES
+        case RenderBackendEnum::OpenGLES: sp = CreateUP<OpenGLES::RenderBackend>(); break;
 #endif
             
 #ifdef NP_GRAPHICS_VULKAN

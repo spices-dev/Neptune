@@ -14,7 +14,7 @@
 #include "Render/Frontend/Core.h"
 
 #include <functional>
-#include <GLES2/gl2.h>
+#include <GLES3/gl3.h>
 
 namespace Neptune::WebGL {
 

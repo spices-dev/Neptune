@@ -85,7 +85,7 @@ namespace Neptune::imgui {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		ImGui_ImplOpenGL3_Init("#version 460");
+		ImGui_ImplOpenGL3_Init(OPENGL_VERSION);
 	}
 
 	void OpenGLInterface::OnShutDown() const

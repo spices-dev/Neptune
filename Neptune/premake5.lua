@@ -100,7 +100,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		externalincludedirs
 		{
 			vendor.GLFW.includes,                                 -- Library: GLFW Source Folder.
-			vendor.Vulkan.includes,                               -- Library: VulkanSDK Source Folder.
+			vendor.Vulkan_Headers.includes,                       -- Library: VulkanSDK Source Folder.
 			vendor.Glad.includes,                                 -- Library: Glad Source Folder.
 			vendor.DirectX_Headers.includes,                      -- Library: DirectX-Headers Source Folder.
 			vendor.WinPixEventRuntime.includes,                   -- Library: WinPixEventRuntime Source Folder.
@@ -142,7 +142,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		externalincludedirs
 		{
 			vendor.GLFW.includes,                                      -- Library: GLFW Source Folder.
-			vendor.Vulkan.includes,                                    -- Library: VulkanSDK Source Folder.
+			vendor.Vulkan_Headers.includes,                            -- Library: VulkanSDK Source Folder.
 			vendor.Glad.includes,                                      -- Library: Glad Source Folder.
 			vendor.RenderDoc.includes,                                 -- Library: RenderDoc Source Folder.
 		}
@@ -176,7 +176,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		externalincludedirs
 		{
 			vendor.GLFW.includes,                                      -- Library: GLFW Source Folder.
-			vendor.Vulkan.includes,                                    -- Library: VulkanSDK Source Folder.
+			vendor.Vulkan_Headers.includes,                            -- Library: VulkanSDK Source Folder.
 			vendor.Glad.includes,                                      -- Library: Glad Source Folder.
 			vendor.metal_cpp.includes,                                 -- Library: metal-cpp Source Folder.
 			vendor.RenderDoc.includes,                                 -- Library: RenderDoc Source Folder.
@@ -242,9 +242,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 
 		-- The Solution Additional External Include Folder.
 		externalincludedirs
-		{
-			vendor.Glad.includes,                                      -- Library: Glad Source Folder.
-		}
+		{}
 
 		-- Android Specific Additional Library Folder.
 		libdirs
@@ -406,7 +404,6 @@ solution.DefineCppStaticLibrary("Neptune", function()
 			-- Android Specific Solution Dependency.
 			links
 			{
-				"Glad",                                                    -- Dependency: Glad
 				"tracy",                                                   -- Dependency: tracy
 			}
 
