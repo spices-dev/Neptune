@@ -5,6 +5,9 @@
 */
 
 #pragma once
+
+#ifdef NP_GRAPHICS_VULKAN
+
 #include "Core/Concept.h"
 #include "Device/Graphics/Backend/Common/Context/Context.h"
 #include "Layer.h"
@@ -28,3 +31,5 @@ namespace Neptune::Vulkan::Layer {
     concept IsILayer = Graphic::Common::IsIContextElement<Layer, T>;
     
 }
+
+#endif

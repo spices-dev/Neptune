@@ -5,6 +5,9 @@
 */
 
 #pragma once
+
+#ifdef NP_GRAPHICS_VULKAN
+
 #include "Core/Concept.h"
 #include "Device/Graphics/Backend/Common/Context/Context.h"
 #include "Extension.h"
@@ -40,3 +43,5 @@ namespace Neptune::Vulkan::Extension {
     };
     
 }
+
+#endif
