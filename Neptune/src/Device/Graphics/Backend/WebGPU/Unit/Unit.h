@@ -16,11 +16,11 @@
 
 namespace Neptune::WebGPU::Unit {
 
-	using namespace Render::Common;
+	using namespace Graphic::Common;
 	
 	template<typename T>
-	requires IsUnit<Render::Common::Unit<T, entt::type_hash<T>::value()>>
-	using Unit = Render::Common::Unit<T, entt::type_hash<T>::value()>;
+	requires IsUnit<Graphic::Common::Unit<T, entt::type_hash<T>::value()>>
+	using Unit = Graphic::Common::Unit<T, entt::type_hash<T>::value()>;
 
 }
 

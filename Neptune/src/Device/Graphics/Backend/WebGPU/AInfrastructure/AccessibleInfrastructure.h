@@ -26,11 +26,11 @@ namespace Neptune::WebGPU {
         Count
     };
 
-    using ADevice           = Render::Common::AccessibleInfrastructure<WGPUDevice,          EAccessibleInfrastructure::Device>;
-    using ARTVFormat        = Render::Common::AccessibleInfrastructure<WGPUTextureFormat,   EAccessibleInfrastructure::RTVFormat>;
-    using ADSVFormat        = Render::Common::AccessibleInfrastructure<WGPUTextureFormat,   EAccessibleInfrastructure::DSVFormat>;
+    using ADevice           = Graphic::Common::AccessibleInfrastructure<WGPUDevice,          EAccessibleInfrastructure::Device>;
+    using ARTVFormat        = Graphic::Common::AccessibleInfrastructure<WGPUTextureFormat,   EAccessibleInfrastructure::RTVFormat>;
+    using ADSVFormat        = Graphic::Common::AccessibleInfrastructure<WGPUTextureFormat,   EAccessibleInfrastructure::DSVFormat>;
 
-    using AContext              = Render::Common::AccessibleContext<EAccessibleInfrastructure>;
+    using AContext          = Graphic::Common::AccessibleContext<EAccessibleInfrastructure>;
     
 }
 

@@ -19,11 +19,11 @@ namespace Neptune::Direct3D12::Unit {
 		constexpr uint32_t ignore = 0;
 	}
 
-	using namespace Render::Common;
+	using namespace Graphic::Common;
 
 	template<typename T>
-	requires IsUnit<Render::Common::Unit<T, detail::ignore>>
-	using Unit = Render::Common::Unit<T, detail::ignore>;
+	requires IsUnit<Graphic::Common::Unit<T, detail::ignore>>
+	using Unit = Graphic::Common::Unit<T, detail::ignore>;
 }
 
 #endif

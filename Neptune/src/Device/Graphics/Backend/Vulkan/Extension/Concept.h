@@ -6,6 +6,7 @@
 
 #pragma once
 #include "Core/Concept.h"
+#include "Device/Graphics/Backend/Common/Context/Context.h"
 #include "Extension.h"
 
 namespace Neptune::Vulkan::Extension {
@@ -16,7 +17,7 @@ namespace Neptune::Vulkan::Extension {
     * @tparam T .
     */
     template<typename T>
-    concept IsExtension = IsBase<Extension, T>;
+    concept IsExtension = Graphic::Common::IsContextElement<Extension, T>;
     
     /**
     * @brief Concept: Is IExtension.
@@ -24,12 +25,7 @@ namespace Neptune::Vulkan::Extension {
     * @tparam T .
     */
     template<typename T>
-    concept IsIExtension = requires(T t) {
-        typename T::T;
-        t.E;
-        requires IsExtension<typename T::T>;
-        requires IsEnum<decltype(T::E)>;
-    };
+    concept IsIExtension = Graphic::Common::IsIContextElement<Extension, T>;
     
     /**
     * @brief Concept: Is IsCoreExtension.

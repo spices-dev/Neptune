@@ -91,6 +91,14 @@ namespace Neptune {
     concept IsClass = std::is_class_v<T>;
     
     /**
+    * @brief Concept: Is Constructable.
+    * 
+    * @tparam T .
+    */
+    template<typename T, typename... Args>
+    concept IsConstructible = std::constructible_from<T, Args...>;
+    
+    /**
     * @brief Concept: Is Wrapper of MemberType.
     * 
     * @tparam T .

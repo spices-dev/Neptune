@@ -24,9 +24,9 @@ namespace Neptune::Metal {
         Count
     };
     
-    using ADevice  = Render::Common::AccessibleInfrastructure<MTL::Device*, EAccessibleInfrastructure::Device>;
+    using ADevice  = Graphic::Common::AccessibleInfrastructure<MTL::Device*, EAccessibleInfrastructure::Device>;
     
-    using AContext = Render::Common::AccessibleContext<EAccessibleInfrastructure>;
+    using AContext = Graphic::Common::AccessibleContext<EAccessibleInfrastructure>;
     
 }
 

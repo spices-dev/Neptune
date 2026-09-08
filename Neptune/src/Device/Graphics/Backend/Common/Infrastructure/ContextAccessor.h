@@ -7,14 +7,7 @@
 #pragma once
 #include "Device/Graphics/Backend/Common/Concept.h"
 
-namespace Neptune::Render::Common {
-
-    template<typename E>
-    requires IsEnum<E>
-    class Context;
-}
-
-namespace Neptune::Render::Common {
+namespace Neptune::Graphic::Common {
 
     /**
     * @brief ContextAccessor Class.
@@ -28,7 +21,7 @@ namespace Neptune::Render::Common {
     {
     public:
 
-        using Context = Neptune::Render::Common::Context<E>;
+        using Context = Neptune::Graphic::Common::IContext<E>;
 
     public:
 

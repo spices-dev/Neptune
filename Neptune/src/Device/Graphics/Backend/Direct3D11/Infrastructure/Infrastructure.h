@@ -15,9 +15,9 @@
 
 namespace Neptune::Direct3D11 {
 
-    using namespace Render::Common;
+    using namespace Graphic::Common;
 
-    using CommonInfrastructure = Render::Common::Infrastructure<EInfrastructure>;
+    using CommonInfrastructure = Graphic::Common::Infrastructure<EInfrastructure>;
 
     using Context = CommonInfrastructure::Context;
 

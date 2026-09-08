@@ -25,10 +25,10 @@ namespace Neptune::Direct3D11 {
         Count
     };
 
-    using ADevice               = Render::Common::AccessibleInfrastructure<ID3D11Device*,          EAccessibleInfrastructure::Device>;
-    using ADeviceContext        = Render::Common::AccessibleInfrastructure<ID3D11DeviceContext*,   EAccessibleInfrastructure::DeviceContext>;
+    using ADevice               = Graphic::Common::AccessibleInfrastructure<ID3D11Device*,          EAccessibleInfrastructure::Device>;
+    using ADeviceContext        = Graphic::Common::AccessibleInfrastructure<ID3D11DeviceContext*,   EAccessibleInfrastructure::DeviceContext>;
 
-    using AContext              = Render::Common::AccessibleContext<EAccessibleInfrastructure>;
+    using AContext              = Graphic::Common::AccessibleContext<EAccessibleInfrastructure>;
     
 }
 

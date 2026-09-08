@@ -7,10 +7,10 @@
 #pragma once
 #include "Core/Core.h"
 #include "Device/Graphics/Frontend/Core.h"
-#include "Device/Graphics/Backend/Common/Concept.h"
+#include "Device/Graphics/Backend/Common/Context/Context.h"
 #include "Core/Container/KVTuple.h"
 
-namespace Neptune::Render::Common {
+namespace Neptune::Graphic::Common {
 
     /**
     * @brief Template of Accessible Infrastructure Class Definitions.
@@ -20,15 +20,13 @@ namespace Neptune::Render::Common {
     */
     template<typename T_, auto E_>
     requires IsEnum<decltype(E_)>
-    struct AccessibleInfrastructure : Container::KVTuple<T_, E_>
-    {
-        using KVTuple = Container::KVTuple<T_, E_>;
-        
-        using T = KVTuple::T;
+    using AccessibleInfrastructure = Graphic::Common::IContextElement<T_, E_>;
 
-        static constexpr auto E = KVTuple::E;
-    };
-    
+    /**
+    * @brief Link Mergeable type info(address).
+    * 
+    * @tparam A AInfrastructure.
+    */
     template<IsAInfrastructure A>
     struct MergeableTypeInfo
     {

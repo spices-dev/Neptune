@@ -34,19 +34,19 @@ namespace Neptune::Vulkan {
         Count
     };
 
-    using AInstance               = Render::Common::AccessibleInfrastructure<VkInstance,                   EAccessibleInfrastructure::Instance>;
-    using APhysicalDevice         = Render::Common::AccessibleInfrastructure<VkPhysicalDevice,             EAccessibleInfrastructure::PhysicalDevice>;
-    using ADevice                 = Render::Common::AccessibleInfrastructure<VkDevice,                     EAccessibleInfrastructure::Device>;
-    using AGraphicQueueFamily     = Render::Common::AccessibleInfrastructure<uint32_t,                     EAccessibleInfrastructure::GraphicQueueFamily>;
-    using AGraphicQueue           = Render::Common::AccessibleInfrastructure<VkQueue,                      EAccessibleInfrastructure::GraphicQueue>;
-    using ADescriptorPool         = Render::Common::AccessibleInfrastructure<VkDescriptorPool,             EAccessibleInfrastructure::DescriptorPool>;
-    using ASwapChainRenderPass    = Render::Common::AccessibleInfrastructure<VkRenderPass,                 EAccessibleInfrastructure::SwapChainRenderPass>;
-    using ASwapChainImageUsage    = Render::Common::AccessibleInfrastructure<VkImageUsageFlags,            EAccessibleInfrastructure::SwapChainImageUsage>;
-    using AMSAASamples            = Render::Common::AccessibleInfrastructure<VkSampleCountFlagBits,        EAccessibleInfrastructure::MSAASamples>;
-    using AAllocator              = Render::Common::AccessibleInfrastructure<const VkAllocationCallbacks*, EAccessibleInfrastructure::Allocator>;
-    using ACheckResultFn          = Render::Common::AccessibleInfrastructure<void(*)(VkResult),            EAccessibleInfrastructure::CheckResultFn>;
+    using AInstance               = Graphic::Common::AccessibleInfrastructure<VkInstance,                   EAccessibleInfrastructure::Instance>;
+    using APhysicalDevice         = Graphic::Common::AccessibleInfrastructure<VkPhysicalDevice,             EAccessibleInfrastructure::PhysicalDevice>;
+    using ADevice                 = Graphic::Common::AccessibleInfrastructure<VkDevice,                     EAccessibleInfrastructure::Device>;
+    using AGraphicQueueFamily     = Graphic::Common::AccessibleInfrastructure<uint32_t,                     EAccessibleInfrastructure::GraphicQueueFamily>;
+    using AGraphicQueue           = Graphic::Common::AccessibleInfrastructure<VkQueue,                      EAccessibleInfrastructure::GraphicQueue>;
+    using ADescriptorPool         = Graphic::Common::AccessibleInfrastructure<VkDescriptorPool,             EAccessibleInfrastructure::DescriptorPool>;
+    using ASwapChainRenderPass    = Graphic::Common::AccessibleInfrastructure<VkRenderPass,                 EAccessibleInfrastructure::SwapChainRenderPass>;
+    using ASwapChainImageUsage    = Graphic::Common::AccessibleInfrastructure<VkImageUsageFlags,            EAccessibleInfrastructure::SwapChainImageUsage>;
+    using AMSAASamples            = Graphic::Common::AccessibleInfrastructure<VkSampleCountFlagBits,        EAccessibleInfrastructure::MSAASamples>;
+    using AAllocator              = Graphic::Common::AccessibleInfrastructure<const VkAllocationCallbacks*, EAccessibleInfrastructure::Allocator>;
+    using ACheckResultFn          = Graphic::Common::AccessibleInfrastructure<void(*)(VkResult),            EAccessibleInfrastructure::CheckResultFn>;
     
-    using AContext                = Render::Common::AccessibleContext<EAccessibleInfrastructure>;
+    using AContext                = Graphic::Common::AccessibleContext<EAccessibleInfrastructure>;
     
 }
 

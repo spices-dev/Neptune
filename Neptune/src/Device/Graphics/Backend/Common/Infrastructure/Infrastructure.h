@@ -9,7 +9,7 @@
 #include "Context.h"
 #include "ContextAccessor.h"
 
-namespace Neptune::Render::Common {
+namespace Neptune::Graphic::Common {
 
     /**
     * @brief Common::Infrastructure Class.
@@ -23,9 +23,9 @@ namespace Neptune::Render::Common {
     {
     public:
 
-        using ContextAccessor = Neptune::Render::Common::ContextAccessor<E>;
+        using ContextAccessor = Neptune::Graphic::Common::ContextAccessor<E>;
 
-        using Context = Neptune::Render::Common::Context<E>;
+        using Context = ContextAccessor::Context;
 
         /**
         * @brief Destructor Function.

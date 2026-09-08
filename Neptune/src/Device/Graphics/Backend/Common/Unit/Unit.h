@@ -8,7 +8,7 @@
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Common/Concept.h"
 
-namespace Neptune::Render::Common {
+namespace Neptune::Graphic::Common {
 
 	/**
 	* @brief Common::Unit Class.

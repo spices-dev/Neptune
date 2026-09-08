@@ -13,7 +13,7 @@
 
 #include <gmock/gmock.h>
 
-namespace Neptune::Render::Common::Test {
+namespace Neptune::Graphic::Common::Test {
 
 	namespace details {
 
@@ -95,7 +95,7 @@ namespace Neptune::Render::Common::Test {
 		
 		Container::IterTuple(tuple, []<typename EInfrastructure>(EInfrastructure& e) {
 			
-			const auto context = Context<EInfrastructure>{};
+			const auto context = IContext<EInfrastructure>{};
 			
 			if constexpr (static_cast<uint8_t>(EInfrastructure::Count))
 			{
@@ -124,7 +124,7 @@ namespace Neptune::Render::Common::Test {
 		
 		Container::IterTuple(tuple, []<typename EInfrastructure>(EInfrastructure& e) {
 
-			auto context = Context<EInfrastructure>{};
+			auto context = IContext<EInfrastructure>{};
 
 			const auto contextAccessor = ContextAccessor<EInfrastructure>(context);
 

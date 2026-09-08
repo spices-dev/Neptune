@@ -11,15 +11,7 @@
 #include "Core/Core.h"
 #include "Device/Graphics/Frontend/GraphicsFrontend.h"
 #include "Infrastructure/Enum.h"
-#include "Device/Graphics/Backend/Common/Concept.h"
-#include "Device/Graphics/Frontend/Core.h"
-
-namespace Neptune::Render::Common {
-    
-    template<typename T>
-    requires IsEnum<T>
-    class Context;
-}
+#include "Device/Graphics/Backend/Common/Infrastructure/Context.h"
 
 namespace Neptune::Metal {
 
@@ -31,7 +23,7 @@ namespace Neptune::Metal {
     {
     public:
         
-        using Context = Render::Common::Context<EInfrastructure>;
+        using Context = Graphic::Common::IContext<EInfrastructure>;
         
     public:
 

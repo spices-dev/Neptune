@@ -30,15 +30,15 @@ namespace Neptune::Direct3D12 {
         Count
     };
 
-    using ADevice               = Render::Common::AccessibleInfrastructure<ID3D12Device*,                EAccessibleInfrastructure::Device>;
-    using ACommandQueue         = Render::Common::AccessibleInfrastructure<ID3D12CommandQueue*,          EAccessibleInfrastructure::CommandQueue>;
-    using ARTVFormat            = Render::Common::AccessibleInfrastructure<DXGI_FORMAT,                  EAccessibleInfrastructure::RTVFormat>;
-    using ADSVFormat            = Render::Common::AccessibleInfrastructure<DXGI_FORMAT,                  EAccessibleInfrastructure::DSVFormat>;
-    using ASRVDescriptorHeap    = Render::Common::AccessibleInfrastructure<ID3D12DescriptorHeap*,        EAccessibleInfrastructure::SRVDescriptorHeap>;
-    using ASRVCPUHandle         = Render::Common::AccessibleInfrastructure<D3D12_CPU_DESCRIPTOR_HANDLE,  EAccessibleInfrastructure::SRVCPUHandle>;
-    using ASRVGPUHandle         = Render::Common::AccessibleInfrastructure<D3D12_GPU_DESCRIPTOR_HANDLE,  EAccessibleInfrastructure::SRVGPUHandle>;
+    using ADevice               = Graphic::Common::AccessibleInfrastructure<ID3D12Device*,                EAccessibleInfrastructure::Device>;
+    using ACommandQueue         = Graphic::Common::AccessibleInfrastructure<ID3D12CommandQueue*,          EAccessibleInfrastructure::CommandQueue>;
+    using ARTVFormat            = Graphic::Common::AccessibleInfrastructure<DXGI_FORMAT,                  EAccessibleInfrastructure::RTVFormat>;
+    using ADSVFormat            = Graphic::Common::AccessibleInfrastructure<DXGI_FORMAT,                  EAccessibleInfrastructure::DSVFormat>;
+    using ASRVDescriptorHeap    = Graphic::Common::AccessibleInfrastructure<ID3D12DescriptorHeap*,        EAccessibleInfrastructure::SRVDescriptorHeap>;
+    using ASRVCPUHandle         = Graphic::Common::AccessibleInfrastructure<D3D12_CPU_DESCRIPTOR_HANDLE,  EAccessibleInfrastructure::SRVCPUHandle>;
+    using ASRVGPUHandle         = Graphic::Common::AccessibleInfrastructure<D3D12_GPU_DESCRIPTOR_HANDLE,  EAccessibleInfrastructure::SRVGPUHandle>;
 
-    using AContext                = Render::Common::AccessibleContext<EAccessibleInfrastructure>;
+    using AContext              = Graphic::Common::AccessibleContext<EAccessibleInfrastructure>;
     
 }
 

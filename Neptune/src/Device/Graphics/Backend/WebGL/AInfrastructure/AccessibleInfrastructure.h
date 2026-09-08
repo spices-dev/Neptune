@@ -22,7 +22,7 @@ namespace Neptune::WebGL {
         Count
     };
     
-    using AContext = Render::Common::AccessibleContext<EAccessibleInfrastructure>;
+    using AContext = Graphic::Common::AccessibleContext<EAccessibleInfrastructure>;
     
 }
 

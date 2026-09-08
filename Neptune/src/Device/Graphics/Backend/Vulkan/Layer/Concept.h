@@ -6,6 +6,7 @@
 
 #pragma once
 #include "Core/Concept.h"
+#include "Device/Graphics/Backend/Common/Context/Context.h"
 #include "Layer.h"
 
 namespace Neptune::Vulkan::Layer {
@@ -16,7 +17,7 @@ namespace Neptune::Vulkan::Layer {
     * @tparam T .
     */
     template<typename T>
-    concept IsLayer = IsBase<Layer, T>;
+    concept IsLayer = Graphic::Common::IsContextElement<Layer, T>;
     
     /**
     * @brief Concept: Is ILayer.
@@ -24,11 +25,6 @@ namespace Neptune::Vulkan::Layer {
     * @tparam T .
     */
     template<typename T>
-    concept IsILayer = requires(T t) {
-        typename T::T;
-        t.E;
-        requires IsLayer<typename T::T>;
-        requires IsEnum<decltype(T::E)>;
-    };
+    concept IsILayer = Graphic::Common::IsIContextElement<Layer, T>;
     
 }
