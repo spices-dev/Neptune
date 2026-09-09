@@ -21,6 +21,8 @@ namespace Neptune::Vulkan::Extension {
             *pNext = &m_DescriptorIndexingFeatures;
 
             pNext  = &m_DescriptorIndexingFeatures.pNext;
+
+            *pNext = nullptr;
         }
     }
     

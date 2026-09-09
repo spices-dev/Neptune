@@ -21,6 +21,8 @@ namespace Neptune::Vulkan::Extension {
             *pNext = &m_BufferDeviceAddressFeatures;
 
             pNext  = &m_BufferDeviceAddressFeatures.pNext;
+
+            *pNext = nullptr;
         }
     }
     

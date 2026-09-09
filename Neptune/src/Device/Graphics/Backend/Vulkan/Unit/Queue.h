@@ -45,6 +45,13 @@ namespace Neptune::Vulkan::Unit {
 		void Submit(const VkSubmitInfo& info, VkFence fence = VK_NULL_HANDLE) const;
 
 		/**
+		* @brief Submit Queue 2.
+		*
+		* @param[in] info VkSubmitInfo2.
+		*/
+		void Submit2(const VkSubmitInfo2& info) const;
+		
+		/**
 		* @brief Queue wait idle.
 		*/
 		void Wait() const;

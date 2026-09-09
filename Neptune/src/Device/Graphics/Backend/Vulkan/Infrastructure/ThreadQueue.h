@@ -10,7 +10,7 @@
 
 #include "Core/Core.h"
 #include "Infrastructure.h"
-#include "Device/Graphics/Backend/Vulkan/Unit/Queue.h"
+#include "Device/Graphics/Backend/Vulkan/Resource/Queue.h"
 #include "Core/Container/ThreadQueue.hpp"
 
 namespace Neptune::Vulkan {
@@ -48,25 +48,39 @@ namespace Neptune::Vulkan {
 		* 
 		* @return Returns Queue.
 		*/
-		SP<Unit::Queue> Pop() { return m_Queues.Pop(); }
+		SP<Resource::Queue> Pop() { return m_Queues.Pop(); }
 
 		/**
 		* @brief Push a Queue.
 		*
 		* @param[in] queue Queue.
 		*/
-		void Push(const SP<Unit::Queue>& queue) { m_Queues.Push(queue); }
+		void Push(const SP<Resource::Queue>& queue) { m_Queues.Push(queue); }
 
+	private:
+		
 		/**
-		* @brief Add a Queue to this.
-		*
-		* @param[in] handle Queue.
+		* @brief Create Queue.
 		*/
-		void Add(Unit::Queue::Handle handle);
+		void Create();
+		
+		/**
+		* @brief Get Queue Family.
+		* 
+		* @return Returns Queue Family
+		*/
+		uint32_t GetQueueFamily() const;
+		
+		/**
+		* @brief Get Queue Family Count.
+		* 
+		* @return Returns Queue Family Count
+		*/
+		uint32_t GetQueueFamilyCount() const;
 
 	private:
 
-		Container::ThreadQueue<SP<Unit::Queue>> m_Queues;   // @brief Container of Queue.
+		Container::ThreadQueue<SP<Resource::Queue>> m_Queues;   // @brief Container of Queue.
 
 	};
 	

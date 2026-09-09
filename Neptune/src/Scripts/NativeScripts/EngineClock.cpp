@@ -46,6 +46,7 @@ namespace Neptune {
 		m_Clock->m_FrameTime  = m_Timer->SegmentTime();
 		m_Clock->m_EngineTime = m_Timer->DurationTime();
 		m_Clock->m_FrameIndex = (m_Clock->m_FrameIndex + 1) % MaxFrameInFlight;
+		m_Clock->m_FrameId++;
 	}
 	
 }

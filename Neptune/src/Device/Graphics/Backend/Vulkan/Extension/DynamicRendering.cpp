@@ -31,6 +31,8 @@ namespace Neptune::Vulkan::Extension {
             *pNext = &m_Vulkan13Features;
 
             pNext  = &m_Vulkan13Features.pNext;
+
+            *pNext = nullptr;
         }
     }
     

@@ -34,6 +34,8 @@ namespace Neptune::Vulkan::Extension {
             *pNext = &m_VideoMaintenance1Features;
 
             pNext  = &m_VideoMaintenance1Features.pNext;
+
+            *pNext = nullptr;
         }
     }
     

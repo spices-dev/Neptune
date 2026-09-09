@@ -9,9 +9,9 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "GraphicsBackend.h"
-#include "Infrastructure/InfrastructureHeader.h"
 #include "Extension/ExtensionHeader.h"
 #include "Layer/LayerHeader.h"
+#include "Infrastructure/InfrastructureHeader.h"
 #include "AInfrastructure/AccessibleInfrastructure.h"
 #include "RHI/RHIHeader.h"
 #include "Converter.h"
@@ -57,13 +57,32 @@ namespace Neptune::Vulkan {
 		m_Context->Registry<IPhysicalDevice>();
 		m_Context->Registry<IDevice>();
 
+		m_Context->Registry<IPresentQueue>();
+		m_Context->Registry<IGraphicQueue>();
+		m_Context->Registry<IComputeQueue>();
+
+		m_Context->Registry<IGraphicThreadQueue>();
+		m_Context->Registry<IComputeThreadQueue>();
+		m_Context->Registry<ITransferThreadQueue>();
+		m_Context->Registry<IVideoDecodeThreadQueue>();
+		m_Context->Registry<IVideoEncodeThreadQueue>();
+		m_Context->Registry<IOpticalFlowThreadQueue>();
+		
 		m_Context->Registry<IMemoryAllocator>();
 					  
+		if (m_Context->Get<IExtensions>()->GetContext().Has<Extension::ITimelineSemaphore>())
+		{
+			m_Context->Registry<IGraphicTimelineSemaphore>();
+			m_Context->Registry<IComputeTimelineSemaphore>();
+		}
+		else
+		{
+			m_Context->Registry<IComputeQueueSemaphore>(MaxFrameInFlight);
+			m_Context->Registry<IGraphicFence>(MaxFrameInFlight);
+			m_Context->Registry<IComputeFence>(MaxFrameInFlight);
+		}
+		
 		m_Context->Registry<IGraphicQueueSemaphore>(SwapChainImageCount);
-		m_Context->Registry<IGraphicFence>(MaxFrameInFlight);
-
-		m_Context->Registry<IComputeQueueSemaphore>(MaxFrameInFlight);
-		m_Context->Registry<IComputeFence>(MaxFrameInFlight);
 
 		m_Context->Registry<IGraphicCommandPool>();
 		m_Context->Registry<IGraphicCommandBuffer>(MaxFrameInFlight);

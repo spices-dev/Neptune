@@ -33,6 +33,8 @@ namespace Neptune::Vulkan::Extension {
             *pNext = &m_PortabilitySubsetFeatures;
 
             pNext  = &m_PortabilitySubsetFeatures.pNext;
+
+            *pNext = nullptr;
         }
     }
     

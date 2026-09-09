@@ -32,6 +32,8 @@ namespace Neptune::Vulkan::Extension {
             *pNext = &m_PageableDeviceLocalMemoryFeatures;
 
             pNext  = &m_PageableDeviceLocalMemoryFeatures.pNext;
+
+            *pNext = nullptr;
         }
     }
     

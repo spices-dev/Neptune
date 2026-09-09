@@ -31,6 +31,45 @@ namespace Neptune::Vulkan::Unit {
 
 		VULKAN_CHECK(vkCreateSemaphore(device, &info, GetAllocator(), &m_Handle))
 	}
+	
+	uint64_t Semaphore::GetValue() const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		uint64_t value = UINT64_MAX;
+		
+		VULKAN_CHECK(vkGetSemaphoreCounterValue(m_Device, m_Handle, &value))
+		
+		return value;
+	}
+	
+	void Semaphore::Wait(uint64_t value) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		VkSemaphoreWaitInfo           info{};
+		info.sType                  = VK_STRUCTURE_TYPE_SEMAPHORE_WAIT_INFO;
+		info.flags                  = 0;
+		info.semaphoreCount         = 1;
+		info.pSemaphores            = &m_Handle;
+		info.pValues                = &value;
+		info.pNext                  = nullptr;
+		
+		VULKAN_CHECK(vkWaitSemaphores(m_Device, &info, UINT64_MAX))
+	}
+	
+	void Semaphore::Signal(uint64_t value) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		VkSemaphoreSignalInfo         info{};
+		info.sType                  = VK_STRUCTURE_TYPE_SEMAPHORE_SIGNAL_INFO;
+		info.semaphore              = m_Handle;
+		info.value                  = value;
+		info.pNext                  = nullptr;
+		
+		VULKAN_CHECK(vkSignalSemaphore(m_Device, &info))
+	}
 }
 
 #endif

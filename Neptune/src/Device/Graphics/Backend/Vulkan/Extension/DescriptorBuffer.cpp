@@ -31,6 +31,8 @@ namespace Neptune::Vulkan::Extension {
             *pNext = &m_DescriptorBufferFeatures;
 
             pNext  = &m_DescriptorBufferFeatures.pNext;
+
+            *pNext = nullptr;
         }
     }
     

@@ -25,6 +25,8 @@ namespace Neptune::Vulkan::Extension {
             *pNext = &m_ScalarBlockLayoutFeatures;
 
             pNext  = &m_ScalarBlockLayoutFeatures.pNext;
+
+            *pNext = nullptr;
         }
     }
     

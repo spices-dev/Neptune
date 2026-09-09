@@ -31,6 +31,8 @@ namespace Neptune::Vulkan::Extension {
             *pNext = &m_SamplerYcbcrConversionFeatures;
 
             pNext  = &m_SamplerYcbcrConversionFeatures.pNext;
+
+            *pNext = nullptr;
         }
     }
     

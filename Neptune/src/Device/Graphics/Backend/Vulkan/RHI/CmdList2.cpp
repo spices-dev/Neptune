@@ -42,20 +42,15 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		VkSubmitInfo                           submitInfo{};
-		submitInfo.sType                     = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-		submitInfo.commandBufferCount        = 1;
-		submitInfo.pCommandBuffers           = &m_CommandBuffer->GetHandle();
-
 		auto queue = m_ThreadQueue->Pop();
 
-		DEBUGUTILS_BEGINQUEUELABEL(queue->GetHandle(), m_ThreadQueue->ToString())
+		DEBUGUTILS_BEGINQUEUELABEL(queue->Handle(), m_ThreadQueue->ToString())
 
-		queue->Submit(submitInfo);
+		queue->Submit2(m_CommandBuffer->GetHandle());
 
-		queue->Wait();
+		queue->WaitSemaphore();
 
-		DEBUGUTILS_ENDQUEUELABEL(queue->GetHandle())
+		DEBUGUTILS_ENDQUEUELABEL(queue->Handle())
 
 		m_ThreadQueue->Push(queue);
 

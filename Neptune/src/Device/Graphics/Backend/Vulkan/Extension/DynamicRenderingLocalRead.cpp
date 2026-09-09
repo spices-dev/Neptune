@@ -31,6 +31,8 @@ namespace Neptune::Vulkan::Extension {
             *pNext = &m_DynamicRenderingLocalReadFeatures;
 
             pNext  = &m_DynamicRenderingLocalReadFeatures.pNext;
+
+            *pNext = nullptr;
         }
     }
     

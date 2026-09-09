@@ -43,6 +43,27 @@ namespace Neptune::Vulkan::Unit {
 		*/
 		void CreateSemaphore(VkDevice device, const VkSemaphoreCreateInfo& info);
 
+		/**
+		* @brief Get Semaphore Value.
+		*
+		* @return Returns Semaphore Value.
+		*/
+		uint64_t GetValue() const;
+		
+		/**
+		* @brief Wait Semaphore.
+		* 
+		* @param[in] value Wait Value;
+		*/
+		void Wait(uint64_t value) const;
+		
+		/**
+		* @brief Signal Semaphore.
+		* 
+		* @param[in] value Signal Value;
+		*/
+		void Signal(uint64_t value) const;
+		
 	private:
 
 		VkDevice m_Device = VK_NULL_HANDLE;           // @brief VkDevice.

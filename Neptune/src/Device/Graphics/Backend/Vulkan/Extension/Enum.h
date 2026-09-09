@@ -44,6 +44,8 @@ namespace Neptune::Vulkan {
         CreateRenderPass2,                          // @brief CreateRenderPass2.
         DynamicRenderingLocalRead,                  // @brief DynamicRenderingLocalRead.
         ScalarBlockLayout,                          // @brief ScalarBlockLayout.
+        TimelineSemaphore,                          // @brief TimelineSemaphore.
+        Synchronization2,                           // @brief Synchronization2.
 
         Count
     };

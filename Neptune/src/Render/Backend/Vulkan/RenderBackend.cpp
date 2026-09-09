@@ -10,6 +10,7 @@
 
 #include "RenderBackend.h"
 #include "Device/Graphics/Frontend/RHI/RenderPass.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/TimelineSemaphore.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/InfrastructureHeader.h"
 #include "Device/Graphics/Backend/Vulkan/AInfrastructure/AccessibleInfrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderPass.h"
@@ -58,10 +59,11 @@ namespace Neptune::Vulkan {
 
     	auto& context = m_GraphicsBackend->GetContext();
     	
+    	if (clock.m_FrameId > MaxFrameInFlight)
 		{
-			context.Get<IComputeFence>()->Wait(clock.m_FrameIndex);
+			context.Get<IComputeTimelineSemaphore>()->Wait(clock.m_FrameId - MaxFrameInFlight);
 
-			context.Get<IGraphicFence>()->Wait(clock.m_FrameIndex);
+			context.Get<IGraphicTimelineSemaphore>()->Wait(clock.m_FrameId - MaxFrameInFlight);
 		}
 
 		{
@@ -100,19 +102,26 @@ namespace Neptune::Vulkan {
 		{
 			DEBUGUTILS_BEGINQUEUELABEL(context.Get<IComputeQueue>()->Handle(), "MainComputeQueue")
 
-			VkSemaphore signalSemaphores[]       = { context.Get<IComputeQueueSemaphore>()->Handle(clock.m_FrameIndex) };
+			VkSemaphoreSubmitInfo                  signalInfo{};
+			signalInfo.sType                     = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
+			signalInfo.stageMask                 = VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT;
+			signalInfo.semaphore                 = context.Get<IComputeTimelineSemaphore>()->Handle();
+			signalInfo.value                     = clock.m_FrameId;
 
-			VkSubmitInfo                           submitInfo{};
-			submitInfo.sType                     = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-			submitInfo.waitSemaphoreCount        = 0;
-			submitInfo.pWaitSemaphores           = nullptr;
-			submitInfo.pWaitDstStageMask         = nullptr;
-			submitInfo.commandBufferCount        = 1;
-			submitInfo.pCommandBuffers           = &context.Get<IComputeCommandBuffer>()->Handle(clock.m_FrameIndex);
-			submitInfo.signalSemaphoreCount      = 1;
-			submitInfo.pSignalSemaphores         = signalSemaphores;
+			VkCommandBufferSubmitInfo              commandInfo{};
+			commandInfo.sType                    = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO;
+			commandInfo.commandBuffer            = context.Get<IComputeCommandBuffer>()->Handle(clock.m_FrameIndex);
 
-			context.Get<IComputeQueue>()->Submit(submitInfo, context.Get<IComputeFence>()->Handle(clock.m_FrameIndex));
+			VkSubmitInfo2                          submitInfo{};
+			submitInfo.sType                     = VK_STRUCTURE_TYPE_SUBMIT_INFO_2;
+			submitInfo.waitSemaphoreInfoCount    = 0;
+			submitInfo.pWaitSemaphoreInfos       = nullptr;
+			submitInfo.commandBufferInfoCount    = 1;
+			submitInfo.pCommandBufferInfos       = &commandInfo;
+			submitInfo.signalSemaphoreInfoCount  = 1;
+			submitInfo.pSignalSemaphoreInfos     = &signalInfo;
+
+			context.Get<IComputeQueue>()->Submit2(submitInfo);
 
 			DEBUGUTILS_ENDQUEUELABEL(context.Get<IComputeQueue>()->Handle())
 		}
@@ -120,23 +129,46 @@ namespace Neptune::Vulkan {
 		{
 			DEBUGUTILS_BEGINQUEUELABEL(context.Get<IGraphicQueue>()->Handle(), "MainGraphicQueue")
 
-			VkSemaphore waitSemaphores[]         = { context.Get<IGraphicImageSemaphore>()->Handle(clock.m_FrameIndex), 
-													 context.Get<IComputeQueueSemaphore>()->Handle(clock.m_FrameIndex) };
-			VkSemaphore signalSemaphores[]       = { context.Get<IGraphicQueueSemaphore>()->Handle(clock.m_ImageIndex) };
-			VkPipelineStageFlags waitStages[]    = { VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT, 
-													 VK_PIPELINE_STAGE_VERTEX_SHADER_BIT };
+			VkSemaphoreSubmitInfo                  waitInfo0{};
+			waitInfo0.sType                      = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
+			waitInfo0.stageMask                  = VK_PIPELINE_STAGE_2_VERTEX_SHADER_BIT;
+			waitInfo0.semaphore                  = context.Get<IGraphicImageSemaphore>()->Handle(clock.m_FrameIndex);
+			
+			VkSemaphoreSubmitInfo                  waitInfo1{};
+			waitInfo1.sType                      = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
+			waitInfo1.stageMask                  = VK_PIPELINE_STAGE_2_VERTEX_SHADER_BIT;
+			waitInfo1.semaphore                  = context.Get<IComputeTimelineSemaphore>()->Handle();
+			waitInfo1.value                      = clock.m_FrameId;
+			
+			VkSemaphoreSubmitInfo waitInfo[]     = { waitInfo0, waitInfo1 };
+			
+			VkSemaphoreSubmitInfo                  signalInfo0{};
+			signalInfo0.sType                    = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
+			signalInfo0.stageMask                = VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT;
+			signalInfo0.semaphore                = context.Get<IGraphicTimelineSemaphore>()->Handle();
+			signalInfo0.value                    = clock.m_FrameId;
 
-			VkSubmitInfo                           submitInfo{};
-			submitInfo.sType                     = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-			submitInfo.waitSemaphoreCount        = 2;
-			submitInfo.pWaitSemaphores           = waitSemaphores;
-			submitInfo.pWaitDstStageMask         = waitStages;
-			submitInfo.commandBufferCount        = 1;
-			submitInfo.pCommandBuffers           = &context.Get<IGraphicCommandBuffer>()->Handle(clock.m_FrameIndex);
-			submitInfo.signalSemaphoreCount      = 1;
-			submitInfo.pSignalSemaphores         = signalSemaphores;
+			VkSemaphoreSubmitInfo                  signalInfo1{};
+			signalInfo1.sType                    = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
+			signalInfo1.stageMask                = VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT;
+			signalInfo1.semaphore                = context.Get<IGraphicQueueSemaphore>()->Handle(clock.m_ImageIndex);
+			
+			VkSemaphoreSubmitInfo signalInfo[]   = { signalInfo0, signalInfo1 };
+			
+			VkCommandBufferSubmitInfo              commandInfo{};
+			commandInfo.sType                    = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO;
+			commandInfo.commandBuffer            = context.Get<IGraphicCommandBuffer>()->Handle(clock.m_FrameIndex);
 
-			context.Get<IGraphicQueue>()->Submit(submitInfo, context.Get<IGraphicFence>()->Handle(clock.m_FrameIndex));
+			VkSubmitInfo2                          submitInfo{};
+			submitInfo.sType                     = VK_STRUCTURE_TYPE_SUBMIT_INFO_2;
+			submitInfo.waitSemaphoreInfoCount    = 2;
+			submitInfo.pWaitSemaphoreInfos       = waitInfo;
+			submitInfo.commandBufferInfoCount    = 1;
+			submitInfo.pCommandBufferInfos       = &commandInfo;
+			submitInfo.signalSemaphoreInfoCount  = 2;
+			submitInfo.pSignalSemaphoreInfos     = signalInfo;
+
+			context.Get<IGraphicQueue>()->Submit2(submitInfo);
 
 			DEBUGUTILS_ENDQUEUELABEL(context.Get<IGraphicQueue>()->Handle())
 		}

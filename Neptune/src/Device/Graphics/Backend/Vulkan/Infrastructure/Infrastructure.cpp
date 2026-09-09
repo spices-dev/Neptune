@@ -46,6 +46,9 @@ namespace Neptune::Vulkan {
                                                                       
             case MemoryAllocator:                    return "MemoryAllocator";
             case SwapChain:                          return "SwapChain";
+        	
+            case GraphicTimelineSemaphore:           return "GraphicTimelineSemaphore";
+            case ComputeTimelineSemaphore:           return "ComputeTimelineSemaphore";
                                                      
             case GraphicImageSemaphore:              return "GraphicImageSemaphore";
             case GraphicQueueSemaphore:              return "GraphicQueueSemaphore";

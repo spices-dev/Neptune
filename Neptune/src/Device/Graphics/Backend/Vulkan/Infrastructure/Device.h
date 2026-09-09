@@ -49,6 +49,16 @@ namespace Neptune::Vulkan {
 		*/
 		void Wait() const;
 
+		/**
+		* @brief Create Device Queue.
+		*
+		* @param[in] queueFamilyIndex .
+		* @param[in] queueIndex .
+		* 
+		* @return Returns VkQueue.
+		*/
+		VkQueue GetDeviceQueue(uint32_t queueFamilyIndex, uint32_t queueIndex) const { return m_Device.GetDeviceQueue(queueFamilyIndex, queueIndex); }
+		
 	private:
 
 		/**

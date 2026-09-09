@@ -31,6 +31,8 @@ namespace Neptune::Vulkan::Extension {
             *pNext = &m_OpticalFlowFeatures;
 
             pNext  = &m_OpticalFlowFeatures.pNext;
+
+            *pNext = nullptr;
         }
     }
     

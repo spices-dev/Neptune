@@ -31,9 +31,8 @@ namespace Neptune::Vulkan {
 		*
 		* @param[in] context Context.
 		* @param[in] e EInfrastructure.
-		* @param[in] queue VkQueue.
 		*/
-		Queue(Context& context, EInfrastructure e, VkQueue queue);
+		Queue(Context& context, EInfrastructure e);
 
 		/**
 		* @brief Destructor Function.
@@ -56,6 +55,13 @@ namespace Neptune::Vulkan {
 		void Submit(const VkSubmitInfo& info, VkFence fence = VK_NULL_HANDLE) const;
 
 		/**
+		* @brief Submit CommandBuffer to Queue 2.
+		*
+		* @param[in] info VkSubmitInfo2.
+		*/
+		void Submit2(const VkSubmitInfo2& info) const;
+		
+		/**
 		* @brief Queue Wait idle.
 		*/
 		void Wait() const;
@@ -63,11 +69,16 @@ namespace Neptune::Vulkan {
 	private:
 
 		/**
-		* @brief Initialize with queue.
-		*
-		* @param[in] queue Unit Queue Handle.
+		* @brief Create Queue.
 		*/
-		void Init(Unit::Queue::Handle queue);
+		void Create();
+
+		/**
+		* @brief Get Queue Family.
+		* 
+		* @return Returns Queue Family
+		*/
+		uint32_t GetQueueFamily() const;
 
 	private:
 
