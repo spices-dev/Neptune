@@ -23,7 +23,7 @@ namespace Neptune::OpenGL::Capability {
         
         glGetIntegerv(GL_SUBGROUP_SIZE_KHR, &m_SubgroupSize);
         glGetIntegerv(GL_SUBGROUP_SUPPORTED_STAGES_KHR, &m_SupportedStages);
-        glGetIntegerv(GL_SUBGROUPSUPPORTED_FEATURES_KHR_, &m_SupportedFeatures);
+        glGetIntegerv(GL_SUBGROUP_SUPPORTED_FEATURES_KHR, &m_SupportedFeatures);
     }
 
 }

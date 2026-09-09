@@ -11,7 +11,7 @@ solution.DefineCStaticLibrary("Glad", function()
     
     externalincludedirs
     {
-        "include",                            -- Library: Glad Source Folder.
+        "include/glad",                            -- Library: Glad Source Folder.
     }
 
     filter "configurations:Debug"

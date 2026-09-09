@@ -78,14 +78,7 @@ namespace Neptune::RHI {
 		{
 			NEPTUNE_PROFILE_ZONE
 
-			if (auto p = std::any_cast<SP<Impl>>(std::invoke(RHIDelegate::GetCreator(), E, payload)))
-			{
-				m_Impl = p;
-			}
-			else
-			{
-				NEPTUNE_LOG_CORE(E) << "RHI Create With Wrong ERHI";
-			}
+			m_Impl = std::any_cast<SP<Impl>>(std::invoke(RHIDelegate::GetCreator(), E, payload));
 		}
 
 		/**

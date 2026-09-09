@@ -13,7 +13,7 @@
 
 namespace Neptune::Vulkan::Extension {
 
-    using IScalarBlockLayout = IExtension<class ScalarBlockLayout, EExtension::RayTracing>;
+    using IScalarBlockLayout = IExtension<class ScalarBlockLayout, EExtension::ScalarBlockLayout>;
     
     class ScalarBlockLayout : public Extension
     {
