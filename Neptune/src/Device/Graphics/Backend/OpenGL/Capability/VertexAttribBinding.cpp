@@ -21,7 +21,9 @@ namespace Neptune::OpenGL::Capability {
         
         AddExtensions("GL_ARB_vertex_attrib_binding");
         
-        // TODO
+        glGetIntegerv(GL_MAX_VERTEX_ATTRIB_BINDINGS, &m_MaxBindings);
+        glGetIntegerv(GL_MAX_VERTEX_ATTRIB_RELATIVE_OFFSET, &m_MaxRelativeOffset);
+        glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &m_MaxAttribs);
     }
 
 }

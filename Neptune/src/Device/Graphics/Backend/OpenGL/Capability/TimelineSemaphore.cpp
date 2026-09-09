@@ -20,6 +20,8 @@ namespace Neptune::OpenGL::Capability {
         if constexpr (IsCoreCapability<decltype(*this)>) return;
         
         AddExtensions("GL_NV_timeline_semaphore");
+        
+        glGetIntegerv(GL_MAX_TIMELINE_SEMAPHORE_VALUE_DIFFERENCE_NV, &m_MaxValueDifference);
     }
 
 }

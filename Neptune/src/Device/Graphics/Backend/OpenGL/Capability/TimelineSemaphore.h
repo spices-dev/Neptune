@@ -30,6 +30,10 @@ namespace Neptune::OpenGL::Capability {
         * @brief Destructor Function.
         */
         ~TimelineSemaphore() override = default;
+        
+    private:
+        
+        GLint m_MaxValueDifference;
     };
 }
 

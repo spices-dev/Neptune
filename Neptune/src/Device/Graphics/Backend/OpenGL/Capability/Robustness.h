@@ -34,6 +34,11 @@ namespace Neptune::OpenGL::Capability {
         * @brief Destructor Function.
         */
         ~Robustness() override = default;
+        
+    private:
+        
+        GLint m_ResetStrategy;
+        GLint m_ContextRobust;
     };
 }
 

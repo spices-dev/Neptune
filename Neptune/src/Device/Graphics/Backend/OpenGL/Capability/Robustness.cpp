@@ -21,7 +21,12 @@ namespace Neptune::OpenGL::Capability {
         
         AddExtensions("GL_ARB_robustness");
         
-        // TODO
+        GLint flags = 0;
+        
+        glGetIntegerv(GL_RESET_NOTIFICATION_STRATEGY, &m_ResetStrategy);
+        glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+        
+        m_ContextRobust = (flags & GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT) != 0;
     }
 
 }

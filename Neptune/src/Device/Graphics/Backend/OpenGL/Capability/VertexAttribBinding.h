@@ -34,6 +34,12 @@ namespace Neptune::OpenGL::Capability {
         * @brief Destructor Function.
         */
         ~VertexAttribBinding() override = default;
+        
+    private:
+        
+        GLint m_MaxBindings;
+        GLint m_MaxRelativeOffset;
+        GLint m_MaxAttribs;
     };
 }
 

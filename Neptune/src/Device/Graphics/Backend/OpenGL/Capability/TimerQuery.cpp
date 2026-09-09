@@ -17,7 +17,7 @@ namespace Neptune::OpenGL::Capability {
     {
         NEPTUNE_PROFILE_ZONE
 
-        //if constexpr (IsCoreCapability<decltype(*this)>) return;
+        if constexpr (IsCoreCapability<decltype(*this)>) return;
 
         AddExtensions("GL_ARB_timer_query");
         

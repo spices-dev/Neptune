@@ -34,6 +34,11 @@ namespace Neptune::OpenGL::Capability {
         * @brief Destructor Function.
         */
         ~MultiBind() override = default;
+        
+    private:
+        
+        GLint m_MaxTextureUnits;
+        GLint m_MaxUniformBinding;
     };
 }
 

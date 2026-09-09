@@ -21,7 +21,8 @@ namespace Neptune::OpenGL::Capability {
 
         AddExtensions("GL_ARB_multi_bind");
         
-        // TODO
+        glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &m_MaxTextureUnits);
+        glGetIntegerv(GL_MAX_UNIFORM_BUFFER_BINDINGS, &m_MaxUniformBinding);
     }
 
 }
