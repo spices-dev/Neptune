@@ -21,7 +21,7 @@ namespace Neptune::OpenGL::Capability {
 
         AddExtensions("GL_ARB_texture_filter_anisotropic");
         
-        // TODO
+        glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY, &m_MaxAnisotropy);
     }
 
 }

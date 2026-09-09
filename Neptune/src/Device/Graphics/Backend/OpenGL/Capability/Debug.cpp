@@ -25,7 +25,9 @@ namespace Neptune::OpenGL::Capability {
         // Old
         AddExtensions("GL_ARB_debug_output");
         
-        // TODO
+        glGetIntegerv(GL_MAX_DEBUG_MESSAGE_LENGTH, &m_MaxMessageLength);
+        glGetIntegerv(GL_MAX_DEBUG_LOGGED_MESSAGES, &m_MaxLoggedMessages);
+        glGetIntegerv(GL_MAX_DEBUG_GROUP_STACK_DEPTH, &m_MaxGroupStackDepth);
     }
 
 }

@@ -54,6 +54,7 @@ namespace Neptune::OpenGL {
         TimelineSemaphore,                 // @brief TimelineSemaphore.
         VertexAttribBinding,               // @brief VertexAttribBinding.
         KeydMutex,                         // @brief KeydMutex.
+        ViewportLayerArray,                // @brief ViewportLayerArray.
         
         Count
     };

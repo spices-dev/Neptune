@@ -34,6 +34,12 @@ namespace Neptune::OpenGL::Capability {
         * @brief Destructor Function.
         */
         ~Debug() override = default;
+        
+    private:
+        
+        GLint m_MaxMessageLength;
+        GLint m_MaxLoggedMessages;
+        GLint m_MaxGroupStackDepth;
     };
 }
 

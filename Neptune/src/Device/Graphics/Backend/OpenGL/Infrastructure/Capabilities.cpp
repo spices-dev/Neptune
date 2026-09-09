@@ -83,6 +83,7 @@ namespace Neptune::OpenGL {
 		m_Context.Registry<Capability::ITimelineSemaphore>                   (Capability::ECapabilityState::Extent);
 		m_Context.Registry<Capability::IVertexAttribBinding>                 (Capability::ECapabilityState::Extent);
 		m_Context.Registry<Capability::IKeydMutex>                           (Capability::ECapabilityState::Extent);
+		m_Context.Registry<Capability::IViewportLayerArray>                  (Capability::ECapabilityState::Extent);
     }
 
 }

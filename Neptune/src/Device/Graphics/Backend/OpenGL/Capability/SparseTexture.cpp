@@ -21,7 +21,9 @@ namespace Neptune::OpenGL::Capability {
 
         AddExtensions("GL_ARB_sparse_texture");
         
-        // TODO
+        glGetIntegerv(GL_MAX_SPARSE_TEXTURE_SIZE_ARB, &m_MaxSize);
+        glGetIntegerv(GL_MAX_SPARSE_3D_TEXTURE_SIZE_ARB, &m_Max3DSize);
+        glGetIntegerv(GL_MAX_SPARSE_ARRAY_TEXTURE_SIZE_ARB, &m_MaxArrayLayers);
     }
 
 }

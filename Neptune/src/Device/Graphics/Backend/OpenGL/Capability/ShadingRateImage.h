@@ -30,6 +30,12 @@ namespace Neptune::OpenGL::Capability {
         * @brief Destructor Function.
         */
         ~ShadingRateImage() override = default;
+        
+    private:
+        
+        GLint m_TexelWidth;
+        GLint m_TexelHeight;
+        GLint m_PaletteSize;
     };
 }
 

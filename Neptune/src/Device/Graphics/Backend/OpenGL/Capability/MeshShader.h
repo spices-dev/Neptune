@@ -30,6 +30,16 @@ namespace Neptune::OpenGL::Capability {
         * @brief Destructor Function.
         */
         ~MeshShader() override = default;
+        
+    private:
+        
+        GLint                 m_MaxMeshOutputVertices;
+        GLint                 m_MaxMeshOutputPrimitives;
+        GLint                 m_MaxMeshWorkGroupInvocations;
+        GLint                 m_MaxTaskWorkGroupInvocations;
+        GLint                 m_MaxDrawMeshTasksCount;
+        std::array<GLint, 3>  m_MaxMeshWorkGroupSize;
+        std::array<GLint, 3>  m_MaxTaskWorkGroupSize;
     };
 }
 

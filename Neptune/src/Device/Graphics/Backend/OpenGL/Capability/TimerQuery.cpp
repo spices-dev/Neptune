@@ -17,12 +17,12 @@ namespace Neptune::OpenGL::Capability {
     {
         NEPTUNE_PROFILE_ZONE
 
-        if constexpr (IsCoreCapability<decltype(*this)>) return;
+        //if constexpr (IsCoreCapability<decltype(*this)>) return;
 
-        // New
         AddExtensions("GL_ARB_timer_query");
         
-        // TODO
+        glGetQueryiv(GL_TIMESTAMP, GL_QUERY_COUNTER_BITS, &m_TimestampBits);
+        glGetQueryiv(GL_TIME_ELAPSED, GL_QUERY_COUNTER_BITS, &m_TimeElapsedBits);
     }
 
 }

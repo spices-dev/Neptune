@@ -21,7 +21,7 @@ namespace Neptune::OpenGL::Capability {
 
         AddExtensions("GL_NV_conservative_raster");
         
-        // TODO
+        glGetIntegerv(GL_MAX_SUBPIXEL_PRECISION_BIAS_BITS_NV, &m_MaxSubpixelPrecisionBiasBits);
     }
 
 }

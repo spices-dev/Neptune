@@ -30,6 +30,12 @@ namespace Neptune::OpenGL::Capability {
         * @brief Destructor Function.
         */
         ~ShaderSubGroup() override = default;
+        
+    private:
+        
+        GLint m_SubgroupSize;
+        GLint m_SupportedStages;
+        GLint m_SupportedFeatures;
     };
 }
 

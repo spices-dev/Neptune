@@ -34,6 +34,10 @@ namespace Neptune::OpenGL::Capability {
         * @brief Destructor Function.
         */
         ~Spirv() override = default;
+        
+    private:
+        
+        std::unordered_set<const char*> m_SpirVExtensions;
     };
 }
 

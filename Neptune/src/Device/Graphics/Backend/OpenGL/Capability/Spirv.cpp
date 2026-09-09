@@ -21,7 +21,20 @@ namespace Neptune::OpenGL::Capability {
 
         AddExtensions("GL_ARB_gl_spirv");
         
-        // TODO
+        GLint count;
+        
+        glGetIntegerv(GL_NUM_SPIR_V_EXTENSIONS, &count);
+        
+        m_SpirVExtensions.reserve(count);
+        
+        for (GLuint i = 0; i < count; ++i)
+        {
+            const auto* name = glGetStringi(GL_SPIR_V_EXTENSIONS, i);
+            
+            if (!name) continue;
+            
+            m_SpirVExtensions.emplace(reinterpret_cast<const char*>(name));
+        }
     }
 
 }

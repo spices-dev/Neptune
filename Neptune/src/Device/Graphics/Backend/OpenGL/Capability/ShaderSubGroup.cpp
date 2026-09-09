@@ -21,7 +21,9 @@ namespace Neptune::OpenGL::Capability {
 
         AddExtensions("GL_NV_shader_subgroup");
         
-        // TODO
+        glGetIntegerv(GL_SUBGROUP_SIZE_KHR, &m_SubgroupSize);
+        glGetIntegerv(GL_SUBGROUP_SUPPORTED_STAGES_KHR, &m_SupportedStages);
+        glGetIntegerv(GL_SUBGROUPSUPPORTED_FEATURES_KHR_, &m_SupportedFeatures);
     }
 
 }

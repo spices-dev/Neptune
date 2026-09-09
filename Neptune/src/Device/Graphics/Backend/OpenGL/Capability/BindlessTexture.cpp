@@ -20,8 +20,6 @@ namespace Neptune::OpenGL::Capability {
         if constexpr (IsCoreCapability<decltype(*this)>) return;
 
         AddExtensions("GL_ARB_bindless_texture");
-        
-        // TODO
     }
 
 }

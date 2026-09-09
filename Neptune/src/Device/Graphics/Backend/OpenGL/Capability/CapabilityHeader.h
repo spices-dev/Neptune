@@ -47,5 +47,6 @@
 #include "Device/Graphics/Backend/OpenGL/Capability/TimelineSemaphore.h"
 #include "Device/Graphics/Backend/OpenGL/Capability/VertexAttribBinding.h"
 #include "Device/Graphics/Backend/OpenGL/Capability/KeydMutex.h"
+#include "Device/Graphics/Backend/OpenGL/Capability/ViewportLayerArray.h"
 
 #endif

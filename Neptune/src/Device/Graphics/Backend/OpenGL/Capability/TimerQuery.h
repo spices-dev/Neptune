@@ -34,6 +34,11 @@ namespace Neptune::OpenGL::Capability {
         * @brief Destructor Function.
         */
         ~TimerQuery() override = default;
+        
+    private:
+        
+        GLint m_TimestampBits;
+        GLint m_TimeElapsedBits;
     };
 }
 

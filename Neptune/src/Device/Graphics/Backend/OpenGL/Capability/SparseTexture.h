@@ -30,6 +30,12 @@ namespace Neptune::OpenGL::Capability {
         * @brief Destructor Function.
         */
         ~SparseTexture() override = default;
+        
+    private:
+        
+        GLint m_MaxSize;
+        GLint m_Max3DSize;
+        GLint m_MaxArrayLayers;
     };
 }
 

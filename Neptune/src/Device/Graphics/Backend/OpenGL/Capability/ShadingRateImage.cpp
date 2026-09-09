@@ -21,7 +21,9 @@ namespace Neptune::OpenGL::Capability {
 
         AddExtensions("GL_NV_shading_rate_image");
         
-        // TODO
+        glGetIntegerv(GL_SHADING_RATE_IMAGE_TEXEL_WIDTH_NV, &m_TexelWidth);
+        glGetIntegerv(GL_SHADING_RATE_IMAGE_TEXEL_HEIGHT_NV, &m_TexelHeight);
+        glGetIntegerv(GL_SHADING_RATE_IMAGE_PALETTE_SIZE_NV, &m_PaletteSize);
     }
 
 }

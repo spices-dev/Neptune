@@ -30,6 +30,10 @@ namespace Neptune::OpenGL::Capability {
         * @brief Destructor Function.
         */
         ~ConservativeRaster() override = default;
+        
+    private:
+        
+        GLint m_MaxSubpixelPrecisionBiasBits;
     };
 }
 

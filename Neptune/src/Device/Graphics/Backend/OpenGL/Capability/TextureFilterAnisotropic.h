@@ -34,6 +34,10 @@ namespace Neptune::OpenGL::Capability {
         * @brief Destructor Function.
         */
         ~TextureFilterAnisotropic() override = default;
+        
+    private:
+        
+        GLfloat m_MaxAnisotropy;
     };
 }
 

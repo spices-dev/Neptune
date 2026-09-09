@@ -34,6 +34,10 @@ namespace Neptune::OpenGL::Capability {
         * @brief Destructor Function.
         */
         ~GetProgramBinary() override = default;
+        
+    private:
+        
+        std::vector<GLint> m_Formats;
     };
 }
 

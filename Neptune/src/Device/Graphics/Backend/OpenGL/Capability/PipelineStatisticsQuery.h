@@ -34,6 +34,16 @@ namespace Neptune::OpenGL::Capability {
         * @brief Destructor Function.
         */
         ~PipelineStatisticsQuery() override = default;
+        
+    private:
+        
+        GLint m_VerticesSubmitted;
+        GLint m_PrimitivesSubmitted;
+        GLint m_VertexShaderInvocations;
+        GLint m_FragmentShaderInvocations;
+        GLint m_ComputeShaderInvocations;
+        GLint m_ClippingInputPrimitives;
+        GLint m_ClippingOutputPrimitives;
     };
 }
 
