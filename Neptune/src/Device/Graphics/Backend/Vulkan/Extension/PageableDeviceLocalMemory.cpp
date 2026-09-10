@@ -27,14 +27,7 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        if (std::invoke(filter, m_PageableDeviceLocalMemoryFeatures.sType))
-        {
-            *pNext = &m_PageableDeviceLocalMemoryFeatures;
-
-            pNext  = &m_PageableDeviceLocalMemoryFeatures.pNext;
-
-            *pNext = nullptr;
-        }
+        LinkToChain(pNext, filter, m_PageableDeviceLocalMemoryFeatures);
     }
     
     bool PageableDeviceLocalMemory::IsFeaturesSatisfied()

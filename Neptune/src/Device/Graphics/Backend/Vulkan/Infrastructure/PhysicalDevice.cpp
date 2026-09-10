@@ -46,15 +46,12 @@ namespace Neptune::Vulkan {
 
         std::vector<VkPhysicalDevice> PhysicalDevices(deviceCount);
         VULKAN_CHECK(vkEnumeratePhysicalDevices(instance, &deviceCount, PhysicalDevices.data()))
-
-		auto* surface = GetContext().Has<ISurface>() ? GetContext().Get<ISurface>()->Handle() : nullptr;
 		
 		// Iter all physical and select one suitable.
 		for (const auto& physicalDevice : PhysicalDevices)
 		{
 			// All this condition need satisfied.
-			if (IsExtensionMeetDemand(physicalDevice) && IsPropertyMeetDemand(physicalDevice) && IsFeatureMeetDemand(physicalDevice) &&
-				IsQueueMeetDemand(physicalDevice, surface))
+			if (DeviceDetection(physicalDevice))
 			{
 				m_PhysicalDevice.SetHandle(physicalDevice);
 
@@ -66,6 +63,30 @@ namespace Neptune::Vulkan {
 		NEPTUNE_LOG_CORE(E) << "Failed to find GPU Physical Device that satisfied our needs.";
     }
 
+	bool PhysicalDevice::DeviceDetection(const VkPhysicalDevice& device)
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		auto* surface = GetContext().Has<ISurface>() ? GetContext().Get<ISurface>()->Handle() : nullptr;
+
+		if(!IsExtensionMeetDemand(device)) return false;
+
+		if(!IsPropertyMeetDemand(device)) return false;
+
+		if(!IsFeatureMeetDemand(device)) return false;
+
+		if(!IsQueueMeetDemand(device, surface)) return false;
+		
+		if (surface)
+		{
+			if(!IsSurfaceCapabilityMeetDemand(device)) return false;
+			
+			if(!IsSurfaceFormatMeetDemand(device, surface)) return false;
+		}
+		
+		return true;
+	}
+	
 	bool PhysicalDevice::IsExtensionMeetDemand(const VkPhysicalDevice& device)
 	{
 		NEPTUNE_PROFILE_ZONE
@@ -246,6 +267,55 @@ namespace Neptune::Vulkan {
 		return coreSatisfied;
 	}
 
+	bool PhysicalDevice::IsSurfaceCapabilityMeetDemand(const VkPhysicalDevice& device) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		VkSurfaceCapabilities2KHR                             capabilities2{};
+		capabilities2.sType                                 = VK_STRUCTURE_TYPE_SURFACE_CAPABILITIES_2_KHR;
+		capabilities2.pNext                                 = nullptr;
+		                  
+		VkPhysicalDeviceSurfaceInfo2KHR                       surfaceInfo2{};
+		surfaceInfo2.sType                                  = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SURFACE_INFO_2_KHR;
+		surfaceInfo2.surface                                = GetContext().Get<ISurface>()->Handle();
+		surfaceInfo2.pNext                                  = nullptr;
+		
+		GetContext().Get<IExtensions>()->BuildIsSurfaceCapabilityChain(&capabilities2.pNext);
+		
+		VULKAN_CHECK(vkGetPhysicalDeviceSurfaceCapabilities2KHR(device, &surfaceInfo2, &capabilities2))
+		
+		bool coreSatisfied = true;
+		
+		std::vector<EExtension> removedExtension;
+		
+		GetContext().Get<IExtensions>()->GetContext().View([&](const auto e, const auto& extension) {
+			
+			if (!extension->IsSurfaceCapabilitiesSatisfied())
+			{
+				if (extension->GetState() == Extension::EExtensionState::Core)
+				{
+					coreSatisfied = false;
+
+					NEPTUNE_LOG_CORE(E) << "Device Surface Capabilities Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+				}
+				else
+				{
+					NEPTUNE_LOG_CORE(I) << "Device Surface Capabilities Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+				}
+				
+				removedExtension.emplace_back(e);
+			}
+			
+		});
+		
+		std::ranges::for_each(removedExtension, [&](const auto& e) {
+    		
+			GetContext().Get<IExtensions>()->GetContext().UnRegistry(e);
+		});
+		
+		return coreSatisfied;
+	}
+	
 	bool PhysicalDevice::IsQueueMeetDemand(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const
 	{
 		NEPTUNE_PROFILE_ZONE
@@ -284,6 +354,52 @@ namespace Neptune::Vulkan {
 		return coreSatisfied;
 	}
 
+	bool PhysicalDevice::IsSurfaceFormatMeetDemand(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		uint32_t formatCount;
+
+		VULKAN_CHECK(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &formatCount, nullptr))
+		
+		std::vector<VkSurfaceFormatKHR> formats;
+			
+		formats.resize(formatCount);
+		
+		VULKAN_CHECK(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &formatCount, formats.data()))
+		
+		bool coreSatisfied = true;
+
+		std::vector<EExtension> removedExtension;
+		
+		GetContext().Get<IExtensions>()->GetContext().View([&](const auto e, const auto& extension) {
+			
+			if (!extension->IsSurfaceFormatsSatisfied(formats))
+			{
+				if (extension->GetState() == Extension::EExtensionState::Core)
+				{
+					coreSatisfied = false;
+
+					NEPTUNE_LOG_CORE(E) << "Device Surface Formats Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+				}
+				else
+				{
+					NEPTUNE_LOG_CORE(I) << "Device Surface Formats Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+				}
+				
+				removedExtension.emplace_back(e);
+			}
+			
+		});
+		
+		std::ranges::for_each(removedExtension, [&](const auto& e) {
+
+			GetContext().Get<IExtensions>()->GetContext().UnRegistry(e);
+		});
+		
+		return coreSatisfied;
+	}
+	
 	bool PhysicalDevice::IsOpticalFlowSessionSupport(VkFormat format, VkOpticalFlowUsageFlagsNV usage)
 	{
 		NEPTUNE_PROFILE_ZONE

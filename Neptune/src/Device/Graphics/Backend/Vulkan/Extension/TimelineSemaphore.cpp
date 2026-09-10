@@ -26,14 +26,7 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        if (std::invoke(filter, m_TimelineSemaphoreFeatures.sType))
-        {
-            *pNext = &m_TimelineSemaphoreFeatures;
-
-            pNext  = &m_TimelineSemaphoreFeatures.pNext;
-
-            *pNext = nullptr;
-        }
+        LinkToChain(pNext, filter, m_TimelineSemaphoreFeatures);
     }
     
     bool TimelineSemaphore::IsFeaturesSatisfied()

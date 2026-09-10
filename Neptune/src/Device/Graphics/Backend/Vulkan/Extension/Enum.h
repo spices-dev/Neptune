@@ -46,6 +46,7 @@ namespace Neptune::Vulkan {
         ScalarBlockLayout,                          // @brief ScalarBlockLayout.
         TimelineSemaphore,                          // @brief TimelineSemaphore.
         Synchronization2,                           // @brief Synchronization2.
+        PresentTiming,                              // @brief PresentTiming.
 
         Count
     };

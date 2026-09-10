@@ -124,6 +124,15 @@ namespace Neptune::Vulkan {
 		void Create();
 
 		/**
+		* @brief Device Detection.
+		* 
+		* @param[in] device VkPhysicalDevice.
+		* 
+		* @return Returns true if meets.
+		*/
+		bool DeviceDetection(const VkPhysicalDevice& device);
+		
+		/**
 		* @brief Is Extension Meet Demand.
 		* 
 		* @param[in] device VkPhysicalDevice.
@@ -151,6 +160,15 @@ namespace Neptune::Vulkan {
 		bool IsFeatureMeetDemand(const VkPhysicalDevice& device) const;
 
 		/**
+		* @brief Is Surface Capability Meet Demand.
+		*
+		* @param[in] device VkPhysicalDevice.
+		*
+		* @return Returns true if meets.
+		*/
+		bool IsSurfaceCapabilityMeetDemand(const VkPhysicalDevice& device) const;
+		
+		/**
 		* @brief Is Queue Meet Demand.
 		*
 		* @param[in] device VkPhysicalDevice.
@@ -160,6 +178,16 @@ namespace Neptune::Vulkan {
 		*/
 		bool IsQueueMeetDemand(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const;
 
+		/**
+		* @brief Is Surface Format Meet Demand.
+		*
+		* @param[in] device VkPhysicalDevice.
+		* @param[in] surface VkSurfaceKHR.
+		*
+		* @return Returns true if meets.
+		*/
+		bool IsSurfaceFormatMeetDemand(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const;
+		
 		/**
 		* @brief Is Queue OpticalFlow Session Supported.
 		*
@@ -182,10 +210,10 @@ namespace Neptune::Vulkan {
 
 	private:
 
-		Unit::PhysicalDevice m_PhysicalDevice;              // @brief This PhysicalDevice.
-		std::vector<const char*> m_ExtensionProperties;     // @brief Extensions.
-		VkPhysicalDeviceProperties m_Properties;            // @brief VkPhysicalDeviceProperties.
-		SwapChainProperty m_SwapChainProperty;              // @brief SwapChainProperty.
+		Unit::PhysicalDevice        m_PhysicalDevice;              // @brief This PhysicalDevice.
+		std::vector<const char*>    m_ExtensionProperties;         // @brief Extensions.
+		VkPhysicalDeviceProperties  m_Properties;                  // @brief VkPhysicalDeviceProperties.
+		SwapChainProperty           m_SwapChainProperty;           // @brief SwapChainProperty.
 	};
 
 }

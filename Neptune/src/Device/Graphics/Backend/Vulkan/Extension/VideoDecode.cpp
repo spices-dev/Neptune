@@ -29,14 +29,7 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        if (std::invoke(filter, m_VideoMaintenance1Features.sType))
-        {
-            *pNext = &m_VideoMaintenance1Features;
-
-            pNext  = &m_VideoMaintenance1Features.pNext;
-
-            *pNext = nullptr;
-        }
+        LinkToChain(pNext, filter, m_VideoMaintenance1Features);
     }
     
     bool VideoDecode::IsFeaturesSatisfied()

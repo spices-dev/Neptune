@@ -39,6 +39,7 @@
 #include "Device/Graphics/Backend/Vulkan/Extension/ScalarBlockLayout.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/TimelineSemaphore.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Synchronization2.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/PresentTiming.h"
 
 // Device
 //m_ExtensionProperties.push_back(VK_KHR_SHADER_CLOCK_EXTENSION_NAME);

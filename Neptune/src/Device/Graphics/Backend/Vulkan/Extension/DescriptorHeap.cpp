@@ -26,14 +26,7 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        if (std::invoke(filter, m_DescriptorHeapFeatures.sType))
-        {
-            *pNext = &m_DescriptorHeapFeatures;
-
-            pNext  = &m_DescriptorHeapFeatures.pNext;
-
-            *pNext = nullptr;
-        }
+        LinkToChain(pNext, filter, m_DescriptorHeapFeatures);
     }
     
     bool DescriptorHeap::IsFeaturesSatisfied()

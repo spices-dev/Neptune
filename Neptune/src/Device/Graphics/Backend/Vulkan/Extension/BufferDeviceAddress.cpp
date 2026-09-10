@@ -16,14 +16,7 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        if (std::invoke(filter, m_BufferDeviceAddressFeatures.sType))
-        {
-            *pNext = &m_BufferDeviceAddressFeatures;
-
-            pNext  = &m_BufferDeviceAddressFeatures.pNext;
-
-            *pNext = nullptr;
-        }
+        LinkToChain(pNext, filter, m_BufferDeviceAddressFeatures);
     }
     
     bool BufferDeviceAddress::IsFeaturesSatisfied()

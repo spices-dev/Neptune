@@ -20,14 +20,7 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        if (std::invoke(filter, m_ScalarBlockLayoutFeatures.sType))
-        {
-            *pNext = &m_ScalarBlockLayoutFeatures;
-
-            pNext  = &m_ScalarBlockLayoutFeatures.pNext;
-
-            *pNext = nullptr;
-        }
+        LinkToChain(pNext, filter, m_ScalarBlockLayoutFeatures);
     }
     
     bool ScalarBlockLayout::IsFeaturesSatisfied()

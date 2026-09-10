@@ -26,14 +26,7 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        if (std::invoke(filter, m_Vulkan13Features.sType))
-        {
-            *pNext = &m_Vulkan13Features;
-
-            pNext  = &m_Vulkan13Features.pNext;
-
-            *pNext = nullptr;
-        }
+        LinkToChain(pNext, filter, m_Vulkan13Features);
     }
     
     bool DynamicRendering::IsFeaturesSatisfied()

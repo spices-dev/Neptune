@@ -55,6 +55,13 @@ namespace Neptune::OpenGL {
 		void Wait(uint32_t index);
 
 		/**
+		* @brief Fence Signal.
+		* 
+		* @param[in] index Fence index.
+		*/
+		void Signal(uint32_t index);
+		
+		/**
 		* @brief Fence wait barrier.
 		*
 		* @param[in] index Fence index.

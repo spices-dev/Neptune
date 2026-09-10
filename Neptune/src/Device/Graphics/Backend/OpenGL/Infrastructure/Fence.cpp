@@ -42,7 +42,12 @@ namespace Neptune::OpenGL {
         NEPTUNE_PROFILE_ZONE
 
         m_Fences[index]->ClientWait();
-
+    }
+    
+    void Fence::Signal(uint32_t index)
+    {
+        NEPTUNE_PROFILE_ZONE
+        
         m_Fences[index] = CreateSP<Unit::Sync>();
 
         m_Fences[index]->CreateSync();

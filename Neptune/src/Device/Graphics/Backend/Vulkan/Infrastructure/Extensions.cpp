@@ -62,12 +62,13 @@ namespace Neptune::Vulkan {
 		m_Context.Registry<Extension::IDeviceGeneratedCommands>          (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IGetPhysicalDeviceProperties2>     (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IPageableDeviceLocalMemory>        (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IGetSurfaceCapabilities2>          (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IGetSurfaceCapabilities2>          (Extension::EExtensionState::Core);
 		m_Context.Registry<Extension::ICreateRenderPass2>                (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IDynamicRenderingLocalRead>        (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IScalarBlockLayout>                (Extension::EExtensionState::Core);
 		m_Context.Registry<Extension::ITimelineSemaphore>                (Extension::EExtensionState::Core);
 		m_Context.Registry<Extension::ISynchronization2>                 (Extension::EExtensionState::Core);
+		m_Context.Registry<Extension::IPresentTiming>                    (Extension::EExtensionState::Extent);
 	}
 	
 	void Extensions::BuildFeatureChain(void** pNext)
@@ -122,6 +123,22 @@ namespace Neptune::Vulkan {
 			auto last = pNext;
 			
 			extension->BuildPropertyChain(pNext, filter);
+
+			pNext = pNext ? pNext : last;
+		});
+	}
+	
+	void Extensions::BuildIsSurfaceCapabilityChain(void** pNext)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		std::function filter = [](VkStructureType){ return true; };
+		
+		m_Context.View([&](const auto e, const auto& extension) {
+
+			auto last = pNext;
+			
+			extension->BuildSurfaceCapabilitiesChain(pNext, filter);
 
 			pNext = pNext ? pNext : last;
 		});

@@ -67,6 +67,8 @@ namespace Neptune::OpenGL {
     {
         NEPTUNE_PROFILE_ZONE
 
+        const auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
+        
         {
             DEBUGUTILS_ENDLABEL()
         }
@@ -77,6 +79,10 @@ namespace Neptune::OpenGL {
             GetContext().Get<IWindowContext>()->SwapBuffers();
 
             DEBUGUTILS_ENDLABEL()
+        }
+        
+        {
+            GetContext().Get<IGraphicFence>()->Signal(clock.m_FrameIndex);
         }
     }
 

@@ -24,6 +24,17 @@ namespace Neptune::Vulkan::Extension {
     };
     
     /**
+    * @brief Concept: Is VkStructure.
+    * 
+    * @tparam T .
+    */
+    template<typename T>
+    concept IsVkStructure = requires(T t) {
+        t.sType;
+        t.pNext;
+    };
+    
+    /**
     * @brief Vulkan::Extension Class.
     * This class defines the Vulkan::Extension behaves.
     */
@@ -97,6 +108,14 @@ namespace Neptune::Vulkan::Extension {
         virtual void BuildPropertyChain(void**& pNext, const std::function<bool(VkStructureType)>& filter) {}
         
         /**
+        * @brief Build Device Surface Capabilities Chain.
+        * 
+        * @param[in,out] pNext pNext Chain.
+        * @param[in] filter SurfaceCapabilities Filter.
+        */
+        virtual void BuildSurfaceCapabilitiesChain(void**& pNext, const std::function<bool(VkStructureType)>& filter) {}
+        
+        /**
         * @brief Is Device Features satisfied.
         * 
         * @return Returns true if satisfied.
@@ -111,6 +130,13 @@ namespace Neptune::Vulkan::Extension {
         virtual bool IsPropertiesSatisfied() { return true; }
         
         /**
+        * @brief Is Device Surface Capabilities satisfied.
+        * 
+        * @return Returns true if satisfied.
+        */
+        virtual bool IsSurfaceCapabilitiesSatisfied() { return true; }
+        
+        /**
         * @brief Is Device Queue satisfied.
         * 
         * @param[in] queues VkQueueFlagBits.
@@ -118,6 +144,30 @@ namespace Neptune::Vulkan::Extension {
         * @return Returns true if satisfied.
         */
         virtual bool IsQueueSatisfied(const std::unordered_set<VkQueueFlagBits>& queues) const { return true; }
+        
+        /**
+        * @brief Is Device Surface Formats satisfied.
+        * 
+        * @param[in] formats VkSurfaceFormatKHR.
+        * 
+        * @return Returns true if satisfied.
+        */
+        virtual bool IsSurfaceFormatsSatisfied(const std::vector<VkSurfaceFormatKHR>& formats) { return true; }
+        
+        template<typename T>
+        requires IsVkStructure<RemoveRef<T>>
+        void LinkToChain(void**& pNext, const std::function<bool(VkStructureType)>& filter, T& t)
+        {
+            NEPTUNE_PROFILE_ZONE
+
+            if (!std::invoke(filter, t.sType)) return;
+            
+            *pNext = &t;
+
+            pNext  = &t.pNext;
+
+            *pNext = nullptr;
+        }
         
     private:
         

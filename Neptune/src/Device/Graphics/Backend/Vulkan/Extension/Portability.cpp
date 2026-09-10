@@ -28,14 +28,7 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        if (std::invoke(filter, m_PortabilitySubsetFeatures.sType))
-        {
-            *pNext = &m_PortabilitySubsetFeatures;
-
-            pNext  = &m_PortabilitySubsetFeatures.pNext;
-
-            *pNext = nullptr;
-        }
+        LinkToChain(pNext, filter, m_PortabilitySubsetFeatures);
     }
     
     bool Portability::IsFeaturesSatisfied()

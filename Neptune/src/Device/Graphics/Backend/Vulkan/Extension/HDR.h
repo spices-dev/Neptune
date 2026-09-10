@@ -30,6 +30,21 @@ namespace Neptune::Vulkan::Extension {
         * @brief Destructor Function.
         */
         ~HDR() override = default;
+        
+        const VkSurfaceFormatKHR& GetFormat() const { return m_Formats[0]; }
+        
+        /**
+        * @brief Is Device Surface Formats satisfied.
+        * 
+        * @param[in] formats VkSurfaceFormatKHR.
+        * 
+        * @return Returns true if satisfied.
+        */
+        bool IsSurfaceFormatsSatisfied(const std::vector<VkSurfaceFormatKHR>& formats) override;
+        
+    private:
+        
+        std::vector<VkSurfaceFormatKHR> m_Formats;
     };
 }
 

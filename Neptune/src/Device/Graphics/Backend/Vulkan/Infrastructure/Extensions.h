@@ -80,6 +80,13 @@ namespace Neptune::Vulkan {
 		void BuildPropertyChain(void** pNext);
 		
 		/**
+		* @brief Build Device Surface Capability Chain.
+		* 
+		* @param[in] pNext pNext Chain.
+		*/
+		void BuildIsSurfaceCapabilityChain(void** pNext);
+		
+		/**
 		* @brief Build Device Queue Chain.
 		* 
 		* @param[in] device VkPhysicalDevice.

@@ -26,14 +26,7 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        if (std::invoke(filter, m_FaultFeatures.sType))
-        {
-            *pNext = &m_FaultFeatures;
-
-            pNext  = &m_FaultFeatures.pNext;
-
-            *pNext = nullptr;
-        }
+        LinkToChain(pNext, filter, m_FaultFeatures);
     }
     
     bool DeviceFault::IsFeaturesSatisfied()

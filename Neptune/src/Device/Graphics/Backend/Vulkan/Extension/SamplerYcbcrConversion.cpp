@@ -26,14 +26,7 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        if (std::invoke(filter, m_SamplerYcbcrConversionFeatures.sType))
-        {
-            *pNext = &m_SamplerYcbcrConversionFeatures;
-
-            pNext  = &m_SamplerYcbcrConversionFeatures.pNext;
-
-            *pNext = nullptr;
-        }
+        LinkToChain(pNext, filter, m_SamplerYcbcrConversionFeatures);
     }
     
     bool SamplerYcbcrConversion::IsFeaturesSatisfied()

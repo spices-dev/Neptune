@@ -26,14 +26,7 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        if (std::invoke(filter, m_DynamicRenderingLocalReadFeatures.sType))
-        {
-            *pNext = &m_DynamicRenderingLocalReadFeatures;
-
-            pNext  = &m_DynamicRenderingLocalReadFeatures.pNext;
-
-            *pNext = nullptr;
-        }
+        LinkToChain(pNext, filter, m_DynamicRenderingLocalReadFeatures);
     }
     
     bool DynamicRenderingLocalRead::IsFeaturesSatisfied()
