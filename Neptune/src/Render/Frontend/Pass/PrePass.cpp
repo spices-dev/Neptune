@@ -60,7 +60,7 @@ namespace Neptune::Render {
 			view.view   = glm::inverse(model);
 			view.inView = model;
 			
-			return true;
+			return false;
 		});
 		
 		m_DescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(0, 0, &view);

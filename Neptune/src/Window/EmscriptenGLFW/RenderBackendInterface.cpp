@@ -36,7 +36,7 @@ namespace Neptune::EmscriptenGLFW {
 			
 			default:
 			{
-				NEPTUNE_CORE_CRITICAL("Not supported RenderBackend in Emscripten GLFW Configuration.")
+				NEPTUNE_LOG_CORE(C) << "Not supported RenderBackend in Emscripten GLFW Configuration.";
 				return nullptr;
 			}
 		}

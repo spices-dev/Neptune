@@ -57,7 +57,7 @@ namespace Neptune::WebGL {
 
         switch(e)
 		{
-			default:                          NEPTUNE_CORE_ERROR("WebGL do not support this RHI.")          return nullptr;
+			default:                          NEPTUNE_LOG_CORE(E) << "WebGL do not support this RHI.";          return nullptr;
 		}
 	}
 

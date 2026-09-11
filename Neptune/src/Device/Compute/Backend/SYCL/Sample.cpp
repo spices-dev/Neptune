@@ -12,10 +12,7 @@ namespace Neptune::SYCL {
     {
         cl::sycl::queue q;
 
-        std::stringstream ss;
-        ss << "SYCL Device: " << q.get_device().get_info<cl::sycl::info::device::name>();
-		
-        NEPTUNE_CORE_INFO(ss.str())
+        NEPTUNE_LOG_CORE(I) << "SYCL Device: " << q.get_device().get_info<cl::sycl::info::device::name>();
     }
 	
 }

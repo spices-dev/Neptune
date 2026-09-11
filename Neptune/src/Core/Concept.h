@@ -125,4 +125,12 @@ namespace Neptune {
     */
     template<typename T>
     using RemoveRef = std::remove_reference_t<T>;
+    
+    /**
+    * @brief Using: Decay.
+    * 
+    * @tparam T .
+    */
+    template<typename T>
+    using Decay = std::decay_t<T>;
 }

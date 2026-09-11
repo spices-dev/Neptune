@@ -6,6 +6,7 @@
 
 #pragma once
 #include "Core/Core.h"
+#include "Core/Concept.h"
 #include "Attribute.h"
 #include "Header/Core.h"
 
@@ -13,7 +14,8 @@ namespace Neptune::SOP {
 	
 #define Update_Attribute(item)                                                   \
 	{                                                                            \
-		uint64_t size = item.host->size() * sizeof(decltype(item)::T_);          \
+		using Item = Decay<decltype(item)>;                                      \
+		uint64_t size = item.host->size() * sizeof(typename Item::T_);           \
 		item.device->CreateBuffer(size);                                         \
 		item.device->WriteToBuffer(item.host->data(), size);                     \
 		item.device->Flush(size);                                                \
@@ -23,7 +25,8 @@ namespace Neptune::SOP {
 	
 #define Update_Desc(item)                                                        \
 	{                                                                            \
-		uint64_t size = item.host->size() * sizeof(decltype(item)::T_);          \
+		using Item = Decay<decltype(item)>;                                      \
+		uint64_t size = item.host->size() * sizeof(typename Item::T_);           \
 		item.device->CreateBuffer(size);                                         \
 		item.device->WriteToBuffer(item.host->data(), size);                     \
 		item.device->Flush(size);                                                \

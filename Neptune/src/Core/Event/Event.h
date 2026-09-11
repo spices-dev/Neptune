@@ -92,7 +92,7 @@ namespace Detail {
     * @brief Defines Event category.
     */
     #define EVENT_CLASS_CATEGORY(...)                                                   \
-	virtual Container::BitSet<EventCategory> GetCategoryFlags() const override          \
+	virtual const Container::BitSet<EventCategory>& GetCategoryFlags() const override   \
     {                                                                                   \
         using enum EventCategory;                                                       \
                                                                                         \
@@ -138,10 +138,10 @@ namespace Detail {
         /**
         * @brief Event Information Function, must be implemented by EVENT_CLASS_TYPE and EVENT_CLASS_CATEGORY.
         */
-        virtual EventType                          GetEventType()           const = 0;
-        virtual const std::string                  GetName()                const = 0;
-        virtual Container::BitSet<EventCategory>   GetCategoryFlags()       const = 0;
-        virtual std::string                        ToString()               const { return GetName(); }
+        virtual EventType                                 GetEventType()           const = 0;
+        virtual const std::string                         GetName()                const = 0;
+        virtual const Container::BitSet<EventCategory>&   GetCategoryFlags()       const = 0;
+        virtual std::string                               ToString()               const { return GetName(); }
 
         /**
         * @brief Judgment if a given category is contained by this event class.

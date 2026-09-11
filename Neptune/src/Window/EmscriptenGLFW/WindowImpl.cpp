@@ -29,7 +29,7 @@ namespace Neptune::EmscriptenGLFW {
         // Initialize the library
         if(!glfwInit()) 
         {
-            NEPTUNE_CORE_CRITICAL("Emscripten GLFW Init Failed.")
+            NEPTUNE_LOG_CORE(C) << "Emscripten GLFW Init Failed.";
         }
 
         // Set Hint
@@ -53,7 +53,7 @@ namespace Neptune::EmscriptenGLFW {
         m_Windows = glfwCreateWindow(initInfo.width, initInfo.height, initInfo.name.c_str(), nullptr, nullptr);
         if(!m_Windows) 
         {
-            NEPTUNE_CORE_CRITICAL("Window Create Failed.")
+            NEPTUNE_LOG_CORE(C) << "Window Create Failed.";
         }
 
         // Load APIs.
@@ -131,15 +131,12 @@ namespace Neptune::EmscriptenGLFW {
         NEPTUNE_PROFILE_ZONE
 
         // print the version on the console
-        NEPTUNE_CORE_INFO(glfwGetVersionString())
+        NEPTUNE_LOG_CORE(I) << glfwGetVersionString();
 
         // Error event Callback.
         glfwSetErrorCallback([](int error, const char* description){
 
-            std::stringstream ss;
-            ss << "glfwError: " << error << " | " << description;
-
-            NEPTUNE_CORE_ERROR(ss.str())
+            NEPTUNE_LOG_CORE(E) << "glfwError: " << error << " | " << description;
         });
 
         // Framebuffer resize event Callback, not in use.

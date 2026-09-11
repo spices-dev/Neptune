@@ -60,10 +60,7 @@ namespace Neptune::WebGPU {
             default:                                      label = "Unknown";
         }
 
-        std::stringstream ss;
-        ss << "WebGPU DeviceLost: [ " << label << " ]: " << message.data;
-
-        NEPTUNE_CORE_ERROR(ss.str())
+        NEPTUNE_LOG_CORE(E) << "WebGPU DeviceLost: [ " << label << " ]: " << message.data;
 	}
 
 	void UncapturedErrorCallback(WGPUDevice const*, WGPUErrorType type, WGPUStringView message, void*, void*)
@@ -85,10 +82,7 @@ namespace Neptune::WebGPU {
             default:                        label = "Unknown";
         }
 
-        std::stringstream ss;
-        ss << "WebGPU UncapturedError: [ " << label << " ]: " << message.data;
-
-        NEPTUNE_CORE_ERROR(ss.str())
+		NEPTUNE_LOG_CORE(E) << "WebGPU UncapturedError: [ " << label << " ]: " << message.data;
 	}
 
 	void HandleResult(WGPUStatus result)
@@ -104,10 +98,7 @@ namespace Neptune::WebGPU {
 			default:                                                     label = "Unknown Error";                       break;
 		}
 
-		std::stringstream ss;
-		ss << "WebGPU Error: [ " << label << " ]";
-
-        NEPTUNE_CORE_ERROR(ss.str())
+        NEPTUNE_LOG_CORE(E) << "WebGPU Error: [ " << label << " ]";
 	}
 
 	void HandleWaitResult(WGPUWaitStatus result)
@@ -124,10 +115,7 @@ namespace Neptune::WebGPU {
 			default:                                                     label = "Unknown Error";                       break;
 		}
 
-		std::stringstream ss;
-		ss << "WebGPU Error: [ " << label << " ]";
-
-        NEPTUNE_CORE_ERROR(ss.str())
+		NEPTUNE_LOG_CORE(E) << "WebGPU Error: [ " << label << " ]";
 	}
 }
 

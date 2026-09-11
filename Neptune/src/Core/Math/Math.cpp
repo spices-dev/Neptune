@@ -97,7 +97,7 @@ namespace Neptune {
             rotation.z = 0;
         }
 
-        return false;
+        return true;
     }
 
     glm::mat4 PerspectiveMatrix(float fov, float nearPlane, float farPlane, float aspectRatio)

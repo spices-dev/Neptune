@@ -17,6 +17,15 @@ namespace Neptune::Tool {
     {
         NEPTUNE_PROFILE_ZONE
         
+        std::error_code ec;
+		
+        if (!std::filesystem::exists(file, ec)) {
+			
+            NEPTUNE_LOG_CORE(E) << "File: [ " << file << " ] do not exist.";
+			
+            return false;
+        }
+        
         std::ifstream stream(file, std::ios::binary);
 
         stream.seekg(0, std::ios::end);
@@ -24,7 +33,17 @@ namespace Neptune::Tool {
         stream.seekg(0, std::ios::beg);
 
         tinyply::PlyFile splat;
-        splat.parse_header(stream);
+        
+        try
+        {
+            splat.parse_header(stream);
+        }
+        catch (const std::exception & e)
+        {
+            NEPTUNE_LOG_CORE(E) << "tinyply parse_header: " << e.what();
+            
+            return false;
+        }
 
         SP<tinyply::PlyData> p, n, opacity, scale, rot, f_dc, f_rest;
 

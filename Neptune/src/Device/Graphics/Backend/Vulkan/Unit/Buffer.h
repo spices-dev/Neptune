@@ -117,9 +117,9 @@ namespace Neptune::Vulkan::Unit {
 		};
 
 		std::variant<std::monostate, vkAlloc, vmaAlloc> m_Alloc{ std::monostate{} };   // @brief Alloc data.
-		VkDeviceAddress       m_Address;                                               // @brief Buffer Device Address.
-		VkDeviceSize          m_Size;                                                  // @brief Buffer Size.
-		VkMemoryPropertyFlags m_Flags;                                                 // @brief Buffer Memory Flags.
+		VkDeviceAddress       m_Address = 0;                                           // @brief Buffer Device Address.
+		VkDeviceSize          m_Size    = 0;                                           // @brief Buffer Size.
+		VkMemoryPropertyFlags m_Flags   = 0;                                           // @brief Buffer Memory Flags.
 	};
 }
 

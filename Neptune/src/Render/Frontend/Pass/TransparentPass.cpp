@@ -128,10 +128,10 @@ namespace Neptune::Render {
 			if (auto p = std::dynamic_pointer_cast<SOP::GS3D>(component.GetModel()))
 			{
 				item = p;
-				return true;
+				return false;
 			}
 			
-			return false;
+			return true;
 		});
 
 		if (!item) return;

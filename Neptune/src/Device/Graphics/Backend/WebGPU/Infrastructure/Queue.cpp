@@ -46,11 +46,11 @@ namespace Neptune::WebGPU {
         ) {
             if (status == WGPUQueueWorkDoneStatus_CallbackCancelled)
             {
-                NEPTUNE_CORE_INFO("Queue::OnSubmittedWorkDone::CallbackCancelled")
+                NEPTUNE_LOG_CORE(I) << "Queue::OnSubmittedWorkDone::CallbackCancelled";
             }
             else if (status == WGPUQueueWorkDoneStatus_Error)
             {
-                NEPTUNE_CORE_ERROR("Queue::OnSubmittedWorkDone::Error")
+                NEPTUNE_LOG_CORE(I) << "Queue::OnSubmittedWorkDone::Error";
             }
         };
 

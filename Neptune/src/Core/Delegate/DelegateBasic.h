@@ -43,84 +43,81 @@ namespace Neptune {
 		* 
 		* @param[in] func Function pointer.
 		* 
-		* @return Returns true if bind successfully.
+		* @return Returns Agent Handle.
 		*/
-		bool Bind(const Agent& func);
+		template<typename Fn>
+		uint64_t Bind(Fn&& func);
 
 		/**
 		* @brief UnBind Function pointer from delegate.
 		* 
-		* @param[in] func Function pointer.
+		* @param[in] handle Agent Handle.
 		* 
 		* @return Returns true if unbind successfully.
 		*/
-		bool UnBind(const Agent& func);
+		bool UnBind(uint64_t handle);
 
 		/**
 		* @brief Get size of Agents.
 		* 
 		* @return Returns the size of Agents.
 		*/
-		size_t Size() const { return m_Agents->size(); }
+		size_t Size() const { return m_Agents->Size(); }
 
 		/**
 		* @brief Determine if this Delegate is empty;
 		* 
 		* @return Returns true if empty.
 		*/
-		bool Empty() const { return m_Agents->size() == 0; }
+		bool Empty() const { return m_Agents->Size() == 0; }
 
 		/**
 		* @brief Execute all function pointer. 
 		* 
 		* @param[in] args .
 		*/
-		void Broadcast(Args&&... args);
+		template<typename... Args1>
+		void Broadcast(Args1&&... args);
 
 	private:
 		
 		SP<Container::LinkedUnorderedMap<uint64_t, Agent>> m_Agents = CreateSP<Container::LinkedUnorderedMap<uint64_t, Agent>>();  // @brief Map of Agent Function Pointer.
+		SP<std::atomic_uint64_t> m_Handle = CreateSP<std::atomic_uint64_t>(0);   // @brief Current Bind Handle.
 	};
 
 	template<typename ...Args>
-	inline bool Delegate_Basic<Args...>::Bind(const Agent& func)
+	template<typename Fn>
+	inline uint64_t Delegate_Basic<Args...>::Bind(Fn&& func)
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		auto addr = reinterpret_cast<const uint64_t*>(&func);
-		
-		if (m_Agents->Contains(*addr))
-		{
-			NEPTUNE_LOG_CORE(W) << "Agent Function binding repeatedly.";
-			
-			return false;
-		}
-		
-		m_Agents->PushBack(*addr, func);
+		auto& handle = *m_Handle;
 
-		return true;
+		m_Agents->PushBack(handle, func);
+		
+		return handle++;
 	}
 
 	template<typename ...Args>
-	inline bool Delegate_Basic<Args...>::UnBind(const Agent& func)
+	inline bool Delegate_Basic<Args...>::UnBind(uint64_t handle)
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		auto addr = reinterpret_cast<const uint64_t*>(&func);
-		if (!m_Agents->Contains(*addr))
+		if (!m_Agents->Contains(handle))
 		{
 			NEPTUNE_LOG_CORE(W) << "Agent Function not bound yet.";
 			
 			return false;
 		}
 		
-		m_Agents->Erase(*addr);
+		m_Agents->Erase(handle);
 
 		return true;
 	}
 
 	template<typename ...Args>
-	inline void Delegate_Basic<Args...>::Broadcast(Args&&... args)
+	template<typename... Args1>
+	inline void Delegate_Basic<Args...>::Broadcast(Args1&&... args)
 	{
 		NEPTUNE_PROFILE_ZONE
 

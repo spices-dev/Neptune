@@ -50,7 +50,7 @@ namespace Neptune::WebGPU::Unit {
             	return;
             }
         	
-        	NEPTUNE_CORE_ERROR(message.data)
+        	NEPTUNE_LOG_CORE(E) << message.data;
         };
 
         WGPURequestDeviceCallbackInfo               info{};

@@ -27,8 +27,7 @@ module.Initialize = function()
 
 		-- MSVC Specific Solution build options
 		buildoptions 
-		{ 
-			"/wd4838",                                     -- Disable Warning: 4838
+		{
 			"/utf-8",                                      -- Using utf-8 encode
 		}
 
@@ -44,7 +43,6 @@ module.Initialize = function()
 		-- GCC Specific Solution build options
 		buildoptions 
 		{ 
-			"-Wno-narrowing",                              -- Disable Warning: 4838
 			"-fpch-preprocess",                            -- GCC pch flags
 		}
 
@@ -59,8 +57,7 @@ module.Initialize = function()
 
 		-- Clang Specific Solution build options
 		buildoptions 
-		{ 
-			"-Wno-narrowing",                             -- Disable Warning: 4838
+		{
 		}
 
 	-- Configuration: Emcc Em++
@@ -74,8 +71,7 @@ module.Initialize = function()
 
 		-- Emcc Specific Solution build options
 		buildoptions 
-		{ 
-			"-Wno-narrowing",                             -- Disable Warning: 4838
+		{
 			"-pthread",                                   -- Enable pthread
 			"-matomics",                                  -- Enable atomics
     		"-mbulk-memory",                              -- Enable bulk-memory

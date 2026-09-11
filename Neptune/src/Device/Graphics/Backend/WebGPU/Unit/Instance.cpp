@@ -31,7 +31,7 @@ namespace Neptune::WebGPU::Unit {
 
 		if (!m_Handle)
         {
-            NEPTUNE_CORE_INFO("WGPUInstance created failed.")
+            NEPTUNE_LOG_CORE(I) << "WGPUInstance created failed.";
         }
 	}
 }
