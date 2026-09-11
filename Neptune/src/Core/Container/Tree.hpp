@@ -27,9 +27,7 @@ namespace Neptune::Container {
         /**
         * @brief Constructor Function.
         */
-        Tree()
-            : m_Data{}
-        {}
+        Tree() : m_Data{} {}
         
         /**
         * @brief Constructor Function.
@@ -58,7 +56,7 @@ namespace Neptune::Container {
         {
             std::unique_lock lock(m_Mutex);
             
-            m_Child.push_back(std::make_unique<Tree>(std::in_place, std::forward<Args>(args)...));
+            m_Child.push_back(CreateUP<Tree>(std::in_place, std::forward<Args>(args)...));
 
             return m_Child.back().get();
         }
@@ -161,7 +159,7 @@ namespace Neptune::Container {
 
     private:
         
-        std::vector<std::unique_ptr<Tree>> m_Child {};  // @brief Children node.
+        std::vector<UP<Tree>> m_Child {};               // @brief Children node.
         T m_Data;                                       // @brief This node stored data.
         mutable std::shared_mutex m_Mutex;              // @brief Mutex.
 

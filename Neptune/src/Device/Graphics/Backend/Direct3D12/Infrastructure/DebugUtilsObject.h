@@ -131,7 +131,7 @@ namespace Neptune::Direct3D12 {
 			{ h.SetName(name) } -> std::convertible_to<HRESULT>;
 		})
 		{
-			DIRECT3D12_CHECK(unit.GetHandle()->SetName(StringLibrary::CharToWChar(caption.c_str()).c_str()))
+			DIRECT3D12_CHECK(unit.GetHandle()->SetName(Library::CharToWChar(caption.c_str()).c_str()))
 		}
 	}
 	

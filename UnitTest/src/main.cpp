@@ -12,9 +12,7 @@
 #endif
 
 #include "Instrumentor.h"
-
-#include "Core/Container/BitSetTest.h"
-#include "Core/Container/TreeTest.h"
+#include "Core/CoreTest.h"
 
 #include "Device/Compute/Backend/SYCL/SYCLTest.h"
 #include "Device/Graphics/Backend/Common/CommonTest.h"
@@ -55,6 +53,6 @@ int main(int argc, char** argv)
     }
 
     Neptune::Log::Reset();
-    
+
     return EXIT_SUCCESS;
 }

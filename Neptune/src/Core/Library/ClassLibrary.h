@@ -7,7 +7,7 @@
 #pragma once
 #include "Core/Core.h"
 
-namespace Neptune::ClassLibrary {
+namespace Neptune::Library {
 
     /**
     * @brief Using ClassType instead std::reference_wrapper<const std::type_info>.

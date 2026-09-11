@@ -17,11 +17,15 @@ namespace Neptune::Container {
 	class Vector
 	{
 	public:
+		
+		static const T null;
+		
+	public:
 
 		/**
 		* @brief Constructor Function.
 		*/
-		Vector();
+		Vector() = default;
 
 		/**
 		* @brief Destructor Function.
@@ -33,14 +37,7 @@ namespace Neptune::Container {
 		* 
 		* @return Return vector Begin Pointer.
 		*/
-		T* Begin() const { return m_Begin; }
-
-		/**
-		* @brief Get vector End Pointer.
-		* 
-		* @return Return vector End Pointer.
-		*/
-		T* End() const { return m_End; }
+		const T* Begin() const { return m_Begin; }
 
 		/**
 		* @brief Get vector size.
@@ -70,25 +67,19 @@ namespace Neptune::Container {
 		* 
 		* @return Returns element.
 		*/
-		T& Get(size_t index);
+		const T& Get(size_t index);
 
 	private:
 		
-		T* m_Begin;              // @brief Vector Begin Pointer.
-		T* m_End;                // @brief Vector End Pointer.
-		size_t m_UseCount;       // @brief vector used size.
-		size_t m_SpareCount;     // @brief vector spare count.
-		size_t m_ExpandRate;     // @brief Vector expand rate.
+		T* m_Begin          = nullptr;      // @brief Vector Begin Pointer.
+		T* m_End            = nullptr;      // @brief Vector End Pointer.
+		size_t m_UseCount   = 0;            // @brief vector used size.
+		size_t m_SpareCount = 0;            // @brief vector spare count.
+		size_t m_ExpandRate = 2;            // @brief Vector expand rate.
 	};
 
 	template<typename T>
-	inline Vector<T>::Vector()
-		: m_Begin(nullptr)
-		, m_End(nullptr)
-		, m_UseCount(0)
-		, m_SpareCount(0)
-		, m_ExpandRate(2)
-	{}
+	const T Vector<T>::null = {};
 
 	template<typename T>
 	inline Vector<T>::~Vector()
@@ -148,9 +139,9 @@ namespace Neptune::Container {
 	}
 
 	template<typename T>
-	inline T& Vector<T>::Get(size_t index)
+	inline const T& Vector<T>::Get(size_t index)
 	{
-		assert(index < m_UseCount);
+		if (m_UseCount <= index) return null;
 
 		return *(reinterpret_cast<T*>(reinterpret_cast<char*>(m_Begin) + sizeof(T) * index));
 	}

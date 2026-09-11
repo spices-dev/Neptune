@@ -8,6 +8,8 @@
 #include "Core/Core.h"
 #include "Core/Container/MemoryBuffer.h"
 
+#include <filesystem>
+
 namespace Neptune::SOP {
 	
 	/**
@@ -35,7 +37,7 @@ namespace Neptune::SOP {
 		* 
 		* @return Returns true if load data successfully.
 		*/
-		static bool Load(MemoryBuffer& memory, class Object* obj);
+		static bool Load(Container::MemoryBuffer& memory, class Object* obj);
 		
 	private:
 

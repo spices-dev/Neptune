@@ -57,16 +57,36 @@ namespace Neptune::Vulkan {
 		m_Context->Registry<IPhysicalDevice>();
 		m_Context->Registry<IDevice>();
 
-		m_Context->Registry<IPresentQueue>();
-		m_Context->Registry<IGraphicQueue>();
-		m_Context->Registry<IComputeQueue>();
-
-		m_Context->Registry<IGraphicThreadQueue>();
-		m_Context->Registry<IComputeThreadQueue>();
-		m_Context->Registry<ITransferThreadQueue>();
-		m_Context->Registry<IVideoDecodeThreadQueue>();
-		m_Context->Registry<IVideoEncodeThreadQueue>();
-		m_Context->Registry<IOpticalFlowThreadQueue>();
+		if (m_Context->Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->HasPresentQueueFamily())
+		{
+			m_Context->Registry<IPresentQueue>();
+		}
+		if (m_Context->Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->HasQueueFamily(VK_QUEUE_GRAPHICS_BIT))
+		{
+			m_Context->Registry<IGraphicQueue>();
+			m_Context->Registry<IGraphicThreadQueue>();
+		}
+		if (m_Context->Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->HasQueueFamily(VK_QUEUE_COMPUTE_BIT))
+		{
+			m_Context->Registry<IComputeQueue>();
+			m_Context->Registry<IComputeThreadQueue>();
+		}
+		if (m_Context->Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->HasQueueFamily(VK_QUEUE_TRANSFER_BIT))
+		{
+			m_Context->Registry<ITransferThreadQueue>();
+		}
+		if (m_Context->Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->HasQueueFamily(VK_QUEUE_VIDEO_DECODE_BIT_KHR))
+		{
+			m_Context->Registry<IVideoDecodeThreadQueue>();
+		}
+		if (m_Context->Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->HasQueueFamily(VK_QUEUE_VIDEO_ENCODE_BIT_KHR))
+		{
+			m_Context->Registry<IVideoEncodeThreadQueue>();
+		}
+		if (m_Context->Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->HasQueueFamily(VK_QUEUE_OPTICAL_FLOW_BIT_NV))
+		{
+			m_Context->Registry<IOpticalFlowThreadQueue>();
+		}
 		
 		m_Context->Registry<IMemoryAllocator>();
 					  

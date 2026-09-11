@@ -56,7 +56,7 @@ namespace Neptune::Direct3D11 {
     	adapter.GetHandle()->GetDesc3(&desc);
     	
     	std::stringstream ss;
-    	ss << "D3D11 Device Selected: " << StringLibrary::WCharToChar(desc.Description);
+    	ss << "D3D11 Device Selected: " << Library::WCharToChar(desc.Description);
     	
     	NEPTUNE_LOG_CORE(I) << ss.str();
     }

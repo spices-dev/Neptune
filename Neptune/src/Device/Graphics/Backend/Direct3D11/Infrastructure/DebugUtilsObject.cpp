@@ -30,7 +30,7 @@ namespace Neptune::Direct3D11 {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		m_UserDefinedAnnotation.GetHandle()->BeginEvent(StringLibrary::CharToWChar(caption.c_str()).c_str());
+		m_UserDefinedAnnotation.GetHandle()->BeginEvent(Library::CharToWChar(caption.c_str()).c_str());
 	}
 
 	void DebugUtilsObject::EndLabel() const
@@ -44,7 +44,7 @@ namespace Neptune::Direct3D11 {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		m_UserDefinedAnnotation.GetHandle()->SetMarker(StringLibrary::CharToWChar(caption.c_str()).c_str());
+		m_UserDefinedAnnotation.GetHandle()->SetMarker(Library::CharToWChar(caption.c_str()).c_str());
 	}
 	
 }

@@ -8,9 +8,7 @@
 #include "ClassLibrary.h"
 #include "StringLibrary.h"
 
-namespace Neptune::ClassLibrary {
-
-using namespace StringLibrary;
+namespace Neptune::Library {
 
     std::string GetClassString(ClassType t)
     {

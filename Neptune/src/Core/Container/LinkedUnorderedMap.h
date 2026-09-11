@@ -24,6 +24,11 @@ namespace Neptune::Container {
 	class LinkedUnorderedMap
 	{
 	public:
+		
+		static const K kNull;
+		static const V vNull;
+
+	public:
 
 		/**
 		* @brief Constructor Function.
@@ -45,7 +50,7 @@ namespace Neptune::Container {
 		* 
 		* @return Returns the size of the container.
 		*/
-		size_t Size() const;
+		size_t Size() const { return m_Size.load(); }
 
 		/**
 		* @brief Add an element to this container.
@@ -62,7 +67,7 @@ namespace Neptune::Container {
 		* 
 		* @return Returns the value that founded.
 		*/
-		V& At(const K& key);
+		const V& At(const K& key) const;
 
 		/**
 		* @brief Determine whether the key is in the container.
@@ -86,7 +91,7 @@ namespace Neptune::Container {
 		* @param[in] fn The function of how to iter the container.
 		*/
 		template<typename F>
-		void ForEach(F&& fn);
+		void ForEach(F&& fn) const;
 		
 		/**
 		* @brief Get the previous element by the key.
@@ -97,7 +102,7 @@ namespace Neptune::Container {
 		* 
 		* @note It's slow, so do not use it unnecessary. 
 		*/
-		V& Prev(const K& key);
+		const V& Prev(const K& key) const;
 
 		/**
 		* @brief Get the next element by the key.
@@ -108,28 +113,28 @@ namespace Neptune::Container {
 		* 
 		* @note It's slow, so do not use it unnecessary. 
 		*/
-		V& Next(const K& key);
+		const V& Next(const K& key) const;
 
 		/**
 		* @brief Get the first element of this container.
 		* 
 		* @return Returns the first element found.
 		*/
-		V& Begin();
+		const V& Begin() const;
 
 		/**
 		* @brief Get the end element of this container.
 		* 
 		* @return Returns the end element found.
 		*/
-		V& End();
+		const V& End() const;
 
 		/**
 		* @brief Get the end key of this container.
 		* 
 		* @return Returns the end key found.
 		*/
-		const K& EndK();
+		const K& EndK() const;
 		
 	private:
 		
@@ -140,6 +145,12 @@ namespace Neptune::Container {
 	};
 
 	template<typename K, typename V>
+	const K LinkedUnorderedMap<K, V>::kNull = {};
+
+	template<typename K, typename V>
+	const V LinkedUnorderedMap<K, V>::vNull = {};
+
+	template<typename K, typename V>
 	inline void LinkedUnorderedMap<K, V>::Clear()
 	{
 		std::unique_lock lock(m_Mutex);
@@ -147,12 +158,6 @@ namespace Neptune::Container {
 		m_Keys.clear();
 		m_Map.clear();
 		m_Size = 0;
-	}
-
-	template<typename K, typename V>
-	inline size_t LinkedUnorderedMap<K, V>::Size() const
-	{
-		return m_Size.load();
 	}
 
 	template<typename K, typename V>
@@ -173,18 +178,13 @@ namespace Neptune::Container {
 	}
 
 	template<typename K, typename V>
-	inline V& LinkedUnorderedMap<K, V>::At(const K& key)
+	inline const V& LinkedUnorderedMap<K, V>::At(const K& key) const
 	{
-		auto hasKey = Contains(key);
+		if (!Contains(key)) return vNull;
 
 		std::shared_lock lock(m_Mutex);
 
-		if (hasKey)
-		{
-			return m_Map[key];
-		}
-
-		return {};
+		return m_Map.at(key);
 	}
 
 	template<typename K, typename V>
@@ -200,21 +200,18 @@ namespace Neptune::Container {
 	{
 		std::unique_lock lock(m_Mutex);
 
-		auto it = m_Map.find(key);
+		if (!m_Map.contains(key)) return;
 		
-		if (it != m_Map.end())
-		{
-			m_Keys.remove(key);
-			
-			m_Map.erase(it);
+		m_Keys.remove(key);
+		
+		m_Map.erase(m_Map.find(key));
 
-			--m_Size;
-		}
+		--m_Size;
 	}
 
 	template<typename K, typename V>
 	template<typename F>
-	inline void LinkedUnorderedMap<K, V>::ForEach(F&& fn)
+	inline void LinkedUnorderedMap<K, V>::ForEach(F&& fn) const
 	{
 		std::shared_lock lock(m_Mutex);
 
@@ -228,76 +225,76 @@ namespace Neptune::Container {
 			* 
 			* @return Retunrs True if want break this for loop.
 			*/
-			if(std::invoke(std::forward<F>(fn), key, m_Map[key])) break;
+			if(std::invoke(std::forward<F>(fn), key, m_Map.at(key))) break;
 		}
 	}
 
 	template<typename K, typename V>
-	inline V& LinkedUnorderedMap<K, V>::Prev(const K& key)
+	inline const V& LinkedUnorderedMap<K, V>::Prev(const K& key) const
 	{
-		if (!Contains(key)) return {};
+		if (!Contains(key)) return vNull;
 
 		std::shared_lock lock(m_Mutex);
 		
-		if (key == m_Keys.front()) return {};
+		if (key == m_Keys.front()) return vNull;
 		
 		for (auto it = m_Keys.begin(); it != m_Keys.end(); ++it)
 		{
 			if (*it == key)
 			{
-				return (*std::prev(it));
+				return m_Map.at(*std::prev(it));
 			}
 		}
 
-		return {};
+		return vNull;
 	}
 
 	template<typename K, typename V>
-	inline V& LinkedUnorderedMap<K, V>::Next(const K& key)
+	inline const V& LinkedUnorderedMap<K, V>::Next(const K& key) const
 	{
-		if (!Contains(key)) return {};
+		if (!Contains(key)) return vNull;
 
 		std::shared_lock lock(m_Mutex);
 		
-		if (key == m_Keys.back()) return {};
+		if (key == m_Keys.back()) return vNull;
 		
 		for (auto it = m_Keys.begin(); it != m_Keys.end(); ++it)
 		{
 			if (*it == key)
 			{
-				return (*std::next(it));
+				return m_Map.at(*std::next(it));
 			}
 		}
 
-		return {};
+		return vNull;
 	}
 
 	template<typename K, typename V>
-	V& LinkedUnorderedMap<K, V>::Begin()
+	const V& LinkedUnorderedMap<K, V>::Begin() const
 	{
 		std::shared_lock lock(m_Mutex);
 
-		if (Size() == 0) return {};
+		if (Size() == 0) return vNull;
 
-		return m_Map[m_Keys.front()];
+		return m_Map.at(m_Keys.front());
 	}
 
 	template<typename K, typename V>
-	V& LinkedUnorderedMap<K, V>::End()
+	const V& LinkedUnorderedMap<K, V>::End() const
 	{
 		std::shared_lock lock(m_Mutex);
 
-		if (Size() == 0) return {};
+		if (Size() == 0) return vNull;
 
-		return m_Map[m_Keys.back()];
+		return m_Map.at(m_Keys.back());
 	}
 
 	template<typename K, typename V>
-	const K& LinkedUnorderedMap<K, V>::EndK()
+	const K& LinkedUnorderedMap<K, V>::EndK() const
 	{
 		std::shared_lock lock(m_Mutex);
 
-		if (Size() == 0) return {};
+		if (Size() == 0) return kNull;
 
 		return m_Keys.back();
 	}

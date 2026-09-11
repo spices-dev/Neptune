@@ -10,8 +10,16 @@
 #include <Core/Container/BitSet.hpp>
 #include <gmock/gmock.h>
 
-namespace Neptune::Test {
+namespace Neptune::Container::Test {
 
+	namespace detail {
+		
+		enum class EBitSetTest : uint8_t
+		{
+			Count
+		};
+	}
+	
 	/**
 	* @brief Unit Test for BitSet
 	*/
@@ -20,23 +28,22 @@ namespace Neptune::Test {
 	protected:
 
 		/**
-		* @brief The interface is inherited from testing::Test.
-		* Registry on Initialize.
+		* @brief Interface on Initialize.
 		*/
 		void SetUp() override {}
 
 		/**
-		* @brief Testing class TearDown function.
+		* @brief Interface on Shutdown.
 		*/
 		void TearDown() override {}
 
 	protected:
 
-		//BitSet<int> m_BitSet;
+		BitSet<detail::EBitSetTest> m_BitSet;
 	};
 
 	/**
-	* @brief Testing BitSetTest Class.
+	* @brief Testing All.
 	*/
 	TEST(BitSetTest, All) {
 

@@ -7,7 +7,7 @@
 #pragma once
 #include "Core/Core.h"
 
-namespace Neptune::StringLibrary {
+namespace Neptune::Library {
 
     /**
     * @brief Split a string to a string vector container use a char.
@@ -28,16 +28,6 @@ namespace Neptune::StringLibrary {
     * @return Returns a string vector container.
     */
     std::vector<std::string> SplitKeepString(const std::string& input, char delimiter);
-
-    /**
-    * @brief If string equal.
-    * 
-    * @param[in] str0 First string.
-    * @param[in] str1 Second string.
-    * 
-    * @return Returns true if equal.
-    */
-    bool StringsEqual(const char* str0, const char* str1);
 
     /**
     * @brief Convert char to wchar.

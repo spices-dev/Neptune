@@ -10,7 +10,7 @@
 #include <Core/Container/SpinLock.hpp>
 #include <gmock/gmock.h>
 
-namespace Neptune::Test {
+namespace Neptune::Container::Test {
 
 	/**
 	* @brief Unit Test for SpinLock
@@ -20,23 +20,18 @@ namespace Neptune::Test {
 	protected:
 
 		/**
-		* @brief The interface is inherited from testing::Test.
-		* Registry on Initialize.
+		* @brief Interface on Initialize.
 		*/
 		void SetUp() override {}
 
 		/**
-		* @brief Testing class TearDown function.
+		* @brief Interface on Shutdown.
 		*/
 		void TearDown() override {}
-
-	protected:
-
-		//BitSet<int> m_BitSet;
 	};
 
 	/**
-	* @brief Testing SpinLockTest Class.
+	* @brief Testing All.
 	*/
 	TEST(SpinLockTest, All) {
 

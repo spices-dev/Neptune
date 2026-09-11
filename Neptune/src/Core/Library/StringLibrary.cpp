@@ -9,7 +9,7 @@
 
 #include <codecvt>
 
-namespace Neptune::StringLibrary {
+namespace Neptune::Library {
 
     std::vector<std::string> SplitString(const std::string& input, char delimiter)
     {
@@ -47,13 +47,6 @@ namespace Neptune::StringLibrary {
         result.push_back(input.substr(start));
 
         return result;
-    }
-
-    bool StringsEqual(const char* str0, const char* str1)
-    {
-        NEPTUNE_PROFILE_ZONE
-        
-        return strcmp(str0, str1) == 0;
     }
 
     std::wstring CharToWChar(const char* c)

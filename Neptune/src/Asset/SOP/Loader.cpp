@@ -86,7 +86,7 @@ namespace Neptune::SOP {
 		return false;
 	}
 
-	bool Loader::Load(MemoryBuffer& memory, Object* obj)
+	bool Loader::Load(Container::MemoryBuffer& memory, Object* obj)
 	{
 		NEPTUNE_PROFILE_ZONE
 		
