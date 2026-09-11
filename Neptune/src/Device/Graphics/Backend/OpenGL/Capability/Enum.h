@@ -67,7 +67,47 @@ namespace Neptune::OpenGL {
         
         switch (e)
         {
-            default:                              return "NonNamed";
+            case DirectStateAccess:                     return "DirectStateAccess";
+            case BufferStorage:                         return "BufferStorage";
+            case ComputeShader:                         return "ComputeShader";
+            case MultiDrawIndirect:                     return "MultiDrawIndirect";
+            case IndirectParameters:                    return "IndirectParameters";
+            case ShaderDrawParameters:                  return "ShaderDrawParameters";
+            case ShaderStorageBufferObject:             return "ShaderStorageBufferObject";
+            case BindlessTexture:                       return "BindlessTexture";
+            case Spirv:                                 return "Spirv";
+            case SeparateShaderObjects:                 return "SeparateShaderObjects";
+            case ParallelShaderCompile:                 return "ParallelShaderCompile";
+            case ClipControl:                           return "ClipControl";
+            case ConservativeRaster:                    return "ConservativeRaster";
+            case TextureView:                           return "TextureView";
+            case TextureBarrier:                        return "TextureBarrier";
+            case TextureFilterAnisotropic:              return "TextureFilterAnisotropic";
+            case SparseTexture:                         return "SparseTexture";
+            case MeshShader:                            return "MeshShader";
+            case ShadingRateImage:                      return "ShadingRateImage";
+            case ShaderSubGroup:                        return "ShaderSubGroup";
+            case ShaderGroupVote:                       return "ShaderGroupVote";
+            case ShaderInt64:                           return "ShaderInt64";
+            case FragmentShaderInterlock:               return "FragmentShaderInterlock";
+            case ShaderViewportLayerArray:              return "ShaderViewportLayerArray";
+            case MemoryObject:                          return "MemoryObject";
+            case Semaphore:                             return "Semaphore";
+            case Debug:                                 return "Debug";
+            case TimerQuery:                            return "TimerQuery";
+            case PipelineStatisticsQuery:               return "PipelineStatisticsQuery";
+            case GetProgramBinary:                      return "GetProgramBinary";
+            case Robustness:                            return "Robustness";
+            case ES32Compatibility:                     return "ES32Compatibility";
+            case FragmentShaderBarycentric:             return "FragmentShaderBarycentric";
+            case InvalidateSubdata:                     return "InvalidateSubdata";
+            case MultiBind:                             return "MultiBind";
+            case QueryBufferObject:                     return "QueryBufferObject";
+            case TimelineSemaphore:                     return "TimelineSemaphore";
+            case VertexAttribBinding:                   return "VertexAttribBinding";
+            case KeydMutex:                             return "KeydMutex";
+            case ViewportLayerArray:                    return "ViewportLayerArray";
+            default:                                    return "NonNamed";
         }
     }
 

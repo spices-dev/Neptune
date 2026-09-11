@@ -28,7 +28,7 @@ namespace Neptune::Vulkan {
     {
         NEPTUNE_PROFILE_ZONE
 
-        auto count = std::min(GetQueueFamilyCount(), NThreadQueue + 1);
+        uint32_t count = std::min(GetQueueFamilyCount(), NThreadQueue + 1);
 
         if (count == 1)
         {
@@ -43,7 +43,7 @@ namespace Neptune::Vulkan {
             return;
         }
         
-        for (int i = 1; i < count; ++i)
+        for (uint32_t i = 1; i < count; ++i)
         {
             auto queue = CreateSP<Resource::Queue>(GetContext());
 

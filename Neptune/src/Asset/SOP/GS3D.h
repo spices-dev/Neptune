@@ -99,7 +99,7 @@ namespace Neptune::SOP {
 		* 
 		* @return Returns Point Count.
 		*/
-		uint32_t GetPointCount() const { return m_Desc.positions.host->size(); }
+		uint32_t GetPointCount() const { return static_cast<uint32_t>(m_Desc.positions.host->size()); }
 		
 		/**
 		* @brief Get Desc Device Address.

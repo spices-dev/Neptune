@@ -54,7 +54,7 @@ namespace Neptune {
 		}
 
 		{
-			glm::quat rotationQuat = glm::quat(0.5, -0.5, -0.5, -0.5);
+			glm::quat rotationQuat = glm::quat(0.5f, -0.5f, -0.5f, -0.5f);
 			glm::mat4 matrix = glm::toMat4(rotationQuat);
 
 			glm::vec3 position;
@@ -67,7 +67,7 @@ namespace Neptune {
 		}
 
 		{
-			glm::quat rotationQuat({ -0.7898206, 0.613338, 0, 0 });
+			glm::quat rotationQuat({ -0.7898206f, 0.613338f, 0.0f, 0.0f });
 			glm::mat4 matrix = glm::toMat4(rotationQuat);
 
 			glm::vec3 position;

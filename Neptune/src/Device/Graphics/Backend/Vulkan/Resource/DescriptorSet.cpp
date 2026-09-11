@@ -73,7 +73,7 @@ namespace Neptune::Vulkan::Resource {
 		write.dstSet                    = m_DescriptorSet.GetHandle();
 		write.descriptorType            = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
 		write.pImageInfo                = imageInfos.data();
-		write.descriptorCount           = imageInfos.size();
+		write.descriptorCount           = static_cast<uint32_t>(imageInfos.size());
 
 		m_DescriptorSet.UpdateDescriptorSet(write);
 	}
@@ -106,10 +106,8 @@ namespace Neptune::Vulkan::Resource {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		for (int i = 0; i < m_Bindings.size(); ++i)
+		for (const auto& binding : m_Bindings | std::views::values)
 		{
-			const auto& binding = m_Bindings[i];
-
 			VkWriteDescriptorSet              write{};
 			write.sType                     = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
 			write.dstBinding                = binding.binding.binding;
@@ -125,7 +123,7 @@ namespace Neptune::Vulkan::Resource {
 				{
 					auto& imageInfos            = std::get<ImageBindingData>(binding.data).imageInfos;
 					write.pImageInfo            = imageInfos.data();
-					write.descriptorCount       = imageInfos.size();
+					write.descriptorCount       = static_cast<uint32_t>(imageInfos.size());
 					break;
 				}
 				case VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER:
@@ -151,11 +149,11 @@ namespace Neptune::Vulkan::Resource {
 		std::vector<VkDescriptorSetLayoutBinding> setBindings{};
 		std::vector<VkDescriptorBindingFlags> setBindingFlags{};
 
-		for (auto& data : m_Bindings | std::views::values)
+		for (const auto& binding : m_Bindings | std::views::values)
 		{
-			setBindings.emplace_back(data.binding);
+			setBindings.emplace_back(binding.binding);
 
-			switch (data.binding.descriptorType)
+			switch (binding.binding.descriptorType)
 			{
 			case VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT:
 				setBindingFlags.emplace_back(VK_DESCRIPTOR_BINDING_PARTIALLY_BOUND_BIT);
@@ -173,11 +171,11 @@ namespace Neptune::Vulkan::Resource {
 		bindingFlags.sType                                = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_BINDING_FLAGS_CREATE_INFO;
 		bindingFlags.pNext                                = nullptr;
 		bindingFlags.pBindingFlags                        = setBindingFlags.data();
-		bindingFlags.bindingCount                         = setBindingFlags.size();
+		bindingFlags.bindingCount                         = static_cast<uint32_t>(setBindingFlags.size());
 
 		VkDescriptorSetLayoutCreateInfo                     layoutCreateInfo{};
 		layoutCreateInfo.sType                            = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-		layoutCreateInfo.bindingCount                     = setBindings.size();
+		layoutCreateInfo.bindingCount                     = static_cast<uint32_t>(setBindings.size());
 		layoutCreateInfo.pBindings                        = setBindings.data();
 		layoutCreateInfo.flags                            = VK_DESCRIPTOR_SET_LAYOUT_CREATE_UPDATE_AFTER_BIND_POOL_BIT;
 		layoutCreateInfo.pNext                            = &bindingFlags;

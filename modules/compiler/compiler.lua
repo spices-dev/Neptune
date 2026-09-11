@@ -66,15 +66,42 @@ module.Initialize = function()
 		-- Emcc Specific Solution Macro Definitions.
 		defines 
 		{
-			"NP_COMPILER_EMCC",                           -- Compiler: Emcc.
+			"NP_COMPILER_EMCC",                            -- Compiler: Emcc.
 		}
 
 		-- Emcc Specific Solution build options
 		buildoptions 
 		{
-			"-pthread",                                   -- Enable pthread
-			"-matomics",                                  -- Enable atomics
-    		"-mbulk-memory",                              -- Enable bulk-memory
+			"-pthread",                                    -- Enable pthread
+			"-matomics",                                   -- Enable atomics
+    		"-mbulk-memory",                               -- Enable bulk-memory
+		}
+
+	filter {}
+
+end
+
+-- @brief Enable Compiler Warning flags.
+module.EnableMoreWarning = function()
+
+    -- Configuration: MSVC
+	filter { "toolset:msc*" }
+
+		-- MSVC Specific Solution build options
+		buildoptions 
+		{
+            "/W4",                                         -- Enable warn.
+			"/utf-8",                                      -- Using utf-8 encode
+		}
+
+	-- Configuration: Not MSVC
+	filter { "toolset:not msc*" }
+
+		-- Not MSVC Specific Solution build options
+		buildoptions 
+		{ 
+			"-Wall",                                       -- Enable warn.
+			"-Wextra",                                     -- Enable warn.
 		}
 
 	filter {}

@@ -40,7 +40,7 @@ namespace Neptune::OpenGL {
 		*
 		* @return Returns Buffer Size.
 		*/
-		const uint64_t& Size() const override { return 0; }
+		uint64_t Size() const override { return 0; }
 
 		/**
 		* @brief Create Buffer.

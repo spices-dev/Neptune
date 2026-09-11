@@ -6,7 +6,9 @@
 
 #pragma once
 #include "Core/Core.h"
+
 #include <shared_mutex>
+#include <unordered_map>
 
 namespace Neptune::Container {
 
@@ -50,7 +52,7 @@ namespace Neptune::Container {
 		* 
 		* @return Returns value.
 		*/
-		V& At(const K& k);
+		const V& At(const K& k) const;
 
 		/**
 		* @brief Erase element in this unordered_map.
@@ -84,30 +86,27 @@ namespace Neptune::Container {
 	template<typename K, typename V>
 	inline void ThreadUnorderedMap<K, V>::Insert(const K& k, const V& v)
 	{
+		if (!Contains(k)) ++m_Count;
+		
 		std::unique_lock lock(m_Mutex);
-
-		if (!Contains(k))
-		{
-			++m_Count;
-		}
 		
 		m_Map[k] = v;
 	}
 	
 	template<typename K, typename V>
-	inline V& ThreadUnorderedMap<K, V>::At(const K& k)
+	inline const V& ThreadUnorderedMap<K, V>::At(const K& k) const
 	{
 		std::shared_lock lock(m_Mutex);
 
-		return m_Map[k];
+		return m_Map.at(k);
 	}
 	
 	template<typename K, typename V>
 	inline void ThreadUnorderedMap<K, V>::Erase(const K& k)
 	{
-		std::unique_lock lock(m_Mutex);
-
 		if (!Contains(k)) return;
+		
+		std::unique_lock lock(m_Mutex);
 		
 		m_Map.erase(k);
 		

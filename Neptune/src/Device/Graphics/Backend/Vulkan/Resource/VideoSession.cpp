@@ -290,7 +290,7 @@ namespace Neptune::Vulkan::Resource {
 		    createInfo.subresourceRange.layerCount           = 1;
             createInfo.pNext                                 = &viewUsage;
 
-			for (int i = 0; i < slot; i++)
+			for (uint32_t i = 0; i < slot; i++)
 			{
 				createInfo.image                             = m_DPB.Handle(i);
 

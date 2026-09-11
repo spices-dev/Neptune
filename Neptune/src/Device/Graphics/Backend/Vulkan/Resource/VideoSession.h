@@ -144,7 +144,7 @@ namespace Neptune::Vulkan::Resource {
 		*
 		* @return Returns Display Slot count.
 		*/
-		uint8_t GetDisplaySlotCount() const { return m_DisplaySlots.size(); }
+		uint8_t GetDisplaySlotCount() const { return static_cast<uint8_t>(m_DisplaySlots.size()); }
 
 		/**
 		* @brief Create Decode RenderTarget.

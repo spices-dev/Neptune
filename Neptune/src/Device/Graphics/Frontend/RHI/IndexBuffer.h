@@ -35,7 +35,7 @@ namespace Neptune::RHI {
 		*
 		* @return Returns Buffer Size.
 		*/
-		virtual const uint64_t& Size() const = 0;
+		virtual uint64_t Size() const = 0;
 
 		/**
 		* @brief Create Buffer.
@@ -90,7 +90,7 @@ namespace Neptune::RHI {
 		*
 		* @return Returns Buffer Size.
 		*/
-		const uint64_t& Size() const { return m_Impl->Size(); }
+		uint64_t Size() const { return m_Impl->Size(); }
 
 		/**
 		* @brief Create Buffer.

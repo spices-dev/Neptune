@@ -43,7 +43,7 @@ namespace Neptune::Vulkan::Unit {
 		* 
 		* @return Returns Buffer size.
 		*/
-		const VkDeviceSize& Size() const { return m_Size; }
+		VkDeviceSize Size() const { return m_Size; }
 
 		/**
 		* @brief Get Buffer Host data.

@@ -40,7 +40,7 @@ namespace Neptune::Vulkan::Resource {
 		*
 		* @return Returns Buffer Size.
 		*/
-		const VkDeviceSize& Size() const { return m_Buffer.Size(); }
+		VkDeviceSize Size() const { return m_Buffer.Size(); }
 
 		/**
 		* @brief Get Unit Handle.
@@ -120,7 +120,7 @@ namespace Neptune::Vulkan::Resource {
 		*
 		* @return Returns Stream Marker size.
 		*/
-		uint32_t GetStreamMarkersCount() const { return m_StreamMarkers.size(); }
+		uint32_t GetStreamMarkersCount() const { return static_cast<uint32_t>(m_StreamMarkers.size()); }
 
 		/**
 		* @brief Get Stream Marker data.

@@ -29,7 +29,14 @@ namespace Neptune::Tool {
         std::ifstream stream(file, std::ios::binary);
 
         stream.seekg(0, std::ios::end);
-        const float size = stream.tellg() * float(1e-6);
+        
+        if (stream.tellg() <= 0)
+        {
+            NEPTUNE_LOG_CORE(E) << "File: [ " << file << " ] size error.";
+			
+            return false;
+        }
+        
         stream.seekg(0, std::ios::beg);
 
         tinyply::PlyFile splat;

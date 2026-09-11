@@ -4,6 +4,8 @@
 
 solution.DefineCppStaticLibrary("Neptune", function()
 
+	--compiler.EnableMoreWarning()     -- Enable Compiler Warning.
+
 	filter { "toolset:msc*" }
 		pchheader "Pchheader.h"      -- PreCompiler Header File.
 

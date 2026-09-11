@@ -113,7 +113,7 @@ namespace Neptune::Vulkan {
 			VkPipelineDynamicStateCreateInfo           info{};
 			info.sType                               = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
 			info.pDynamicStates                      = m_DynamicStateEnables.data();
-			info.dynamicStateCount                   = m_DynamicStateEnables.size();
+			info.dynamicStateCount                   = static_cast<uint32_t>(m_DynamicStateEnables.size());
 			info.flags                               = 0;
 
 			m_DynamicStateInfo                       = info;
@@ -126,7 +126,7 @@ namespace Neptune::Vulkan {
 
 		auto& colorBlends = renderPass->GetRHIImpl<RenderPass>()->GetColorBlends();
 
-		m_ColorBlendInfo.attachmentCount = colorBlends.size();
+		m_ColorBlendInfo.attachmentCount = static_cast<uint32_t>(colorBlends.size());
 		m_ColorBlendInfo.pAttachments    = colorBlends.data();
 
 		m_RenderPass = renderPass->GetRHIImpl<RenderPass>()->Handle();
@@ -145,7 +145,7 @@ namespace Neptune::Vulkan {
 
 		VkPipelineLayoutCreateInfo                      info{};
 		info.sType                                    = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-		info.setLayoutCount                           = layouts.size();
+		info.setLayoutCount                           = static_cast<uint32_t>(layouts.size());
 		info.pSetLayouts                              = layouts.data();
 		info.pushConstantRangeCount                   = 0;
 		info.pPushConstantRanges                      = nullptr;
@@ -199,8 +199,8 @@ namespace Neptune::Vulkan {
 
 		VkPipelineVertexInputStateCreateInfo                  inputInfo{};
 		inputInfo.sType                                     = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-		inputInfo.vertexAttributeDescriptionCount           = m_AttributeDescriptions.size();
-		inputInfo.vertexBindingDescriptionCount             = m_BindingDescriptions.size();
+		inputInfo.vertexAttributeDescriptionCount           = static_cast<uint32_t>(m_AttributeDescriptions.size());
+		inputInfo.vertexBindingDescriptionCount             = static_cast<uint32_t>(m_BindingDescriptions.size());
 		inputInfo.pVertexAttributeDescriptions              = m_AttributeDescriptions.empty() ? nullptr : m_AttributeDescriptions.data();
 		inputInfo.pVertexBindingDescriptions                = m_BindingDescriptions.empty() ? nullptr : m_BindingDescriptions.data();
 

@@ -77,7 +77,7 @@ namespace Neptune {
 		* @param[in] args .
 		*/
 		template<typename... Args1>
-		void Broadcast(Args1&&... args);
+		void Broadcast(Args1&&... args) const;
 
 	private:
 		
@@ -117,7 +117,7 @@ namespace Neptune {
 
 	template<typename ...Args>
 	template<typename... Args1>
-	inline void Delegate_Basic<Args...>::Broadcast(Args1&&... args)
+	inline void Delegate_Basic<Args...>::Broadcast(Args1&&... args) const
 	{
 		NEPTUNE_PROFILE_ZONE
 

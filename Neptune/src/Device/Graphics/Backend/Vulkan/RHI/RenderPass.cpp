@@ -106,7 +106,7 @@ namespace Neptune::Vulkan {
 		}
 
 		VkAttachmentReference                         attachmentRef{};
-		attachmentRef.attachment                    = m_ColorAttachmentReference.size();
+		attachmentRef.attachment                    = static_cast<uint32_t>(m_ColorAttachmentReference.size());
 		attachmentRef.layout                        = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
 
 		m_AttachmentDescriptions.emplace_back(description);
@@ -124,7 +124,7 @@ namespace Neptune::Vulkan {
 		{
 			VkSubpassDescription                          description{};
 			description.pipelineBindPoint               = VK_PIPELINE_BIND_POINT_GRAPHICS;
-			description.colorAttachmentCount            = m_ColorAttachmentReference.size();
+			description.colorAttachmentCount            = static_cast<uint32_t>(m_ColorAttachmentReference.size());
 			description.pColorAttachments               = m_ColorAttachmentReference.data();
 			description.pDepthStencilAttachment         = nullptr;
 			description.inputAttachmentCount            = 0;
@@ -141,7 +141,7 @@ namespace Neptune::Vulkan {
 
 			VkRenderPassCreateInfo		                  info{};
 			info.sType                                  = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-			info.attachmentCount                        = m_AttachmentDescriptions.size();
+			info.attachmentCount                        = static_cast<uint32_t>(m_AttachmentDescriptions.size());
 			info.pAttachments                           = m_AttachmentDescriptions.data();
 			info.subpassCount                           = 1;
 			info.pSubpasses                             = &description;
@@ -155,7 +155,7 @@ namespace Neptune::Vulkan {
 
 		const bool swapChainInUsed = m_ImageViews.size() < m_AttachmentDescriptions.size();
 
-		for (size_t i = 0; i < count; i++)
+		for (uint32_t i = 0; i < count; i++)
 		{
 			auto imageViews = m_ImageViews;
 
@@ -167,7 +167,7 @@ namespace Neptune::Vulkan {
 			VkFramebufferCreateInfo						  info{};
 			info.sType						            = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
 			info.renderPass					            = m_RenderPass.GetHandle();
-			info.attachmentCount			            = imageViews.size();
+			info.attachmentCount			            = static_cast<uint32_t>(imageViews.size());
 			info.pAttachments				            = imageViews.data();
 			info.width                                  = m_Extent.value().width;
 			info.height                                 = m_Extent.value().height;
@@ -193,7 +193,7 @@ namespace Neptune::Vulkan {
 		info.framebuffer                            = m_FrameBuffers[frameBufferIndex]->GetHandle();
 		info.renderArea.offset                      = { 0, 0 };
 		info.renderArea.extent                      = m_Extent.value();
-		info.clearValueCount                        = m_ClearValues.size();
+		info.clearValueCount                        = static_cast<uint32_t>(m_ClearValues.size());
 		info.pClearValues                           = m_ClearValues.data();
 
 		commandBuffer->BeginRenderPass(info, VK_SUBPASS_CONTENTS_INLINE);

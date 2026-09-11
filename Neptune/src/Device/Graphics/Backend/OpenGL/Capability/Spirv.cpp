@@ -27,7 +27,7 @@ namespace Neptune::OpenGL::Capability {
         
         m_SpirVExtensions.reserve(count);
         
-        for (GLuint i = 0; i < count; ++i)
+        for (GLint i = 0; i < count; ++i)
         {
             const auto* name = glGetStringi(GL_SPIR_V_EXTENSIONS, i);
             

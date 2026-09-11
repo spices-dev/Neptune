@@ -166,8 +166,8 @@ namespace Neptune::Vulkan {
 		viewport.maxDepth           =  1.0f;
 
 		VkExtent2D                    extent;
-		extent.width                = viewPortSize.x;
-		extent.height               = viewPortSize.y;
+		extent.width                = static_cast<uint32_t>(viewPortSize.x);
+		extent.height               = static_cast<uint32_t>(viewPortSize.y);
 
 		VkRect2D                      scissor{};
 		scissor.offset              = { 0, 0 };

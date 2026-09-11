@@ -6,6 +6,7 @@
 
 #pragma once
 #include "Core/Core.h"
+
 #include <mutex>
 #include <condition_variable>
 #include <queue>
@@ -52,7 +53,7 @@ namespace Neptune::Container {
 		* 
 		* @return Returns true if empty.
 		*/
-		bool IsEmpty() const { return m_Count.load() == 0; }
+		bool Empty() const { return m_Count.load() == 0; }
 
 		/**
 		* @brief Clear this queue.
@@ -61,13 +62,10 @@ namespace Neptune::Container {
 
 	private:
 
-		std::mutex m_Mutex;
-
-		std::condition_variable m_NotEmpty;
-
-		std::atomic_int m_Count = 0;
-
-		std::queue<T> m_Queue;
+		std::mutex              m_Mutex;            // @brief This mutex.
+		std::condition_variable m_NotEmpty;         // @brief Not Empty CV.
+		std::atomic_int         m_Count = 0;        // @brief Queue Count.
+		std::queue<T>           m_Queue;            // @brief Queue.
 	};
 
 	template<typename T>
@@ -88,16 +86,18 @@ namespace Neptune::Container {
 	{
 		std::unique_lock lock(m_Mutex);
 
-		if (IsEmpty())
+		if (Empty())
 		{
-			m_NotEmpty.wait(lock, [this]() { return !IsEmpty(); });
+			m_NotEmpty.wait(lock, [this]() { return !Empty(); });
 		}
 
-		auto ptr = m_Queue.front();
+		auto item = m_Queue.front();
+		
 		m_Queue.pop();
+		
 		--m_Count;
 
-		return std::move(ptr);
+		return std::move(item);
 	}
 
 	template<typename T>

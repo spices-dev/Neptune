@@ -14,7 +14,7 @@ namespace Neptune::SOP {
 
 namespace tinyply {
     
-    class PlyData;
+    struct PlyData;
 }
 
 namespace Neptune::Tool {

@@ -40,7 +40,7 @@ namespace Neptune::Vulkan {
         *
         * @return Returns Buffer Size.
         */
-        const uint64_t& Size() const override { return m_Buffer.Size(); }
+		uint64_t Size() const override { return m_Buffer.Size(); }
 
         /**
         * @brief Create Buffer.

@@ -57,7 +57,7 @@ namespace Neptune {
         * @brief Get Log time.
         */
         time_t t = std::chrono::system_clock::to_time_t(msg.time);
-        std::string times = ctime(&t);
+        std::string times = std::format("{:%a %b %d %H:%M:%S %Y}", std::chrono::floor<std::chrono::seconds>(msg.time));
         times.pop_back();
 
         /**

@@ -46,7 +46,7 @@ namespace Neptune::Vulkan::Resource {
 		*
 		* @return Returns Buffer Size.
 		*/
-		const VkDeviceSize& Size() const { return m_Buffer.Size(); }
+		VkDeviceSize Size() const { return m_Buffer.Size(); }
 
 		/**
 		* @brief Get Buffer Host Data.

@@ -121,8 +121,6 @@ namespace Neptune::Test {
 
 		NEPTUNE_TEST_PROFILE_FUNCTION
 
-		detail::DelegateFuncTest funcTestClass;
-
 		uint32_t iter = 0;
 		
 		test1.Bind([&](const auto& a) {
