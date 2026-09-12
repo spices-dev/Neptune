@@ -6,6 +6,7 @@
 
 #pragma once
 #include "Core/Core.h"
+#include "Core/Concept.h"
 
 #include <bitset>
 #include <shared_mutex>
@@ -17,8 +18,10 @@ namespace Neptune::Container {
     * @brief Bit Set.
     * 
     * @tparam T specific stored type.
+    * 
+    * @note thread safe.
     */
-    template<typename T>
+    template<IsEnum T>
     class BitSet
     {
     public:
@@ -51,8 +54,11 @@ namespace Neptune::Container {
         * @param[in] other BitSet.
         */
         BitSet(const BitSet& other)
-            : m_Bits{ other.m_Bits }
-        {}
+        {
+            std::shared_lock lock(other.m_Mutex);
+
+            m_Bits = other.m_Bits;
+        }
 
         /**
         * @brief Copy Assignment Operation.
@@ -61,11 +67,24 @@ namespace Neptune::Container {
         */
         BitSet& operator=(const BitSet& other)
         {
-            std::unique_lock lock(m_Mutex);
+            if (this == &other) return *this;
+            
+            if (this < &other)
+            {
+                std::unique_lock lock1(m_Mutex);
+                
+                std::unique_lock lock2(other.m_Mutex);
 
-            m_Bits = other.m_Bits;
+                m_Bits = other.m_Bits;
+            }
+            else
+            {
+                std::unique_lock lock2(other.m_Mutex);
 
-            return *this;
+                std::unique_lock lock1(m_Mutex);
+                
+                m_Bits = other.m_Bits;
+            }
         }
 
         /**
@@ -74,8 +93,11 @@ namespace Neptune::Container {
         * @param[in] other BitSet.
         */
         BitSet(BitSet&& other) noexcept
-            : m_Bits{ std::move(other.m_Bits) } 
-        {}
+        {
+            std::unique_lock lock(other.m_Mutex);
+
+            m_Bits = std::move(other.m_Bits);
+        }
 
         /**
         * @brief Move Assignment Operation.
@@ -84,9 +106,24 @@ namespace Neptune::Container {
         */
         BitSet& operator=(BitSet&& other) noexcept
         {
-            std::unique_lock lock(m_Mutex);
+            if (this == &other) return *this;
 
-            m_Bits = std::move(other.m_Bits);
+            if (this < &other)
+            {
+                std::unique_lock lock1(m_Mutex);
+                
+                std::unique_lock lock2(other.m_Mutex);
+                
+                m_Bits = std::move(other.m_Bits);
+            }
+            else
+            {
+                std::unique_lock lock2(other.m_Mutex);
+                
+                std::unique_lock lock1(m_Mutex);
+
+                m_Bits = std::move(other.m_Bits);
+            }
 
             return *this;
         }
@@ -100,11 +137,33 @@ namespace Neptune::Container {
         */
         BitSet operator|(const BitSet& other) const
         {
-            std::shared_lock lock(m_Mutex);
-
             BitSet result;
 
-            result.m_Bits = m_Bits | other.m_Bits;
+            if (this == &other)
+            {
+                std::shared_lock lock(m_Mutex);
+                
+                result.m_Bits = m_Bits;
+                
+                return result;
+            }
+
+            if (this < &other)
+            {
+                std::shared_lock lock1(m_Mutex);
+                
+                std::shared_lock lock2(other.m_Mutex);
+                
+                result.m_Bits = m_Bits | other.m_Bits;
+            }
+            else
+            {
+                std::shared_lock lock2(other.m_Mutex);
+                
+                std::shared_lock lock1(m_Mutex);
+                
+                result.m_Bits = m_Bits | other.m_Bits;
+            }
 
             return result;
         }
@@ -118,11 +177,33 @@ namespace Neptune::Container {
         */
         BitSet operator&(const BitSet& other) const
         {
-            std::shared_lock lock(m_Mutex);
-
             BitSet result;
 
-            result.m_Bits = m_Bits & other.m_Bits;
+            if (this == &other)
+            {
+                std::shared_lock lock(m_Mutex);
+                
+                result.m_Bits = m_Bits;
+                
+                return result;
+            }
+
+            if (this < &other)
+            {
+                std::shared_lock lock1(m_Mutex);
+                
+                std::shared_lock lock2(other.m_Mutex);
+                
+                result.m_Bits = m_Bits & other.m_Bits;
+            }
+            else
+            {
+                std::shared_lock lock2(other.m_Mutex);
+                
+                std::shared_lock lock1(m_Mutex);
+                
+                result.m_Bits = m_Bits & other.m_Bits;
+            }
 
             return result;
         }
@@ -136,9 +217,24 @@ namespace Neptune::Container {
         */
         BitSet& operator|=(const BitSet& other)
         {
-            std::unique_lock lock(m_Mutex);
+            if (this == &other) return *this;
 
-            m_Bits |= other.m_Bits;
+            if (this < &other)
+            {
+                std::unique_lock lock1(m_Mutex);
+                
+                std::shared_lock lock2(other.m_Mutex);
+                
+                m_Bits |= other.m_Bits;
+            }
+            else
+            {
+                std::shared_lock lock2(other.m_Mutex);
+                
+                std::unique_lock lock1(m_Mutex);
+                
+                m_Bits |= other.m_Bits;
+            }
 
             return *this;
         }
@@ -152,9 +248,31 @@ namespace Neptune::Container {
         */
         BitSet& operator^=(const BitSet& other)
         {
-            std::unique_lock lock(m_Mutex);
+            if (this == &other)
+            {
+                std::unique_lock lock(m_Mutex);
+                
+                m_Bits ^= m_Bits;
+                
+                return *this;
+            }
 
-            m_Bits ^= other.m_Bits;
+            if (this < &other)
+            {
+                std::unique_lock lock1(m_Mutex);
+                
+                std::shared_lock lock2(other.m_Mutex);
+                
+                m_Bits ^= other.m_Bits;
+            }
+            else
+            {
+                std::shared_lock lock2(other.m_Mutex);
+                
+                std::unique_lock lock1(m_Mutex);
+                
+                m_Bits ^= other.m_Bits;
+            }
 
             return *this;
         }
@@ -168,9 +286,24 @@ namespace Neptune::Container {
         */
         BitSet& operator&=(const BitSet& other)
         {
-            std::unique_lock lock(m_Mutex);
+            if (this == &other) return *this;
 
-            m_Bits &= other.m_Bits;
+            if (this < &other)
+            {
+                std::unique_lock lock1(m_Mutex);
+                
+                std::shared_lock lock2(other.m_Mutex);
+                
+                m_Bits &= other.m_Bits;
+            }
+            else
+            {
+                std::shared_lock lock2(other.m_Mutex);
+                
+                std::unique_lock lock1(m_Mutex);
+                
+                m_Bits &= other.m_Bits;
+            }
 
             return *this;
         }
@@ -184,9 +317,24 @@ namespace Neptune::Container {
         */
         bool operator==(const BitSet& other) const
         {
-            std::shared_lock lock(m_Mutex);
+            if (this == &other) return true;
 
-            return m_Bits == other.m_Bits;
+            if (this < &other)
+            {
+                std::shared_lock lock1(m_Mutex);
+                
+                std::shared_lock lock2(other.m_Mutex);
+                
+                return m_Bits == other.m_Bits;
+            }
+            else
+            {
+                std::shared_lock lock2(other.m_Mutex);
+                
+                std::shared_lock lock1(m_Mutex);
+                
+                return m_Bits == other.m_Bits;
+            }
         }
 
         /**
@@ -198,9 +346,7 @@ namespace Neptune::Container {
         */
         bool operator!=(const BitSet& other) const
         {
-            std::shared_lock lock(m_Mutex);
-
-            return m_Bits != other.m_Bits;
+            return !(*this == other);
         }
 
         /**
@@ -220,9 +366,13 @@ namespace Neptune::Container {
         *
         * @param[in] bit Bit item.
         * @param[in] value Bit value.
+        * 
+        * @return Returns true if succeeded.
         */
-        void Set(T bit, bool value)
+        bool Set(T bit, bool value)
         {
+            if (bit > T::Count) return false;
+
             if (bit == T::Count)
             {
                 Reset();
@@ -232,12 +382,14 @@ namespace Neptune::Container {
                     Flip();
                 }
                 
-                return;
+                return true;
             }
 
             std::unique_lock lock(m_Mutex);
 
             m_Bits.set(static_cast<size_t>(static_cast<TSize>(bit)), value);
+
+            return true;
         }
 
         /**
@@ -245,10 +397,12 @@ namespace Neptune::Container {
         *
         * @param[in] bit Bit item.
         *
-        * @return Returns bit value.
+        * @return Returns bit value or failed.
         */
         bool Test(T bit) const
         {
+            if (bit > T::Count) return false;
+
             if (bit == T::Count)
             {
                 return !None();
@@ -273,19 +427,25 @@ namespace Neptune::Container {
         * @brief Reset bit.
         *
         * @param[in] bit Bit item.
+        * 
+        * @return Returns true if succeeded.
         */
-        void Reset(T bit)
+        bool Reset(T bit)
         {
+            if (bit > T::Count) return false;
+
             if (bit == T::Count)
             {
                 Reset();
                 
-                return; 
+                return true; 
             }
 
             std::unique_lock lock(m_Mutex);
 
             m_Bits.reset(static_cast<size_t>(static_cast<TSize>(bit)));
+
+            return true;
         }
 
         /**
@@ -302,19 +462,25 @@ namespace Neptune::Container {
         * @brief Flip bit.
         *
         * @param[in] bit Bit item.
+        * 
+        * @return Returns true if succeeded.
         */
-        void Flip(T bit)
+        bool Flip(T bit)
         {
+            if (bit > T::Count) return false;
+
             if (bit == T::Count)
             {
                 Flip();
                 
-                return;
+                return true;
             }
 
             std::unique_lock lock(m_Mutex);
 
             m_Bits.flip(static_cast<size_t>(static_cast<TSize>(bit)));
+
+            return true;
         }
 
         /**

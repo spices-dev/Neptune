@@ -19,6 +19,10 @@ namespace Neptune::Container {
 	class ThreadUnorderedMap
 	{
 	public:
+		
+		static const V vNull;
+		
+	public:
 
 		/**
 		* @brief Constructor Function.
@@ -43,7 +47,7 @@ namespace Neptune::Container {
 		* @param[in] k Key.
 		* @param[in] v Value.
 		*/
-		void Insert(const K& k, const V& v);
+		void PushBack(const K& k, const V& v);
 
 		/**
 		* @brief Find element in this unordered_map.
@@ -58,8 +62,10 @@ namespace Neptune::Container {
 		* @brief Erase element in this unordered_map.
 		* 
 		* @param[in] k Key.
+		* 
+		* @return Returns true if succeeded.
 		*/
-		void Erase(const K& k);
+		bool Erase(const K& k);
 		
 		/**
 		* @brief Is element in this unordered_map.
@@ -75,6 +81,13 @@ namespace Neptune::Container {
 		*/
 		void Clear();
 
+		/**
+		* @brief Get map Size.
+		* 
+		* @return Returns map Size.
+		*/
+		uint32_t Size() const { return m_Count.load(); }
+		
 	private:
 		
 		mutable std::shared_mutex m_Mutex;    // @brief Mutex of this queue.
@@ -84,11 +97,14 @@ namespace Neptune::Container {
 	};
 	
 	template<typename K, typename V>
-	inline void ThreadUnorderedMap<K, V>::Insert(const K& k, const V& v)
+	const V ThreadUnorderedMap<K, V>::vNull = {};
+	
+	template<typename K, typename V>
+	inline void ThreadUnorderedMap<K, V>::PushBack(const K& k, const V& v)
 	{
-		if (!Contains(k)) ++m_Count;
-		
 		std::unique_lock lock(m_Mutex);
+		
+		if (!m_Map.contains(k)) ++m_Count;
 		
 		m_Map[k] = v;
 	}
@@ -98,19 +114,23 @@ namespace Neptune::Container {
 	{
 		std::shared_lock lock(m_Mutex);
 
+		if (!m_Map.contains(k)) return vNull;
+
 		return m_Map.at(k);
 	}
 	
 	template<typename K, typename V>
-	inline void ThreadUnorderedMap<K, V>::Erase(const K& k)
+	inline bool ThreadUnorderedMap<K, V>::Erase(const K& k)
 	{
-		if (!Contains(k)) return;
-		
 		std::unique_lock lock(m_Mutex);
 		
+		if(!m_Map.contains(k)) return false;
+
 		m_Map.erase(k);
 		
 		--m_Count;
+			
+		return true;
 	}
 
 	template<typename K, typename V>

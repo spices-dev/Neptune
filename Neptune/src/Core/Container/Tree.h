@@ -18,6 +18,8 @@ namespace Neptune::Container {
     * @brief simple tree.
     * 
     * @tparam T specific stored type.
+    * 
+    * @note thread safe.
     */
     template<typename T>
     class Tree
@@ -84,8 +86,6 @@ namespace Neptune::Container {
         template<typename F, typename ...Args>
         void ViewDSF(F&& fn, Args&&...  args) const
         {
-            std::shared_lock lock(m_Mutex);
-            
             auto visitor = [&]<typename T0, typename T1>(T0&& data, T1&& depth) {
                 
                 return std::invoke(std::forward<F>(fn), std::forward<T0>(data), std::forward<T1>(depth), std::forward<Args>(args)...);
@@ -103,8 +103,6 @@ namespace Neptune::Container {
         template<typename F, typename ...Args>
         void ViewWSF(F&& fn, Args&&...  args) const
         {
-            std::shared_lock lock(m_Mutex);
-            
             auto visitor = [&]<typename T0, typename T1>(T0&& data, T1&& depth) {
                 
                 return std::invoke(std::forward<F>(fn), std::forward<T0>(data), std::forward<T1>(depth), std::forward<Args>(args)...);
@@ -130,7 +128,12 @@ namespace Neptune::Container {
         *
         * @return Returns this node data.
         */
-        [[nodiscard]] const T& GetData() const { return m_Data; }
+        [[nodiscard]] T GetData() const
+        {
+            std::shared_lock lock(m_Mutex);
+            
+            return m_Data;
+        }
 
     private:
 
@@ -140,7 +143,7 @@ namespace Neptune::Container {
         * @param[in] fn Visitor.
         * @param[in] depth Visitor depth.
         *
-        * @return Returns true if it needs to continue.
+        * @return Returns true if it needs to block.
         */
         template<typename F>
         requires std::is_same_v<std::invoke_result_t<F, T, uint32_t>, bool>
@@ -151,7 +154,7 @@ namespace Neptune::Container {
         *
         * @param[in] fn Visitor.
         *
-        * @return Returns true if it needs to continue.
+        * @return Returns true if it needs to block.
         */
         template<typename F>
         requires std::is_same_v<std::invoke_result_t<F, T, uint32_t>, bool>
@@ -170,20 +173,36 @@ namespace Neptune::Container {
     requires std::is_same_v<std::invoke_result_t<F, T, uint32_t>, bool>
     bool Tree<T>::ViewDSFImpl(F&& fn, uint32_t depth) const
     {
-        if (!std::invoke(std::forward<F>(fn), m_Data, depth))
+        T data;
+        std::vector<Tree*> children;
+        
         {
-            return false;
+            std::shared_lock lock(m_Mutex);
+
+            data = m_Data;
+
+            children.reserve(m_Child.size());
+            
+            for (auto& child : m_Child)
+            {
+                children.push_back(child.get());
+            }
         }
         
-        for (auto& child : m_Child)
+        if (std::invoke(std::forward<F>(fn), data, depth))
         {
-            if (!child->ViewDSFImpl(std::forward<F>(fn), depth + 1))
+            return true;
+        }
+        
+        for (auto& child : children)
+        {
+            if (child->ViewDSFImpl(std::forward<F>(fn), depth + 1))
             {
-                return false;
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
     template <typename T>
@@ -200,17 +219,33 @@ namespace Neptune::Container {
             auto [ node, depth ] = queue.front();
             queue.pop();      
             
-            if (!std::invoke(std::forward<F>(fn), node->m_Data, depth))
+            T data;
+            std::vector<Tree*> children;
+            
             {
-                return false;
+                std::shared_lock lock(node->m_Mutex);
+
+                data = node->m_Data;
+
+                children.reserve(node->m_Child.size());
+                
+                for (auto& child : node->m_Child)
+                {
+                    children.push_back(child.get());
+                }
             }
             
-            for (auto& child : node->m_Child)
+            if (std::invoke(std::forward<F>(fn), data, depth))
             {
-                queue.push({ child.get(), depth + 1 });
+                return true;
+            }
+            
+            for (auto& child : children)
+            {
+                queue.push({ child, depth + 1 });
             }
         }
         
-        return true;
+        return false;
     }
 }

@@ -56,6 +56,13 @@ namespace Neptune::Container {
 		bool Empty() const { return m_Count.load() == 0; }
 
 		/**
+		* @brief Get Queue Size.
+		* 
+		* @return Returns Queue Size.
+		*/
+		size_t Size() const { return static_cast<size_t>(m_Count.load()); }
+		
+		/**
 		* @brief Clear this queue.
 		*/
 		void Clear();
@@ -78,7 +85,7 @@ namespace Neptune::Container {
 		
 		++m_Count;
 
-		m_NotEmpty.notify_all();
+		m_NotEmpty.notify_one();
 	}
 
 	template<typename T>
@@ -91,13 +98,13 @@ namespace Neptune::Container {
 			m_NotEmpty.wait(lock, [this]() { return !Empty(); });
 		}
 
-		auto item = m_Queue.front();
+		T item = std::move(m_Queue.front());
 		
 		m_Queue.pop();
 		
 		--m_Count;
 
-		return std::move(item);
+		return item;
 	}
 
 	template<typename T>

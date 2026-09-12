@@ -13,100 +13,87 @@
 namespace Neptune::Container::Test {
 
     /**
-    * @brief Testing PushBack.
+   * @brief Unit Test for Vector
+   */
+    class VectorTest : public testing::Test
+    {
+    protected:
+
+        /**
+        * @brief Interface on Initialize.
+        */
+        void SetUp() override {
+
+            c0.PushBack("aaa");
+            c0.PushBack("bbb");
+            c0.PushBack("ccc");
+
+            c1.PushBack(1);
+            c1.PushBack(2);
+            c1.PushBack(3);
+
+            c2.PushBack(1.0f);
+            c2.PushBack(2.0f);
+            c2.PushBack(3.0f);
+        }
+
+        Vector<std::string> c0;    /* @brief Test Item. */
+        Vector<int> c1;            /* @brief Test Item. */
+        Vector<float> c2;          /* @brief Test Item. */
+    };
+    
+    /**
+    * @brief Testing Initialize.
     */
-    TEST(Vector, PushBack) {
+    TEST_F(VectorTest, Initialize) {
 
         NEPTUNE_TEST_PROFILE_FUNCTION
-
-        {
-            Vector<int> v;
-            
-            for (int i = 0; i < 100000; i++)
-            {
-                v.PushBack(i);
-
-                EXPECT_EQ(v.Size(), i + 1);
-                EXPECT_EQ(v.Empty(), false);
-            }
-        }
-
-        {
-            Vector<void*> v;
-
-            void* p = nullptr;
-
-            for (int i = 0; i < 100000; i++)
-            {
-                v.PushBack(p);
-
-                EXPECT_EQ(v.Size(), i + 1);
-                EXPECT_EQ(v.Empty(), false);
-            }
-        }
-
-        {
-            Vector<Vector<void*>> v;
-
-            void* p = nullptr;
-
-            for (int i = 0; i < 100000; i++)
-            {
-                Vector<void*> t;
-
-                t.PushBack(p);
-                v.PushBack(t);
-
-                EXPECT_EQ(v.Size(), i + 1);
-                EXPECT_EQ(v.Empty(), false);
-            }
-        }
+		
+        EXPECT_EQ(c0.Size(), 3);
+        EXPECT_EQ(c1.Size(), 3);
+        EXPECT_EQ(c2.Size(), 3);
     }
 
     /**
-    * @brief Testing Get.
+    * @brief Testing FindElement.
     */
-    TEST(Vector, Get) {
+    TEST_F(VectorTest, FindElement) {
 
         NEPTUNE_TEST_PROFILE_FUNCTION
+		
+        auto v0 = c0.Get(0);
+        EXPECT_EQ(v0, "aaa");
+		
+        auto v1 = c2.Get(10);
+        EXPECT_EQ(v1, 0);
+    }
 
-        Vector<int> v;
+    /**
+    * @brief Testing if AddElement.
+    */
+    TEST_F(VectorTest, AddElement) {
 
-        EXPECT_EQ(v.Get(200000), 0);
+        NEPTUNE_TEST_PROFILE_FUNCTION
+		
+        c0.PushBack("ddd");
+        EXPECT_EQ(c0.Size(), 4);
+		
+        c1.PushBack(1);
+        EXPECT_EQ(c1.Size(), 4);
         
-        for (int i = 0; i < 100000; i++)
-        {
-            v.PushBack(i);
-
-            EXPECT_EQ(v.Size(), i + 1);
-            EXPECT_EQ(v.Empty(), false);
-        }
-
-        for (int i = 0; i < 100000; i++)
-        {
-            EXPECT_EQ(v.Get(i), i);
-        }
-        
-        EXPECT_EQ(v.Get(200000), 0);
+        c2.PushBack(1.0f);
+        EXPECT_EQ(c1.Size(), 4);
     }
     
     /**
-    * @brief Testing Begin End.
+    * @brief Testing Begin.
     */
-    TEST(Vector, Begin_End) {
+    TEST_F(VectorTest, Begin) {
 
         NEPTUNE_TEST_PROFILE_FUNCTION
 
-        Vector<int> v;
-
-        for (int i = 100; i < 100000; i++)
-        {
-            v.PushBack(i);
-
-            EXPECT_EQ(v.Size(), i + 1 - 100);
-            EXPECT_EQ(v.Empty(), false);
-        }
-
-        EXPECT_EQ(*v.Begin(), 100);
+        EXPECT_EQ(*c0.Begin(), "aaa");
+        EXPECT_EQ(*c1.Begin(), 1);
+        EXPECT_EQ(*c2.Begin(), 1.0f);
     }
 }

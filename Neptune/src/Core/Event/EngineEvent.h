@@ -7,7 +7,7 @@
 #pragma once
 #include "Core/Core.h"
 #include "Event.h"
-#include "Core/Container/BitSet.hpp"
+#include "Core/Container/BitSet.h"
 
 namespace Neptune {
     

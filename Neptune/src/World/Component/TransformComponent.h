@@ -8,7 +8,7 @@
 #include "Core/Core.h"
 #include "Component.h"
 #include "Core/Math/Transform.h"
-#include "Core/Container/BitSet.hpp"
+#include "Core/Container/BitSet.h"
 
 namespace Neptune {
 

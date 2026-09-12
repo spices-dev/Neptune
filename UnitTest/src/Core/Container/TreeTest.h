@@ -8,7 +8,8 @@
 #include "Instrumentor.h"
 
 #include <gmock/gmock.h>
-#include <Core/Container/Tree.hpp>
+#include <Core/Container/Tree.h>
+#include <array>
 
 namespace Neptune::Container::Test {
 
@@ -31,7 +32,7 @@ namespace Neptune::Container::Test {
 
 	protected:
 		
-		Container::Tree<int> m_Tree;
+		Tree<int> m_Tree;
 	};
 	
 	/**
@@ -139,7 +140,7 @@ namespace Neptune::Container::Test {
 			m_Tree.ViewDSF([&](const auto& data, uint32_t depth) {
 
 				++count;
-				return true;
+				return false;
 			});
 
 			EXPECT_EQ(count, 1 + 10 + 100 + 1000);
@@ -151,7 +152,7 @@ namespace Neptune::Container::Test {
 			m_Tree.ViewWSF([&](const auto& data, uint32_t depth) {
 
 				++count;
-				return true;
+				return false;
 			});
 
 			EXPECT_EQ(count, 1 + 10 + 100 + 1000);
@@ -164,11 +165,11 @@ namespace Neptune::Container::Test {
 
 				if (depth == 3)
 				{
-					return false;
+					return true;
 				}
 
 				++count;
-				return true;
+				return false;
 			});
 
 			EXPECT_EQ(count, 1 + 1 + 1);
@@ -181,11 +182,11 @@ namespace Neptune::Container::Test {
 
 				if (depth == 3)
 				{
-					return false;
+					return true;
 				}
 
 				++count;
-				return true;
+				return false;
 			});
 
 			EXPECT_EQ(count, 1 + 10 + 100);
@@ -198,6 +199,83 @@ namespace Neptune::Container::Test {
 	TEST_F(TreeTest, ThreadSafe) {
 
 		NEPTUNE_TEST_PROFILE_FUNCTION
+		
+		const auto c0 = &m_Tree;
+		
+		auto t0 = std::thread([&]() {
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+			for (int i = 0; i < 10; ++i)
+			{
+				const auto c1 = c0->AddChild(i);
+
+				for (int j = 0; j < 10; ++j)
+				{
+					const auto c2 = c1->AddChild(j);
+
+					for (int k = 0; k < 10; ++k)
+					{
+						const auto c3 = c2->AddChild(k);
+					}
+				}
+			}
+		});
+		
+		auto t1 = std::thread([&]() {
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+			for (int i = 0; i < 10; ++i)
+			{
+				const auto c1 = c0->AddChild(i);
+
+				for (int j = 0; j < 10; ++j)
+				{
+					const auto c2 = c1->AddChild(j);
+
+					for (int k = 0; k < 10; ++k)
+					{
+						const auto c3 = c2->AddChild(k);
+					}
+				}
+			}
+		});
+		
+		t0.join();
+		t1.join();
+		
+		std::array<uint32_t, 4> count { 0 };
+		
+		m_Tree.ViewWSF([&](const auto& data, uint32_t depth) {
+			count[depth] += data;
+			
+			return false;
+		});
+		
+		EXPECT_EQ(count[0], 0);
+		
+		{
+			uint32_t data = 0;
+			
+			for (int i = 0; i < 10; ++i) { data += 2 * i; }
+			
+			EXPECT_EQ(count[1], data);
+		}
+		
+		{
+			uint32_t data = 0;
+			
+			for (int i = 0; i < 20; ++i) { for (int j = 0; j < 10; ++j) { data += j; } }
+			
+			EXPECT_EQ(count[2], data);
+		}
+		
+		{
+			uint32_t data = 0;
+			
+			for (int i = 0; i < 20; ++i) { for (int j = 0; j < 10; ++j) { for (int k = 0; k < 10; ++k) { data += k; } } }
+			
+			EXPECT_EQ(count[3], data);
+		}
 	}
 	
 }

@@ -184,5 +184,60 @@ namespace Neptune::Test {
 	TEST_F(DelegateTest, ThreadSafe) {
 
 		NEPTUNE_TEST_PROFILE_FUNCTION
+		
+		constexpr uint32_t loop = 30000;
+		
+		std::atomic_uint32_t iter = 0;
+		
+		for (int i = 0; i < loop; ++i)
+		{
+			EXPECT_EQ(test1.Bind([&](const auto& a) { iter += a; }), i);
+		}
+		
+		auto t0 = std::thread([&]() {
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+			for (int i = 0; i < loop; ++i)
+			{
+				EXPECT_EQ(test1.Bind([&](const auto& a) { iter += a; }), i + loop);
+			}
+		});
+		
+		std::atomic_uint64_t handle = 0;
+
+		auto t1 = std::thread([&]() {
+			while (!test1.Empty())
+			{
+				test1.Broadcast(1);
+				std::this_thread::sleep_for(std::chrono::microseconds(10));
+			}
+		});
+		
+		auto t2 = std::thread([&]() {
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+			for (int i = 0; i < loop; ++i)
+			{
+				auto h = handle++;
+
+				while (!test1.UnBind(h)) {}
+			}
+		});
+		
+		auto t3 = std::thread([&]() {
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+			for (int i = 0; i < loop; ++i)
+			{
+				auto h = handle++;
+
+				while (!test1.UnBind(h)) {}
+			}
+		});
+		
+		t0.join();
+		t1.join();
+		t2.join();
+		t3.join();
+		
+		EXPECT_EQ(handle, loop * 2);
+		EXPECT_EQ(test1.Empty(), true);
 	}
 }

@@ -14,35 +14,73 @@ namespace Neptune::Container {
 
     /**
     * @brief Memory Buffer.
+    * 
+    * @note Not thread safe.
     */
     struct MemoryBuffer : std::streambuf 
     {
-        MemoryBuffer(const char* begin, uint32_t size) {
-
+        /**
+        * @brief Constructor Function.
+        * 
+        * @param[in] begin Data pointer.
+        * @param[in] size Data Bytes.
+        */
+        MemoryBuffer(const char* begin, uint32_t size) 
+        {
             auto* b = const_cast<char*>(begin);
             auto* e = b + size;
         
             setg(b, b, e);
         }
     
+        /**
+        * @brief seekoffs.
+        * 
+        * @param[in] off off_type.
+        * @param[in] dir std::ios_base::seekdir.
+        * @param[in] which std::ios_base::openmode.
+        * 
+        * @return Returns pos_type.
+        */
         pos_type seekoff(off_type off, std::ios_base::seekdir dir, std::ios_base::openmode which) override 
         {
+            char* target = nullptr;
+            
             if (dir == std::ios_base::cur)
             {
-                gbump(static_cast<int>(off));
+                target = gptr() + off;
             }
             else if (dir == std::ios_base::end)
             {
-                setg(eback(), egptr() + off, egptr());
+                target = egptr() + off;
             }
             else if (dir == std::ios_base::beg)
             {
-                setg(eback(), eback() + off, egptr());
+                target = eback() + off;
             }
+            else
+            {
+                return pos_type(off_type(-1));
+            }
+            
+            if (target < eback() || target > egptr())
+            {
+                return pos_type(off_type(-1));
+            }
+
+            setg(eback(), target, egptr());
         
-            return gptr() - eback();
+            return pos_type(gptr() - eback());
         }
 
+        /**
+        * @brief seekpos.
+        * 
+        * @param[in] pos pos_type.
+        * @param[in] which std::ios_base::openmode.
+        * 
+        * @return Returns pos_type.
+        */
         pos_type seekpos(pos_type pos, std::ios_base::openmode which) override 
         {
             return seekoff(off_type(pos), std::ios_base::beg, which);

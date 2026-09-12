@@ -7,7 +7,7 @@
 #pragma once
 #include "Core/Core.h"
 #include "WorldMarkFlag.h"
-#include "Core/Container/BitSet.hpp"
+#include "Core/Container/BitSet.h"
 #include "Core/Event/EventProducer.h"
 
 #include <unordered_map>

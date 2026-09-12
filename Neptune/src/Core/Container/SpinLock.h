@@ -15,6 +15,10 @@ namespace Neptune::Container {
     class SpinLock
     {
     public:
+        
+        NONE_COPY(SpinLock)
+        
+    public:
 
         /**
         * @brief Constructor Function.
@@ -24,34 +28,23 @@ namespace Neptune::Container {
         /**
         * @brief Destructor Function.
         */
-        virtual ~SpinLock() = default;
-
-        /**
-        * @brief Copy Constructor Function.
-        *
-        * @note This Class not allowed copy behaves.
-        */
-        SpinLock(const SpinLock&) = delete;
-
-        /**
-        * @brief Copy Assignment Operation.
-        *
-        * @note This Class not allowed copy behaves.
-        */
-        SpinLock& operator=(const SpinLock&) = delete;
+        ~SpinLock() = default;
 
         /**
         * @brief Get Lock.
         */
-        void Lock()
+        void lock()
         {
-            while (m_Flag.test_and_set(std::memory_order_acquire)) {}
+            while (m_Flag.test_and_set(std::memory_order_acquire))
+            {
+                while (m_Flag.test(std::memory_order_relaxed)){}
+            }
         }
 
         /**
         * @brief Release Lock.
         */
-        void UnLock()
+        void unlock()
         {
             m_Flag.clear(std::memory_order_release);
         }

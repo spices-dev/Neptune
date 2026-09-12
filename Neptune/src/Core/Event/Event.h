@@ -6,7 +6,7 @@
 
 #pragma once
 #include "Core/Core.h"
-#include "Core/Container/BitSet.hpp"
+#include "Core/Container/BitSet.h"
 
 #include <functional>
 

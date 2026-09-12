@@ -64,7 +64,7 @@ namespace Neptune {
     * @tparam T .
     */
     template<typename T>
-    concept IsNotEmptyEnum = !IsEmptyEnum<T>;
+    concept IsNotEmptyEnum = IsEnum<T> && !IsEmptyEnum<T>;
     
     /**
     * @brief Concept: Is Pointer.

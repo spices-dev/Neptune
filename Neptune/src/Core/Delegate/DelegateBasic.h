@@ -13,6 +13,8 @@ namespace Neptune {
 	/**
 	* @brief Basic Class of Delegate.
 	* Instance inherited from it and use delegate feature.
+	* 
+	* @note thread safe.
 	*/
 	template<typename... Args>
 	class Delegate_Basic
@@ -103,12 +105,7 @@ namespace Neptune {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		if (!m_Agents->Contains(handle))
-		{
-			NEPTUNE_LOG_CORE(W) << "Agent Function not bound yet.";
-			
-			return false;
-		}
+		if (!m_Agents->Contains(handle)) return false;
 		
 		m_Agents->Erase(handle);
 

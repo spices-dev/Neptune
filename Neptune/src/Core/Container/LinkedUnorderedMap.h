@@ -18,7 +18,8 @@ namespace Neptune::Container {
 	/**
 	* @brief The container combines hashmap and list together.
 	* Used in the case that we want iter a hashmap in order.
-	* Thread Safe.
+	* 
+	*  @note thread safe.
 	*/
 	template<typename K, typename V>
 	class LinkedUnorderedMap
@@ -53,6 +54,13 @@ namespace Neptune::Container {
 		size_t Size() const { return m_Size.load(); }
 
 		/**
+		* @brief Is container empty.
+		* 
+		* @return Returns true if empty.
+		*/
+		bool Empty() const { return m_Size.load() == 0; }
+		
+		/**
 		* @brief Add an element to this container.
 		* 
 		* @param[in] key K the key.
@@ -82,8 +90,10 @@ namespace Neptune::Container {
 		* @brief Remove an element inside the container if founded by key.
 		* 
 		* @param[in] key K the key.
+		* 
+		* @return Returns true if succeeded.
 		*/
-		void Erase(const K& key);
+		bool Erase(const K& key);
 
 		/**
 		* @brief Iter the container in order.
@@ -163,11 +173,9 @@ namespace Neptune::Container {
 	template<typename K, typename V>
 	inline void LinkedUnorderedMap<K, V>::PushBack(const K& key, const V& value)
 	{
-		auto hasKey = Contains(key);
-
 		std::unique_lock lock(m_Mutex);
 
-		if (!hasKey)
+		if (!m_Map.contains(key))
 		{
 			m_Keys.push_back(key);
 
@@ -180,10 +188,10 @@ namespace Neptune::Container {
 	template<typename K, typename V>
 	inline const V& LinkedUnorderedMap<K, V>::At(const K& key) const
 	{
-		if (!Contains(key)) return vNull;
-
 		std::shared_lock lock(m_Mutex);
 
+		if (!m_Map.contains(key)) return vNull;
+		
 		return m_Map.at(key);
 	}
 
@@ -196,17 +204,19 @@ namespace Neptune::Container {
 	}
 
 	template<typename K, typename V>
-	inline void LinkedUnorderedMap<K, V>::Erase(const K& key)
+	inline bool LinkedUnorderedMap<K, V>::Erase(const K& key)
 	{
 		std::unique_lock lock(m_Mutex);
 
-		if (!m_Map.contains(key)) return;
+		if (!m_Map.contains(key)) return false;
 		
 		m_Keys.remove(key);
 		
 		m_Map.erase(m_Map.find(key));
 
 		--m_Size;
+		
+		return true;
 	}
 
 	template<typename K, typename V>
@@ -232,16 +242,16 @@ namespace Neptune::Container {
 	template<typename K, typename V>
 	inline const V& LinkedUnorderedMap<K, V>::Prev(const K& key) const
 	{
-		if (!Contains(key)) return vNull;
-
 		std::shared_lock lock(m_Mutex);
 		
-		if (key == m_Keys.front()) return vNull;
+		if (m_Keys.empty()) return vNull;
 		
 		for (auto it = m_Keys.begin(); it != m_Keys.end(); ++it)
 		{
 			if (*it == key)
 			{
+				if (it == m_Keys.begin()) return vNull;
+				
 				return m_Map.at(*std::prev(it));
 			}
 		}
@@ -252,17 +262,19 @@ namespace Neptune::Container {
 	template<typename K, typename V>
 	inline const V& LinkedUnorderedMap<K, V>::Next(const K& key) const
 	{
-		if (!Contains(key)) return vNull;
-
 		std::shared_lock lock(m_Mutex);
 		
-		if (key == m_Keys.back()) return vNull;
+		if (m_Keys.empty()) return vNull;
 		
 		for (auto it = m_Keys.begin(); it != m_Keys.end(); ++it)
 		{
 			if (*it == key)
 			{
-				return m_Map.at(*std::next(it));
+				auto next = std::next(it);
+
+				if (next == m_Keys.end()) return vNull;
+
+				return m_Map.at(*next);
 			}
 		}
 
@@ -274,7 +286,7 @@ namespace Neptune::Container {
 	{
 		std::shared_lock lock(m_Mutex);
 
-		if (Size() == 0) return vNull;
+		if (m_Keys.empty()) return vNull;
 
 		return m_Map.at(m_Keys.front());
 	}
@@ -284,7 +296,7 @@ namespace Neptune::Container {
 	{
 		std::shared_lock lock(m_Mutex);
 
-		if (Size() == 0) return vNull;
+		if (m_Keys.empty()) return vNull;
 
 		return m_Map.at(m_Keys.back());
 	}
@@ -294,7 +306,7 @@ namespace Neptune::Container {
 	{
 		std::shared_lock lock(m_Mutex);
 
-		if (Size() == 0) return kNull;
+		if (m_Keys.empty()) return kNull;
 
 		return m_Keys.back();
 	}

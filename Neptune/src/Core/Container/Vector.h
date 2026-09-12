@@ -6,17 +6,25 @@
 
 #pragma once
 
+#include <cstdlib>
+#include <memory>
+#include <utility>
+
 namespace Neptune::Container {
 
 	/**
 	* @brief This Class is similar to std::vector
-	* The difference between that is this one allocates memory by malloc rather than new.
-	* This is important is ObjectPool.
+	* Used In:
+	* MemoryPool.
+	* 
+	* @note Not thread safe.
 	*/
 	template<typename T>
 	class Vector
 	{
 	public:
+		
+		NONE_COPY(Vector)
 		
 		static const T null;
 		
@@ -32,6 +40,54 @@ namespace Neptune::Container {
 		*/
 		virtual ~Vector();
 
+		/**
+		* @brief Move Constructor Function.
+		* 
+		* @param[in] other Vector.
+		*/
+		Vector(Vector&& other) noexcept
+			: m_Begin(other.m_Begin)
+			, m_End(other.m_End)
+			, m_UseCount(other.m_UseCount)
+			, m_SpareCount(other.m_SpareCount)
+			, m_ExpandRate(other.m_ExpandRate)
+		{
+			other.m_Begin      = nullptr;
+			other.m_End        = nullptr;
+			other.m_UseCount   = 0;
+			other.m_SpareCount = 0;
+		}
+		
+		/**
+		* @brief Move Assignment Operation.
+		*
+		* @param[in] other Vector.
+		*/
+		Vector& operator=(Vector&& other) noexcept
+		{
+			if (this == &other) return *this;
+			
+			for (size_t i = 0; i < m_UseCount; ++i)
+			{
+				std::destroy_at(&m_Begin[i]);
+			}
+			
+			free(m_Begin);
+
+			m_Begin      = other.m_Begin;
+			m_End        = other.m_End;
+			m_UseCount   = other.m_UseCount;
+			m_SpareCount = other.m_SpareCount;
+			m_ExpandRate = other.m_ExpandRate;
+
+			other.m_Begin      = nullptr;
+			other.m_End        = nullptr;
+			other.m_UseCount   = 0;
+			other.m_SpareCount = 0;
+
+			return *this;
+		}
+		
 		/**
 		* @brief Get vector Begin Pointer.
 		* 
@@ -71,8 +127,8 @@ namespace Neptune::Container {
 
 	private:
 		
-		T* m_Begin          = nullptr;      // @brief Vector Begin Pointer.
-		T* m_End            = nullptr;      // @brief Vector End Pointer.
+		T*     m_Begin      = nullptr;      // @brief Vector Begin Pointer.
+		T*     m_End        = nullptr;      // @brief Vector End Pointer.
 		size_t m_UseCount   = 0;            // @brief vector used size.
 		size_t m_SpareCount = 0;            // @brief vector spare count.
 		size_t m_ExpandRate = 2;            // @brief Vector expand rate.
@@ -86,56 +142,45 @@ namespace Neptune::Container {
 	{
 		if (m_UseCount == 0) return;
 		
+		for (size_t i = 0; i < m_UseCount; ++i)
+		{
+			std::destroy_at(&m_Begin[i]);
+		}
+
 		free(m_Begin);
 	}
 
 	template<typename T>
 	inline void Vector<T>::PushBack(const T& element)
 	{
-		if (m_SpareCount != 0)
+		if (m_SpareCount == 0)
 		{
-			*m_End = element;
+			const size_t oldCount       = m_UseCount;
+			const size_t newCapacity    = oldCount == 0 ? m_ExpandRate : oldCount * m_ExpandRate;
+			const size_t newBytes       = sizeof(T) * newCapacity;
 
-			++m_UseCount;
-			--m_SpareCount;
-			++m_End;
-		}
-		else
-		{
-			if (m_UseCount == 0)
+			T* om       = m_Begin;
+			T* newBegin = static_cast<T*>(malloc(newBytes));
+
+			for (size_t i = 0; i < oldCount; ++i)
 			{
-				const size_t bytes = sizeof(T) * m_ExpandRate;
+				std::construct_at(&newBegin[i], std::move(om[i]));
 
-				m_UseCount   = 1;
-				m_SpareCount = m_ExpandRate - 1;
-
-				m_Begin      = static_cast<T*>(malloc(bytes));
-						     
-				m_End        = m_Begin;
-				*m_End       = element;
-				++m_End;
+				std::destroy_at(&om[i]);
 			}
-			else
-			{
-				T*    om           = m_Begin;
-				const size_t ob    = sizeof(T) * m_UseCount;
-				const size_t nb    = sizeof(T) * m_UseCount * m_ExpandRate;
-				m_SpareCount       = (nb - ob) / sizeof(T);
-      
-				m_Begin            = static_cast<T*>(malloc(nb));
-				memset(m_Begin, 0, nb);
-				memcpy(m_Begin, om, ob);
 
-				m_End              = reinterpret_cast<T*>(reinterpret_cast<char*>(m_Begin) + ob);
-				*m_End             = std::move(element);
+			free(om);
 
-				++m_UseCount;
-				--m_SpareCount;
-				++m_End;
-
-				free(om);
-			}
+			m_Begin       = newBegin;
+			m_End         = m_Begin + oldCount;
+			m_SpareCount  = newCapacity - oldCount;
 		}
+
+		std::construct_at(m_End, element);
+
+		++m_UseCount;
+		--m_SpareCount;
+		++m_End;
 	}
 
 	template<typename T>
@@ -143,6 +188,6 @@ namespace Neptune::Container {
 	{
 		if (m_UseCount <= index) return null;
 
-		return *(reinterpret_cast<T*>(reinterpret_cast<char*>(m_Begin) + sizeof(T) * index));
+		return m_Begin[index];
 	}
 }

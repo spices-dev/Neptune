@@ -11,7 +11,7 @@
 #include "Core/Core.h"
 #include "Infrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/Queue.h"
-#include "Core/Container/ThreadQueue.hpp"
+#include "Core/Container/ThreadQueue.h"
 
 namespace Neptune::Vulkan {
 
