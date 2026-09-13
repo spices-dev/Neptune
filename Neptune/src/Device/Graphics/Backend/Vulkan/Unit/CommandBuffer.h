@@ -130,7 +130,7 @@ namespace Neptune::Vulkan::Unit {
 		* @param[in] offset VkDeviceSize.
 		* @param[in] indexType VkIndexType.
 		*/
-		void CmdBindIndexBuffer(VkBuffer buffer, VkDeviceSize offset, VkIndexType indexType) const;
+		void BindIndexBuffer(VkBuffer buffer, VkDeviceSize offset, VkIndexType indexType) const;
 		
 		/**
 		* @brief PushConstants.
@@ -140,7 +140,7 @@ namespace Neptune::Vulkan::Unit {
 		* @param[in] size size.
 		* @param[in] offset offset.
 		*/
-		void CmdPushConstants(VkPipelineLayout layout, const void* data, uint32_t size, uint32_t offset = 0) const;
+		void PushConstants(VkPipelineLayout layout, const void* data, uint32_t size, uint32_t offset = 0) const;
 		
 		/**
 		* @brief Draw.

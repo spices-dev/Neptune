@@ -15,8 +15,7 @@
 #include "Device/Graphics/Backend/Vulkan/RHI/DescriptorList.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/Shader.h"
 #include "Device/Graphics/Backend/Vulkan/Converter.h"
-#include "Device/Graphics/Backend/Vulkan/Extension/DynamicRendering.h"
-#include "Device/Graphics/Backend/Vulkan/Infrastructure/Extensions.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/RenderPass/IRenderPass.h"
 
 namespace Neptune::Vulkan {
 
@@ -126,10 +125,7 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		auto& colorBlends = renderPass->GetRHIImpl<RenderPass>()->GetColorBlends();
-
-		m_ColorBlendInfo.attachmentCount = static_cast<uint32_t>(colorBlends.size());
-		m_ColorBlendInfo.pAttachments    = colorBlends.data();
+		m_ColorBlendInfo = renderPass->GetRHIImpl<RenderPass>()->GetMiddleware()->GetColorBlendInfo();
 
 		m_RenderPass = renderPass->GetRHIImpl<RenderPass>();
 	}
@@ -205,13 +201,6 @@ namespace Neptune::Vulkan {
 		inputInfo.vertexBindingDescriptionCount             = static_cast<uint32_t>(m_BindingDescriptions.size());
 		inputInfo.pVertexAttributeDescriptions              = m_AttributeDescriptions.empty() ? nullptr : m_AttributeDescriptions.data();
 		inputInfo.pVertexBindingDescriptions                = m_BindingDescriptions.empty() ? nullptr : m_BindingDescriptions.data();
-
-		auto& formats = m_RenderPass->GetColorAttachmentFormats();
-		
-		VkPipelineRenderingCreateInfoKHR                      renderInfo{};
-		renderInfo.sType                                    = VK_STRUCTURE_TYPE_PIPELINE_RENDERING_CREATE_INFO_KHR;
-		renderInfo.colorAttachmentCount                     = static_cast<uint32_t>(formats.size());
-		renderInfo.pColorAttachmentFormats                  = formats.data();
 		
 		VkGraphicsPipelineCreateInfo                          info{};
 		info.sType                                          = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
@@ -230,16 +219,8 @@ namespace Neptune::Vulkan {
 		info.subpass                                        = 0;			        	    
 		info.basePipelineIndex                              = -1;
 		info.basePipelineHandle                             = VK_NULL_HANDLE;
-		
-		if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDynamicRendering>())
-		{
-			info.renderPass                                 = VK_NULL_HANDLE;
-			info.pNext                                      = &renderInfo;
-		}
-		else
-		{
-			info.renderPass                                 = m_RenderPass->Handle();
-		}
+		info.renderPass                                     = m_RenderPass->GetMiddleware()->Handle();
+		info.pNext                                          = m_RenderPass->GetMiddleware()->GetRenderingInfo();
 		
 		m_Pipeline.CreateGraphicPipeline(GetContext().Get<IDevice>()->Handle(), info);
 

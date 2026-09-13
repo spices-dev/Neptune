@@ -10,7 +10,6 @@
 
 #include "CmdList.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/CommandBuffer.h"
-#include "Device/Graphics/Backend/Vulkan/Infrastructure/Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderPass.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/Pipeline.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/DescriptorList.h"
@@ -20,7 +19,6 @@
 #include "Device/Graphics/Frontend/RHI/RenderPass.h"
 #include "Data/Clock.h"
 #include "Device/Graphics/Backend/Vulkan/Converter.h"
-#include "Device/Graphics/Backend/Vulkan/Extension/DynamicRendering.h"
 
 namespace Neptune::Vulkan {
 
@@ -66,15 +64,7 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDynamicRendering>())
-		{
-			m_CommandBuffer->EndRendering();
-		}
-		else
-		{
-			m_CommandBuffer->EndRenderPass();
-		}
-		
+		m_RenderPass->EndRenderPass(m_CommandBuffer.get());
 	}
 
 	void CmdList::CmdBindDescriptor(const SP<RHI::DescriptorList>& descriptorList) const
@@ -120,14 +110,14 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		m_CommandBuffer->CmdBindIndexBuffer(buffer->GetRHIImpl<IndexBuffer>()->Handle(), 0, VK_INDEX_TYPE_UINT32);
+		m_CommandBuffer->BindIndexBuffer(buffer->GetRHIImpl<IndexBuffer>()->Handle(), 0, VK_INDEX_TYPE_UINT32);
 	}
 	
 	void CmdList::CmdUpdateShaderConstant(const void* data, uint32_t size, uint32_t offset) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		m_CommandBuffer->CmdPushConstants(m_PipelineLayout, data, size, offset);
+		m_CommandBuffer->PushConstants(m_PipelineLayout, data, size, offset);
 	}
 
 	void CmdList::CmdDraw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) const

@@ -112,14 +112,14 @@ namespace Neptune::Vulkan::Unit {
 		vkCmdSetScissor(m_Handle, 0, 1, &scissor);
 	}
 	
-	void CommandBuffer::CmdBindIndexBuffer(VkBuffer buffer, VkDeviceSize offset, VkIndexType indexType) const
+	void CommandBuffer::BindIndexBuffer(VkBuffer buffer, VkDeviceSize offset, VkIndexType indexType) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
 		vkCmdBindIndexBuffer(m_Handle, buffer, offset, indexType);
 	}
 
-	void CommandBuffer::CmdPushConstants(VkPipelineLayout layout, const void* data, uint32_t size, uint32_t offset) const
+	void CommandBuffer::PushConstants(VkPipelineLayout layout, const void* data, uint32_t size, uint32_t offset) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		

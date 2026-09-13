@@ -23,6 +23,11 @@ namespace Neptune::RHI {
 	class RenderTarget;
 }
 
+namespace Neptune::Vulkan::Middleware {
+	
+	class IRenderPass;
+}
+
 namespace Neptune::Vulkan {
 
 	/**
@@ -38,7 +43,7 @@ namespace Neptune::Vulkan {
 		*
 		* @param[in] context Context.
 		*/
-		explicit RenderPass(Context& context) : ContextAccessor(context) {}
+		explicit RenderPass(Context& context);
 
 		/**
 		* @brief Destructor Function.
@@ -70,13 +75,6 @@ namespace Neptune::Vulkan {
 	public:
 
 		/**
-		* @brief Get Unit Handle.
-		*
-		* @return Returns Unit Handle.
-		*/
-		const VkRenderPass& Handle() const { return m_RenderPass.GetHandle(); }
-
-		/**
 		* @brief Begin RenderPass.
 		*
 		* @param[in] commandBuffer CommandBuffer.
@@ -85,40 +83,22 @@ namespace Neptune::Vulkan {
 		void BeginRenderPass(const Unit::CommandBuffer* commandBuffer, uint32_t frameBufferIndex) const;
 
 		/**
-		* @brief Get ColorBlends.
-		*
-		* @return Returns VkPipelineColorBlendAttachmentState.
+		* @brief Interface of End RenderPass.
+		* 
+		* @param[in] commandBuffer CommandBuffer.
 		*/
-		const std::vector<VkPipelineColorBlendAttachmentState>& GetColorBlends() const { return m_ColorBlends; }
+		void EndRenderPass(const Unit::CommandBuffer* commandBuffer) const;
 
 		/**
-		* @brief Get ColorAttachmentFormats.
-		*
-		* @return Returns VkFormat.
+		* @brief Get Middleware.
+		* 
+		* @return Returns Middleware.
 		*/
-		const std::vector<VkFormat>& GetColorAttachmentFormats() const { return m_ColorAttachmentFormats; }
+		const UP<Middleware::IRenderPass>& GetMiddleware() const { return m_Interface; }
 		
 	private:
 
-		/**
-		* @brief Store Extent.
-		*
-		* @param[in] extent VkExtent2D.
-		*/
-		void StoreExtent(const VkExtent2D& extent);
-
-	private:
-
-		Unit::RenderPass                                  m_RenderPass;                      // @brief This RenderPass.
-		std::vector<SP<Unit::FrameBuffer>>                m_FrameBuffers;                    // @brief Container of FrameBuffer.
-
-		std::vector<VkAttachmentDescription>              m_AttachmentDescriptions;          // @brief VkAttachmentDescription.
-		std::vector<VkAttachmentReference>                m_ColorAttachmentReference;        // @brief VkAttachmentReference.
-		std::vector<VkFormat>                             m_ColorAttachmentFormats;          // @brief VkFormat.
-		std::vector<VkPipelineColorBlendAttachmentState>  m_ColorBlends;					 // @brief VkPipelineColorBlendAttachmentState.
-		std::vector<VkClearValue>                         m_ClearValues;					 // @brief VkClearValue.
-		std::vector<VkImageView>                          m_ImageViews;						 // @brief VkImageView.
-		std::optional<VkExtent2D>                         m_Extent;							 // @brief VkExtent2D.
+		UP<Middleware::IRenderPass> m_Interface; // @brief IRenderPass.
 	};
 }
 

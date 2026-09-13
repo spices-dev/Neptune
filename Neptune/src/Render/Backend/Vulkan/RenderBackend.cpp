@@ -21,6 +21,7 @@
 #include "World/Scene/Scene.h"
 #include "World/Component/Component.h"
 #include "Data/Clock.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/RenderPass/IRenderPass.h"
 
 namespace Neptune::Vulkan {
 	
@@ -86,7 +87,7 @@ namespace Neptune::Vulkan {
             context.Get<IGraphicCommandBuffer>()->Begin(beginInfo, clock.m_FrameIndex);
 		}
     	
-    	if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDynamicRendering>() && GetContext().Get<IExtensions>()->GetContext().Has<Extension::ISynchronization2>())
+    	if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::ISynchronization2>())
 		{
 			VkImageMemoryBarrier2                     barrier{};
 			barrier.sType                           = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2;
@@ -272,21 +273,14 @@ namespace Neptune::Vulkan {
     	
     	context.Registry<ASwapChainImageUsage>(VK_IMAGE_USAGE_TRANSFER_DST_BIT);
 
-    	if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDynamicRendering>())
-    	{
-    		auto& formats = pass->GetRenderPass()->GetRHIImpl<RenderPass>()->GetColorAttachmentFormats();
-		
-    		VkPipelineRenderingCreateInfoKHR                      renderInfo{};
-    		renderInfo.sType                                    = VK_STRUCTURE_TYPE_PIPELINE_RENDERING_CREATE_INFO_KHR;
-    		renderInfo.colorAttachmentCount                     = static_cast<uint32_t>(formats.size());
-    		renderInfo.pColorAttachmentFormats                  = formats.data();
-    		
-    		context.Registry<APipelineRenderingCreateInfo>(renderInfo);
-    	}
-	    else
-	    {
-	    	context.Registry<ASwapChainRenderPass>(pass->GetRenderPass()->GetRHIImpl<RenderPass>()->Handle());
-	    }
+		if (auto info = pass->GetRenderPass()->GetRHIImpl<RenderPass>()->GetMiddleware()->GetRenderingInfo())
+		{
+			context.Registry<APipelineRenderingCreateInfo>(*info);
+		}
+		else if (auto handle = pass->GetRenderPass()->GetRHIImpl<RenderPass>()->GetMiddleware()->Handle())
+		{
+			context.Registry<ASwapChainRenderPass>(handle);
+		}
     	
 		return context.GetInfrastructures();
 	}
