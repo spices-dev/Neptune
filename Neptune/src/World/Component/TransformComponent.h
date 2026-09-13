@@ -38,7 +38,7 @@ namespace Neptune {
         /**
         * @brief Destructor Function.
         */
-        ~TransformComponent() override = default;
+        virtual ~TransformComponent() = default;
 
         /**
         * @brief Get the modelMatrix variable.

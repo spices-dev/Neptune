@@ -149,9 +149,11 @@ namespace Neptune::Tool {
         {
             f_rest = splat.request_properties_from_element("vertex", sh_rest_names);
         }
-        catch (...) 
+        catch (const std::exception & e) 
         {
-            f_rest.reset();
+            NEPTUNE_LOG_CORE(E) << "tinyply exception: " << e.what();
+            
+            return false;
         }
         
         splat.read(stream);

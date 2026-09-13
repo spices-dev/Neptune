@@ -34,7 +34,7 @@ namespace Neptune {
         /**
         * @brief Destructor Function.
         */
-        ~SOPComponent() override = default;
+        virtual ~SOPComponent() = default;
 
     };
 }

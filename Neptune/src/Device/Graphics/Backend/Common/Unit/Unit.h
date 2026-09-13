@@ -24,6 +24,8 @@ namespace Neptune::Graphic::Common {
 
 		using Handle = H;
 
+		NONE_COPY(Unit)
+		
 	public:
 
 		/**
@@ -36,6 +38,34 @@ namespace Neptune::Graphic::Common {
 		*/
 		virtual ~Unit() { ResetHandle(); }
 
+		/**
+		* @brief Move Constructor Function.
+		*
+		* @param[in] other Unit.
+		*/
+		Unit(Unit&& other) noexcept
+		{
+			SetHandle(other.GetHandle());
+			
+			other.ResetHandle();
+		}
+
+		/**
+		* @brief Move Assignment Operation.
+		*
+		* @param[in] other Unit.
+		* 
+		* @return Returns this.
+		*/
+		Unit& operator=(Unit&& other) noexcept
+		{
+			SetHandle(other.GetHandle());
+			
+			other.ResetHandle();
+			
+			return *this;
+		}
+		
 		/**
 		* @brief Get Enum of Unit.
 		* 

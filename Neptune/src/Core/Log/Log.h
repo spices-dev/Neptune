@@ -159,6 +159,14 @@ namespace Neptune {
 #define NEPTUNE_BREAK
 #endif
 
+#ifdef NEPTUNE_DEBUG
+#define NEPTUNE_ASSERT(v)  if (!v) { NEPTUNE_BREAK }
+#endif
+
+#ifdef NEPTUNE_RELEASE
+#define NEPTUNE_ASSERT(v)
+#endif
+
 // Core log macros
 #define NEPTUNE_LOG_CORE(level)                                              \
     if constexpr (!Neptune::IsLogLevelEnabled<Neptune::LogStream::LogLevel::level>()) {} \

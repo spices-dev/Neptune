@@ -34,7 +34,7 @@ namespace Neptune::Vulkan::Unit {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		assert(device);
+		NEPTUNE_ASSERT(device)
 
 		m_Device = device;
 

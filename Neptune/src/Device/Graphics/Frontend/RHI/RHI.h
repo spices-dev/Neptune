@@ -78,7 +78,18 @@ namespace Neptune::RHI {
 		{
 			NEPTUNE_PROFILE_ZONE
 
-			m_Impl = std::any_cast<SP<Impl>>(std::invoke(RHIDelegate::GetCreator(), E, payload));
+			auto result = std::invoke(RHIDelegate::GetCreator(), E, payload);
+			
+			if (result.type() == typeid(std::nullptr_t))
+			{
+				NEPTUNE_LOG_CORE(E) << "RHI: [ "<< ToString(E) <<" ] Create Failed.";
+				
+				NEPTUNE_BREAK
+			}
+			else
+			{
+				m_Impl = std::any_cast<SP<Impl>>(result);
+			}
 		}
 
 		/**

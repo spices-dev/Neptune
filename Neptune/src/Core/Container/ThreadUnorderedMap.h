@@ -92,7 +92,7 @@ namespace Neptune::Container {
 		
 		mutable std::shared_mutex m_Mutex;    // @brief Mutex of this queue.
 		std::unordered_map<K, V> m_Map;       // @brief This wrapped unordered_map.
-		std::atomic_uint32_t m_Count;         // @brief elements of this unordered_map.
+		std::atomic_uint32_t m_Count = 0;     // @brief elements of this unordered_map.
 		
 	};
 	

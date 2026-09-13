@@ -69,7 +69,7 @@ namespace Neptune::WebGPU {
 
         switch(e)
 		{
-			default:                          NEPTUNE_LOG_CORE(E) << "WebGPU do not support this RHI.";          return nullptr;
+			default:                          NEPTUNE_LOG_CORE(E) << "WebGPU do not support RHI: [ " << ToString(e) << " ].";          return nullptr;
 		}
 	}
 

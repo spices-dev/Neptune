@@ -31,4 +31,25 @@ namespace Neptune::RHI {
         Count
     };
     
+    inline std::string ToString(ERHI e)
+    {
+        switch (e)
+        {
+            case ERHI::Capability:           return "Capability";
+            case ERHI::RenderPass:           return "RenderPass";
+            case ERHI::DescriptorList:       return "DescriptorList";
+            case ERHI::Pipeline:             return "Pipeline";
+            case ERHI::Shader:               return "Shader";
+            case ERHI::RenderTarget:         return "RenderTarget";
+            case ERHI::VertexBuffer:         return "VertexBuffer";
+            case ERHI::IndexBuffer:          return "IndexBuffer";
+            case ERHI::Buffer:               return "Buffer";
+            case ERHI::CmdList:              return "CmdList";
+            case ERHI::CmdList2:             return "CmdList2";
+            case ERHI::Decoder:              return "Decoder";
+            case ERHI::OpticalFlow:          return "OpticalFlow";
+            default:                         return "NonNamed";
+        }
+    }
+    
 }

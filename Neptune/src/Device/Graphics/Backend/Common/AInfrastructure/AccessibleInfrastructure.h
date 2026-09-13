@@ -43,6 +43,10 @@ namespace Neptune::Graphic::Common {
     {
     public:
         
+        NONE_COPY(AccessibleContext)
+        
+    public:
+        
         /**
         * @brief Constructor Function.
         */

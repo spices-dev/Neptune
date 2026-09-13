@@ -33,7 +33,7 @@ namespace Neptune {
         /**
         * @brief Destructor Function.
         */
-        ~TagComponent() override = default;
+        virtual ~TagComponent() = default;
 
         /**
         * @brief Rename first element in tags.

@@ -27,7 +27,7 @@ namespace Neptune::Vulkan::Unit {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		assert(device && info.commandPool);
+		NEPTUNE_ASSERT(device && info.commandPool)
 
 		m_Device = device;
 		m_CommandPool = info.commandPool;

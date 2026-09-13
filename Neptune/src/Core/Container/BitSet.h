@@ -85,6 +85,8 @@ namespace Neptune::Container {
         * @brief Copy Assignment Operation.
         *
         * @param[in] other BitSet.
+        * 
+        * @return Returns this.
         */
         BitSet& operator=(const BitSet& other)
         {
@@ -111,6 +113,8 @@ namespace Neptune::Container {
         * @brief Move Assignment Operation.
         *
         * @param[in] other BitSet.
+        * 
+        * @return Returns this.
         */
         BitSet& operator=(BitSet&& other) noexcept
         {

@@ -158,7 +158,7 @@ namespace Neptune::Vulkan {
 			case RHI::ERHI::CmdList2:         return std::static_pointer_cast<RHI::RHICmdList2::Impl>      (CreateSP<CmdList2>             (*m_Context));
 			case RHI::ERHI::Decoder:          return std::static_pointer_cast<RHI::RHIDecoder::Impl>       (Decoder::Create                (*m_Context, payload));
 			case RHI::ERHI::OpticalFlow:      return std::static_pointer_cast<RHI::RHIOpticalFlow::Impl>   (CreateSP<OpticalFlowSession>   (*m_Context));
-			default:                          NEPTUNE_LOG_CORE(E) << "Vulkan do not support this RHI.";          return nullptr;
+			default:                          NEPTUNE_LOG_CORE(E) << "Vulkan do not support RHI: [ " << ToString(e) << " ].";         return nullptr;
 		}
 	}
 

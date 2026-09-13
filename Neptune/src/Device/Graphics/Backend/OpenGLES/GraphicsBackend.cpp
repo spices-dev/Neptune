@@ -72,9 +72,9 @@ namespace Neptune::OpenGLES {
 			case RHI::ERHI::IndexBuffer:      return std::static_pointer_cast<RHI::RHIIndexBuffer::Impl>   (CreateSP<IndexBuffer>          (*m_Context));
             case RHI::ERHI::CmdList:          return std::static_pointer_cast<RHI::RHICmdList::Impl>       (CreateSP<CmdList>              (*m_Context));
 			case RHI::ERHI::CmdList2:         return std::static_pointer_cast<RHI::RHICmdList2::Impl>      (CreateSP<CmdList2>             (*m_Context));
-            case RHI::ERHI::Decoder:          NEPTUNE_LOG_CORE(E) << "OpenGL do not support Decoder RHI.";       return nullptr;
-            case RHI::ERHI::OpticalFlow:      NEPTUNE_LOG_CORE(E) << "OpenGL do not support OpticalFlow RHI.";   return nullptr;
-			default:                          NEPTUNE_LOG_CORE(E) << "OpenGL do not support this RHI.";          return nullptr;
+            case RHI::ERHI::Decoder:          NEPTUNE_LOG_CORE(E) << "OpenGL do not support RHI: [ " << ToString(e) << " ].";       return nullptr;
+            case RHI::ERHI::OpticalFlow:      NEPTUNE_LOG_CORE(E) << "OpenGL do not support RHI: [ " << ToString(e) << " ].";   return nullptr;
+			default:                          NEPTUNE_LOG_CORE(E) << "OpenGL do not support RHI: [ " << ToString(e) << " ].";          return nullptr;
 		}
 	}
 

@@ -25,7 +25,7 @@ namespace Neptune::Vulkan::Unit {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		assert(!m_Handle);
+		NEPTUNE_ASSERT(!m_Handle)
 
 		VULKAN_CHECK(vkCreateInstance(&createInfo, GetAllocator(), &m_Handle))
 	}

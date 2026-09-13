@@ -18,8 +18,12 @@ namespace Neptune {
     * When we add a new Component, we need Specialization from this.
     */
     template<typename T>
-    class Component : public NonCopyable
+    class Component
     {
+    public:
+        
+        NONE_COPY(Component)
+        
     public:
 
         /**
@@ -33,11 +37,6 @@ namespace Neptune {
         template<typename T1>
         requires (!IsSame<std::decay_t<T1>, Component>)
         explicit Component(T1&& t) : m_Model(t) {}
-
-        /**
-        * @brief Destructor Function.
-        */
-        virtual ~Component() = default;
 
         /**
         * @brief This interface defines the behaves on specific component attached.

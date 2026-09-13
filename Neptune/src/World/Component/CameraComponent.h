@@ -34,7 +34,7 @@ namespace Neptune {
         /**
         * @brief Destructor Function.
         */
-        ~CameraComponent() override = default;
+        virtual ~CameraComponent() = default;
 
     };
 }

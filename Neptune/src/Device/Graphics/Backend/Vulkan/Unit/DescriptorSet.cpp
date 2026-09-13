@@ -25,7 +25,7 @@ namespace Neptune::Vulkan::Unit {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		assert(device && info.descriptorPool);
+		NEPTUNE_ASSERT(device && info.descriptorPool)
 
 		m_Device = device;
 		m_DescriptorPool = info.descriptorPool;

@@ -25,7 +25,7 @@ namespace Neptune::Vulkan::Unit {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		assert(physicalDevice && createInfo && !m_Handle);
+		NEPTUNE_ASSERT(physicalDevice && createInfo && !m_Handle)
 
 		VULKAN_CHECK(vkCreateDevice(physicalDevice, createInfo, GetAllocator(), &m_Handle))
 	}
@@ -38,7 +38,7 @@ namespace Neptune::Vulkan::Unit {
 
 		vkGetDeviceQueue(m_Handle, queueFamilyIndex, queueIndex, &queue);
 
-		assert(queue);
+		NEPTUNE_ASSERT(queue)
 
 		return queue;
 	}

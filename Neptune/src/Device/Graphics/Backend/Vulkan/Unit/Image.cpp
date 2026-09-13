@@ -42,7 +42,7 @@ namespace Neptune::Vulkan::Unit {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		assert(device);
+		NEPTUNE_ASSERT(device)
 
 		vkAlloc alloc{};
 		alloc.device = device;
@@ -81,7 +81,7 @@ namespace Neptune::Vulkan::Unit {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		assert(vma);
+		NEPTUNE_ASSERT(vma)
 
 		vmaAlloc alloc{};
 		alloc.vma = vma;

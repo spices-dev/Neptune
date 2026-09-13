@@ -123,7 +123,7 @@ namespace Neptune::Container {
 		* 
 		* @return Returns element.
 		*/
-		const T& Get(size_t index);
+		const T& Get(size_t index) const;
 
 	private:
 		
@@ -184,7 +184,7 @@ namespace Neptune::Container {
 	}
 
 	template<typename T>
-	inline const T& Vector<T>::Get(size_t index)
+	inline const T& Vector<T>::Get(size_t index) const
 	{
 		if (m_UseCount <= index) return null;
 

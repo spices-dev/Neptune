@@ -28,7 +28,7 @@ namespace Neptune {
         /**
         * @brief Destructor Function.
         */
-        ~ScriptComponent() override = default;
+        virtual ~ScriptComponent() = default;
         
         /**
         * @brief Add a script to this component.

@@ -22,13 +22,13 @@ namespace Neptune::Vulkan {
 	*/
 	struct SwapChainProperty
 	{
-		VkSurfaceCapabilitiesKHR        capabilities;       // @brief VkSurfaceCapabilitiesKHR.
-		std::vector<VkSurfaceFormatKHR> formats;            // @brief VkSurfaceFormatKHR.
-		std::vector<VkPresentModeKHR>   presentModes;       // @brief VkPresentModeKHR.
-		VkSurfaceFormatKHR              format;             // @brief VkSurfaceFormatKHR.
-		VkPresentModeKHR                presentMode;        // @brief VkPresentModeKHR.
-		VkExtent2D                      surfaceSize;        // @brief VkExtent2D.
-		VkExtent2D                      viewPortSize;       // @brief VkExtent2D.
+		VkSurfaceCapabilitiesKHR        capabilities;                           // @brief VkSurfaceCapabilitiesKHR.
+		std::vector<VkSurfaceFormatKHR> formats;                                // @brief VkSurfaceFormatKHR.
+		std::vector<VkPresentModeKHR>   presentModes;                           // @brief VkPresentModeKHR.
+		VkSurfaceFormatKHR              format;                                 // @brief VkSurfaceFormatKHR.
+		VkPresentModeKHR                presentMode;                            // @brief VkPresentModeKHR.
+		VkExtent2D                      surfaceSize = {0, 0};      // @brief VkExtent2D.
+		VkExtent2D                      viewPortSize = {0, 0};;    // @brief VkExtent2D.
 	};
 
 	/**

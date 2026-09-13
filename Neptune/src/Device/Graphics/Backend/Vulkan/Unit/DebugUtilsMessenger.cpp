@@ -33,7 +33,7 @@ namespace Neptune::Vulkan::Unit {
     {
         NEPTUNE_PROFILE_ZONE
 
-        assert(instance);
+        NEPTUNE_ASSERT(instance)
 
         m_Instance = instance;
 
