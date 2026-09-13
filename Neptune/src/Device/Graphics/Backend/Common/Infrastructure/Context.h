@@ -6,11 +6,7 @@
 
 #pragma once
 #include "Core/Core.h"
-#include "Device/Graphics/Backend/Common/Concept.h"
 #include "Device/Graphics/Backend/Common/Context/Context.h"
-#include "Core/Container/KVTuple.h"
-
-#include <array>
 
 namespace Neptune::Graphic::Common {
 

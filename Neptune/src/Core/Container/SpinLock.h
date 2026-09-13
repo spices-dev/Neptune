@@ -1,5 +1,5 @@
 /**
-* @file SpinLock.hpp.
+* @file SpinLock.h.
 * @brief The SpinLock Class Definitions and Implementation.
 * @author Spices.
 */

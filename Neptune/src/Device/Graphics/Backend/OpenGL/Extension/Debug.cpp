@@ -17,7 +17,7 @@ namespace Neptune::OpenGL::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        if constexpr (IsCoreExtension<decltype(*this)>) return;
+        if (IsCoreExtension<decltype(*this)>()) return;
 
         // New
         AddExtensions("GL_KHR_debug");

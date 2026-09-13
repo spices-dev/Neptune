@@ -38,7 +38,7 @@ namespace Neptune {
 		* 
 		* @param[in] fn function pointer of create resource instance.
 		*/
-		explicit Resource(std::function<std::any()> fn)
+		explicit Resource(const std::function<std::any()>& fn)
 			: m_Creator(fn)
 			, m_State(ResourceStateEnum::UnLoad)
 		{}
@@ -49,7 +49,7 @@ namespace Neptune {
 		* 
 		* @param[in] resource Resource instance.
 		*/
-		explicit Resource(std::any resource)
+		explicit Resource(const std::any& resource)
 			: m_Creator(nullptr)
 			, m_State(ResourceStateEnum::Loaded)
 			, m_Resource(resource)
@@ -92,16 +92,20 @@ namespace Neptune {
 
 	private:
 		
-		std::any m_Resource;                  // @brief Resource instance wrapper.
-		ResourceStateEnum m_State;            // @brief Resource state.
-		std::function<std::any()> m_Creator;  // @brief Resource create function.
-		std::mutex m_Mutex;                   // @brief Mutex of this resource.
+		std::any m_Resource;                               // @brief Resource instance wrapper.
+		std::atomic<ResourceStateEnum> m_State;            // @brief Resource state.
+		std::function<std::any()> m_Creator;               // @brief Resource create function.
+		mutable std::mutex m_Mutex;                        // @brief Mutex of this resource.
 	};
 
 	inline void Resource::UnLoad()
 	{
 		NEPTUNE_PROFILE_ZONE
 
+		std::unique_lock lock(m_Mutex);
+		
+		if (m_State == ResourceStateEnum::UnLoad) return;
+		
 		m_State = ResourceStateEnum::OnDestroy;
 
 		m_Resource.reset();
@@ -113,6 +117,10 @@ namespace Neptune {
 	{
 		NEPTUNE_PROFILE_ZONE
 
+		std::unique_lock lock(m_Mutex);
+		
+		if (m_State == ResourceStateEnum::Loaded) return;
+		
 		m_State = ResourceStateEnum::OnLoading;
 
 		m_Resource = std::invoke(m_Creator);
@@ -121,26 +129,23 @@ namespace Neptune {
 	}
 
 	template<typename T>
-	inline std::shared_ptr<T> Resource::GetResource()
+	inline SP<T> Resource::GetResource()
 	{
 		NEPTUNE_PROFILE_ZONE
 
+		std::unique_lock lock(m_Mutex);
+
 		if (m_State == ResourceStateEnum::Loaded)
 		{
-			return std::any_cast<std::shared_ptr<T>>(m_Resource);
+			return std::any_cast<SP<T>>(m_Resource);
 		}
 
-		{
-			std::unique_lock lock(m_Mutex);
+		m_State = ResourceStateEnum::OnLoading;
 
-			if (m_State == ResourceStateEnum::Loaded)
-			{
-				return std::any_cast<std::shared_ptr<T>>(m_Resource);
-			}
+		m_Resource = std::invoke(m_Creator);
 
-			CreateResource();
+		m_State = ResourceStateEnum::Loaded;
 
-			return std::any_cast<std::shared_ptr<T>>(m_Resource);
-		}
+		return std::any_cast<SP<T>>(m_Resource);
 	}
 }

@@ -37,6 +37,13 @@ namespace Neptune::OpenGL {
         */
         ~Extensions() override = default;
 
+        /**
+        * @brief Get ApiVersion Name.
+        * 
+        * @return Returns ApiVersion Name.
+        */
+        const char* GetApiVersionName() const;
+        
     private:
 
         /**
@@ -47,6 +54,7 @@ namespace Neptune::OpenGL {
     private:
 
         Extension::EContext<EExtension> m_Context;              // @brief This EContext.
+        uint32_t m_ApiVersion;                                  // @brief Runtime Version.
         std::vector<const char*> m_Extensions;                  // @brief Extensions.
     };
 	

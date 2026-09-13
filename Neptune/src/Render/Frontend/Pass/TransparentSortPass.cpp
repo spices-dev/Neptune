@@ -194,9 +194,9 @@ namespace Neptune::Render {
 				
 				m_SortParam->CreateBuffer(sizeof(*sortParams));
 				
-				m_SortParam->WriteToBuffer(sortParams->data(), sizeof(*sortParams));
+				m_SortParam->WriteToBuffer(sortParams->data());
 				
-				m_SortParam->Flush(sizeof(*sortParams));
+				m_SortParam->Flush();
 			}
 		}
 		

@@ -26,6 +26,14 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		uint32_t apiVersion  = VK_API_VERSION_1_0;
+		
+		VULKAN_CHECK(vkEnumerateInstanceVersion(&apiVersion))
+		
+		apiVersion = std::min(apiVersion, VK_DEV_VERSION);
+		
+		Extension::Extension::SetApiVersion(apiVersion);
+		
 		if (window)
 		{
 			m_Context.Registry<Extension::ISwapChain>(Extension::EExtensionState::Core, window->Extension());

@@ -41,6 +41,15 @@ namespace Neptune::Vulkan::Extension {
     class Extension
     {
     public:
+        
+        /**
+        * @brief Set ApiVersion.
+        * 
+        * @param[in] version ApiVersion.
+        */
+        static void SetApiVersion(uint32_t version);
+        
+    public:
 
         /**
         * @brief Constructor Function.
@@ -154,20 +163,34 @@ namespace Neptune::Vulkan::Extension {
         */
         virtual bool IsSurfaceFormatsSatisfied(const std::vector<VkSurfaceFormatKHR>& formats) { return true; }
         
+        /**
+        * @brief Link Structure To Chain.
+        * 
+        * @param[in,out] pNext .
+        * @param[in] filter .
+        * @param[in] t Structure.
+        */
         template<typename T>
-        requires IsVkStructure<RemoveRef<T>>
-        void LinkToChain(void**& pNext, const std::function<bool(VkStructureType)>& filter, T& t)
-        {
-            NEPTUNE_PROFILE_ZONE
-
-            if (!std::invoke(filter, t.sType)) return;
-            
-            *pNext = &t;
-
-            pNext  = &t.pNext;
-
-            *pNext = nullptr;
-        }
+        requires IsVkStructure<Decay<T>>
+        void LinkToChain(void**& pNext, const std::function<bool(VkStructureType)>& filter, T& t);
+        
+        /**
+        * @brief Is IsCoreExtension.
+        * 
+        * @tparam T IsExtension.
+        */
+        template<typename T>
+        requires IsBase<Extension, Decay<T>>
+        bool IsCoreExtension() const;
+        
+    private:
+        
+        /**
+        * @brief Get ApiVersion.
+        * 
+        * @return Returns ApiVersion.
+        */
+        uint32_t GetApiVersion() const;
         
     private:
         
@@ -175,6 +198,37 @@ namespace Neptune::Vulkan::Extension {
         std::unordered_map<const char*, bool> m_InstanceExtensions;      // @brief VkInstance Extensions.
         std::unordered_map<const char*, bool> m_DeviceExtensions;        // @brief VkPhysicalDevice/VkDevice Extensions.
     };
+
+    template <typename T>
+    requires IsVkStructure<Decay<T>>
+    void Extension::LinkToChain(void**& pNext, const std::function<bool(VkStructureType)>& filter, T& t)
+    {
+        NEPTUNE_PROFILE_ZONE
+
+        if (!std::invoke(filter, t.sType)) return;
+            
+        *pNext = &t;
+
+        pNext  = &t.pNext;
+
+        *pNext = nullptr;
+    }
+
+    template <typename T>
+    requires IsBase<Extension, Decay<T>>
+    bool Extension::IsCoreExtension() const
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        if constexpr (!requires { Decay<T>::CoreVersion; })
+        {
+            return false;
+        }
+        else
+        {
+            return GetApiVersion() >= Decay<T>::CoreVersion;
+        }
+    }
 }
 
 #endif

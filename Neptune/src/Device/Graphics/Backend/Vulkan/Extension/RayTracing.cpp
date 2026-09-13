@@ -17,7 +17,7 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
         
-        if constexpr (IsCoreExtension<decltype(*this)>) return;
+        if (IsCoreExtension<decltype(*this)>()) return;
 
         AddDeviceExtensions(VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME);
         AddDeviceExtensions(VK_KHR_RAY_TRACING_PIPELINE_EXTENSION_NAME);

@@ -38,7 +38,7 @@ namespace Neptune::Vulkan {
         
         VkBufferCreateInfo                   info{};
         info.sType                         = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-        info.size                          = size;
+        info.size                          = std::min(size, m_Buffer.Size());
         info.usage                         = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
         info.sharingMode                   = VK_SHARING_MODE_EXCLUSIVE;
         info.queueFamilyIndexCount         = 1;
@@ -64,7 +64,7 @@ namespace Neptune::Vulkan {
         VkBufferCopy                         region{};
         region.srcOffset                   = 0;
         region.dstOffset                   = offset;
-        region.size                        = size;
+        region.size                        = std::min(size, m_Buffer.Size());
 
         cmdList.CmdCopyBuffer(m_StagingBuffer->Handle(), m_Buffer.Handle(), region);
 

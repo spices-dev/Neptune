@@ -1,5 +1,5 @@
 /**
-* @file ThreadQueue.hpp.
+* @file ThreadQueue.h.
 * @brief The ThreadQueue Class Definitions and Implementation.
 * @author Spices.
 */

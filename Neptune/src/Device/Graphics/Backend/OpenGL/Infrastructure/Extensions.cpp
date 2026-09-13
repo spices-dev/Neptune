@@ -31,6 +31,12 @@ namespace Neptune::OpenGL {
         glGetIntegerv(GL_MAJOR_VERSION, &major);
         glGetIntegerv(GL_MINOR_VERSION, &minor);
         
+    	m_ApiVersion = major * 10 + minor;
+    	
+    	m_ApiVersion = std::min(m_ApiVersion, OPENGL_DEV_VERSION);
+		
+    	Extension::Extension::SetApiVersion(m_ApiVersion);
+    	
         GLint count = 0;
         
         glGetIntegerv(GL_NUM_EXTENSIONS, &count);
@@ -86,6 +92,55 @@ namespace Neptune::OpenGL {
 		m_Context.Registry<Extension::IViewportLayerArray>                  (Extension::EExtensionState::Extent);
     }
 
+	const char* Extensions::GetApiVersionName() const
+    {
+    	NEPTUNE_PROFILE_ZONE
+    	
+    	if (m_ApiVersion == 46) return "#version 460";
+    	if (m_ApiVersion == 45) return "#version 450";
+    	if (m_ApiVersion == 44) return "#version 440";
+    	if (m_ApiVersion == 43) return "#version 430";
+    	if (m_ApiVersion == 42) return "#version 420";
+    	if (m_ApiVersion == 41) return "#version 410";
+    	if (m_ApiVersion == 40) return "#version 400";
+    	
+    	if (m_ApiVersion == 39) return "#version 390";
+    	if (m_ApiVersion == 38) return "#version 380";
+    	if (m_ApiVersion == 37) return "#version 370";
+    	if (m_ApiVersion == 36) return "#version 360";
+    	if (m_ApiVersion == 35) return "#version 350";
+    	if (m_ApiVersion == 34) return "#version 340";
+    	if (m_ApiVersion == 33) return "#version 330";
+    	if (m_ApiVersion == 32) return "#version 320";
+    	if (m_ApiVersion == 31) return "#version 310";
+    	if (m_ApiVersion == 30) return "#version 300";
+    	
+    	if (m_ApiVersion == 29) return "#version 290";
+    	if (m_ApiVersion == 28) return "#version 280";
+    	if (m_ApiVersion == 27) return "#version 270";
+    	if (m_ApiVersion == 26) return "#version 260";
+    	if (m_ApiVersion == 25) return "#version 250";
+    	if (m_ApiVersion == 24) return "#version 240";
+    	if (m_ApiVersion == 23) return "#version 230";
+    	if (m_ApiVersion == 22) return "#version 220";
+    	if (m_ApiVersion == 21) return "#version 210";
+    	if (m_ApiVersion == 20) return "#version 200";
+    	
+    	if (m_ApiVersion == 19) return "#version 190";
+    	if (m_ApiVersion == 18) return "#version 180";
+    	if (m_ApiVersion == 17) return "#version 170";
+    	if (m_ApiVersion == 16) return "#version 160";
+    	if (m_ApiVersion == 15) return "#version 150";
+    	if (m_ApiVersion == 14) return "#version 140";
+    	if (m_ApiVersion == 13) return "#version 130";
+    	if (m_ApiVersion == 12) return "#version 120";
+    	if (m_ApiVersion == 11) return "#version 110";
+    	if (m_ApiVersion == 10) return "#version 100";
+    	
+    	assert(false);
+    	
+    	return OPENGL_DEV_VERSION_NAME;
+    }
 }
 
 #endif

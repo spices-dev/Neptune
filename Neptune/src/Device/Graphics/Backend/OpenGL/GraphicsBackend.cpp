@@ -85,6 +85,8 @@ namespace Neptune::OpenGL {
 
     	AContext context;
 
+    	context.Registry<AApiVersionName>(m_Context->Get<IExtensions>()->GetApiVersionName());
+    	
 		return context.GetInfrastructures();
 	}
 }

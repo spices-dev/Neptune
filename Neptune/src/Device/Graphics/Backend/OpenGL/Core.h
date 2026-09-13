@@ -20,8 +20,8 @@ namespace Neptune::OpenGL {
 
 	constexpr uint32_t MaxFrameInFlight = Neptune::MaxFrameInFlight;       // @brief Frames In Flight.
 
-	#define OPENGL_VERSION       10                                        // @brief Use OpenGL 4.6.
-	#define OPENGL_VERSION_NAME  "#version 460"                            // @brief Use OpenGL 4.6.
+	#define OPENGL_DEV_VERSION       uint32_t(46)                              // @brief Use OpenGL 4.6.
+	#define OPENGL_DEV_VERSION_NAME  "#version 460"                            // @brief Use OpenGL 4.6.
 
 	/**
 	* @brief Result Delegate Class.
@@ -67,7 +67,7 @@ namespace Neptune::OpenGL {
 	*/
 	void HandleResult(GLenum result);
 
-	#define OPENGL_CHECK  { auto expr_value = glGetError(); if (expr_value != GL_NO_ERROR) { std::invoke(HandleResultDelegate::GetHandler(), expr_value); } }
+	#define OPENGL_CHECK  { auto expr_value = glGetError(); if (expr_value != GL_NO_ERROR) { std::invoke(HandleResultDelegate::GetHandler(), expr_value); NEPTUNE_BREAK } }
 }
 
 #endif

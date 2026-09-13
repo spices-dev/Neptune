@@ -19,10 +19,13 @@ namespace Neptune::OpenGL {
     */
     enum class EAccessibleInfrastructure : uint8_t
     {
+        ApiVersionName,             // @brief ApiVersionName.
         Count
     };
     
-    using AContext = Graphic::Common::AccessibleContext<EAccessibleInfrastructure>;
+    using AApiVersionName         = Graphic::Common::AccessibleInfrastructure<const char*, EAccessibleInfrastructure::ApiVersionName>;
+    
+    using AContext                = Graphic::Common::AccessibleContext<EAccessibleInfrastructure>;
     
 }
 

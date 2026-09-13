@@ -20,7 +20,7 @@ namespace Neptune::WebGL {
 
 	constexpr uint32_t MaxFrameInFlight = Neptune::MaxFrameInFlight;       // @brief Frames In Flight.
 
-	#define WEBGL_VERSION                                                  // @brief Use WEBGL .
+	#define WEBGL_DEV_VERSION                                              // @brief Use WEBGL .
 
 	/**
 	* @brief Result Delegate Class.

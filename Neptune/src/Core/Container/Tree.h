@@ -1,5 +1,5 @@
 /**
-* @file Tree.hpp.
+* @file Tree.h.
 * @brief The Tree Class Definitions and Implementation.
 * @author Spices.
 */

@@ -16,10 +16,16 @@ namespace Neptune::Container::Test {
 		
 		enum class EBitSetTest : uint8_t
 		{
-			One,
-			Two,
-			Three,
-			Four,
+			One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Eleven, Twelve, Thirteen, Fourteen, Fifteen, Sixteen,
+			Seventeen, Eighteen, Nineteen, Twenty, TwentyOne, TwentyTwo, TwentyThree, TwentyFour, TwentyFive, TwentySix,
+			TwentySeven, TwentyEight, TwentyNine, Thirty, ThirtyOne, ThirtyTwo, ThirtyThree, ThirtyFour, ThirtyFive, ThirtySix,
+			ThirtySeven, ThirtyEight, ThirtyNine, Forty, FortyOne, FortyTwo, FortyThree, FortyFour, FortyFive, FortySix,
+			FortySeven, FortyEight, FortyNine, Fifty, FiftyOne, FiftyTwo, FiftyThree, FiftyFour, FiftyFive, FiftySix,
+			FiftySeven, FiftyEight, FiftyNine, Sixty, SixtyOne, SixtyTwo, SixtyThree, SixtyFour, SixtyFive, SixtySix, SixtySeven,
+			SixtyEight, SixtyNine, Seventy, SeventyOne, SeventyTwo, SeventyThree, SeventyFour, SeventyFive, SeventySix, SeventySeven,
+			SeventyEight, SeventyNine, Eighty, EightyOne, EightyTwo, EightyThree, EightyFour, EightyFive, EightySix, EightySeven,
+			EightyEight, EightyNine, Ninety, NinetyOne, NinetyTwo, NinetyThree, NinetyFour,NinetyFive, NinetySix, NinetySeven,
+			NinetyEight, NinetyNine, OneHundred,
 			
 			Count
 		};
@@ -55,6 +61,13 @@ namespace Neptune::Container::Test {
 		EXPECT_EQ(c0.Test(detail::EBitSetTest::Two), true);
 		EXPECT_EQ(c0.Test(detail::EBitSetTest::Three), false);
 		EXPECT_EQ(c0.Test(detail::EBitSetTest::Four), false);
+		
+		BitSet<detail::EBitSetTest> c1(detail::EBitSetTest::One, detail::EBitSetTest::Two, detail::EBitSetTest::Three);
+		
+		EXPECT_EQ(c1.Test(detail::EBitSetTest::One), true);
+		EXPECT_EQ(c1.Test(detail::EBitSetTest::Two), true);
+		EXPECT_EQ(c1.Test(detail::EBitSetTest::Three), true);
+		EXPECT_EQ(c1.Test(detail::EBitSetTest::Four), false);
 	}
 
 	/**
@@ -70,9 +83,10 @@ namespace Neptune::Container::Test {
 		EXPECT_EQ(c0.Test(detail::EBitSetTest::Two), false);
 		EXPECT_EQ(c0.Test(detail::EBitSetTest::Three), true);
 		EXPECT_EQ(c0.Test(detail::EBitSetTest::Four), true);
+		EXPECT_EQ(c0.Test(detail::EBitSetTest::OneHundred), true);
 		
 		EXPECT_EQ(c0.Flip(detail::EBitSetTest::One), true);
-		EXPECT_EQ(c0.Flip(static_cast<detail::EBitSetTest>(10)), false);
+		EXPECT_EQ(c0.Flip(static_cast<detail::EBitSetTest>(1000)), false);
 		
 		EXPECT_EQ(c0.Test(detail::EBitSetTest::One), true);
 	}
@@ -87,7 +101,7 @@ namespace Neptune::Container::Test {
 		EXPECT_EQ(c0.Any(), true);
 		
 		EXPECT_EQ(c0.Set(detail::EBitSetTest::Count, false), true);
-		EXPECT_EQ(c0.Set(static_cast<detail::EBitSetTest>(10), false), false);
+		EXPECT_EQ(c0.Set(static_cast<detail::EBitSetTest>(1000), false), false);
 		
 		EXPECT_EQ(c0.None(), true);
 	}

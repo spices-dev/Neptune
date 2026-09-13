@@ -1,5 +1,5 @@
 /**
-* @file BitSet.hpp.
+* @file BitSet.h.
 * @brief The BitSet Class Definitions and Implementation.
 * @author Spices.
 */
@@ -8,9 +8,9 @@
 #include "Core/Core.h"
 #include "Core/Concept.h"
 
-#include <bitset>
-#include <shared_mutex>
-#include <mutex>
+#include <atomic>
+#include <type_traits>
+#include <array>
 
 namespace Neptune::Container {
 
@@ -21,12 +21,20 @@ namespace Neptune::Container {
     * 
     * @note thread safe.
     */
-    template<IsEnum T>
+    template<IsNotEmptyEnum T>
     class BitSet
     {
     public:
         
         using TSize = std::underlying_type_t<T>; // @brief Size Type of T.
+        
+    private:
+
+        using Word = std::uint64_t;
+
+        static constexpr size_t kBitsPerWord = sizeof(Word) * 8;
+        static constexpr size_t kBitCount    = static_cast<size_t>(T::Count);
+        static constexpr size_t kWordCount   = (kBitCount + kBitsPerWord - 1) / kBitsPerWord;
         
     public:
 
@@ -44,6 +52,18 @@ namespace Neptune::Container {
         }
         
         /**
+        * @brief Constructor Function.
+        * 
+        * @param[in] bits Bits.
+        */
+        template<typename... Bits>
+        requires (sizeof...(Bits) >= 1) && (IsSame<Bits, T> && ...)
+        explicit BitSet(Bits... bits)
+        {
+            (Set(bits, true), ...);
+        }
+        
+        /**
         * @brief Destructor Function.
         */
         virtual ~BitSet() = default;
@@ -55,9 +75,10 @@ namespace Neptune::Container {
         */
         BitSet(const BitSet& other)
         {
-            std::shared_lock lock(other.m_Mutex);
-
-            m_Bits = other.m_Bits;
+            for (size_t i = 0; i < kWordCount; ++i)
+            {
+                m_Words[i].store(other.m_Words[i].load(std::memory_order_acquire), std::memory_order_relaxed);
+            }
         }
 
         /**
@@ -69,22 +90,12 @@ namespace Neptune::Container {
         {
             if (this == &other) return *this;
             
-            if (this < &other)
+            for (size_t i = 0; i < kWordCount; ++i)
             {
-                std::unique_lock lock1(m_Mutex);
-                
-                std::unique_lock lock2(other.m_Mutex);
-
-                m_Bits = other.m_Bits;
+                m_Words[i].store(other.m_Words[i].load(std::memory_order_acquire), std::memory_order_relaxed);
             }
-            else
-            {
-                std::unique_lock lock2(other.m_Mutex);
 
-                std::unique_lock lock1(m_Mutex);
-                
-                m_Bits = other.m_Bits;
-            }
+            return *this;
         }
 
         /**
@@ -93,11 +104,8 @@ namespace Neptune::Container {
         * @param[in] other BitSet.
         */
         BitSet(BitSet&& other) noexcept
-        {
-            std::unique_lock lock(other.m_Mutex);
-
-            m_Bits = std::move(other.m_Bits);
-        }
+            : BitSet(static_cast<const BitSet&>(other))
+        {}
 
         /**
         * @brief Move Assignment Operation.
@@ -106,26 +114,7 @@ namespace Neptune::Container {
         */
         BitSet& operator=(BitSet&& other) noexcept
         {
-            if (this == &other) return *this;
-
-            if (this < &other)
-            {
-                std::unique_lock lock1(m_Mutex);
-                
-                std::unique_lock lock2(other.m_Mutex);
-                
-                m_Bits = std::move(other.m_Bits);
-            }
-            else
-            {
-                std::unique_lock lock2(other.m_Mutex);
-                
-                std::unique_lock lock1(m_Mutex);
-
-                m_Bits = std::move(other.m_Bits);
-            }
-
-            return *this;
+            return (*this = static_cast<const BitSet&>(other));
         }
 
         /**
@@ -139,30 +128,9 @@ namespace Neptune::Container {
         {
             BitSet result;
 
-            if (this == &other)
+            for (size_t i = 0; i < kWordCount; ++i)
             {
-                std::shared_lock lock(m_Mutex);
-                
-                result.m_Bits = m_Bits;
-                
-                return result;
-            }
-
-            if (this < &other)
-            {
-                std::shared_lock lock1(m_Mutex);
-                
-                std::shared_lock lock2(other.m_Mutex);
-                
-                result.m_Bits = m_Bits | other.m_Bits;
-            }
-            else
-            {
-                std::shared_lock lock2(other.m_Mutex);
-                
-                std::shared_lock lock1(m_Mutex);
-                
-                result.m_Bits = m_Bits | other.m_Bits;
+                result.m_Words[i].store(m_Words[i].load(std::memory_order_acquire) | other.m_Words[i].load(std::memory_order_acquire),std::memory_order_relaxed);
             }
 
             return result;
@@ -179,30 +147,9 @@ namespace Neptune::Container {
         {
             BitSet result;
 
-            if (this == &other)
+            for (size_t i = 0; i < kWordCount; ++i)
             {
-                std::shared_lock lock(m_Mutex);
-                
-                result.m_Bits = m_Bits;
-                
-                return result;
-            }
-
-            if (this < &other)
-            {
-                std::shared_lock lock1(m_Mutex);
-                
-                std::shared_lock lock2(other.m_Mutex);
-                
-                result.m_Bits = m_Bits & other.m_Bits;
-            }
-            else
-            {
-                std::shared_lock lock2(other.m_Mutex);
-                
-                std::shared_lock lock1(m_Mutex);
-                
-                result.m_Bits = m_Bits & other.m_Bits;
+                result.m_Words[i].store(m_Words[i].load(std::memory_order_acquire) & other.m_Words[i].load(std::memory_order_acquire),std::memory_order_relaxed);
             }
 
             return result;
@@ -217,23 +164,9 @@ namespace Neptune::Container {
         */
         BitSet& operator|=(const BitSet& other)
         {
-            if (this == &other) return *this;
-
-            if (this < &other)
+            for (size_t i = 0; i < kWordCount; ++i)
             {
-                std::unique_lock lock1(m_Mutex);
-                
-                std::shared_lock lock2(other.m_Mutex);
-                
-                m_Bits |= other.m_Bits;
-            }
-            else
-            {
-                std::shared_lock lock2(other.m_Mutex);
-                
-                std::unique_lock lock1(m_Mutex);
-                
-                m_Bits |= other.m_Bits;
+                m_Words[i].fetch_or(other.m_Words[i].load(std::memory_order_acquire), std::memory_order_acq_rel);
             }
 
             return *this;
@@ -248,30 +181,9 @@ namespace Neptune::Container {
         */
         BitSet& operator^=(const BitSet& other)
         {
-            if (this == &other)
+            for (size_t i = 0; i < kWordCount; ++i)
             {
-                std::unique_lock lock(m_Mutex);
-                
-                m_Bits ^= m_Bits;
-                
-                return *this;
-            }
-
-            if (this < &other)
-            {
-                std::unique_lock lock1(m_Mutex);
-                
-                std::shared_lock lock2(other.m_Mutex);
-                
-                m_Bits ^= other.m_Bits;
-            }
-            else
-            {
-                std::shared_lock lock2(other.m_Mutex);
-                
-                std::unique_lock lock1(m_Mutex);
-                
-                m_Bits ^= other.m_Bits;
+                m_Words[i].fetch_xor(other.m_Words[i].load(std::memory_order_acquire), std::memory_order_acq_rel);
             }
 
             return *this;
@@ -286,23 +198,9 @@ namespace Neptune::Container {
         */
         BitSet& operator&=(const BitSet& other)
         {
-            if (this == &other) return *this;
-
-            if (this < &other)
+            for (size_t i = 0; i < kWordCount; ++i)
             {
-                std::unique_lock lock1(m_Mutex);
-                
-                std::shared_lock lock2(other.m_Mutex);
-                
-                m_Bits &= other.m_Bits;
-            }
-            else
-            {
-                std::shared_lock lock2(other.m_Mutex);
-                
-                std::unique_lock lock1(m_Mutex);
-                
-                m_Bits &= other.m_Bits;
+                m_Words[i].fetch_and(other.m_Words[i].load(std::memory_order_acquire), std::memory_order_acq_rel);
             }
 
             return *this;
@@ -317,24 +215,15 @@ namespace Neptune::Container {
         */
         bool operator==(const BitSet& other) const
         {
-            if (this == &other) return true;
+            for (size_t i = 0; i < kWordCount; ++i)
+            {
+                if (m_Words[i].load(std::memory_order_acquire) != other.m_Words[i].load(std::memory_order_acquire))
+                {
+                    return false;
+                }
+            }
 
-            if (this < &other)
-            {
-                std::shared_lock lock1(m_Mutex);
-                
-                std::shared_lock lock2(other.m_Mutex);
-                
-                return m_Bits == other.m_Bits;
-            }
-            else
-            {
-                std::shared_lock lock2(other.m_Mutex);
-                
-                std::shared_lock lock1(m_Mutex);
-                
-                return m_Bits == other.m_Bits;
-            }
+            return true;
         }
 
         /**
@@ -355,10 +244,9 @@ namespace Neptune::Container {
         * @return Returns TSize.
         */
         explicit operator TSize() const
+        requires (kWordCount == 1)
         {
-            std::shared_lock lock(m_Mutex);
-
-            return static_cast<TSize>(m_Bits.to_ulong());
+            return static_cast<TSize>(m_Words[0].load(std::memory_order_acquire));
         }
 
         /**
@@ -375,19 +263,22 @@ namespace Neptune::Container {
 
             if (bit == T::Count)
             {
-                Reset();
-
-                if (value)
-                {
-                    Flip();
-                }
-                
+                value ? SetAll() : Reset();
                 return true;
             }
 
-            std::unique_lock lock(m_Mutex);
+            const size_t index      = static_cast<size_t>(static_cast<TSize>(bit));
+            const size_t wordIndex  = index / kBitsPerWord;
+            const Word   mask       = Word{1} << (index % kBitsPerWord);
 
-            m_Bits.set(static_cast<size_t>(static_cast<TSize>(bit)), value);
+            if (value)
+            {
+                m_Words[wordIndex].fetch_or(mask, std::memory_order_acq_rel);
+            }
+            else
+            {
+                m_Words[wordIndex].fetch_and(static_cast<Word>(~mask), std::memory_order_acq_rel);
+            }
 
             return true;
         }
@@ -408,9 +299,11 @@ namespace Neptune::Container {
                 return !None();
             }
 
-            std::shared_lock lock(m_Mutex);
+            const size_t index     = static_cast<size_t>(static_cast<TSize>(bit));
+            const size_t wordIndex = index / kBitsPerWord;
+            const Word   mask      = Word{1} << (index % kBitsPerWord);
 
-            return m_Bits.test(static_cast<size_t>(static_cast<TSize>(bit)));
+            return (m_Words[wordIndex].load(std::memory_order_acquire) & mask) != 0;
         }
 
         /**
@@ -418,9 +311,10 @@ namespace Neptune::Container {
         */
         void Reset()
         {
-            std::unique_lock lock(m_Mutex);
-
-            m_Bits.reset();
+            for (auto& word : m_Words)
+            {
+                word.store(0, std::memory_order_release);
+            }
         }
 
         /**
@@ -438,12 +332,10 @@ namespace Neptune::Container {
             {
                 Reset();
                 
-                return true; 
+                return true;
             }
 
-            std::unique_lock lock(m_Mutex);
-
-            m_Bits.reset(static_cast<size_t>(static_cast<TSize>(bit)));
+            Set(bit, false);
 
             return true;
         }
@@ -453,9 +345,10 @@ namespace Neptune::Container {
         */
         void Flip()
         {
-            std::unique_lock lock(m_Mutex);
-
-            m_Bits.flip();
+            for (size_t i = 0; i < kWordCount; ++i)
+            {
+                m_Words[i].fetch_xor(WordMask(i), std::memory_order_acq_rel);
+            }
         }
 
         /**
@@ -476,9 +369,11 @@ namespace Neptune::Container {
                 return true;
             }
 
-            std::unique_lock lock(m_Mutex);
+            const size_t index     = static_cast<size_t>(static_cast<TSize>(bit));
+            const size_t wordIndex = index / kBitsPerWord;
+            const Word   mask      = Word{1} << (index % kBitsPerWord);
 
-            m_Bits.flip(static_cast<size_t>(static_cast<TSize>(bit)));
+            m_Words[wordIndex].fetch_xor(mask, std::memory_order_acq_rel);
 
             return true;
         }
@@ -490,9 +385,12 @@ namespace Neptune::Container {
         */
         bool Any() const
         {
-            std::shared_lock lock(m_Mutex);
+            for (auto& word : m_Words)
+            {
+                if (word.load(std::memory_order_acquire) != 0) return true;
+            }
 
-            return m_Bits.any();
+            return false;
         }
 
         /**
@@ -502,15 +400,45 @@ namespace Neptune::Container {
         */
         bool None() const
         {
-            std::shared_lock lock(m_Mutex);
-
-            return m_Bits.none();
+            return !Any();
         }
         
     private:
         
-        std::bitset<static_cast<size_t>(T::Count)> m_Bits{};  // @brief Stored bitset.
-        mutable std::shared_mutex m_Mutex;                    // @brief Mutex.
+        /**
+        * @brief Set every bit to 1.
+        */
+        void SetAll()
+        {
+            for (size_t i = 0; i < kWordCount; ++i)
+            {
+                m_Words[i].store(WordMask(i), std::memory_order_release);
+            }
+        }
+
+        /**
+        * @brief Get Mask of the valid bits within word.
+        * 
+        * @param[in] wordIndex .
+        * 
+        * @return Returns WordMask.
+        */
+        static constexpr Word WordMask(size_t wordIndex)
+        {
+            const size_t bitsBefore     = wordIndex * kBitsPerWord;
+            const size_t bitsRemaining  = kBitCount > bitsBefore ? kBitCount - bitsBefore : 0;
+
+            if (bitsRemaining >= kBitsPerWord)
+            {
+                return ~Word{0};
+            }
+
+            return (Word{1} << bitsRemaining) - 1;
+        }
+        
+    private:
+        
+         std::array<std::atomic<Word>, kWordCount> m_Words{};          // @brief Stored bitset.
 
     };
 

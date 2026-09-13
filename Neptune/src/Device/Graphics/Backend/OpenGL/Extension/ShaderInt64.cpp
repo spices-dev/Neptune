@@ -17,7 +17,7 @@ namespace Neptune::OpenGL::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        if constexpr (IsCoreExtension<decltype(*this)>) return;
+        if (IsCoreExtension<decltype(*this)>()) return;
 
         AddExtensions("GL_ARB_gpu_shader_int64");
     }

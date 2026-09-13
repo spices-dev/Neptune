@@ -20,7 +20,7 @@ namespace Neptune::OpenGLES {
 
 	constexpr uint32_t MaxFrameInFlight = Neptune::MaxFrameInFlight;       // @brief Frames In Flight.
 
-	#define OPENGLES_VERSION  "es3.2"                                      // @brief Use OpenGLES 3.2.
+	#define OPENGLES_DEV_VERSION  "es3.2"                                  // @brief Use OpenGLES 3.2.
 
 	/**
 	* @brief Result Delegate Class.
@@ -66,7 +66,7 @@ namespace Neptune::OpenGLES {
 	*/
 	void HandleResult(GLenum result);
 
-	#define OPENGLES_CHECK  { auto expr_value = glGetError(); if (expr_value != GL_NO_ERROR) { std::invoke(HandleResultDelegate::GetHandler(), expr_value); } }
+	#define OPENGLES_CHECK  { auto expr_value = glGetError(); if (expr_value != GL_NO_ERROR) { std::invoke(HandleResultDelegate::GetHandler(), expr_value); NEPTUNE_BREAK } }
 }
 
 #endif

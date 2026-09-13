@@ -47,6 +47,13 @@ namespace Neptune::Vulkan {
 		*/
 		const Unit::Instance::Handle& Handle() const { return m_Instance.GetHandle(); }
 
+		/**
+		* @brief Get ApiVersion.
+		*
+		* @return Returns ApiVersion.
+		*/
+		uint32_t GetApiVersion() const { return m_ApiVersion; }
+		
 	private:
 
 		/**
@@ -69,6 +76,7 @@ namespace Neptune::Vulkan {
 	private:
 
 		Unit::Instance m_Instance;                                             // @brief This Instance.
+		uint32_t m_ApiVersion;                                                 // @brief Runtime Version.
 		Unit::DebugUtilsMessenger m_DebugMessenger;                            // @brief DebugUtilsMessenger.
 		std::vector<const char*> m_ExtensionProperties;                        // @brief Extensions.
 		std::vector<const char*> m_LayerProperties;                            // @brief Layers.

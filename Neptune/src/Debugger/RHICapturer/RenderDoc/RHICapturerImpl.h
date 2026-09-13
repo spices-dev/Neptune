@@ -13,7 +13,7 @@
 namespace Neptune::RenderDoc {
     
     /**
-    * @brief Initialize RenderDoc evvironment.
+    * @brief Initialize RenderDoc environment.
     * 
     */
     void Initialize();

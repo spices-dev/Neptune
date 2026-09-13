@@ -103,18 +103,22 @@ namespace Neptune::Graphic::Common {
         * @brief Unregister Infrastructure.
         *
         * @tparam I IContextElement Definitions
+        * 
+        * @return Returns true if succeeded.
         */
         template<typename I>
         requires IsIContextElement<Element, I> && 
                  IsNotEmptyEnum<E>
-        void UnRegistry();
+        bool UnRegistry();
         
         /**
         * @brief Unregister Infrastructure.
         *
         * @param[in] e E.
+        * 
+        * @return Returns true if succeeded.
         */
-        void UnRegistry(E e) requires IsNotEmptyEnum<E>;
+        bool UnRegistry(E e) requires IsNotEmptyEnum<E>;
         
         /**
         * @brief Unregister All Infrastructure.
@@ -185,23 +189,25 @@ namespace Neptune::Graphic::Common {
     template <typename I> 
     requires IsIContextElement<Element, I> && 
              IsNotEmptyEnum<E>
-    inline void Context<Element, E>::UnRegistry()
+    inline bool Context<Element, E>::UnRegistry()
     {
         NEPTUNE_PROFILE_ZONE
 
-        UnRegistry(I::E);
+        return UnRegistry(I::E);
     }
 
     template<typename Element, typename E> requires IsEnum<E>
-    inline void Context<Element, E>::UnRegistry(E e) requires IsNotEmptyEnum<E>
+    inline bool Context<Element, E>::UnRegistry(E e) requires IsNotEmptyEnum<E>
     {
         NEPTUNE_PROFILE_ZONE
 
         const auto position = static_cast<uint8_t>(e);
 
-        if (!m_Infrastructures[position]) return;
+        if (!m_Infrastructures[position]) return false;
 
         m_Infrastructures[position].reset();
+        
+        return true;
     }
 
     template <typename Element, typename E> requires IsEnum<E>

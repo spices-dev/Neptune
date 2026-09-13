@@ -155,7 +155,7 @@ namespace Neptune::Vulkan {
 		createInfo.instance                   = GetContext().Get<IInstance>()->Handle();
 		createInfo.physicalDevice             = GetContext().Get<IPhysicalDevice>()->Handle();
 		createInfo.device                     = GetContext().Get<IDevice>()->Handle();
-		createInfo.vulkanApiVersion           = VK_VERSION;
+		createInfo.vulkanApiVersion           = GetContext().Get<IInstance>()->GetApiVersion();
 		createInfo.flags                      = VMA_ALLOCATOR_CREATE_KHR_DEDICATED_ALLOCATION_BIT      | 
 												VMA_ALLOCATOR_CREATE_KHR_BIND_MEMORY2_BIT              |
 												VMA_ALLOCATOR_CREATE_KHR_MAINTENANCE4_BIT              |

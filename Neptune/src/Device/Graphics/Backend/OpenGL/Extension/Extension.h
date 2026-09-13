@@ -30,6 +30,15 @@ namespace Neptune::OpenGL::Extension {
     class Extension
     {
     public:
+        
+        /**
+        * @brief Set ApiVersion.
+        * 
+        * @param[in] version ApiVersion.
+        */
+        static void SetApiVersion(uint32_t version);
+        
+    public:
 
         /**
         * @brief Constructor Function.
@@ -65,11 +74,45 @@ namespace Neptune::OpenGL::Extension {
         */
         const std::unordered_map<const char*, bool>& GetExtensions() const { return m_Extensions; }
         
+        /**
+        * @brief Is IsCoreExtension.
+        * 
+        * @tparam T IsExtension.
+        */
+        template<typename T>
+        requires IsBase<Extension, Decay<T>>
+        bool IsCoreExtension() const;
+        
+    private:
+        
+        /**
+        * @brief Get ApiVersion.
+        * 
+        * @return Returns ApiVersion.
+        */
+        uint32_t GetApiVersion() const;
+        
     private:
         
         EExtensionState m_State;                                         // @brief EExtensionState.
         std::unordered_map<const char*, bool> m_Extensions;              // @brief Extensions.
     };
+
+    template <typename T> 
+    requires IsBase<Extension, Decay<T>>
+    bool Extension::IsCoreExtension() const
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        if constexpr (!requires { Decay<T>::CoreVersion; })
+        {
+            return false;
+        }
+        else
+        {
+            return GetApiVersion() >= Decay<T>::CoreVersion;
+        }
+    }
 }
 
 #endif

@@ -36,7 +36,7 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
         
-        if constexpr (IsCoreExtension<decltype(*this)>) return;
+        if (IsCoreExtension<decltype(*this)>()) return;
 
         AddInstanceExtensions(VK_EXT_SWAPCHAIN_COLOR_SPACE_EXTENSION_NAME);
         

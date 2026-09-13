@@ -32,7 +32,7 @@ namespace Neptune::Direct3D12 {
 		D3D_FEATURE_LEVEL_12_2,
 	};
 
-	#define DIRECT3D12_VERSION 619                 // @brief Same as nuget pack version
+	#define DIRECT3D12_DEV_VERSION 619             // @brief Same as nuget pack version
 
 	#define DIRECT3D12_DLL_PATH "./"               // @brief D3D12Core.dll Path
 
@@ -82,7 +82,7 @@ namespace Neptune::Direct3D12 {
 	*/
 	void HandleResult(HRESULT result);
 
-	#define DIRECT3D12_CHECK(expr)  { auto expr_value = expr; if (FAILED(expr_value)) { std::invoke(HandleResultDelegate::GetHandler(), expr_value); } }
+	#define DIRECT3D12_CHECK(expr)  { auto expr_value = expr; if (FAILED(expr_value)) { std::invoke(HandleResultDelegate::GetHandler(), expr_value); NEPTUNE_BREAK } }
 }
 
 #endif

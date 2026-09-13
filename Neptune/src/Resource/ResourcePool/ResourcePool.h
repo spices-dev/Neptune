@@ -105,7 +105,7 @@ namespace Neptune {
 		* 
 		* @return Returns true if existed.
 		*/
-		bool Has(const std::string& name);
+		bool Has(const std::string& name) const;
 
 		/**
 		* @brief Registry a resource to this Pool.
@@ -124,31 +124,28 @@ namespace Neptune {
 	private:
 		
 		std::unordered_map<std::string, UP<Resource>> m_Resources; // @brief specific resources in a basic type Pool.
-		std::shared_mutex m_Mutex;                                 // @brief Mutex for this pool.
+		mutable std::shared_mutex m_Mutex;                         // @brief Mutex for this pool.
 	};
 
 	template<typename T>
 	template<typename Ty, typename ...Args>
-	inline std::shared_ptr<T> ResourcePool<T>::Load(const std::string& path, Args&&... args)
+	inline SP<T> ResourcePool<T>::Load(const std::string& path, Args&&... args)
 	{
 		NEPTUNE_PROFILE_ZONE
 
+		std::unique_lock lock(m_Mutex);
+		
+		if (!m_Resources.contains(path))
 		{
-			std::unique_lock<std::shared_mutex> lock(m_Mutex);
+			std::function<std::any()> fn = [&]() -> std::any {
+				T* inst = new Ty(std::forward<Args>(args)...);
+				return SP<T>(inst);
+			};
 
-			if (m_Resources.find(path) == m_Resources.end())
-			{
-				std::function<std::any()> fn = [&]() -> std::any {
-					T* inst = new Ty(std::forward<Args>(args)...);
-					return std::shared_ptr<T>(inst);
-				};
-
-				m_Resources[path] = std::make_unique<Resource>(fn);
-			}
-
+			m_Resources[path] = CreateUP<Resource>(fn);
 		}
 
-		return m_Resources[path]->GetResource<T>();
+		return m_Resources[path]->template GetResource<T>();
 	}
 
 	template<typename T>
@@ -156,10 +153,11 @@ namespace Neptune {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		assert(Has(path));
-		assert(m_Resources[path]->GetState() == Resource::ResourceStateEnum::Loaded);
+		std::shared_lock lock(m_Mutex);
+		
+		if (!m_Resources.contains(path)) return nullptr;
 
-		return m_Resources[path]->GetResource<T>();
+		return m_Resources[path]->template GetResource<T>();
 	}
 
 	template<typename T>
@@ -169,20 +167,21 @@ namespace Neptune {
 
 		std::unique_lock lock(m_Mutex);
 
-		if (m_Resources.find(path) != m_Resources.end())
+		if (m_Resources.contains(path))
 		{
 			m_Resources.erase(path);
 		}
 	}
 
 	template<typename T>
-	inline bool ResourcePool<T>::Has(const std::string& name)
+	inline bool ResourcePool<T>::Has(const std::string& name) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		std::shared_lock lock(m_Mutex);
 
-		if (m_Resources.find(name) != m_Resources.end()) return true;
+		if (m_Resources.contains(name)) return true;
+		
 		return false;
 	}
 

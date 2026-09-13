@@ -31,7 +31,7 @@ namespace Neptune::Direct3D11 {
 		D3D_FEATURE_LEVEL_11_1,
 	};
 
-	#define DIRECT3D11_VERSION  D3D_FEATURE_LEVEL_11_1
+	#define DIRECT3D11_DEV_VERSION  D3D_FEATURE_LEVEL_11_1
 
 	/**
 	* @brief Result Delegate Class.
@@ -62,7 +62,7 @@ namespace Neptune::Direct3D11 {
 	*/
 	void HandleResult(HRESULT result);
 
-	#define DIRECT3D11_CHECK(expr)  { auto expr_value = expr; if (FAILED(expr_value)) { std::invoke(HandleResultDelegate::GetHandler(), expr_value); } }
+	#define DIRECT3D11_CHECK(expr)  { auto expr_value = expr; if (FAILED(expr_value)) { std::invoke(HandleResultDelegate::GetHandler(), expr_value); NEPTUNE_BREAK } }
 }
 
 #endif

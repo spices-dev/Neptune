@@ -30,18 +30,6 @@ namespace Neptune::Vulkan::Extension {
     template<typename T>
     concept IsIExtension = Graphic::Common::IsIContextElement<Extension, T>;
     
-    /**
-    * @brief Concept: Is IsCoreExtension.
-    * 
-    * @tparam T IsExtension.
-    */
-    template<typename T>
-    static constexpr bool IsCoreExtension = requires(T t) {
-        t.CoreVersion;
-        requires IsExtension<RemoveRef<T>>;
-        requires VK_VERSION >= t.CoreVersion;
-    };
-    
 }
 
 #endif

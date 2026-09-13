@@ -85,7 +85,13 @@ namespace Neptune::imgui {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		ImGui_ImplOpenGL3_Init(OPENGL_VERSION_NAME);
+		using namespace OpenGL;
+
+		using enum EAccessibleInfrastructure;
+
+		AContext context(infrastructure);
+		
+		ImGui_ImplOpenGL3_Init(context.Get<AApiVersionName>());
 	}
 
 	void OpenGLInterface::OnShutDown() const
@@ -132,7 +138,7 @@ namespace Neptune::imgui {
 		AContext context(infrastructure);
 
 		ImGui_ImplVulkan_InitInfo                                  init_info{};
-		init_info.ApiVersion                                     = VK_VERSION;
+		init_info.ApiVersion                                     = context.Get<AApiVersion>();
 		init_info.Instance                                       = context.Get<AInstance>();
 		init_info.PhysicalDevice                                 = context.Get<APhysicalDevice>();
 		init_info.Device                                         = context.Get<ADevice>();

@@ -17,7 +17,7 @@ namespace Neptune::OpenGL::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        if constexpr (IsCoreExtension<decltype(*this)>) return;
+        if (IsCoreExtension<decltype(*this)>()) return;
 
 #ifdef NP_PLATFORM_WINDOWS
         AddExtensions("GL_EXT_memory_object_win32");

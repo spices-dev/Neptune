@@ -11,9 +11,13 @@ namespace Neptune {
 
     namespace {
         
-        std::random_device s_RandomDevice;
-        std::mt19937_64 s_Engine(s_RandomDevice());
-        std::uniform_int_distribution<uint64_t> s_UniformDistribution;
+        thread_local std::mt19937_64 s_Engine = [] {
+            std::random_device rd;
+            std::seed_seq seed{ rd(), rd(), rd(), rd() };
+            return std::mt19937_64(seed);
+        }();
+
+        thread_local std::uniform_int_distribution<uint64_t> s_UniformDistribution;
         
     }
     

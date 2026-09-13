@@ -76,7 +76,6 @@ namespace Neptune {
     private:
 
         T m_Model;              // @brief This component's data model.
-
         uint32_t m_Owner = 0;   // @brief This component's Owner entity.
     };
 

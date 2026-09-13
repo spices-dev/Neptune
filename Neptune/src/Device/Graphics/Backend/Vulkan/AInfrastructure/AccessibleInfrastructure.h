@@ -20,6 +20,7 @@ namespace Neptune::Vulkan {
     enum class EAccessibleInfrastructure : uint8_t
     {
         Instance = 0,            // @brief Instance
+        ApiVersion,              // @brief ApiVersion
         PhysicalDevice,          // @brief PhysicalDevice
         Device,                  // @brief Device
         GraphicQueueFamily,      // @brief GraphicQueueFamily
@@ -35,6 +36,7 @@ namespace Neptune::Vulkan {
     };
 
     using AInstance               = Graphic::Common::AccessibleInfrastructure<VkInstance,                   EAccessibleInfrastructure::Instance>;
+    using AApiVersion             = Graphic::Common::AccessibleInfrastructure<uint32_t,                     EAccessibleInfrastructure::ApiVersion>;
     using APhysicalDevice         = Graphic::Common::AccessibleInfrastructure<VkPhysicalDevice,             EAccessibleInfrastructure::PhysicalDevice>;
     using ADevice                 = Graphic::Common::AccessibleInfrastructure<VkDevice,                     EAccessibleInfrastructure::Device>;
     using AGraphicQueueFamily     = Graphic::Common::AccessibleInfrastructure<uint32_t,                     EAccessibleInfrastructure::GraphicQueueFamily>;

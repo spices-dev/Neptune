@@ -8,7 +8,6 @@
 #include "Core/Core.h"
 #include "Device/Graphics/Frontend/Core.h"
 #include "Device/Graphics/Backend/Common/Context/Context.h"
-#include "Core/Container/KVTuple.h"
 
 namespace Neptune::Graphic::Common {
 

@@ -144,13 +144,19 @@ namespace Neptune {
 }
 
 // Cross-platform debug break
+#ifdef NEPTUNE_DEBUG
 #ifdef _MSC_VER
-#define NEPTUNE_DEBUG_BREAK __debugbreak();
+#define NEPTUNE_BREAK __debugbreak(); std::abort(); 
 #elif defined(__GNUC__) || defined(__clang__)
 #include <csignal>
-#define NEPTUNE_DEBUG_BREAK raise(SIGTRAP);
+#define NEPTUNE_BREAK raise(SIGTRAP); std::abort(); 
 #else
-#define NEPTUNE_DEBUG_BREAK
+#define NEPTUNE_BREAK std::abort(); 
+#endif
+#endif
+
+#ifdef NEPTUNE_RELEASE
+#define NEPTUNE_BREAK
 #endif
 
 // Core log macros

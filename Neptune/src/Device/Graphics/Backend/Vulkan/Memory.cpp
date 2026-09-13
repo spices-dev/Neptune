@@ -29,7 +29,7 @@ namespace Neptune::Vulkan {
 		return nullptr;
 		
 #else
-		return nullptr;
+
 		if (!s_Allocator.pfnAllocation)
 		{
 			s_Allocator.pfnAllocation = +[](void* pUserData, size_t size, size_t alignment, VkSystemAllocationScope allocationScope) -> void* {

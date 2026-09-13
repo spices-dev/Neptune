@@ -7,8 +7,59 @@
 #pragma once
 #include "Core/Core.h"
 #include <concepts>
+#include <type_traits>
+#include <utility>
 
 namespace Neptune {
+    
+    namespace detail {
+        
+        /**
+        * @brief Extract Member from Wrapper using structured bindings.
+        * 
+        * @param t T.
+        * 
+        * @return Returns Member.
+        */
+        template<typename T>
+        auto ExtractWrapperMember(T& t) -> decltype(auto)
+        {
+            auto&& [m] = t;
+            
+            return (m);
+        }
+        
+        /**
+        * @brief Trait of Wrapper.
+        * 
+        * @tparam T .
+        */
+        template<typename T, typename = void>
+        struct WrapperMemberTypeTrait
+        {
+            using type = void;
+        };
+
+        /**
+        * @brief Trait of Wrapper.
+        * 
+        * @tparam T .
+        */
+        template<typename T>
+        struct WrapperMemberTypeTrait<T, std::void_t<decltype(ExtractWrapperMember(std::declval<T&>()))>>
+        {
+            using type = std::remove_cvref_t<decltype(ExtractWrapperMember(std::declval<T&>()))>;
+        };
+
+        /**
+        * @brief Wrapper MemberType.
+        * 
+        * @tparam T .
+        */
+        template<typename T>
+        using WrapperMemberType = typename WrapperMemberTypeTrait<T>::type;
+
+    }
     
     /**
     * @brief Concept: Is Base of.
@@ -105,9 +156,12 @@ namespace Neptune {
     * @tparam MemberType Wrappered Type.
     */
     template<typename T, typename MemberType>
-    concept IsWrapperOf = std::is_standard_layout_v<T> && 
+    concept IsWrapperOf = 
+        std::is_standard_layout_v<T> &&
+        std::is_trivially_copyable_v<T> &&
+        std::is_aggregate_v<T> &&
         (sizeof(T) == sizeof(MemberType)) &&
-        std::is_trivially_copyable_v<T>;
+        IsSame<detail::WrapperMemberType<T>, MemberType>;
     
     /**
     * @brief Concept: Is Wrapper of Integer.
@@ -115,8 +169,11 @@ namespace Neptune {
     * @tparam T .
     */
     template<typename T>
-    concept IntegerWrapper = IsWrapperOf<T, int> || IsWrapperOf<T, short> ||
-        IsWrapperOf<T, long> || IsWrapperOf<T, long long> || IsWrapperOf<T, short>;
+    concept IntegerWrapper = 
+        IsWrapperOf<T, short>     || IsWrapperOf<T, unsigned short> ||
+        IsWrapperOf<T, int>       || IsWrapperOf<T, unsigned int>   ||
+        IsWrapperOf<T, long>      || IsWrapperOf<T, unsigned long>  ||
+        IsWrapperOf<T, long long> || IsWrapperOf<T, unsigned long long>;
     
     /**
     * @brief Using: Remove Reference.

@@ -30,15 +30,15 @@ namespace Neptune::Vulkan {
 	constexpr uint32_t DescriptorPoolSize = 1000;                             // @brief DescriptorPool Size.
 
 #ifdef        VK_API_VERSION_1_4
-	#define VK_VERSION                  VK_API_VERSION_1_4                    // @brief Use Vulkan 1.4.
+	#define VK_DEV_VERSION                  VK_API_VERSION_1_4                // @brief Use Vulkan 1.4.
 #elif defined(VK_API_VERSION_1_3)
-	#define VK_VERSION                  VK_API_VERSION_1_3                    // @brief Use Vulkan 1.3.
+	#define VK_DEV_VERSION                  VK_API_VERSION_1_3                // @brief Use Vulkan 1.3.
 #elif defined(VK_API_VERSION_1_2)
-	#define VK_VERSION                  VK_API_VERSION_1_2                    // @brief Use Vulkan 1.2.
+	#define VK_DEV_VERSION                  VK_API_VERSION_1_2                // @brief Use Vulkan 1.2.
 #elif defined(VK_API_VERSION_1_1)
-	#define VK_VERSION                  VK_API_VERSION_1_1                    // @brief Use Vulkan 1.1.
+	#define VK_DEV_VERSION                  VK_API_VERSION_1_1                // @brief Use Vulkan 1.1.
 #elif defined(VK_API_VERSION_1_0)
-	#define VK_VERSION                  VK_API_VERSION_1_0                    // @brief Use Vulkan 1.0.
+	#define VK_DEV_VERSION                  VK_API_VERSION_1_0                // @brief Use Vulkan 1.0.
 #endif
 
 	#define VKImageHostOperation 0                                            // @brief Not use host operation.
@@ -94,7 +94,7 @@ namespace Neptune::Vulkan {
 	*/
 	void HandleResult(VkResult result, VkPhysicalDevice physicalDevice, VkDevice device, bool deviceFaultValid, bool memoryBudget, PFN_vkGetDeviceFaultInfoEXT vkGetDeviceFaultInfoEXT);
 
-	#define VULKAN_CHECK(expr)  { auto expr_value = expr; if (expr_value != VK_SUCCESS) { std::invoke(HandleResultDelegate::GetHandler(), expr_value); } }
+	#define VULKAN_CHECK(expr)  { auto expr_value = expr; if (expr_value != VK_SUCCESS) { std::invoke(HandleResultDelegate::GetHandler(), expr_value); NEPTUNE_BREAK } }
 }
 
 #endif

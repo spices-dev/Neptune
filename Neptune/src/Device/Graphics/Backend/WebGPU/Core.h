@@ -23,9 +23,9 @@ namespace Neptune::WebGPU {
 
 	constexpr uint64_t WaitTimeoutNS = 5E9;                                // @brief wgpuInstanceWaitAny timeoutNS.
 
-	constexpr std::string_view HTMLCanvas = Neptune::HTMLCanvas;           // @brief Surface Html Canvas.
+	constexpr std::string_view HTMLCanvas = Neptune::HTMLCanvas;           // @brief Surface HTML Canvas.
 
-	#define WEBGPUGL_VERSION                                               // @brief Use WEBGPU .
+	#define WEBGPUGL_DEV_VERSION                                           // @brief Use WEBGPU .
 
 	/**
 	* @brief Result Delegate Class.
@@ -94,8 +94,8 @@ namespace Neptune::WebGPU {
 	*/
 	void HandleWaitResult(WGPUWaitStatus result);
 
-	#define WEBGPU_CHECK(expr) { auto expr_value = expr; if (expr_value != WGPUStatus_Success) { std::invoke(HandleResultDelegate::GetHandler(), expr_value); } }
-	#define WEBGPU_WAIT_CHECK(expr) { auto expr_value = expr; if (expr_value != WGPUWaitStatus_Success) { std::invoke(HandleResultDelegate::GetWaitHandler(), expr_value); } }
+	#define WEBGPU_CHECK(expr) { auto expr_value = expr; if (expr_value != WGPUStatus_Success) { std::invoke(HandleResultDelegate::GetHandler(), expr_value); NEPTUNE_BREAK } }
+	#define WEBGPU_WAIT_CHECK(expr) { auto expr_value = expr; if (expr_value != WGPUWaitStatus_Success) { std::invoke(HandleResultDelegate::GetWaitHandler(), expr_value); NEPTUNE_BREAK } }
 }
 
 #endif

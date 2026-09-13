@@ -20,7 +20,7 @@ namespace Neptune::Metal {
 
 	constexpr uint32_t MaxFrameInFlight = Neptune::MaxFrameInFlight;       // @brief Frames In Flight.
 
-	#define METAL_VERSION                                                  // @brief Use Metal.
+	#define METAL_DEV_VERSION                                              // @brief Use Metal.
 
 	/**
 	* @brief Result Delegate Class.
@@ -51,7 +51,7 @@ namespace Neptune::Metal {
 	*/
 	void HandleResult(NS::Error* result);
 
-	#define METAL_CHECK(expr)  { NS::Error* result = nullptr; expr; if(result){ std::invoke(HandleResultDelegate::GetHandler(), result); } }
+	#define METAL_CHECK(expr)  { NS::Error* result = nullptr; expr; if(result){ std::invoke(HandleResultDelegate::GetHandler(), result); NEPTUNE_BREAK } }
 }
 
 #endif
