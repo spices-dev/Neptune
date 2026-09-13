@@ -16,6 +16,9 @@
 
 namespace Neptune::Vulkan::Middleware {
 	
+	/**
+	* @brief Implement of Classic RenderPass and FrameBuffer.
+	*/
 	class RenderPass : public ContextAccessor, public IRenderPass
 	{
 	public:
@@ -74,21 +77,21 @@ namespace Neptune::Vulkan::Middleware {
 		* 
 		* @return Returns VkRenderPass Handle.
 		*/
-		VkRenderPass Handle() const { return m_RenderPass.GetHandle(); }
+		VkRenderPass Handle() const override { return m_RenderPass.GetHandle(); }
 		
 		/**
 		* @brief Get VkPipelineRenderingCreateInfo.
 		* 
 		* @return Returns VkPipelineRenderingCreateInfo.
 		*/
-		VkPipelineRenderingCreateInfo* GetRenderingInfo() { return nullptr; }
+		VkPipelineRenderingCreateInfo* GetRenderingInfo() override { return nullptr; }
 		
 		/**
 		* @brief Get VkPipelineColorBlendStateCreateInfo.
 		* 
 		* @return Returns VkPipelineColorBlendStateCreateInfo.
 		*/
-		const VkPipelineColorBlendStateCreateInfo& GetColorBlendInfo();
+		const VkPipelineColorBlendStateCreateInfo& GetColorBlendInfo() override;
 		
 	public:
 

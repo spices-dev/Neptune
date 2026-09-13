@@ -10,6 +10,7 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/RenderPass/IRenderPass.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/RenderPass.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/FrameBuffer.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/CommandBuffer.h"
@@ -21,11 +22,6 @@
 namespace Neptune::RHI {
 
 	class RenderTarget;
-}
-
-namespace Neptune::Vulkan::Middleware {
-	
-	class IRenderPass;
 }
 
 namespace Neptune::Vulkan {

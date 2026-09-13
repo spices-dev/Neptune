@@ -9,6 +9,7 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "Core/Core.h"
+#include "Device/Graphics/Backend/Vulkan/Core.h"
 
 namespace Neptune {
 	
@@ -27,6 +28,9 @@ namespace Neptune::RHI {
 
 namespace Neptune::Vulkan::Middleware {
 	
+	/**
+	* @brief Interface of RenderPass.
+	*/
 	class IRenderPass
 	{
 	public:

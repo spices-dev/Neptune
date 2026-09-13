@@ -15,6 +15,9 @@
 
 namespace Neptune::Vulkan::Middleware {
 	
+	/**
+	* @brief Implement of Dynamic Rendering.
+	*/
 	class RenderPass2 : public ContextAccessor, public IRenderPass
 	{
 	public:
@@ -73,21 +76,21 @@ namespace Neptune::Vulkan::Middleware {
 		* 
 		* @return Returns VkRenderPass Handle.
 		*/
-		VkRenderPass Handle() const { return VK_NULL_HANDLE; }
+		VkRenderPass Handle() const override { return VK_NULL_HANDLE; }
 		
 		/**
 		* @brief Get VkPipelineRenderingCreateInfo.
 		* 
 		* @return Returns VkPipelineRenderingCreateInfo.
 		*/
-		VkPipelineRenderingCreateInfo* GetRenderingInfo();
+		VkPipelineRenderingCreateInfo* GetRenderingInfo() override;
 		
 		/**
 		* @brief Get VkPipelineColorBlendStateCreateInfo.
 		* 
 		* @return Returns VkPipelineColorBlendStateCreateInfo.
 		*/
-		const VkPipelineColorBlendStateCreateInfo& GetColorBlendInfo();
+		const VkPipelineColorBlendStateCreateInfo& GetColorBlendInfo() override;
 		
 	private:
 
@@ -102,7 +105,7 @@ namespace Neptune::Vulkan::Middleware {
 		
 		std::vector<VkFormat>                             m_ColorAttachmentFormats;          // @brief VkFormat.
 		VkPipelineColorBlendStateCreateInfo               m_ColorBlendInfo{};		   	     // @brief VkPipelineColorBlendStateCreateInfo.
-		VkPipelineRenderingCreateInfo                     m_RenderingInfo;                   // @brief VkPipelineRenderingCreateInfo.
+		VkPipelineRenderingCreateInfo                     m_RenderingInfo{};                 // @brief VkPipelineRenderingCreateInfo.
 		std::vector<VkRenderingAttachmentInfo>            m_AttachmentInfos;           	     // @brief VkRenderingAttachmentInfo.
 		std::vector<VkPipelineColorBlendAttachmentState>  m_ColorBlends;					 // @brief VkPipelineColorBlendAttachmentState.
 		std::optional<VkExtent2D>                         m_Extent;							 // @brief VkExtent2D.
