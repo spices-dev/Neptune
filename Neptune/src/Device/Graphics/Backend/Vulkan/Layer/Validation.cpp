@@ -90,7 +90,7 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static constexpr char data[] = "ALWAYS";
+            static const char* data = "ALWAYS";
 
             AddLayerSetting("legacy_detection_mode", data);
         }
@@ -162,13 +162,13 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static constexpr char data[] = "";
+            static const char* data = "";
 
             AddLayerSetting("gpuav_shaders_to_instrument", data);
         }
 
         {
-            static constexpr char data[] = "cache/CdlDump";
+            static const char* data = "cache/CdlDump";
 
             AddLayerSetting("gpuav_cdl_dump_path", data);
         }
@@ -234,19 +234,19 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static constexpr char data[] = "VK_DBG_LAYER_ACTION_LOG_MSG,VK_DBG_LAYER_ACTION_DEBUG_OUTPUT";
+            static const char* data = "VK_DBG_LAYER_ACTION_LOG_MSG,VK_DBG_LAYER_ACTION_DEBUG_OUTPUT";
 
             AddLayerSetting("debug_action", data);
         }
 
         {
-            static constexpr char data[] = "stdout";
+            static const char* data = "stdout";
 
             AddLayerSetting("log_filename", data);
         }
 
         {
-            static constexpr char data[] = "error,warn";
+            static const char* data = "error,warn";
 
             AddLayerSetting("report_flags", data);
         }
@@ -264,7 +264,7 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static constexpr char data[] = "";
+            static const char* data = "";
 
             AddLayerSetting("message_id_filter", data);
         }

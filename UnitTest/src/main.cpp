@@ -24,6 +24,8 @@
 #include "Device/Graphics/Backend/WebGL/GraphicsBackendTest.h"
 #include "Device/Graphics/Backend/WebGPU/GraphicsBackendTest.h"
 
+#include "World/Scene/SceneTest.h"
+
 #include <Core/Log/Log.h>
 
 /**

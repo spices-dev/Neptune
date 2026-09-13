@@ -198,25 +198,11 @@ namespace Neptune {
 
     private:
 
-        /**
-        * @brief Mutex for world.
-        */
-        mutable std::shared_mutex m_Mutex;
+        mutable std::shared_mutex m_Mutex;    // @brief Mutex for world.
+        entt::registry m_Registry;            // @brief This ECS Registry.
+        uint32_t m_Root;                      // @brief Root entity.
 
-        /**
-        * @brief This ECS Registry.
-        */
-        entt::registry m_Registry;
-
-        /**
-        * @brief Root entity.
-        */
-        uint32_t m_Root;
-
-        /**
-        * Allow Entity access all data.
-        */
-        friend class Entity;
+        friend class Entity;                  // @brief Allow Entity access all data.
     };
 
     template <typename T, typename F>
@@ -232,7 +218,15 @@ namespace Neptune {
         {
             const auto& comp = m_Registry.get<T>(e);
 
-            if(!std::invoke(std::forward<F>(fn), static_cast<uint32_t>(e), comp)) break;
+            /**
+            * @brief Visitor.
+            * 
+            * @param[in] e Entity Id.
+            * @param[in] comp Entity Component.
+            * 
+            * @return Returns true if block.
+            */
+            if(std::invoke(std::forward<F>(fn), static_cast<uint32_t>(e), comp)) break;
         }
     }
 
@@ -249,7 +243,15 @@ namespace Neptune {
 
             const auto& comp = m_Registry.get<T>(e);
 
-            if (!std::invoke(std::forward<F>(fn), range, comp)) break;
+            /**
+            * @brief Visitor.
+            *
+            * @param[in] e Entity Id.
+            * @param[in] comp Entity Component.
+            *
+            * @return Returns true if block.
+            */
+            if (std::invoke(std::forward<F>(fn), range, comp)) break;
         }
     }
 
@@ -266,7 +268,15 @@ namespace Neptune {
 
             const auto& comp = m_Registry.get<T>(e);
 
-            if (!std::invoke(std::forward<F>(fn), ranges[i], comp)) break;
+            /**
+            * @brief Visitor.
+            *
+            * @param[in] e Entity Id.
+            * @param[in] comp Entity Component.
+            *
+            * @return Returns true if block.
+            */
+            if (std::invoke(std::forward<F>(fn), ranges[i], comp)) break;
         }
     }
 

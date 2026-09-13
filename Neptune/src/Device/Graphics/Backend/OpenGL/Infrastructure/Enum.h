@@ -16,7 +16,7 @@ namespace Neptune::OpenGL {
     enum class EInfrastructure : uint8_t
     {
         WindowContext = 0,                   // @brief Window/Context.
-        Capabilities,                        // @brief Capabilities.
+        Extensions,                          // @brief Extensions.
         DebugUtilsObject,                    // @brief Label/Name Functors.
 
         GraphicFence,                        // @brief Main Thread Graphic Fence.

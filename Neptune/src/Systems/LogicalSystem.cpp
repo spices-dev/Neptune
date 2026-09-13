@@ -50,7 +50,7 @@ namespace Neptune {
                 scene->ViewComponent<ScriptComponent>([](uint32_t e, const ScriptComponent& comp) {
 
                     comp.OnTick();
-                    return true;
+                    return false;
                 });
             }
         }
@@ -87,7 +87,7 @@ namespace Neptune {
                 scene->ViewComponent<ScriptComponent>([&](uint32_t e, const ScriptComponent& comp) {
 
                     comp.OnEvent(event);
-                    return true;
+                    return false;
                 });
             }
         }

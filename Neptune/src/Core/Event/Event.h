@@ -220,7 +220,7 @@ namespace Detail {
         * @return Returns true if execute function pointer.
         */
         template<typename T>
-        bool Dispatch(EventFn<T> func)
+        bool Dispatch(EventFn<T>&& func)
         {
             NEPTUNE_PROFILE_ZONE
 
@@ -230,7 +230,7 @@ namespace Detail {
             */
             if (m_Event.GetEventType() == T::GetStaticType())
             {
-                m_Event.Handled = func(*static_cast<T*>(&m_Event));
+                m_Event.Handled = std::invoke(func, *static_cast<T*>(&m_Event));
 
                 return true;
             }

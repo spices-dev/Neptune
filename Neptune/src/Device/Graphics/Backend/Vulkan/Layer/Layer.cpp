@@ -33,7 +33,7 @@ namespace Neptune::Vulkan::Layer {
 		AddLayerSetting(settings);
 	}
 	
-	void Layer::AddLayerSetting(const char* name, const char* data)
+	void Layer::AddLayerSetting(const char* name, const char*& data)
 	{
 		NEPTUNE_PROFILE_ZONE
 		

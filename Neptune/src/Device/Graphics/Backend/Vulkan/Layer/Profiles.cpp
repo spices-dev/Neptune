@@ -24,13 +24,13 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static constexpr char data[] = "cache/Profiles";
+            static const char* data = "cache/Profiles";
 
             AddLayerSetting("profile_dirs", data);
         }
 
         {
-            static constexpr char data[] = "${VP_DEFAULT}";
+            static const char* data = "${VP_DEFAULT}";
 
             AddLayerSetting("profile_name", data);
         }
@@ -42,19 +42,19 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static constexpr char data[] = "SIMULATE_API_VERSION_BIT,SIMULATE_FEATURES_BIT,SIMULATE_PROPERTIES_BIT,SIMULATE_EXTENSIONS_BIT,SIMULATE_FORMATS_BIT,SIMULATE_VIDEO_CAPABILITIES_BIT,SIMULATE_VIDEO_FORMATS_BIT";
+            static const char* data = "SIMULATE_API_VERSION_BIT,SIMULATE_FEATURES_BIT,SIMULATE_PROPERTIES_BIT,SIMULATE_EXTENSIONS_BIT,SIMULATE_FORMATS_BIT,SIMULATE_VIDEO_CAPABILITIES_BIT,SIMULATE_VIDEO_FORMATS_BIT";
 
             AddLayerSetting("simulate_capabilities", data);
         }
 
         {
-            static constexpr char data[] = "DEFAULT_FEATURE_VALUES_DEVICE";
+            static const char* data = "DEFAULT_FEATURE_VALUES_DEVICE";
 
             AddLayerSetting("default_feature_values", data);
         }
 
         {
-            static constexpr char data[] = "UNKNOWN_FEATURE_VALUES_UNCHANGED";
+            static const char* data = "UNKNOWN_FEATURE_VALUES_UNCHANGED";
 
             AddLayerSetting("unknown_feature_values", data);
         }
@@ -156,25 +156,25 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static constexpr char data[] = "";
+            static const char* data = "";
 
             AddLayerSetting("exclude_device_extensions", data);
         }
 
         {
-            static constexpr char data[] = "";
+            static const char* data = "";
 
             AddLayerSetting("exclude_formats", data);
         }
 
         {
-            static constexpr char data[] = "DEBUG_ACTION_STDOUT_BIT,DEBUG_ACTION_OUTPUT_BIT,DEBUG_ACTION_FILE_BIT,DEBUG_ACTION_BREAKPOINT_BIT";
+            static const char* data = "DEBUG_ACTION_STDOUT_BIT,DEBUG_ACTION_OUTPUT_BIT,DEBUG_ACTION_FILE_BIT,DEBUG_ACTION_BREAKPOINT_BIT";
 
             AddLayerSetting("debug_actions", data);
         }
 
         {
-            static constexpr char data[] = "vk_profiles.txt";
+            static const char* data = "vk_profiles.txt";
 
             AddLayerSetting("debug_filename", data);
         }
@@ -192,7 +192,7 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static constexpr char data[] = "DEBUG_REPORT_NOTIFICATION_BIT,DEBUG_REPORT_WARNING_BIT,DEBUG_REPORT_ERROR_BIT";
+            static const char* data = "DEBUG_REPORT_NOTIFICATION_BIT,DEBUG_REPORT_WARNING_BIT,DEBUG_REPORT_ERROR_BIT";
 
             AddLayerSetting("debug_reports", data);
         }

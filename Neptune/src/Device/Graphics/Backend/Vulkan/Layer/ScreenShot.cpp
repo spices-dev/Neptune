@@ -18,19 +18,19 @@ namespace Neptune::Vulkan::Layer {
         NEPTUNE_PROFILE_ZONE
 
         {
-            static constexpr char data[] = "";
+            static const char* data = "";
 
             AddLayerSetting("frames", data);
         }
 
         {
-            static constexpr char data[] = "cache/ScreenShot";
+            static const char* data = "cache/ScreenShot";
 
             AddLayerSetting("dir", data);
         }
 
         {
-            static constexpr char data[] = "USE_SWAPCHAIN_COLORSPACE";
+            static const char* data = "USE_SWAPCHAIN_COLORSPACE";
 
             AddLayerSetting("format", data);
         }

@@ -72,7 +72,7 @@ namespace Neptune::Vulkan::Layer {
         * @param[in] name Config Name.
         * @param[in] data Data.
         */
-        void AddLayerSetting(const char* name, const char* data);
+        void AddLayerSetting(const char* name, const char*& data);
         
         /**
         * @brief Add Layer Setting.

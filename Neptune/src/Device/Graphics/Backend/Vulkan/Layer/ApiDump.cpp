@@ -18,13 +18,13 @@ namespace Neptune::Vulkan::Layer {
         NEPTUNE_PROFILE_ZONE
 
         {
-            static constexpr char data[] = "0-0";
+            static const char* data = "0-0";
 
             AddLayerSetting("output_range", data);
         }
 
         {
-            static constexpr char data[] = "text";
+            static const char* data = "text";
 
             AddLayerSetting("output_format", data);
         }
@@ -42,7 +42,7 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static constexpr char data[] = "cache/vk_api_dump.txt";
+            static const char* data = "cache/vk_api_dump.txt";
 
             AddLayerSetting("log_filename", data);
         }

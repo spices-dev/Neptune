@@ -18,37 +18,37 @@ namespace Neptune::Vulkan::Layer {
         NEPTUNE_PROFILE_ZONE
 
         {
-            static constexpr char data[] = "F12";
+            static const char* data = "F12";
 
             AddLayerSetting("capture_trigger", data);
         }
 
         {
-            static constexpr char data[] = "frames";
+            static const char* data = "frames";
 
             AddLayerSetting("capture_trigger_boundary", data);
         }
 
         {
-            static constexpr char data[] = "";
+            static const char* data = "";
 
             AddLayerSetting("capture_trigger_frames", data);
         }
 
         {
-            static constexpr char data[] = "";
+            static const char* data = "";
 
             AddLayerSetting("capture_frames", data);
         }
 
         {
-            static constexpr char data[] = "";
+            static const char* data = "";
 
             AddLayerSetting("capture_process_name", data);
         }
 
         {
-            static constexpr char data[] = "cache/GfxReconstruct/gfxrecon_capture.gfxr";
+            static const char* data = "cache/GfxReconstruct/gfxrecon_capture.gfxr";
 
             AddLayerSetting("capture_file", data);
         }
@@ -66,19 +66,19 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static constexpr char data[] = "LZ4";
+            static const char* data = "LZ4";
 
             AddLayerSetting("capture_compression_type", data);
         }
 
         {
-            static constexpr char data[] = "";
+            static const char* data = "";
 
             AddLayerSetting("capture_environment", data);
         }
 
         {
-            static constexpr char data[] = "page_guard";
+            static const char* data = "page_guard";
 
             AddLayerSetting("memory_tracking_mode", data);
         }
@@ -120,7 +120,7 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static constexpr char data[] = "info";
+            static const char* data = "info";
 
             AddLayerSetting("log_level", data);
         }
@@ -156,7 +156,7 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static constexpr char data[] = "cache/GfxReconstruct/vk_gfx_reconstruct.txt";
+            static const char* data = "cache/GfxReconstruct/vk_gfx_reconstruct.txt";
 
             AddLayerSetting("log_file", data);
         }

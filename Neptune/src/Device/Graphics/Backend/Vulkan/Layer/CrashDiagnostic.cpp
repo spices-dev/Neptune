@@ -30,7 +30,7 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static constexpr char data[] = "cache/CrashDiagnostic";
+            static const char* data = "cache/CrashDiagnostic";
 
             AddLayerSetting("output_path", data);
         }
@@ -54,31 +54,31 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static constexpr char data[] = "running";
+            static const char* data = "running";
 
             AddLayerSetting("dump_queue_submits", data);
         }
 
         {
-            static constexpr char data[] = "all";
+            static const char* data = "all";
 
             AddLayerSetting("dump_command_buffers", data);
         }
 
         {
-            static constexpr char data[] = "all";
+            static const char* data = "all";
 
             AddLayerSetting("dump_commands", data);
         }
 
         {
-            static constexpr char data[] = "all";
+            static const char* data = "all";
 
             AddLayerSetting("dump_shaders", data);
         }
 
         {
-            static constexpr char data[] = "vk_crash_diagnostic.txt";
+            static const char* data = "vk_crash_diagnostic.txt";
 
             AddLayerSetting("log_file", data);
         }
@@ -96,7 +96,7 @@ namespace Neptune::Vulkan::Layer {
         }
 
         {
-            static constexpr char data[] = "error";
+            static const char* data = "error";
 
             AddLayerSetting("message_severity", data);
         }

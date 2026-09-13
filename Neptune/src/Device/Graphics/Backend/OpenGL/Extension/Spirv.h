@@ -1,0 +1,44 @@
+﻿/**
+* @file Spirv.h.
+* @brief The Spirv Class Definitions.
+* @author Spices.
+*/
+
+#pragma once
+
+#ifdef NP_GRAPHICS_OPENGL
+
+#include "Core/Core.h"
+#include "Context.h"
+
+namespace Neptune::OpenGL::Extension {
+
+    using ISpirv = IExtension<class Spirv, EExtension::Spirv>;
+    
+    class Spirv : public Extension
+    {
+    public:
+        
+        static constexpr uint32_t CoreVersion = 46;
+        
+    public:
+
+        /**
+        * @brief Constructor Function.
+        *
+        * @param[in] state EExtensionState.
+        */
+        explicit Spirv(EExtensionState state = EExtensionState::Core);
+
+        /**
+        * @brief Destructor Function.
+        */
+        ~Spirv() override = default;
+        
+    private:
+        
+        std::unordered_set<const char*> m_SpirVExtensions;
+    };
+}
+
+#endif
