@@ -133,107 +133,170 @@ namespace Neptune::SOP {
 
 			stream.read(reinterpret_cast<char*>(&count), sizeof(count));
 			
+			if (count == 0)
+			{
+				NEPTUNE_LOG_CORE(E) << "positions buffer is empty.";
+				
+				return false;
+			}
+			
 			auto& positions = obj->m_Desc.positions.host;
 			
 			positions->resize(count);
 			
-			stream.read(reinterpret_cast<char*>(positions->data()), sizeof(*positions));
+			stream.read(reinterpret_cast<char*>(positions->data()), count * sizeof(Decay<decltype(*positions)>::value_type));
 		}
 
 		{
 			uint32_t count = 0;
 
 			stream.read(reinterpret_cast<char*>(&count), sizeof(count));
+			
+			if (count == 0)
+			{
+				NEPTUNE_LOG_CORE(E) << "normals buffer is empty.";
+				
+				return false;
+			}
 			
 			auto& normals = obj->m_Desc.normals.host;
 			
 			normals->resize(count);
 			
-			stream.read(reinterpret_cast<char*>(normals->data()), sizeof(*normals));
+			stream.read(reinterpret_cast<char*>(normals->data()), count * sizeof(Decay<decltype(*normals)>::value_type));
 		}
 		
 		{
 			uint32_t count = 0;
 
 			stream.read(reinterpret_cast<char*>(&count), sizeof(count));
+			
+			if (count == 0)
+			{
+				NEPTUNE_LOG_CORE(E) << "colors buffer is empty.";
+				
+				return false;
+			}
 			
 			auto& colors = obj->m_Desc.colors.host;
 				
 			colors->resize(count);
 			
-			stream.read(reinterpret_cast<char*>(colors->data()), sizeof(*colors));
+			stream.read(reinterpret_cast<char*>(colors->data()), count * sizeof(Decay<decltype(*colors)>::value_type));
 		}
 		
 		{
 			uint32_t count = 0;
 
 			stream.read(reinterpret_cast<char*>(&count), sizeof(count));
+			
+			if (count == 0)
+			{
+				NEPTUNE_LOG_CORE(E) << "texCoords buffer is empty.";
+				
+				return false;
+			}
 			
 			auto& texCoords = obj->m_Desc.texCoords.host;
 			
 			texCoords->resize(count);
 			
-			stream.read(reinterpret_cast<char*>(texCoords->data()), sizeof(*texCoords));
+			stream.read(reinterpret_cast<char*>(texCoords->data()), count * sizeof(Decay<decltype(*texCoords)>::value_type));
 		}
 		
 		{
 			uint32_t count = 0;
 
 			stream.read(reinterpret_cast<char*>(&count), sizeof(count));
+			
+			if (count == 0)
+			{
+				NEPTUNE_LOG_CORE(E) << "vertices buffer is empty.";
+				
+				return false;
+			}
 			
 			auto& vertices = obj->m_Desc.vertices.host;
 			
 			vertices->resize(count);
 			
-			stream.read(reinterpret_cast<char*>(vertices->data()), sizeof(*vertices));
+			stream.read(reinterpret_cast<char*>(vertices->data()), count * sizeof(Decay<decltype(*vertices)>::value_type));
 		}
 		
 		{
 			uint32_t count = 0;
 
 			stream.read(reinterpret_cast<char*>(&count), sizeof(count));
+			
+			if (count == 0)
+			{
+				NEPTUNE_LOG_CORE(E) << "primitivePoints buffer is empty.";
+				
+				return false;
+			}
 			
 			auto& primitivePoints = obj->m_Desc.primitivePoints.host;
 			
 			primitivePoints->resize(count);
 			
-			stream.read(reinterpret_cast<char*>(primitivePoints->data()), sizeof(primitivePoints));
+			stream.read(reinterpret_cast<char*>(primitivePoints->data()), count * sizeof(Decay<decltype(*primitivePoints)>::value_type));
 		}
 		
 		{
 			uint32_t count = 0;
 
 			stream.read(reinterpret_cast<char*>(&count), sizeof(count));
+			
+			if (count == 0)
+			{
+				NEPTUNE_LOG_CORE(E) << "primitiveVertices buffer is empty.";
+				
+				return false;
+			}
 			
 			auto& primitiveVertices = obj->m_Desc.primitiveVertices.host;
 			
 			primitiveVertices->resize(count);
 			
-			stream.read(reinterpret_cast<char*>(primitiveVertices->data()), sizeof(primitiveVertices));
+			stream.read(reinterpret_cast<char*>(primitiveVertices->data()), count * sizeof(Decay<decltype(*primitiveVertices)>::value_type));
 		}
 		
 		{
 			uint32_t count = 0;
 
 			stream.read(reinterpret_cast<char*>(&count), sizeof(count));
+			
+			if (count == 0)
+			{
+				NEPTUNE_LOG_CORE(E) << "primitiveLocations buffer is empty.";
+				
+				return false;
+			}
 			
 			auto& primitiveLocations = obj->m_Desc.primitiveLocations.host;
 			
 			primitiveLocations->resize(count);
 			
-			stream.read(reinterpret_cast<char*>(primitiveLocations->data()), sizeof(primitiveLocations));
+			stream.read(reinterpret_cast<char*>(primitiveLocations->data()), count * sizeof(Decay<decltype(*primitiveLocations)>::value_type));
 		}
 		
 		{
 			uint32_t count = 0;
 
 			stream.read(reinterpret_cast<char*>(&count), sizeof(count));
+			
+			if (count == 0)
+			{
+				NEPTUNE_LOG_CORE(E) << "meshlets buffer is empty.";
+				
+				return false;
+			}
 			
 			auto& meshlets = obj->m_Desc.meshlets.host;
 			
 			meshlets->resize(count);
 			
-			stream.read(reinterpret_cast<char*>(meshlets->data()), sizeof(meshlets));
+			stream.read(reinterpret_cast<char*>(meshlets->data()), count * sizeof(Decay<decltype(*meshlets)>::value_type));
 		}
 		
 		{
@@ -241,11 +304,18 @@ namespace Neptune::SOP {
 
 			stream.read(reinterpret_cast<char*>(&count), sizeof(count));
 			
+			if (count == 0)
+			{
+				NEPTUNE_LOG_CORE(E) << "lods buffer is empty.";
+				
+				return false;
+			}
+			
 			auto& lods = obj->m_Desc.lods.host;
 			
 			lods->resize(count);
 			
-			stream.read(reinterpret_cast<char*>(lods->data()), sizeof(lods));
+			stream.read(reinterpret_cast<char*>(lods->data()), count * sizeof(Decay<decltype(*lods)>::value_type));
 		}
 		
 		obj->SetEObject(EObject::Polygon);
@@ -263,12 +333,19 @@ namespace Neptune::SOP {
 
 		stream.read(reinterpret_cast<char*>(&count), sizeof(count));
 		
+		if (count == 0)
+		{
+			NEPTUNE_LOG_CORE(E) << "GS3D buffer is empty.";
+				
+			return false;
+		}
+		
 		{
 			auto& positions = obj->m_Desc.positions.host;
 			
 			positions->resize(count);
 			
-			stream.read(reinterpret_cast<char*>(positions->data()), sizeof(*positions));
+			stream.read(reinterpret_cast<char*>(positions->data()), count * sizeof(Decay<decltype(*positions)>::value_type));
 		}
 		
 		{
@@ -276,7 +353,7 @@ namespace Neptune::SOP {
 			
 			normals->resize(count);
 			
-			stream.read(reinterpret_cast<char*>(normals->data()), sizeof(normals));
+			stream.read(reinterpret_cast<char*>(normals->data()), count * sizeof(Decay<decltype(*normals)>::value_type));
 		}
 		
 		{
@@ -284,7 +361,7 @@ namespace Neptune::SOP {
 			
 			colors->resize(count);
 			
-			stream.read(reinterpret_cast<char*>(colors->data()), sizeof(*colors));
+			stream.read(reinterpret_cast<char*>(colors->data()), count * sizeof(Decay<decltype(*colors)>::value_type));
 		}
 
 		{
@@ -292,7 +369,7 @@ namespace Neptune::SOP {
 			
 			alphas->resize(count);
 			
-			stream.read(reinterpret_cast<char*>(alphas->data()), sizeof(*alphas));
+			stream.read(reinterpret_cast<char*>(alphas->data()), count * sizeof(Decay<decltype(*alphas)>::value_type));
 		}
 		
 		{
@@ -300,7 +377,7 @@ namespace Neptune::SOP {
 				
 			scales->resize(count);
 			
-			stream.read(reinterpret_cast<char*>(scales->data()), sizeof(*scales));
+			stream.read(reinterpret_cast<char*>(scales->data()), count * sizeof(Decay<decltype(*scales)>::value_type));
 		}
 		
 		{
@@ -308,7 +385,7 @@ namespace Neptune::SOP {
 			
 			orientations->resize(count);
 			
-			stream.read(reinterpret_cast<char*>(orientations->data()), sizeof(*orientations));
+			stream.read(reinterpret_cast<char*>(orientations->data()), count * sizeof(Decay<decltype(*orientations)>::value_type));
 		}
 		
 		{
@@ -316,7 +393,7 @@ namespace Neptune::SOP {
 			
 			albedos->resize(count);
 			
-			stream.read(reinterpret_cast<char*>(albedos->data()), sizeof(*albedos));
+			stream.read(reinterpret_cast<char*>(albedos->data()), count * sizeof(Decay<decltype(*albedos)>::value_type));
 		}
 		
 		obj->SetEObject(EObject::GS3D);

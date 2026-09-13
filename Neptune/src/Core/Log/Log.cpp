@@ -90,7 +90,7 @@ namespace Neptune {
                 case LogLevel::W:     log->ClientWarn(msg);     break;
                 case LogLevel::E:     log->ClientError(msg);    break;
                 case LogLevel::C:     log->ClientCritical(msg); break;
-                default:              log->CoreTrace(msg);      break;
+                default:              log->ClientTrace(msg);      break;
             }
         }
         

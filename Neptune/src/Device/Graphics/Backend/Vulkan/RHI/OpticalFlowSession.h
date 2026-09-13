@@ -73,7 +73,7 @@ namespace Neptune::Vulkan {
 		/**
 		* @brief Interface of Create OpticalFlow Session.
 		*
-		* @retrun Returns true if succeeded.
+		* @return Returns true if succeeded.
 		*/
 		bool CreateOpticalFlowSession() override;
 

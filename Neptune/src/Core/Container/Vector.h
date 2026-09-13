@@ -105,7 +105,7 @@ namespace Neptune::Container {
 		/**
 		* @brief Determine if vector is empty.
 		* 
-		* @retrun Returns true if empty.
+		* @return Returns true if empty.
 		*/
 		bool Empty() const { return m_UseCount == 0; }
 

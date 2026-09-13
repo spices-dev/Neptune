@@ -13,6 +13,7 @@
 #include <unordered_map>
 #include <memory>
 #include <cassert>
+#include <shared_mutex>
 
 namespace Neptune {
 

@@ -89,7 +89,7 @@ namespace Neptune::Container::Test {
 		EXPECT_EQ(c1.Size(), 4);
 		
 		c2.Push(1.0f);
-		EXPECT_EQ(c1.Size(), 4);
+		EXPECT_EQ(c2.Size(), 4);
 	}
     
     /**

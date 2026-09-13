@@ -134,10 +134,10 @@ namespace Neptune {
     {
 #ifdef NEPTUNE_DEBUG
         return Level >= LogStream::LogLevel::T;
-#endif
-
-#ifdef NEPTUNE_RELEASE
+#elif defined(NEPTUNE_RELEASE)
         return Level >= LogStream::LogLevel::I;
+#else
+        return Level >= LogStream::LogLevel::T;
 #endif
         
     }

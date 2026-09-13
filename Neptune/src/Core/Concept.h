@@ -153,7 +153,7 @@ namespace Neptune {
     * @brief Concept: Is Wrapper of MemberType.
     * 
     * @tparam T .
-    * @tparam MemberType Wrappered Type.
+    * @tparam MemberType Wrapper Type.
     */
     template<typename T, typename MemberType>
     concept IsWrapperOf = 

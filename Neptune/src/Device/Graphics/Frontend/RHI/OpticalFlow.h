@@ -56,7 +56,7 @@ namespace Neptune::RHI {
 		/**
 		* @brief Interface of Create OpticalFlow Session.
 		* 
-		* @retrun Returns true if succeeded.
+		* @return Returns true if succeeded.
 		*/
 		virtual bool CreateOpticalFlowSession() = 0;
 
@@ -107,7 +107,7 @@ namespace Neptune::RHI {
 		/**
 		* @brief Interface of Create OpticalFlow Session.
 		* 
-		* @retrun Returns true if succeeded.
+		* @return Returns true if succeeded.
 		*/
 		bool CreateOpticalFlowSession() const { return m_Impl->CreateOpticalFlowSession(); }
 
