@@ -96,6 +96,17 @@ namespace Neptune::Graphic::Common {
         typename A::T Get();
 
         /**
+        * @brief Is AccessibleInfrastructure registry.
+        *
+        * @tparam A AccessibleInfrastructure Definitions.
+        * 
+        * @return Returns true if registry.
+        */
+        template<IsAInfrastructure A>
+        requires IsNotEmptyEnum<E>
+        bool Has();
+        
+        /**
         * @brief Get All AccessibleInfrastructure.
         * 
         * @return Returns All AccessibleInfrastructure.
@@ -151,4 +162,14 @@ namespace Neptune::Graphic::Common {
         return std::any_cast<const MergeableTypeInfo<A>&>(m_Infrastructures.at(position)).Value;
     }
     
+    template <typename E> requires IsEnum<E>
+    template <IsAInfrastructure A> requires IsNotEmptyEnum<E>
+    bool AccessibleContext<E>::Has()
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        const auto position = static_cast<uint8_t>(A::E);
+        
+        return m_Infrastructures.at(position).has_value();
+    }
 }

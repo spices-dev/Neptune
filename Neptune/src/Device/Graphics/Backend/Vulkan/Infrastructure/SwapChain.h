@@ -67,6 +67,15 @@ namespace Neptune::Vulkan {
 		const Unit::ImageView::Handle& GetView(uint32_t index) const { return m_SwapChainImage[index]->GetView(); }
 
 		/**
+		* @brief Get Image Unit Handle.
+		*
+		* @param[in] index Image index.
+		* 
+		* @return Returns Image Unit Handle.
+		*/
+		const Unit::Image::Handle& GetImage(uint32_t index) const { return m_SwapChainImage[index]->Handle(); }
+		
+		/**
 		* @brief Present to surface.
 		*
 		* @param[in] info VkPresentInfoKHR.

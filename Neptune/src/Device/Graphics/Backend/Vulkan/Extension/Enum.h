@@ -47,6 +47,7 @@ namespace Neptune::Vulkan {
         TimelineSemaphore,                          // @brief TimelineSemaphore.
         Synchronization2,                           // @brief Synchronization2.
         PresentTiming,                              // @brief PresentTiming.
+        UnifiedImageLayouts,                        // @brief UnifiedImageLayouts.
 
         Count
     };
@@ -88,6 +89,10 @@ namespace Neptune::Vulkan {
             case CreateRenderPass2:               return "CreateRenderPass2";
             case DynamicRenderingLocalRead:       return "DynamicRenderingLocalRead";
             case ScalarBlockLayout:               return "ScalarBlockLayout";
+            case TimelineSemaphore:               return "TimelineSemaphore";
+            case Synchronization2:                return "Synchronization2";
+            case PresentTiming:                   return "PresentTiming";
+            case UnifiedImageLayouts:             return "UnifiedImageLayouts";
             default:                              return "NonNamed";
         }
     }

@@ -21,7 +21,7 @@ namespace Neptune::RenderDoc {
     /**
     * @brief Set Captured WindowContext.
     * 
-    * @param[in] Native Window.
+    * @param[in] window Native Window.
     */
     void SetCaptureWindow(void* window);
 

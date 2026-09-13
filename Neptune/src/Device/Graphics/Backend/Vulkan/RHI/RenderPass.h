@@ -91,6 +91,13 @@ namespace Neptune::Vulkan {
 		*/
 		const std::vector<VkPipelineColorBlendAttachmentState>& GetColorBlends() const { return m_ColorBlends; }
 
+		/**
+		* @brief Get ColorAttachmentFormats.
+		*
+		* @return Returns VkFormat.
+		*/
+		const std::vector<VkFormat>& GetColorAttachmentFormats() const { return m_ColorAttachmentFormats; }
+		
 	private:
 
 		/**
@@ -107,6 +114,7 @@ namespace Neptune::Vulkan {
 
 		std::vector<VkAttachmentDescription>              m_AttachmentDescriptions;          // @brief VkAttachmentDescription.
 		std::vector<VkAttachmentReference>                m_ColorAttachmentReference;        // @brief VkAttachmentReference.
+		std::vector<VkFormat>                             m_ColorAttachmentFormats;          // @brief VkFormat.
 		std::vector<VkPipelineColorBlendAttachmentState>  m_ColorBlends;					 // @brief VkPipelineColorBlendAttachmentState.
 		std::vector<VkClearValue>                         m_ClearValues;					 // @brief VkClearValue.
 		std::vector<VkImageView>                          m_ImageViews;						 // @brief VkImageView.

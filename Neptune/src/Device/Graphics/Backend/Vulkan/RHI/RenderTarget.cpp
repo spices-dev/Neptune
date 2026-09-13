@@ -161,6 +161,8 @@ namespace Neptune::Vulkan {
 			m_Image->CreateImage(createInfo, ToVkMemoryPropertyFlags(info.memoryUsage));
 		}
 
+		m_Image->TransitionLayout(VK_IMAGE_LAYOUT_GENERAL);
+		
 		{
 			VkImageViewCreateInfo                              createInfo{};
 			createInfo.sType                                 = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;

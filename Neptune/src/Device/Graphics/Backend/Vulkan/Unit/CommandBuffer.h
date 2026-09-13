@@ -64,10 +64,22 @@ namespace Neptune::Vulkan::Unit {
 		void BeginRenderPass(const VkRenderPassBeginInfo& info, VkSubpassContents content) const;
 
 		/**
+		* @brief Begin Rendering.
+		*
+		* @param[in] info VkRenderingInfoKHR.
+		*/
+		void BeginRendering(const VkRenderingInfoKHR& info) const;
+		
+		/**
 		* @brief End RenderPass.
 		*/
 		void EndRenderPass() const;
 
+		/**
+		* @brief End Rendering.
+		*/
+		void EndRendering() const;
+		
 		/**
 		* @brief Bind Pipeline.
 		* 
@@ -386,6 +398,13 @@ namespace Neptune::Vulkan::Unit {
 		void CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const VkImageMemoryBarrier& barrier) const;
 		
 		/**
+		* @brief PipelineBarrier2.
+		* 
+		* @param[in] info VkDependencyInfo.
+		*/
+		void CmdPipelineBarrier2(const VkDependencyInfo& info) const;
+		
+		/**
 		* @brief Begin VideoCoding.
 		*
 		* @param[in] fn PFN_vkCmdBeginVideoCodingKHR.
@@ -443,15 +462,6 @@ namespace Neptune::Vulkan::Unit {
 		* @param[in] region VkBufferCopy.
 		*/
 		void CopyBuffer(VkBuffer src, VkBuffer dst, const VkBufferCopy& region) const;
-		
-		/**
-		* @brief Pipeline Barrier.
-		*
-		* @param[in] srcMask VkPipelineStageFlags.
-		* @param[in] dstMask VkPipelineStageFlags.
-		* @param[in] barrier VkImageMemoryBarrier.
-		*/
-		void PipelineBarrier(VkPipelineStageFlags srcMask, VkPipelineStageFlags dstMask, const VkImageMemoryBarrier& barrier) const;
 
 		/**
 		* @brief Begin Query.

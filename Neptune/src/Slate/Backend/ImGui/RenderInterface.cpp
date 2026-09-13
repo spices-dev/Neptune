@@ -137,25 +137,35 @@ namespace Neptune::imgui {
 
 		AContext context(infrastructure);
 
-		ImGui_ImplVulkan_InitInfo                                  init_info{};
-		init_info.ApiVersion                                     = context.Get<AApiVersion>();
-		init_info.Instance                                       = context.Get<AInstance>();
-		init_info.PhysicalDevice                                 = context.Get<APhysicalDevice>();
-		init_info.Device                                         = context.Get<ADevice>();
-		init_info.QueueFamily                                    = context.Get<AGraphicQueueFamily>();
-		init_info.Queue                                          = context.Get<AGraphicQueue>();
-		init_info.PipelineCache                                  = VK_NULL_HANDLE;						       
-		init_info.DescriptorPool                                 = context.Get<ADescriptorPool>();
-		init_info.PipelineInfoMain.RenderPass                    = context.Get<ASwapChainRenderPass>();
-		init_info.PipelineInfoMain.Subpass                       = 0;
-		init_info.PipelineInfoForViewports.SwapChainImageUsage   = context.Get<ASwapChainImageUsage>();
-		init_info.MinImageCount                                  = Neptune::MaxFrameInFlight;
-		init_info.ImageCount                                     = Neptune::MaxFrameInFlight;
-		init_info.PipelineInfoMain.MSAASamples                   = context.Get<AMSAASamples>();
-		init_info.UseDynamicRendering                            = false;
-		init_info.Allocator                                      = context.Get<AAllocator>();
-		init_info.CheckVkResultFn                                = context.Get<ACheckResultFn>();
+		ImGui_ImplVulkan_InitInfo                                               init_info{};
+		init_info.ApiVersion                                                  = context.Get<AApiVersion>();
+		init_info.Instance                                                    = context.Get<AInstance>();
+		init_info.PhysicalDevice                                              = context.Get<APhysicalDevice>();
+		init_info.Device                                                      = context.Get<ADevice>();
+		init_info.QueueFamily                                                 = context.Get<AGraphicQueueFamily>();
+		init_info.Queue                                                       = context.Get<AGraphicQueue>();
+		init_info.PipelineCache                                               = VK_NULL_HANDLE;						       
+		init_info.DescriptorPool                                              = context.Get<ADescriptorPool>();
+		init_info.PipelineInfoMain.Subpass                                    = 0;
+		init_info.PipelineInfoForViewports.SwapChainImageUsage                = context.Get<ASwapChainImageUsage>();
+		init_info.MinImageCount                                               = Neptune::MaxFrameInFlight;
+		init_info.ImageCount                                                  = Neptune::MaxFrameInFlight;
+		init_info.PipelineInfoMain.MSAASamples                                = context.Get<AMSAASamples>();
+		init_info.Allocator                                                   = context.Get<AAllocator>();
+		init_info.CheckVkResultFn                                             = context.Get<ACheckResultFn>();
 
+		if (context.Has<APipelineRenderingCreateInfo>())
+		{
+			init_info.UseDynamicRendering                                     = true;
+			init_info.PipelineInfoMain.PipelineRenderingCreateInfo            = context.Get<APipelineRenderingCreateInfo>();
+			init_info.PipelineInfoForViewports.PipelineRenderingCreateInfo    = context.Get<APipelineRenderingCreateInfo>();
+		}
+		else
+		{
+			init_info.UseDynamicRendering                                     = false;
+			init_info.PipelineInfoMain.RenderPass                             = context.Get<ASwapChainRenderPass>();
+		}
+		
 		ImGui_ImplVulkan_Init(&init_info);
 	}
 	

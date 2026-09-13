@@ -55,6 +55,13 @@ namespace Neptune::Vulkan::Unit {
 
 		vkCmdBeginRenderPass(m_Handle, &info, content);
 	}
+	
+	void CommandBuffer::BeginRendering(const VkRenderingInfoKHR& info) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdBeginRendering(m_Handle, &info);
+	}
 
 	void CommandBuffer::EndRenderPass() const
 	{
@@ -63,6 +70,13 @@ namespace Neptune::Vulkan::Unit {
 		vkCmdEndRenderPass(m_Handle);
 	}
 
+	void CommandBuffer::EndRendering() const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdEndRendering(m_Handle);
+	}
+	
 	void CommandBuffer::BindPipeline(VkPipelineBindPoint bindPoint, VkPipeline pipeline) const
 	{
 		NEPTUNE_PROFILE_ZONE
@@ -287,6 +301,13 @@ namespace Neptune::Vulkan::Unit {
 		vkCmdPipelineBarrier(m_Handle, srcStage, dstStage, flags, 0, nullptr, 0, nullptr, 1, &barrier);
 	}
 	
+	void CommandBuffer::CmdPipelineBarrier2(const VkDependencyInfo& info) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdPipelineBarrier2(m_Handle, &info);
+	}
+	
 	void CommandBuffer::BeginVideoCoding(const PFN_vkCmdBeginVideoCodingKHR& fn, const VkVideoBeginCodingInfoKHR& info) const
 	{
 		NEPTUNE_PROFILE_ZONE
@@ -334,13 +355,6 @@ namespace Neptune::Vulkan::Unit {
 		NEPTUNE_PROFILE_ZONE
 		
 		vkCmdCopyBuffer(m_Handle, src, dst, 1, &region);
-	}
-
-	void CommandBuffer::PipelineBarrier(VkPipelineStageFlags srcMask, VkPipelineStageFlags dstMask, const VkImageMemoryBarrier& barrier) const
-	{
-		NEPTUNE_PROFILE_ZONE
-
-		vkCmdPipelineBarrier(m_Handle, srcMask, dstMask, 0, 0, nullptr, 0, nullptr, 1, &barrier);
 	}
 
 	void CommandBuffer::BeginQuery(VkQueryPool pool, uint32_t index, VkQueryControlFlags flag) const

@@ -10,6 +10,7 @@
 
 #include "CmdList.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/CommandBuffer.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderPass.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/Pipeline.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/DescriptorList.h"
@@ -19,6 +20,7 @@
 #include "Device/Graphics/Frontend/RHI/RenderPass.h"
 #include "Data/Clock.h"
 #include "Device/Graphics/Backend/Vulkan/Converter.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/DynamicRendering.h"
 
 namespace Neptune::Vulkan {
 
@@ -64,7 +66,15 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		m_CommandBuffer->EndRenderPass();
+		if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDynamicRendering>())
+		{
+			m_CommandBuffer->EndRendering();
+		}
+		else
+		{
+			m_CommandBuffer->EndRenderPass();
+		}
+		
 	}
 
 	void CmdList::CmdBindDescriptor(const SP<RHI::DescriptorList>& descriptorList) const
@@ -210,7 +220,7 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		m_CommandBuffer->PipelineBarrier(srcMask, dstMask, barrier);
+		m_CommandBuffer->CmdPipelineBarrier(srcMask, dstMask, 0, barrier);
 	}
 
 	void CmdList::CmdTransitionLayout(SP<Resource::Image> image, VkImageLayout newLayout) const

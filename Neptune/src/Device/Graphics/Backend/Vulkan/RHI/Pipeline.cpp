@@ -15,6 +15,8 @@
 #include "Device/Graphics/Backend/Vulkan/RHI/DescriptorList.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/Shader.h"
 #include "Device/Graphics/Backend/Vulkan/Converter.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/DynamicRendering.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Extensions.h"
 
 namespace Neptune::Vulkan {
 
@@ -129,7 +131,7 @@ namespace Neptune::Vulkan {
 		m_ColorBlendInfo.attachmentCount = static_cast<uint32_t>(colorBlends.size());
 		m_ColorBlendInfo.pAttachments    = colorBlends.data();
 
-		m_RenderPass = renderPass->GetRHIImpl<RenderPass>()->Handle();
+		m_RenderPass = renderPass->GetRHIImpl<RenderPass>();
 	}
 
 	void Pipeline::SetVertexAttributeLayout()
@@ -204,6 +206,13 @@ namespace Neptune::Vulkan {
 		inputInfo.pVertexAttributeDescriptions              = m_AttributeDescriptions.empty() ? nullptr : m_AttributeDescriptions.data();
 		inputInfo.pVertexBindingDescriptions                = m_BindingDescriptions.empty() ? nullptr : m_BindingDescriptions.data();
 
+		auto& formats = m_RenderPass->GetColorAttachmentFormats();
+		
+		VkPipelineRenderingCreateInfoKHR                      renderInfo{};
+		renderInfo.sType                                    = VK_STRUCTURE_TYPE_PIPELINE_RENDERING_CREATE_INFO_KHR;
+		renderInfo.colorAttachmentCount                     = static_cast<uint32_t>(formats.size());
+		renderInfo.pColorAttachmentFormats                  = formats.data();
+		
 		VkGraphicsPipelineCreateInfo                          info{};
 		info.sType                                          = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
 		info.flags                                          = 0;
@@ -218,11 +227,20 @@ namespace Neptune::Vulkan {
 		info.pDepthStencilState                             = &m_DepthStencilInfo;
 		info.pDynamicState                                  = &m_DynamicStateInfo;										        	    
 		info.layout                                         = m_PipelineLayout.GetHandle();
-		info.renderPass                                     = m_RenderPass;
 		info.subpass                                        = 0;			        	    
 		info.basePipelineIndex                              = -1;
 		info.basePipelineHandle                             = VK_NULL_HANDLE;
-
+		
+		if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDynamicRendering>())
+		{
+			info.renderPass                                 = VK_NULL_HANDLE;
+			info.pNext                                      = &renderInfo;
+		}
+		else
+		{
+			info.renderPass                                 = m_RenderPass->Handle();
+		}
+		
 		m_Pipeline.CreateGraphicPipeline(GetContext().Get<IDevice>()->Handle(), info);
 
 		DEBUGUTILS_SETOBJECTNAME(m_Pipeline, "GraphicPipeline")

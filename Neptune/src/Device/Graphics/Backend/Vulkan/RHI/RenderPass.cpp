@@ -15,6 +15,9 @@
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/SwapChain.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderTarget.h"
 #include "Device/Graphics/Backend/Vulkan/Converter.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/DynamicRendering.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/UnifiedImageLayouts.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Extensions.h"
 
 namespace Neptune::Vulkan {
 
@@ -52,6 +55,7 @@ namespace Neptune::Vulkan {
 
 		m_AttachmentDescriptions.emplace_back(description);
 		m_ColorAttachmentReference.emplace_back(attachmentRef);
+		m_ColorAttachmentFormats.emplace_back(description.format);
 		m_ColorBlends.emplace_back(colorBlend);
 		m_ClearValues.emplace_back(clearValue);
 
@@ -111,6 +115,7 @@ namespace Neptune::Vulkan {
 
 		m_AttachmentDescriptions.emplace_back(description);
 		m_ColorAttachmentReference.emplace_back(attachmentRef);
+		m_ColorAttachmentFormats.emplace_back(description.format);
 		m_ColorBlends.emplace_back(colorBlend);
 		m_ImageViews.emplace_back(renderTarget->GetRHIImpl<RenderTarget>()->GetView());
 
@@ -187,16 +192,68 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		VkRenderPassBeginInfo                         info{};
-		info.sType                                  = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-		info.renderPass                             = Handle();
-		info.framebuffer                            = m_FrameBuffers[frameBufferIndex]->GetHandle();
-		info.renderArea.offset                      = { 0, 0 };
-		info.renderArea.extent                      = m_Extent.value();
-		info.clearValueCount                        = static_cast<uint32_t>(m_ClearValues.size());
-		info.pClearValues                           = m_ClearValues.data();
+		if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDynamicRendering>())
+		{
+			std::vector<VkRenderingAttachmentInfo>    attachmentInfos{};
+			
+			if (m_ImageViews.size() < m_AttachmentDescriptions.size())
+			{
+				VkRenderingAttachmentInfo                 colorAttachment{};
+				colorAttachment.sType                   = VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO_KHR;
+				colorAttachment.imageView               = GetContext().Get<ISwapChain>()->GetView(frameBufferIndex);
+				colorAttachment.imageLayout             = VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL;
+				colorAttachment.loadOp                  = VK_ATTACHMENT_LOAD_OP_LOAD;
+				colorAttachment.storeOp                 = VK_ATTACHMENT_STORE_OP_STORE;
+				colorAttachment.clearValue              = {};
+				
+				if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IUnifiedImageLayouts>())
+				{
+					colorAttachment.imageLayout         = VK_IMAGE_LAYOUT_GENERAL;
+				}
+				
+				attachmentInfos.emplace_back(colorAttachment);
+			}
+			
+			for (int i = 0; i < m_ImageViews.size(); i++)
+			{
+				VkRenderingAttachmentInfo                 colorAttachment{};
+				colorAttachment.sType                   = VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO_KHR;
+				colorAttachment.imageView               = m_ImageViews[i];
+				colorAttachment.imageLayout             = VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL;
+				colorAttachment.loadOp                  = VK_ATTACHMENT_LOAD_OP_LOAD;
+				colorAttachment.storeOp                 = VK_ATTACHMENT_STORE_OP_STORE;
+				colorAttachment.clearValue              = {};
+				
+				if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IUnifiedImageLayouts>())
+				{
+					colorAttachment.imageLayout         = VK_IMAGE_LAYOUT_GENERAL;
+				}
+				
+				attachmentInfos.emplace_back(colorAttachment);
+			}
+			
+			VkRenderingInfo                           info{};
+			info.sType                              = VK_STRUCTURE_TYPE_RENDERING_INFO;
+			info.renderArea                      = {  { 0, 0 }, *m_Extent };
+			info.layerCount                         = 1;
+			info.colorAttachmentCount               = attachmentInfos.size();
+			info.pColorAttachments                  = attachmentInfos.data();
+			
+			commandBuffer->BeginRendering(info);
+		}
+		else
+		{
+			VkRenderPassBeginInfo                         info{};
+			info.sType                                  = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+			info.renderPass                             = Handle();
+			info.framebuffer                            = m_FrameBuffers[frameBufferIndex]->GetHandle();
+			info.renderArea.offset                      = { 0, 0 };
+			info.renderArea.extent                      = m_Extent.value();
+			info.clearValueCount                        = static_cast<uint32_t>(m_ClearValues.size());
+			info.pClearValues                           = m_ClearValues.data();
 
-		commandBuffer->BeginRenderPass(info, VK_SUBPASS_CONTENTS_INLINE);
+			commandBuffer->BeginRenderPass(info, VK_SUBPASS_CONTENTS_INLINE);
+		}
 	}
 
 	void RenderPass::StoreExtent(const VkExtent2D& extent)

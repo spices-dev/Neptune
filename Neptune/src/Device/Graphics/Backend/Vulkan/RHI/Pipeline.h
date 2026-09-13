@@ -139,7 +139,7 @@ namespace Neptune::Vulkan {
 		VkPipelineDynamicStateCreateInfo                 m_DynamicStateInfo{};				  // @brief VkPipelineDynamicStateCreateInfo.
 		std::vector<VkVertexInputBindingDescription>     m_BindingDescriptions{};			  // @brief VkVertexInputBindingDescription.
 		std::vector<VkVertexInputAttributeDescription>   m_AttributeDescriptions{};			  // @brief VkVertexInputAttributeDescription.
-		VkRenderPass                                     m_RenderPass{};					  // @brief VkRenderPass.
+		class RenderPass*                                m_RenderPass{};					  // @brief RenderPass.
 		std::vector<VkPipelineShaderStageCreateInfo>     m_ShaderStages{};                    // @brief VkPipelineShaderStageCreateInfo.
 
 		Unit::PipelineLayout                             m_PipelineLayout{};                  // @brief This PipelineLayout.
