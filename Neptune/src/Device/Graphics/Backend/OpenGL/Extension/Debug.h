@@ -35,6 +35,18 @@ namespace Neptune::OpenGL::Extension {
         */
         ~Debug() override = default;
         
+        /**
+        * @brief Query Extension Properties.
+        */
+        void QueryProperties() override;
+        
+        /**
+        * @brief Is Device Properties satisfied.
+        * 
+        * @return Returns true if satisfied.
+        */
+        bool IsPropertiesSatisfied() override;
+        
     private:
         
         GLint m_MaxMessageLength;

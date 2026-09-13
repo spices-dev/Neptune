@@ -13,6 +13,6 @@ namespace Neptune {
     /**
     * @brief Enum of Render Backend.
     */
-    using RenderBackendEnum = GraphicsBackendEnum;
+    using RenderBackendEnum = Graphic::EBackend;
 
 }

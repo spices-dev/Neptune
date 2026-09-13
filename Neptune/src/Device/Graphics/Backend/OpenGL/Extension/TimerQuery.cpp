@@ -20,9 +20,24 @@ namespace Neptune::OpenGL::Extension {
         if (IsCoreExtension<decltype(*this)>()) return;
 
         AddExtensions("GL_ARB_timer_query");
+    }
+    
+    void TimerQuery::QueryProperties()
+    {
+        NEPTUNE_PROFILE_ZONE
         
         glGetQueryiv(GL_TIMESTAMP, GL_QUERY_COUNTER_BITS, &m_TimestampBits);
         glGetQueryiv(GL_TIME_ELAPSED, GL_QUERY_COUNTER_BITS, &m_TimeElapsedBits);
+    }
+    
+    bool TimerQuery::IsPropertiesSatisfied()
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        NEPTUNE_LOG_CORE(I) << "TimerQuery [ timestampBits ] : " << m_TimestampBits;
+        NEPTUNE_LOG_CORE(I) << "TimerQuery [ timeElapsedBits ] : " << m_TimeElapsedBits;
+
+        return true;
     }
 
 }

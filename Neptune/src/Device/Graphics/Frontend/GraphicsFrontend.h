@@ -69,10 +69,10 @@ namespace Neptune {
         * 
         * @param[in] backend GraphicsBackendEnum.
         */
-        GraphicsFrontend(GraphicsBackendEnum backend) : m_GraphicsBackendEnum(backend) {}
+        GraphicsFrontend(Graphic::EBackend backend) : m_GraphicsBackendEnum(backend) {}
 
     protected:
 
-        GraphicsBackendEnum m_GraphicsBackendEnum;   // @brief GraphicsBackendEnum.
+        Graphic::EBackend m_GraphicsBackendEnum;   // @brief GraphicsBackendEnum.
     };
 }

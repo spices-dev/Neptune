@@ -20,6 +20,11 @@ namespace Neptune::OpenGL::Extension {
         if (IsCoreExtension<decltype(*this)>()) return;
 
         AddExtensions("GL_ARB_gl_spirv");
+    }
+    
+    void Spirv::QueryProperties()
+    {
+        NEPTUNE_PROFILE_ZONE
         
         GLint count;
         
@@ -35,6 +40,15 @@ namespace Neptune::OpenGL::Extension {
             
             m_SpirVExtensions.emplace(reinterpret_cast<const char*>(name));
         }
+    }
+    
+    bool Spirv::IsPropertiesSatisfied()
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        NEPTUNE_LOG_CORE(I) << "Spirv [ count ] : " << m_SpirVExtensions.size();
+
+        return true;
     }
 
 }

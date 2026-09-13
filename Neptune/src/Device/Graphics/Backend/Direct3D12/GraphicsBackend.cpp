@@ -16,7 +16,7 @@
 namespace Neptune::Direct3D12 {
 
     GraphicsBackend::GraphicsBackend()
-        : GraphicsFrontend(GraphicsBackendEnum::Direct3D12)
+        : GraphicsFrontend(Graphic::EBackend::Direct3D12)
     {
         NEPTUNE_PROFILE_ZONE
 

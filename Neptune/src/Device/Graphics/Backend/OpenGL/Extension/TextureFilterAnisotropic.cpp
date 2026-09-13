@@ -20,10 +20,24 @@ namespace Neptune::OpenGL::Extension {
         if (IsCoreExtension<decltype(*this)>()) return;
 
         AddExtensions("GL_ARB_texture_filter_anisotropic");
+    }
+
+    void TextureFilterAnisotropic::QueryProperties()
+    {
+        NEPTUNE_PROFILE_ZONE
         
         glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY, &m_MaxAnisotropy);
     }
+    
+    bool TextureFilterAnisotropic::IsPropertiesSatisfied()
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        NEPTUNE_LOG_CORE(I) << "TextureFilterAnisotropic [ maxAnisotropy ] : " << m_MaxAnisotropy;
 
+        return true;
+    }
+    
 }
 
 #endif

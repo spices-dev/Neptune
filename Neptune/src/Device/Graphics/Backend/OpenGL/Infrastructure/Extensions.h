@@ -51,6 +51,25 @@ namespace Neptune::OpenGL {
         */
         void Create();
 
+        /**
+        * @brief Registry Extensions.
+        */
+        void Registry();
+        
+        /**
+        * @brief Is Extension Meet Demand.
+        * 
+        * @return Returns true if meets.
+        */
+        bool IsExtensionMeetDemand();
+        
+        /**
+        * @brief Is Property Meet Demand.
+        *
+        * @return Returns true if meets.
+        */
+        bool IsPropertyMeetDemand();
+        
     private:
 
         Extension::EContext<EExtension> m_Context;              // @brief This EContext.

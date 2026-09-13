@@ -34,6 +34,13 @@ namespace Neptune::OpenGL::Extension {
         * @brief Destructor Function.
         */
         ~ClipControl() override = default;
+        
+        /**
+        * @brief Is Device Properties satisfied.
+        * 
+        * @return Returns true if satisfied.
+        */
+        bool IsPropertiesSatisfied() override;
     };
 }
 

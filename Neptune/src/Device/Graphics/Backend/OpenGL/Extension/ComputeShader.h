@@ -35,6 +35,18 @@ namespace Neptune::OpenGL::Extension {
         */
         ~ComputeShader() override = default;
         
+        /**
+        * @brief Query Extension Properties.
+        */
+        void QueryProperties() override;
+        
+        /**
+        * @brief Is Device Properties satisfied.
+        * 
+        * @return Returns true if satisfied.
+        */
+        bool IsPropertiesSatisfied() override;
+        
     private:
         
         std::array<GLint, 3> m_MaxWorkGroupCount;

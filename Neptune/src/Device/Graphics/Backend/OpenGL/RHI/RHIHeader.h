@@ -8,6 +8,7 @@
 
 #ifdef NP_GRAPHICS_OPENGL
 
+#include "Device/Graphics/Backend/OpenGL/RHI/Capability.h"
 #include "Device/Graphics/Backend/OpenGL/RHI/RenderPass.h"
 #include "Device/Graphics/Backend/OpenGL/RHI/DescriptorList.h"
 #include "Device/Graphics/Backend/OpenGL/RHI/Pipeline.h"

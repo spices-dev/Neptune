@@ -19,7 +19,7 @@
 namespace Neptune::WebGPU {
 
     GraphicsBackend::GraphicsBackend()
-        : GraphicsFrontend(GraphicsBackendEnum::WebGPU)
+        : GraphicsFrontend(Graphic::EBackend::WebGPU)
     {
         NEPTUNE_PROFILE_ZONE
     }

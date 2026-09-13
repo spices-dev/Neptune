@@ -75,6 +75,18 @@ namespace Neptune::OpenGL::Extension {
         const std::unordered_map<const char*, bool>& GetExtensions() const { return m_Extensions; }
         
         /**
+        * @brief Query Extension Properties.
+        */
+        virtual void QueryProperties() {}
+        
+        /**
+        * @brief Is Device Properties satisfied.
+        * 
+        * @return Returns true if satisfied.
+        */
+        virtual bool IsPropertiesSatisfied() { return true; }
+        
+        /**
         * @brief Is IsCoreExtension.
         * 
         * @tparam T IsExtension.

@@ -20,8 +20,17 @@ namespace Neptune::OpenGL::Extension {
         if (IsCoreExtension<decltype(*this)>()) return;
 
         AddExtensions("GL_ARB_clip_control");
+    }
+    
+    bool ClipControl::IsPropertiesSatisfied()
+    {
+        NEPTUNE_PROFILE_ZONE
         
+        NEPTUNE_LOG_CORE(I) << "ClipControl [ upperLeft zero to one ] : " << true;
+
         glClipControl(GL_UPPER_LEFT, GL_ZERO_TO_ONE);
+        
+        return true;
     }
 
 }

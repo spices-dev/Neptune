@@ -8,6 +8,7 @@
 
 #ifdef NP_GRAPHICS_VULKAN
 
+#include "Device/Graphics/Backend/Vulkan/RHI/Capability.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderPass.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/DescriptorList.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/Pipeline.h"

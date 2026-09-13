@@ -20,6 +20,11 @@ namespace Neptune::OpenGL::Extension {
         if (IsCoreExtension<decltype(*this)>()) return;
         
         AddExtensions("GL_ARB_robustness");
+    }
+    
+    void Robustness::QueryProperties()
+    {
+        NEPTUNE_PROFILE_ZONE
         
         GLint flags = 0;
         
@@ -27,6 +32,16 @@ namespace Neptune::OpenGL::Extension {
         glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
         
         m_ContextRobust = (flags & GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT) != 0;
+    }
+    
+    bool Robustness::IsPropertiesSatisfied()
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        NEPTUNE_LOG_CORE(I) << "Robustness [ resetStrategy ] : " << m_ResetStrategy;
+        NEPTUNE_LOG_CORE(I) << "Robustness [ contextRobust ] : " << m_ContextRobust;
+
+        return true;
     }
 
 }

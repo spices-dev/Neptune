@@ -20,6 +20,11 @@ namespace Neptune::OpenGL::Extension {
         if (IsCoreExtension<decltype(*this)>()) return;
         
         AddExtensions("GL_ARB_get_program_binary");
+    }
+
+    void GetProgramBinary::QueryProperties()
+    {
+        NEPTUNE_PROFILE_ZONE
         
         GLint count = 0;
         
@@ -31,7 +36,16 @@ namespace Neptune::OpenGL::Extension {
         
         glGetIntegerv(GL_PROGRAM_BINARY_FORMATS, m_Formats.data());
     }
+    
+    bool GetProgramBinary::IsPropertiesSatisfied()
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        NEPTUNE_LOG_CORE(I) << "GetProgramBinary [ count ] : " << m_Formats.size();
 
+        return true;
+    }
+    
 }
 
 #endif

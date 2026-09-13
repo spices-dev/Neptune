@@ -20,10 +20,24 @@ namespace Neptune::OpenGL::Extension {
         if (IsCoreExtension<decltype(*this)>()) return;
         
         AddExtensions("GL_NV_timeline_semaphore");
+    }
+
+    void TimelineSemaphore::QueryProperties()
+    {
+        NEPTUNE_PROFILE_ZONE
         
         glGetIntegerv(GL_MAX_TIMELINE_SEMAPHORE_VALUE_DIFFERENCE_NV, &m_MaxValueDifference);
     }
+    
+    bool TimelineSemaphore::IsPropertiesSatisfied()
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        NEPTUNE_LOG_CORE(I) << "TimelineSemaphore [ maxValueDifference ] : " << m_MaxValueDifference;
 
+        return true;
+    }
+    
 }
 
 #endif

@@ -37,20 +37,28 @@ namespace Neptune::OpenGL {
 		
     	Extension::Extension::SetApiVersion(m_ApiVersion);
     	
-        GLint count = 0;
+    	Registry();
+
+    	if (!IsExtensionMeetDemand())
+    	{
+    		NEPTUNE_LOG_CORE(C) << "OpenGL Core Extension is not satisfied.";
+
+    		NEPTUNE_BREAK
+		}
         
-        glGetIntegerv(GL_NUM_EXTENSIONS, &count);
-        
-        for (GLint i = 0; i < count; ++i)
-        {
-            const auto* name = glGetStringi(GL_EXTENSIONS, static_cast<GLuint>(i));
-            
-            if (!name) continue;
-            
-            m_Extensions.emplace_back(reinterpret_cast<const char*>(name));
-        }
-        
-        m_Context.Registry<Extension::IDirectStateAccess>                   (Extension::EExtensionState::Extent);
+    	if (!IsPropertyMeetDemand())
+    	{
+    		NEPTUNE_LOG_CORE(C) << "OpenGL Core Extension Property is not satisfied.";
+
+    		NEPTUNE_BREAK
+    	}
+    }
+
+	void Extensions::Registry()
+    {
+    	NEPTUNE_PROFILE_ZONE
+    	
+    	m_Context.Registry<Extension::IDirectStateAccess>                   (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IBufferStorage>                       (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IComputeShader>                       (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IMultiDrawIndirect>                   (Extension::EExtensionState::Extent);
@@ -91,7 +99,116 @@ namespace Neptune::OpenGL {
 		m_Context.Registry<Extension::IKeydMutex>                           (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IViewportLayerArray>                  (Extension::EExtensionState::Extent);
     }
+	
+	bool Extensions::IsExtensionMeetDemand()
+    {
+    	NEPTUNE_PROFILE_ZONE
+    	
+    	GLint count = 0;
+        
+    	glGetIntegerv(GL_NUM_EXTENSIONS, &count);
+        
+    	std::vector<const char*> availableExtensions;
+    	
+    	for (GLint i = 0; i < count; ++i)
+    	{
+    		const auto* name = glGetStringi(GL_EXTENSIONS, static_cast<GLuint>(i));
+            
+    		if (!name) continue;
+            
+    		availableExtensions.emplace_back(reinterpret_cast<const char*>(name));
+    	}
 
+    	bool coreSatisfied = true;
+    	
+    	std::vector<EExtension> removedExtension;
+    	
+    	m_Context.View([&](const auto e, const auto& extension) {
+    		
+			bool satisfy = true;
+			const auto& extensions = extension->GetExtensions();
+    		
+			auto filtered = std::views::keys(extensions | std::views::filter([](const auto& pair) {
+				return pair.second;
+			}));
+    		
+			std::ranges::for_each(filtered, [&](const auto& name) {
+    			
+				std::string target(name);
+    			
+				if (std::ranges::all_of(availableExtensions, [&](const auto& ext) { return std::string(ext) != target; }))
+				{
+					if (extension->GetState() == Extension::EExtensionState::Core)
+					{
+						coreSatisfied = false;
+                		
+						NEPTUNE_LOG_CORE(E) << "Extension Required: [ " << target << " ], Which is not satisfied";
+					}
+					else
+					{
+						NEPTUNE_LOG_CORE(W) << "Extension Required: [ " << target << " ], Which is not satisfied";
+					}
+
+					satisfy = false;
+				}
+			});
+    		
+			if (satisfy)
+			{
+				m_Extensions.insert(m_Extensions.end(), filtered.begin(), filtered.end());
+			}
+			else
+			{
+				removedExtension.emplace_back(e);
+			}
+		});
+    	
+    	std::ranges::for_each(removedExtension, [&](const auto& e) {
+    		
+			m_Context.UnRegistry(e);
+		});
+    	
+    	return coreSatisfied;
+    }
+	
+	bool Extensions::IsPropertyMeetDemand()
+    {
+    	NEPTUNE_PROFILE_ZONE
+
+    	bool coreSatisfied = true;
+		
+    	std::vector<EExtension> removedExtension;
+		
+    	m_Context.View([&](const auto e, const auto& extension) {
+			
+    		extension->QueryProperties();
+    		
+			if (!extension->IsPropertiesSatisfied())
+			{
+				if (extension->GetState() == Extension::EExtensionState::Core)
+				{
+					coreSatisfied = false;
+					
+					NEPTUNE_LOG_CORE(E) << "Extension Property Required: " << OpenGL::ToString(e) << ", Which is not satisfied";
+				}
+				else
+				{
+					NEPTUNE_LOG_CORE(W) << "Extension Property Required: " << OpenGL::ToString(e) << ", Which is not satisfied";
+				}
+				
+				removedExtension.emplace_back(e);
+			}
+			
+		});
+		
+    	std::ranges::for_each(removedExtension, [&](const auto& e) {
+    		
+			m_Context.UnRegistry(e);
+		});
+		
+    	return coreSatisfied;
+    }
+	
 	const char* Extensions::GetApiVersionName() const
     {
     	NEPTUNE_PROFILE_ZONE
@@ -137,7 +254,7 @@ namespace Neptune::OpenGL {
     	if (m_ApiVersion == 11) return "#version 110";
     	if (m_ApiVersion == 10) return "#version 100";
     	
-    	assert(false);
+    	NEPTUNE_BREAK
     	
     	return OPENGL_DEV_VERSION_NAME;
     }

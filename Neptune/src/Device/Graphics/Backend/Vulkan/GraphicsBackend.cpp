@@ -22,7 +22,7 @@
 namespace Neptune::Vulkan {
 	
 	GraphicsBackend::GraphicsBackend()
-        : GraphicsFrontend(GraphicsBackendEnum::Vulkan)
+        : GraphicsFrontend(Graphic::EBackend::Vulkan)
     {
 		NEPTUNE_PROFILE_ZONE
 
@@ -145,6 +145,7 @@ namespace Neptune::Vulkan {
 
 		switch(e)
 		{
+			case RHI::ERHI::Capability:       return std::static_pointer_cast<RHI::RHICapability::Impl>    (CreateSP<Capability>           (*m_Context));
 			case RHI::ERHI::RenderPass:       return std::static_pointer_cast<RHI::RHIRenderPass::Impl>    (CreateSP<RenderPass>           (*m_Context));
 			case RHI::ERHI::DescriptorList:   return std::static_pointer_cast<RHI::RHIDescriptorList::Impl>(CreateSP<DescriptorList>       (*m_Context));
 			case RHI::ERHI::Pipeline:         return std::static_pointer_cast<RHI::RHIPipeline::Impl>      (CreateSP<Pipeline>             (*m_Context));

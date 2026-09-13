@@ -17,7 +17,7 @@
 namespace Neptune::OpenGLES {
 
     GraphicsBackend::GraphicsBackend()
-        : GraphicsFrontend(GraphicsBackendEnum::OpenGL)
+        : GraphicsFrontend(Graphic::EBackend::OpenGLES)
     {
         NEPTUNE_PROFILE_ZONE
 

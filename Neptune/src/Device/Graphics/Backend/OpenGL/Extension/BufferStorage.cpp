@@ -20,10 +20,23 @@ namespace Neptune::OpenGL::Extension {
         if (IsCoreExtension<decltype(*this)>()) return;
 
         AddExtensions("GL_ARB_buffer_storage");
+    }
+
+    void BufferStorage::QueryProperties()
+    {
+        NEPTUNE_PROFILE_ZONE
         
         glGetIntegerv(GL_MIN_MAP_BUFFER_ALIGNMENT, &m_MinMapAlignment);
     }
+    
+    bool BufferStorage::IsPropertiesSatisfied()
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        NEPTUNE_LOG_CORE(I) << "BufferStorage [ minMapAlignment ] : " << m_MinMapAlignment;
 
+        return true;
+    }
 }
 
 #endif

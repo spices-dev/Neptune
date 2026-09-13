@@ -17,7 +17,7 @@
 namespace Neptune::Metal {
 
     GraphicsBackend::GraphicsBackend()
-        : GraphicsFrontend(GraphicsBackendEnum::Metal)
+        : GraphicsFrontend(Graphic::EBackend::Metal)
     {
         NEPTUNE_PROFILE_ZONE
         

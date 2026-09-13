@@ -7,6 +7,7 @@
 #include "Pchheader.h"
 #include "Decoder.h"
 #include "Device/Graphics/Frontend/RHI/Decoder.h"
+#include "Device/Graphics/Frontend/RHI/Capability.h"
 #include "Resource/Texture/RenderTarget.h"
 
 namespace Neptune::Video {
@@ -15,7 +16,18 @@ namespace Neptune::Video {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		m_Impl = CreateUP<RHI::Decoder>(&op);
+		auto rhiCapability = CreateUP<RHI::Capability>();
+		
+		if (rhiCapability->IsSupport(Graphic::ECapability::VideoDecode))
+		{
+			m_Impl = CreateUP<RHI::Decoder>(&op);
+		}
+		else
+		{
+			NEPTUNE_LOG_CORE(E) << "RHI Decoder is not supported.";
+			
+			NEPTUNE_BREAK
+		}
 	}
 
 	Decoder::~Decoder() = default;
