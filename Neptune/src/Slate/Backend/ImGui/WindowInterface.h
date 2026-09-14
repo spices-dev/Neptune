@@ -19,6 +19,11 @@ namespace Neptune::imgui {
     public:
         
         /**
+        * @brief Destructor Function.
+        */
+        virtual ~WindowInterface() = default;
+        
+        /**
         * @brief Interface of Initialize.
         * 
         * @param[in] e RenderBackendEnum.
@@ -67,6 +72,11 @@ namespace Neptune::imgui {
     class GLFWInterface : public WindowInterface
     {
     public:
+        
+        /**
+        * @brief Destructor Function.
+        */
+        ~GLFWInterface() override = default;
         
         /**
         * @brief Interface of Initialize.

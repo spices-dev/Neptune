@@ -134,7 +134,7 @@ module.Initialize = function()
 		-- XCode Specific Solution Settings.
 		xcodebuildsettings
 		{
-			["MACOSX_DEPLOYMENT_TARGET"] = "13.0",       -- Minimal OS Version: 13.0
+			["MACOSX_DEPLOYMENT_TARGET"] = "13.3",       -- Minimal OS Version: 13.3
 		}
 
     -- Platform: Emscripten

@@ -31,7 +31,7 @@ namespace Neptune::Vulkan::Middleware {
 		attachmentInfo.sType                        = VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO_KHR;
 		attachmentInfo.imageView                    = VK_NULL_HANDLE;
 		attachmentInfo.imageLayout                  = VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL;
-		attachmentInfo.loadOp                       = VK_ATTACHMENT_LOAD_OP_LOAD;
+		attachmentInfo.loadOp                       = VK_ATTACHMENT_LOAD_OP_CLEAR;
 		attachmentInfo.storeOp                      = VK_ATTACHMENT_STORE_OP_STORE;
 		attachmentInfo.clearValue                   = clearValue;
 		
@@ -51,6 +51,7 @@ namespace Neptune::Vulkan::Middleware {
 		colorBlend.dstAlphaBlendFactor              = VK_BLEND_FACTOR_ZERO;
 		colorBlend.alphaBlendOp                     = VK_BLEND_OP_ADD;
 		
+		m_SwapChainImageIndex = m_AttachmentInfos.size();
 		m_ColorAttachmentFormats.emplace_back(GetContext().Get<IPhysicalDevice>()->GetSwapChainProperty().format.format);
 		m_AttachmentInfos.emplace_back(attachmentInfo);
 		m_ColorBlends.emplace_back(colorBlend);
@@ -67,7 +68,7 @@ namespace Neptune::Vulkan::Middleware {
 		
 		VkRenderingAttachmentInfo                     attachmentInfo{};
 		attachmentInfo.sType                        = VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO_KHR;
-		attachmentInfo.imageView                    = VK_NULL_HANDLE;
+		attachmentInfo.imageView                    = renderTarget->GetRHIImpl<RenderTarget>()->GetView();
 		attachmentInfo.imageLayout                  = VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL;
 		attachmentInfo.loadOp                       = ToVkAttachmentLoadOp(info.loadOp);
 		attachmentInfo.storeOp                      = VK_ATTACHMENT_STORE_OP_STORE;
@@ -114,9 +115,9 @@ namespace Neptune::Vulkan::Middleware {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		if (m_AttachmentInfos[0].imageView == VK_NULL_HANDLE)
+		if (m_SwapChainImageIndex)
 		{
-			m_AttachmentInfos[0].imageView = GetContext().Get<ISwapChain>()->GetView(frameBufferIndex);
+			m_AttachmentInfos[*m_SwapChainImageIndex].imageView = GetContext().Get<ISwapChain>()->GetView(frameBufferIndex);
 		}
 		
 		VkRenderingInfo                           info{};

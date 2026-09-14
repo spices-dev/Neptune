@@ -66,6 +66,11 @@ namespace Neptune::EmscriptenGLFW {
     public:
 
         /**
+        * @brief Destructor Function.
+        */
+        ~WebGLInterface() override = default;
+        
+        /**
         * @brief Interface of GLFW Hint Configuration with RenderBackend.
         */
         void Hint() const override {}
@@ -96,6 +101,11 @@ namespace Neptune::EmscriptenGLFW {
     {
     public:
 
+        /**
+        * @brief Destructor Function.
+        */
+        ~WebGPUInterface() override = default;
+        
         /**
         * @brief Interface of GLFW Hint Configuration with RenderBackend.
         */

@@ -95,7 +95,7 @@ namespace Neptune::Vulkan {
 			barrier.srcAccessMask                   = VK_ACCESS_2_NONE;
 			barrier.dstStageMask                    = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT;
 			barrier.dstAccessMask                   = VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT;
-			barrier.oldLayout                       = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+			barrier.oldLayout                       = VK_IMAGE_LAYOUT_UNDEFINED;
 			barrier.newLayout                       = VK_IMAGE_LAYOUT_GENERAL;
 			barrier.srcQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
 			barrier.dstQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;

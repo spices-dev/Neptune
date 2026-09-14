@@ -18,6 +18,62 @@ namespace Neptune::Vulkan {
 		
 		VkAllocationCallbacks s_Allocator;        // @brief VkAllocationCallbacks.
 
+		/**
+		* @brief Alloc memory with alignment.
+		* 
+		* @param size Memory size.
+		* @param alignment Memory alignment.
+		* 
+		* @return Return alloc memory.
+		*/
+		void* AlignedAlloc(size_t size, size_t alignment)
+		{
+			if (size == 0) return nullptr;
+			
+#ifdef NP_PLATFORM_WINDOWS
+			
+			return _aligned_malloc(size, alignment);
+			
+#else
+			
+			const size_t align = alignment < sizeof(void*) ? sizeof(void*) : alignment;
+			
+			void* p = nullptr;
+			
+			if (posix_memalign(&p, align, size) != 0) return nullptr;
+			
+			return p;
+			
+#endif
+			
+		}
+		
+		/**
+		* @brief Calculate memory alignment size.
+		* 
+		* @param p Memory pointer.
+		* 
+		* @return Return alignment size.
+		*/
+		size_t AlignedSize(void* p)
+		{
+			
+#ifdef NP_PLATFORM_WINDOWS
+			
+			return _aligned_msize(p, sizeof(void*), 0);
+			
+#elif defined(NP_PLATFORM_MACOS)
+			
+			return malloc_size(p);
+			
+#else
+			
+			return malloc_usable_size(p);
+			
+#endif
+			
+		}
+
 	}
 
 	const VkAllocationCallbacks* GetAllocator()
@@ -34,11 +90,7 @@ namespace Neptune::Vulkan {
 		{
 			s_Allocator.pfnAllocation = +[](void* pUserData, size_t size, size_t alignment, VkSystemAllocationScope allocationScope) -> void* {
 				
-#ifdef NP_PLATFORM_WINDOWS
-				auto* p = _aligned_malloc(size, alignment);
-#else
-				auto* p = aligned_alloc(alignment, size);
-#endif
+				auto* p = AlignedAlloc(size, alignment);
 				
 				NEPTUNE_PROFILE_ALLOC_N(p, size, ToString(EMemory::Host))
 				
@@ -53,10 +105,15 @@ namespace Neptune::Vulkan {
 				NEPTUNE_PROFILE_FREE_N(pMemory, ToString(EMemory::Host))
 				
 #ifdef NP_PLATFORM_WINDOWS
+				
 				_aligned_free(pMemory);
+				
 #else
+				
 				free(pMemory);
+				
 #endif
+				
 			};
 		}
 
@@ -66,11 +123,7 @@ namespace Neptune::Vulkan {
 
 					if (pOriginal == nullptr && size > 0) 
 					{
-#ifdef NP_PLATFORM_WINDOWS
-						auto* p = _aligned_malloc(size, alignment);
-#else
-						auto* p = aligned_alloc(alignment, size);
-#endif
+						auto* p = AlignedAlloc(size, alignment);
 
 						NEPTUNE_PROFILE_ALLOC_N(p, size, ToString(EMemory::Host))
 
@@ -78,21 +131,37 @@ namespace Neptune::Vulkan {
 					}
 					if (size == 0 && pOriginal != nullptr) 
 					{
+						
 #ifdef NP_PLATFORM_WINDOWS
+						
 						_aligned_free(pOriginal);
+						
 #else
+						
 						free(pOriginal);
+						
 #endif
+						
 						return nullptr;
 					}
 					if (pOriginal != nullptr && size > 0) 
 					{
+						
 #ifdef NP_PLATFORM_WINDOWS
+						
 						auto* p = _aligned_realloc(pOriginal, size, alignment);
+						
 #else
-						auto* p = aligned_alloc(alignment, size);
-
-						free(pOriginal);
+						
+						auto* p = AlignedAlloc(size, alignment);
+						
+						if (p)
+						{
+							std::memcpy(p, pOriginal, std::min(AlignedSize(pOriginal), size));
+							
+							free(pOriginal);
+						}
+						
 #endif
 
 						if (p && p != pOriginal)

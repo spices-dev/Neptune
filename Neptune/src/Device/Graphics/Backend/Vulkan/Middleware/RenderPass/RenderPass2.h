@@ -108,6 +108,7 @@ namespace Neptune::Vulkan::Middleware {
 		VkPipelineRenderingCreateInfo                     m_RenderingInfo{};                 // @brief VkPipelineRenderingCreateInfo.
 		std::vector<VkRenderingAttachmentInfo>            m_AttachmentInfos;           	     // @brief VkRenderingAttachmentInfo.
 		std::vector<VkPipelineColorBlendAttachmentState>  m_ColorBlends;					 // @brief VkPipelineColorBlendAttachmentState.
+		std::optional<uint32_t>                           m_SwapChainImageIndex;		     // @brief SwapChainImageIndex.
 		std::optional<VkExtent2D>                         m_Extent;							 // @brief VkExtent2D.
 	};
 }

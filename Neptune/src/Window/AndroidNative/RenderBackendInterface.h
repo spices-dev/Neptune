@@ -52,6 +52,11 @@ namespace Neptune::AndroidNative {
     public:
         
         /**
+        * @brief Destructor Function.
+        */
+        ~OpenGLInterface() override = default;
+        
+        /**
         * @brief Interface of Get GLFW Window Extension.
         *
         * @return Returns Window Extension.
@@ -69,6 +74,11 @@ namespace Neptune::AndroidNative {
     class VulkanInterface : public APIInterface
     {
     public:
+        
+        /**
+        * @brief Destructor Function.
+        */
+        ~VulkanInterface() override = default;
         
         /**
         * @brief Interface of Get GLFW Window Extension.

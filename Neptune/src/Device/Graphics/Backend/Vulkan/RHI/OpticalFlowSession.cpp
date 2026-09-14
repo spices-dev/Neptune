@@ -95,7 +95,7 @@ namespace Neptune::Vulkan {
 		info.height                                  = reference->Height();
 		info.imageFormat                             = reference->GetFormat();
 		info.flowVectorFormat                        = reference->GetFormat();
-		info.outputGridSize                          = VkOpticalFlowGridSizeFlagsNV(reference->Width() / output->Width());
+		info.outputGridSize                          = static_cast<VkOpticalFlowGridSizeFlagsNV>(reference->Width() / output->Width());
 		info.performanceLevel                        = VK_OPTICAL_FLOW_PERFORMANCE_LEVEL_SLOW_NV;
 		info.costFormat                              = VK_FORMAT_UNDEFINED;
 		info.flags                                   = 0;

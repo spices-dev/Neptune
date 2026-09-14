@@ -36,6 +36,11 @@ namespace Neptune::Vulkan::Middleware {
 	public:
 
 		/**
+		* @brief Destructor Function.
+		*/
+		virtual ~IRenderPass() = default;
+		
+		/**
 		* @brief Interface of Add SwapChain Attachment.
 		*/
 		virtual void AddSwapChainAttachment() = 0;
