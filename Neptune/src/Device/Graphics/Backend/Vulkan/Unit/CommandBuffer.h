@@ -368,7 +368,7 @@ namespace Neptune::Vulkan::Unit {
 		void Dispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const;
 		
 		/**
-		* @brief PipelineBarrier.
+		* @brief Memory PipelineBarrier.
 		* 
 		* @param[in] srcStage VkPipelineStageFlags.
 		* @param[in] dstStage VkPipelineStageFlags.
@@ -378,7 +378,7 @@ namespace Neptune::Vulkan::Unit {
 		void CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const VkMemoryBarrier& barrier) const;
 		
 		/**
-		* @brief PipelineBarrier.
+		* @brief Buffer PipelineBarrier.
 		* 
 		* @param[in] srcStage VkPipelineStageFlags.
 		* @param[in] dstStage VkPipelineStageFlags.
@@ -388,7 +388,7 @@ namespace Neptune::Vulkan::Unit {
 		void CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const VkBufferMemoryBarrier& barrier) const;
 		
 		/**
-		* @brief PipelineBarrier.
+		* @brief Image PipelineBarrier.
 		* 
 		* @param[in] srcStage VkPipelineStageFlags.
 		* @param[in] dstStage VkPipelineStageFlags.

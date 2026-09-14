@@ -108,5 +108,28 @@ namespace Neptune::Graphic {
         
         Count
     };
+    
+    /**
+    * @brief Enum of Pipeline Access.
+    */
+    enum class EPipelineAccess : uint8_t
+    {
+        ShaderRead = 0,                   // @brief ShaderRead.
+        ShaderWrite,                      // @brief ShaderWrite.
+        
+        Count
+    };
+    
+    /**
+    * @brief Enum of Pipeline Stage.
+    */
+    enum class EPipelineStage : uint8_t
+    {
+        VertexShader = 0,                  // @brief VertexShader.
+        FragmentShader,                    // @brief FragmentShader.
+        ComputeShader,                     // @brief ComputeShader.
+        
+        Count
+    };
 
 }

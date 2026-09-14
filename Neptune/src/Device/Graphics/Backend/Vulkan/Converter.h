@@ -109,22 +109,40 @@ namespace Neptune::Vulkan {
 	VkImageLayout ToVkImageLayout(AttachmentLayout l);
 
 	/**
-	* @brief Convert EPipelineAccess to VkAccessFlags.
+	* @brief Convert EPipelineAccess to VkAccessFlags2.
 	*
 	* @param[in] a EPipelineAccess.
 	*
-	* @return Returns VkAccessFlags.
+	* @return Returns VkAccessFlags2.
 	*/
-	VkAccessFlags ToVkAccessFlags(EPipelineAccess a);
+	VkAccessFlags2 ToVkAccessFlags(Graphic::EPipelineAccess a);
 	
 	/**
-	* @brief Convert EPipelineStage to VkPipelineStageFlags.
+	* @brief Convert EPipelineStage to VkPipelineStageFlags2.
 	*
 	* @param[in] s EPipelineStage.
 	*
+	* @return Returns VkPipelineStageFlags2.
+	*/
+	VkPipelineStageFlags2 ToVkPipelineStageFlags(Graphic::EPipelineStage s);
+	
+	/**
+	* @brief Convert VkAccessFlags2 to VkAccessFlags.
+	*
+	* @param[in] f VkAccessFlags2.
+	*
+	* @return Returns VkAccessFlags.
+	*/
+	VkAccessFlags ToVkAccessFlags(VkAccessFlags2 f);
+	
+	/**
+	* @brief Convert VkPipelineStageFlags2 to VkPipelineStageFlags.
+	*
+	* @param[in] f VkPipelineStageFlags2.
+	*
 	* @return Returns VkPipelineStageFlags.
 	*/
-	VkPipelineStageFlags ToVkPipelineStageFlags(EPipelineStage s);
+	VkPipelineStageFlags ToVkPipelineStageFlags(VkPipelineStageFlags2 f);
 	
 	/**
 	* @brief Convert VkFormat to TextureFormat.

@@ -12,6 +12,7 @@
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/CommandBuffer.h"
 #include "Device/Graphics/Frontend/RHI/CmdList.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/Synchronization/ISynchronization.h"
 
 namespace Neptune::RHI {
 
@@ -45,7 +46,7 @@ namespace Neptune::Vulkan {
 		*
 		* @param[in] context Context.
 		*/
-		explicit CmdList(Context& context) : ContextAccessor(context) {}
+		explicit CmdList(Context& context);
 
 		/**
 		* @brief Destructor Function.
@@ -155,9 +156,9 @@ namespace Neptune::Vulkan {
 		/**
 		* @brief Interface of Insert Barrier.
 		* 
-		* @param[in] barrier MemoryBarrierdDesc.
+		* @param[in] barrier MemoryBarrierDesc.
 		*/
-		void CmdInsertBarrier(const MemoryBarrierdDesc& barrier) const override;
+		void CmdInsertBarrier(const Graphic::MemoryBarrierDesc& barrier) const override;
 		
 		/**
 		* @brief Interface of SetViewport.
@@ -238,14 +239,15 @@ namespace Neptune::Vulkan {
 
 	protected:
 
-		uint32_t                      m_FrameIndex     = 0;                                     // @brief Frame index.
-		uint32_t                      m_ImageIndex     = 0;                                     // @brief Image index.
+		uint32_t                             m_FrameIndex     = 0;                                     // @brief Frame index.
+		uint32_t                             m_ImageIndex     = 0;                                     // @brief Image index.
 
-		SP<Unit::CommandBuffer>       m_CommandBuffer  = nullptr;                               // @brief CommandBuffer reference.
-		const RenderPass*             m_RenderPass     = nullptr;                               // @brief RenderPass reference.
-		const Resource::QueryPool*    m_QueryPool      = nullptr;                               // @brief QueryPool reference.
-		VkPipelineBindPoint           m_BindPoint      = VK_PIPELINE_BIND_POINT_MAX_ENUM;       // @brief VkPipelineBindPoint.
-		VkPipelineLayout              m_PipelineLayout = VK_NULL_HANDLE;                        // @brief VkPipelineLayout.
+		SP<Unit::CommandBuffer>              m_CommandBuffer  = nullptr;                               // @brief CommandBuffer reference.
+		const RenderPass*                    m_RenderPass     = nullptr;                               // @brief RenderPass reference.
+		const Resource::QueryPool*           m_QueryPool      = nullptr;                               // @brief QueryPool reference.
+		VkPipelineBindPoint                  m_BindPoint      = VK_PIPELINE_BIND_POINT_MAX_ENUM;       // @brief VkPipelineBindPoint.
+		VkPipelineLayout                     m_PipelineLayout = VK_NULL_HANDLE;                        // @brief VkPipelineLayout.
+		UP<Middleware::ISynchronization>     m_Synchronization;                                        // @brief ISynchronization.
 	};
 }
 

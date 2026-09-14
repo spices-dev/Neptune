@@ -159,9 +159,9 @@ namespace Neptune::Vulkan {
 			createInfo.flags                                 = 0;
 
 			m_Image->CreateImage(createInfo, ToVkMemoryPropertyFlags(info.memoryUsage));
+			
+			m_Image->TransitionLayout(VK_IMAGE_LAYOUT_GENERAL);
 		}
-
-		m_Image->TransitionLayout(VK_IMAGE_LAYOUT_GENERAL);
 		
 		{
 			VkImageViewCreateInfo                              createInfo{};

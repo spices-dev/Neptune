@@ -90,7 +90,7 @@ namespace Neptune::OpenGL {
 		
 	}
 
-	void CmdList::CmdInsertBarrier(const MemoryBarrierdDesc& barrier) const
+	void CmdList::CmdInsertBarrier(const Graphic::MemoryBarrierDesc& barrier) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		

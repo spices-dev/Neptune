@@ -30,7 +30,8 @@ namespace Neptune {
 	enum class AttachmentLayout : uint8_t
 	{
 		Undefined = 0,
-		ColorAttachment,
+		General,
+		Attachment,
 		ShaderRead,
 
 		Count
@@ -41,7 +42,7 @@ namespace Neptune {
 		bool               enableBlend = false;
 		AttachmentOP       loadOp = AttachmentOP::Clear;
 		AttachmentLayout   inLayout = AttachmentLayout::Undefined;
-		AttachmentLayout   outLayout = AttachmentLayout::ColorAttachment;
+		AttachmentLayout   outLayout = AttachmentLayout::Attachment;
 	};
 
 	class RenderTarget

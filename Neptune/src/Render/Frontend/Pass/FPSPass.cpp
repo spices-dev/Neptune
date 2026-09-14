@@ -26,7 +26,7 @@ namespace Neptune::Render {
 		RenderTargetAttachmentInfo   info{};
 		info.loadOp                = AttachmentOP::Load;
 		info.enableBlend           = true;
-		info.inLayout              = AttachmentLayout::ColorAttachment;
+		info.inLayout              = AttachmentLayout::Attachment;
 		info.outLayout             = AttachmentLayout::ShaderRead;
 
 		m_RenderPass = CreateSP<RHI::RenderPass>();

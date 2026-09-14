@@ -21,6 +21,11 @@
 #include "Device/Graphics/Backend/Vulkan/Converter.h"
 
 namespace Neptune::Vulkan {
+	
+	CmdList::CmdList(Context& context)
+		: ContextAccessor(context)
+		, m_Synchronization(Middleware::ISynchronization::Create(context))
+	{}
 
 	void CmdList::SetGraphicCmdList(const Data::Clock& clock)
 	{
@@ -141,16 +146,18 @@ namespace Neptune::Vulkan {
 		m_CommandBuffer->Dispatch(groupCountX, groupCountY, groupCountZ);
 	}
 	
-	void CmdList::CmdInsertBarrier(const MemoryBarrierdDesc& barrier) const
+	void CmdList::CmdInsertBarrier(const Graphic::MemoryBarrierDesc& barrier) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		VkMemoryBarrier                  memory{};
-		memory.sType                   = VK_STRUCTURE_TYPE_MEMORY_BARRIER;
+		VkMemoryBarrier2                 memory{};
+		memory.sType                   = VK_STRUCTURE_TYPE_MEMORY_BARRIER_2;
 		memory.srcAccessMask           = ToVkAccessFlags(barrier.srcAccess);
 		memory.dstAccessMask           = ToVkAccessFlags(barrier.dstAccess);
+		memory.srcStageMask            = ToVkPipelineStageFlags(barrier.srcStage);
+		memory.dstStageMask            = ToVkPipelineStageFlags(barrier.dstStage);
 		
-		m_CommandBuffer->CmdPipelineBarrier(ToVkPipelineStageFlags(barrier.srcStage), ToVkPipelineStageFlags(barrier.dstStage), 0, memory);
+		m_Synchronization->InsertBarrier(m_CommandBuffer.get(), memory);
 	}
 	
 	void CmdList::CmdSetViewport(const glm::vec2& viewPortSize) const

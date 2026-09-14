@@ -10,7 +10,6 @@
 
 #include "RenderPass2.h"
 #include "Device/Graphics/Backend/Vulkan/Converter.h"
-#include "Device/Graphics/Backend/Vulkan/Extension/UnifiedImageLayouts.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Device.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/PhysicalDevice.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Extensions.h"
@@ -19,6 +18,11 @@
 #include "Device/Graphics/Backend/Vulkan/Unit/CommandBuffer.h"
 
 namespace Neptune::Vulkan::Middleware {
+	
+	RenderPass2::RenderPass2(Context& context)
+		: ContextAccessor(context)
+		, m_ImageLayout(IImageLayout::Create(context))
+	{}
 
 	void RenderPass2::AddSwapChainAttachment()
 	{
@@ -30,15 +34,10 @@ namespace Neptune::Vulkan::Middleware {
 		VkRenderingAttachmentInfo                     attachmentInfo{};
 		attachmentInfo.sType                        = VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO_KHR;
 		attachmentInfo.imageView                    = VK_NULL_HANDLE;
-		attachmentInfo.imageLayout                  = VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL;
+		attachmentInfo.imageLayout                  = m_ImageLayout->From(VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL);
 		attachmentInfo.loadOp                       = VK_ATTACHMENT_LOAD_OP_CLEAR;
 		attachmentInfo.storeOp                      = VK_ATTACHMENT_STORE_OP_STORE;
 		attachmentInfo.clearValue                   = clearValue;
-		
-		if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IUnifiedImageLayouts>())
-		{
-			attachmentInfo.imageLayout              = VK_IMAGE_LAYOUT_GENERAL;
-		}
 		
 		VkPipelineColorBlendAttachmentState           colorBlend{};
 		colorBlend.colorWriteMask                   = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
@@ -69,15 +68,10 @@ namespace Neptune::Vulkan::Middleware {
 		VkRenderingAttachmentInfo                     attachmentInfo{};
 		attachmentInfo.sType                        = VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO_KHR;
 		attachmentInfo.imageView                    = renderTarget->GetRHIImpl<RenderTarget>()->GetView();
-		attachmentInfo.imageLayout                  = VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL;
+		attachmentInfo.imageLayout                  = m_ImageLayout->From(VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL);
 		attachmentInfo.loadOp                       = ToVkAttachmentLoadOp(info.loadOp);
 		attachmentInfo.storeOp                      = VK_ATTACHMENT_STORE_OP_STORE;
 		attachmentInfo.clearValue                   = clearValue;
-		
-		if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IUnifiedImageLayouts>())
-		{
-			attachmentInfo.imageLayout              = VK_IMAGE_LAYOUT_GENERAL;
-		}
 		
 		VkPipelineColorBlendAttachmentState           colorBlend{};
 		colorBlend.colorWriteMask                   = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |

@@ -11,13 +11,7 @@
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/RenderPass/IRenderPass.h"
-#include "Device/Graphics/Backend/Vulkan/Unit/RenderPass.h"
-#include "Device/Graphics/Backend/Vulkan/Unit/FrameBuffer.h"
-#include "Device/Graphics/Backend/Vulkan/Unit/CommandBuffer.h"
 #include "Device/Graphics/Frontend/RHI/RenderPass.h"
-
-#include <vector>
-#include <optional>
 
 namespace Neptune::RHI {
 
@@ -90,11 +84,11 @@ namespace Neptune::Vulkan {
 		* 
 		* @return Returns Middleware.
 		*/
-		const UP<Middleware::IRenderPass>& GetMiddleware() const { return m_Interface; }
+		const UP<Middleware::IRenderPass>& GetMiddleware() const { return m_RenderPass; }
 		
 	private:
 
-		UP<Middleware::IRenderPass> m_Interface; // @brief IRenderPass.
+		UP<Middleware::IRenderPass> m_RenderPass; // @brief IRenderPass.
 	};
 }
 

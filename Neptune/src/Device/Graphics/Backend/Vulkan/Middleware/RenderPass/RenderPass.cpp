@@ -20,6 +20,11 @@
 #include "Device/Graphics/Backend/Vulkan/Unit/CommandBuffer.h"
 
 namespace Neptune::Vulkan::Middleware {
+	
+	RenderPass::RenderPass(Context& context)
+		: ContextAccessor(context)
+		, m_ImageLayout(IImageLayout::Create(context))
+	{}
 
 	void RenderPass::AddSwapChainAttachment()
 	{
@@ -32,8 +37,8 @@ namespace Neptune::Vulkan::Middleware {
 		description.storeOp                         = VK_ATTACHMENT_STORE_OP_STORE;
 		description.stencilLoadOp                   = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
 		description.stencilStoreOp                  = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-		description.initialLayout                   = VK_IMAGE_LAYOUT_UNDEFINED;
-		description.finalLayout                     = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+		description.initialLayout                   = m_ImageLayout->From(VK_IMAGE_LAYOUT_UNDEFINED);
+		description.finalLayout                     = m_ImageLayout->From(VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL);
 											        
 		VkClearValue                                  clearValue{};
 		clearValue.color                            = { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -51,7 +56,7 @@ namespace Neptune::Vulkan::Middleware {
 											        
 		VkAttachmentReference                         attachmentRef{};
 		attachmentRef.attachment                    = 0;
-		attachmentRef.layout                        = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+		attachmentRef.layout                        = m_ImageLayout->From(VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL);
 
 		m_AttachmentDescriptions.emplace_back(description);
 		m_ColorAttachmentReference.emplace_back(attachmentRef);
@@ -72,8 +77,8 @@ namespace Neptune::Vulkan::Middleware {
 		description.storeOp                         = VK_ATTACHMENT_STORE_OP_STORE;
 		description.stencilLoadOp                   = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
 		description.stencilStoreOp                  = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-		description.initialLayout                   = ToVkImageLayout(info.inLayout);
-		description.finalLayout                     = ToVkImageLayout(info.outLayout);
+		description.initialLayout                   = m_ImageLayout->From(ToVkImageLayout(info.inLayout));
+		description.finalLayout                     = m_ImageLayout->From(ToVkImageLayout(info.outLayout));
 		
 		if (info.loadOp == AttachmentOP::Clear)
 		{
@@ -110,7 +115,7 @@ namespace Neptune::Vulkan::Middleware {
 
 		VkAttachmentReference                         attachmentRef{};
 		attachmentRef.attachment                    = static_cast<uint32_t>(m_ColorAttachmentReference.size());
-		attachmentRef.layout                        = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+		attachmentRef.layout                        = m_ImageLayout->From(VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL);
 
 		m_AttachmentDescriptions.emplace_back(description);
 		m_ColorAttachmentReference.emplace_back(attachmentRef);

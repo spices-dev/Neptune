@@ -20,6 +20,8 @@
 
 namespace Neptune::Render {
 
+	using namespace Graphic;
+
 	namespace {
 		
 		constexpr uint32_t kMaxTransparent = 18000000;
@@ -223,7 +225,7 @@ namespace Neptune::Render {
 			
 			cmdList.CmdDispatch((paddedN + 255) / 256, 1, 1);
 			
-			MemoryBarrierdDesc      barrier{};
+			MemoryBarrierDesc       barrier{};
 			barrier.srcAccess     = EPipelineAccess::ShaderWrite;
 			barrier.dstAccess     = EPipelineAccess::ShaderRead;
 			barrier.srcStage      = EPipelineStage::ComputeShader;
@@ -267,7 +269,7 @@ namespace Neptune::Render {
 					
 					cmdList.CmdDispatch(groupCount, 1, 1);
 				
-					MemoryBarrierdDesc          barrier{};
+					MemoryBarrierDesc           barrier{};
 					barrier.srcAccess         = EPipelineAccess::ShaderWrite;
 					barrier.dstAccess         = EPipelineAccess::ShaderRead;
 					barrier.srcStage          = EPipelineStage::ComputeShader;

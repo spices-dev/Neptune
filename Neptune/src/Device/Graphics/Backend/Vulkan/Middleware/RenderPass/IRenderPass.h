@@ -10,6 +10,7 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Core.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
 
 namespace Neptune {
 	
@@ -35,6 +36,15 @@ namespace Neptune::Vulkan::Middleware {
 	{
 	public:
 
+		/**
+		* @brief Create IRenderPass.
+		* 
+		* @param context Context.
+		* 
+		* @return Returns IRenderPass.
+		*/
+		static UP<IRenderPass> Create(Context& context);
+		
 		/**
 		* @brief Destructor Function.
 		*/
@@ -76,21 +86,21 @@ namespace Neptune::Vulkan::Middleware {
 		virtual void EndRenderPass(const Unit::CommandBuffer* commandBuffer) const = 0;
 		
 		/**
-		* @brief Get VkRenderPass Handle.
+		* @brief Interface Get VkRenderPass Handle.
 		* 
 		* @return Returns VkRenderPass Handle.
 		*/
 		virtual VkRenderPass Handle() const = 0;
 		
 		/**
-		* @brief Get VkPipelineRenderingCreateInfo.
+		* @brief Interface Get VkPipelineRenderingCreateInfo.
 		* 
 		* @return Returns VkPipelineRenderingCreateInfo.
 		*/
 		virtual VkPipelineRenderingCreateInfo* GetRenderingInfo() = 0;
 		
 		/**
-		* @brief Get VkPipelineColorBlendStateCreateInfo.
+		* @brief Interface Get VkPipelineColorBlendStateCreateInfo.
 		* 
 		* @return Returns VkPipelineColorBlendStateCreateInfo.
 		*/

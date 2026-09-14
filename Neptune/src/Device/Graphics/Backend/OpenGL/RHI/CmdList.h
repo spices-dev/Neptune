@@ -150,9 +150,9 @@ namespace Neptune::OpenGL {
 		/**
 		* @brief Interface of Insert Barrier.
 		* 
-		* @param[in] barrier MemoryBarrierdDesc.
+		* @param[in] barrier MemoryBarrierDesc.
 		*/
-		void CmdInsertBarrier(const MemoryBarrierdDesc& barrier) const override;
+		void CmdInsertBarrier(const Graphic::MemoryBarrierDesc& barrier) const override;
 		
 		/**
 		* @brief Interface of SetViewport.

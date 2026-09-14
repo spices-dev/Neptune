@@ -175,7 +175,8 @@ namespace Neptune::Vulkan {
 		switch (l)
 		{
 			case AttachmentLayout::Undefined:           return VK_IMAGE_LAYOUT_UNDEFINED;
-			case AttachmentLayout::ColorAttachment:     return VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+			case AttachmentLayout::General:             return VK_IMAGE_LAYOUT_GENERAL;
+			case AttachmentLayout::Attachment:          return VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL;
 			case AttachmentLayout::ShaderRead:          return VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 			default:
 			{
@@ -185,34 +186,75 @@ namespace Neptune::Vulkan {
 		}
 	}
 	
-	VkAccessFlags ToVkAccessFlags(EPipelineAccess a)
+	VkAccessFlags2 ToVkAccessFlags(Graphic::EPipelineAccess a)
 	{
 		NEPTUNE_PROFILE_ZONE
 
+		using namespace Graphic;
+
 		switch (a)
 		{
-			case EPipelineAccess::ShaderRead:           return VK_ACCESS_SHADER_READ_BIT;
-			case EPipelineAccess::ShaderWrite:          return VK_ACCESS_SHADER_WRITE_BIT;
+			case EPipelineAccess::ShaderRead:           return VK_ACCESS_2_SHADER_READ_BIT;
+			case EPipelineAccess::ShaderWrite:          return VK_ACCESS_2_SHADER_WRITE_BIT;
 			default:
 			{
-				NEPTUNE_LOG_CORE(W) << "Unsupported EPipelineAccess To VkAccessFlagBits.";
+				NEPTUNE_LOG_CORE(W) << "Unsupported EPipelineAccess To VkAccessFlags2.";
 				return VK_ACCESS_NONE;
 			}
 		}
 	}
 	
-	VkPipelineStageFlags ToVkPipelineStageFlags(EPipelineStage s)
+	VkPipelineStageFlags2 ToVkPipelineStageFlags(Graphic::EPipelineStage s)
 	{
 		NEPTUNE_PROFILE_ZONE
 
+		using namespace Graphic;
+
 		switch (s)
 		{
-			case EPipelineStage::VertexShader:           return VK_PIPELINE_STAGE_VERTEX_SHADER_BIT;
-			case EPipelineStage::FragmentShader:         return VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
-			case EPipelineStage::ComputeShader:          return VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT;
+			case EPipelineStage::VertexShader:           return VK_PIPELINE_STAGE_2_VERTEX_SHADER_BIT;
+			case EPipelineStage::FragmentShader:         return VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT;
+			case EPipelineStage::ComputeShader:          return VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT;
 			default:
 			{
-				NEPTUNE_LOG_CORE(W) << "Unsupported EPipelineStage To VkPipelineStageFlagBits.";
+				NEPTUNE_LOG_CORE(W) << "Unsupported EPipelineStage To VkPipelineStageFlags2.";
+				return VK_PIPELINE_STAGE_NONE;
+			}
+		}
+	}
+	
+	VkAccessFlags ToVkAccessFlags(VkAccessFlags2 f)
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		switch (f)
+		{
+		case VK_ACCESS_2_NONE:                            return VK_ACCESS_NONE;
+		case VK_ACCESS_2_SHADER_READ_BIT:                 return VK_ACCESS_SHADER_READ_BIT;
+		case VK_ACCESS_2_SHADER_WRITE_BIT:                return VK_ACCESS_SHADER_WRITE_BIT;
+		case VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT:      return VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+		default:
+			{
+				NEPTUNE_LOG_CORE(W) << "Unsupported VkAccessFlags To VkAccessFlags2.";
+				return VK_ACCESS_NONE;
+			}
+		}
+	}
+	
+	VkPipelineStageFlags ToVkPipelineStageFlags(VkPipelineStageFlags2 f)
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		switch (f)
+		{
+		case VK_PIPELINE_STAGE_2_VERTEX_SHADER_BIT:                  return VK_PIPELINE_STAGE_VERTEX_SHADER_BIT;
+		case VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT:                return VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+		case VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT:                 return VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT;
+		case VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT:        return VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+		case VK_PIPELINE_STAGE_2_BOTTOM_OF_PIPE_BIT:                 return VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
+		default:
+			{
+				NEPTUNE_LOG_CORE(W) << "Unsupported VkPipelineStageFlags To VkPipelineStageFlags2.";
 				return VK_PIPELINE_STAGE_NONE;
 			}
 		}

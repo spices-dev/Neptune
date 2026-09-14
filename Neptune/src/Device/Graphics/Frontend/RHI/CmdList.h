@@ -11,6 +11,11 @@
 
 #include <glm/ext/vector_float2.hpp>
 
+namespace Neptune::Graphic {
+
+	struct MemoryBarrierDesc;
+}
+
 namespace Neptune::Data {
 
 	struct Clock;
@@ -151,9 +156,9 @@ namespace Neptune::RHI {
 		/**
 		* @brief Interface of Insert Barrier.
 		* 
-		* @param[in] barrier MemoryBarrierdDesc.
+		* @param[in] barrier MemoryBarrierDesc.
 		*/
-		virtual void CmdInsertBarrier(const MemoryBarrierdDesc& barrier) const = 0;
+		virtual void CmdInsertBarrier(const Graphic::MemoryBarrierDesc& barrier) const = 0;
 		
 		/**
 		* @brief Interface of SetViewport.
@@ -283,9 +288,9 @@ namespace Neptune::RHI {
 		/**
 		* @brief Interface of Insert Barrier.
 		* 
-		* @param[in] barrier MemoryBarrierdDesc.
+		* @param[in] barrier MemoryBarrierDesc.
 		*/
-		void CmdInsertBarrier(const MemoryBarrierdDesc& barrier) const { RHICmdList::m_Impl->CmdInsertBarrier(barrier); }
+		void CmdInsertBarrier(const Graphic::MemoryBarrierDesc& barrier) const { RHICmdList::m_Impl->CmdInsertBarrier(barrier); }
 		
 		/**
 		* @brief Interface of SetViewport.

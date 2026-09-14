@@ -12,6 +12,7 @@
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/RenderPass.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/FrameBuffer.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/ImageLayout/IImageLayout.h"
 #include "IRenderPass.h"
 
 namespace Neptune::Vulkan::Middleware {
@@ -28,7 +29,7 @@ namespace Neptune::Vulkan::Middleware {
 		*
 		* @param[in] context Context.
 		*/
-		explicit RenderPass(Context& context) : ContextAccessor(context) {}
+		explicit RenderPass(Context& context);
 
 		/**
 		* @brief Destructor Function.
@@ -58,7 +59,7 @@ namespace Neptune::Vulkan::Middleware {
 		void Build(uint32_t count) override;
 
 		/**
-		* @brief Begin RenderPass.
+		* @brief Interface Begin RenderPass.
 		*
 		* @param[in] commandBuffer CommandBuffer.
 		* @param[in] frameBufferIndex .
@@ -73,21 +74,21 @@ namespace Neptune::Vulkan::Middleware {
 		void EndRenderPass(const Unit::CommandBuffer* commandBuffer) const override;
 		
 		/**
-		* @brief Get VkRenderPass Handle.
+		* @brief Interface Get VkRenderPass Handle.
 		* 
 		* @return Returns VkRenderPass Handle.
 		*/
 		VkRenderPass Handle() const override { return m_RenderPass.GetHandle(); }
 		
 		/**
-		* @brief Get VkPipelineRenderingCreateInfo.
+		* @brief Interface Get VkPipelineRenderingCreateInfo.
 		* 
 		* @return Returns VkPipelineRenderingCreateInfo.
 		*/
 		VkPipelineRenderingCreateInfo* GetRenderingInfo() override { return nullptr; }
 		
 		/**
-		* @brief Get VkPipelineColorBlendStateCreateInfo.
+		* @brief Interface Get VkPipelineColorBlendStateCreateInfo.
 		* 
 		* @return Returns VkPipelineColorBlendStateCreateInfo.
 		*/
@@ -122,6 +123,7 @@ namespace Neptune::Vulkan::Middleware {
 		std::vector<VkPipelineColorBlendAttachmentState>  m_ColorBlends;					 // @brief VkPipelineColorBlendAttachmentState.
 		std::vector<VkClearValue>                         m_ClearValues;					 // @brief VkClearValue.
 		std::vector<VkImageView>                          m_ImageViews;						 // @brief VkImageView.
+		UP<IImageLayout>                                  m_ImageLayout;		        	 // @brief IImageLayout.
 		std::optional<VkExtent2D>                         m_Extent;							 // @brief VkExtent2D.
 	};
 }
