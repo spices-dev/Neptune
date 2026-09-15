@@ -49,8 +49,8 @@ namespace Neptune::Vulkan {
 		
 #endif
 		
-		m_Context.Registry<Extension::IDescriptorHeap>                   (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IDescriptorBuffer>                 (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IDescriptorHeap>                   (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IDeviceFault>                      (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IMemoryBudget>                     (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IHDR>                              (Extension::EExtensionState::Extent);
@@ -67,10 +67,12 @@ namespace Neptune::Vulkan {
 		m_Context.Registry<Extension::IQueue>                            (Extension::EExtensionState::Core);
 		m_Context.Registry<Extension::ILayerSetting>                     (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IDynamicRendering>                 (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IExternalMemoryHost>               (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::ICopyMemoryIndirect>               (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IDeviceGeneratedCommands>          (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IGetPhysicalDeviceProperties2>     (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IPageableDeviceLocalMemory>        (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IGetSurfaceCapabilities2>          (Extension::EExtensionState::Core);
+		m_Context.Registry<Extension::IGetSurfaceCapabilities2>          (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::ICreateRenderPass2>                (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IDynamicRenderingLocalRead>        (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IScalarBlockLayout>                (Extension::EExtensionState::Core);
@@ -78,6 +80,7 @@ namespace Neptune::Vulkan {
 		m_Context.Registry<Extension::ISynchronization2>                 (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IPresentTiming>                    (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IUnifiedImageLayouts>              (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IMeshShader>                       (Extension::EExtensionState::Extent);
 	}
 	
 	void Extensions::BuildFeatureChain(void** pNext)

@@ -75,7 +75,7 @@ namespace Neptune::Vulkan {
 
         VkLayerSettingsCreateInfoEXT               settingInfo = {};
         settingInfo.sType                        = VK_STRUCTURE_TYPE_LAYER_SETTINGS_CREATE_INFO_EXT;
-        settingInfo.settingCount                 = settings.size();
+        settingInfo.settingCount                 = static_cast<uint32_t>(settings.size());
         settingInfo.pSettings                    = settings.data();
         settingInfo.pNext                        = nullptr;
 

@@ -15,8 +15,8 @@
 #include "Functions.h"
 #include "Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
-#include "Device/Graphics/Backend/Vulkan/Extension/GetPhysicalDeviceProperties2.h"
-#include "Device/Graphics/Backend/Vulkan/Extension/GetSurfaceCapabilities2.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/IGetSurfaceCapabilities.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/IGetPhysicalDeviceProperties.h"
 #include "Window/Window.h"
 
 namespace Neptune::Vulkan {
@@ -91,22 +91,14 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		VkPhysicalDeviceProperties properties;
-		
-		if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IGetPhysicalDeviceProperties2>())
-		{
-			VkPhysicalDeviceProperties2          deviceProperties{};
-			deviceProperties.sType             = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2;
-			deviceProperties.pNext             = nullptr;
+		VkPhysicalDeviceProperties2          deviceProperties{};
+		deviceProperties.sType             = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2;
+		deviceProperties.pNext             = nullptr;
 
-			vkGetPhysicalDeviceProperties2(device, &deviceProperties);
-			
-			properties = deviceProperties.properties;
-		}
-		else
-		{
-			vkGetPhysicalDeviceProperties(device, &properties);
-		}
+		Middleware::IGetPhysicalDeviceProperties::Create(GetContext())->GetProperties(device, deviceProperties);
+
+		VkPhysicalDeviceProperties           properties{};
+		properties                         = deviceProperties.properties;
 		
 		uint32_t extensionCount;
 		VULKAN_CHECK(vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, nullptr))
@@ -170,26 +162,15 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IGetPhysicalDeviceProperties2>())
-		{
-			VkPhysicalDeviceProperties2                   prop2 {};
-			prop2.sType                                 = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2;
-			prop2.pNext                                 = nullptr;
+		VkPhysicalDeviceProperties2          deviceProperties{};
+		deviceProperties.sType             = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2;
+		deviceProperties.pNext             = nullptr;
 
-			GetContext().Get<IExtensions>()->BuildPropertyChain(&prop2.pNext);
+		GetContext().Get<IExtensions>()->BuildPropertyChain(&deviceProperties.pNext);
 
-			vkGetPhysicalDeviceProperties2(device, &prop2);
+		Middleware::IGetPhysicalDeviceProperties::Create(GetContext())->GetProperties(device, deviceProperties);
 
-			m_Properties = prop2.properties;
-		}
-		else
-		{
-			vkGetPhysicalDeviceProperties(device, &m_Properties);
-			
-			NEPTUNE_LOG_CORE(W) << "Instance Extension Required: [ GetPhysicalDeviceProperties2 ], Which is not satisfied, skip PhysicalDevice::IsPropertyMeetDemand";
-			
-			return true;
-		}
+		m_Properties                       = deviceProperties.properties;
 
 		bool coreSatisfied = true;
 		
@@ -271,18 +252,18 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		VkSurfaceCapabilities2KHR                             capabilities2{};
-		capabilities2.sType                                 = VK_STRUCTURE_TYPE_SURFACE_CAPABILITIES_2_KHR;
-		capabilities2.pNext                                 = nullptr;
-		                  
-		VkPhysicalDeviceSurfaceInfo2KHR                       surfaceInfo2{};
-		surfaceInfo2.sType                                  = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SURFACE_INFO_2_KHR;
-		surfaceInfo2.surface                                = GetContext().Get<ISurface>()->Handle();
-		surfaceInfo2.pNext                                  = nullptr;
+		VkSurfaceCapabilities2KHR                             capabilities{};
+		capabilities.sType                                  = VK_STRUCTURE_TYPE_SURFACE_CAPABILITIES_2_KHR;
+		capabilities.pNext                                  = nullptr;
+
+		VkPhysicalDeviceSurfaceInfo2KHR                       surfaceInfo{};
+		surfaceInfo.sType                                   = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SURFACE_INFO_2_KHR;
+		surfaceInfo.surface                                 = GetContext().Get<ISurface>()->Handle();
+		surfaceInfo.pNext                                   = nullptr;
 		
-		GetContext().Get<IExtensions>()->BuildIsSurfaceCapabilityChain(&capabilities2.pNext);
+		GetContext().Get<IExtensions>()->BuildIsSurfaceCapabilityChain(&capabilities.pNext);
 		
-		VULKAN_CHECK(vkGetPhysicalDeviceSurfaceCapabilities2KHR(device, &surfaceInfo2, &capabilities2))
+		Middleware::IGetSurfaceCapabilities::Create(GetContext())->GetCapabilities(device, surfaceInfo, capabilities);
 		
 		bool coreSatisfied = true;
 		
@@ -569,28 +550,20 @@ namespace Neptune::Vulkan {
 		NEPTUNE_PROFILE_ZONE
 
 		auto surface = GetContext().Get<ISurface>()->Handle();
+    
+		VkSurfaceCapabilities2KHR               capabilities{};
+		capabilities.sType                    = VK_STRUCTURE_TYPE_SURFACE_CAPABILITIES_2_KHR;
+		capabilities.pNext                    = nullptr;
 
-		SwapChainProperty                   property{};
+		VkPhysicalDeviceSurfaceInfo2KHR         surfaceInfo{};
+		surfaceInfo.sType                     = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SURFACE_INFO_2_KHR;
+		surfaceInfo.surface                   = GetContext().Get<ISurface>()->Handle();
+		surfaceInfo.pNext                     = nullptr;
+		
+		Middleware::IGetSurfaceCapabilities::Create(GetContext())->GetCapabilities(Handle(), surfaceInfo, capabilities);
 
-		if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IGetSurfaceCapabilities2>())
-		{
-			VkSurfaceCapabilities2KHR           capabilities2{};
-			capabilities2.sType               = VK_STRUCTURE_TYPE_SURFACE_CAPABILITIES_2_KHR;
-			capabilities2.pNext               = nullptr;
-		
-			VkPhysicalDeviceSurfaceInfo2KHR     surfaceInfo2{};
-			surfaceInfo2.sType                = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SURFACE_INFO_2_KHR;
-			surfaceInfo2.surface              = GetContext().Get<ISurface>()->Handle();
-			surfaceInfo2.pNext                = nullptr;
-		
-			VULKAN_CHECK(vkGetPhysicalDeviceSurfaceCapabilities2KHR(Handle(), &surfaceInfo2, &capabilities2))
-			
-			property.capabilities             = capabilities2.surfaceCapabilities;
-		}
-		else
-		{
-			VULKAN_CHECK(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(Handle(), surface, &property.capabilities))
-		}
+		SwapChainProperty                       property{};
+		property.capabilities                 = capabilities.surfaceCapabilities;
 
 		if (property.capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max())
 		{

@@ -19,7 +19,7 @@
 #include "World/Scene/Scene.h"
 #include "World/Component/Component.h"
 #include "Data/Clock.h"
-#include "Device/Graphics/Backend/Vulkan/Middleware/RenderPass/IRenderPass.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/IRenderPass.h"
 #include "Device/Graphics/Backend/Vulkan/Converter.h"
 
 namespace Neptune::Vulkan {

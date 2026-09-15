@@ -15,7 +15,7 @@
 #include "Device/Graphics/Backend/Vulkan/RHI/DescriptorList.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/Shader.h"
 #include "Device/Graphics/Backend/Vulkan/Converter.h"
-#include "Device/Graphics/Backend/Vulkan/Middleware/RenderPass/IRenderPass.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/IRenderPass.h"
 
 namespace Neptune::Vulkan {
 

@@ -10,7 +10,7 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
-#include "Device/Graphics/Backend/Vulkan/Middleware/RenderPass/IRenderPass.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/IRenderPass.h"
 #include "Device/Graphics/Frontend/RHI/RenderPass.h"
 
 namespace Neptune::RHI {

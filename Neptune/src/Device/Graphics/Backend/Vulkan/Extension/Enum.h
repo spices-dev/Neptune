@@ -48,6 +48,7 @@ namespace Neptune::Vulkan {
         Synchronization2,                           // @brief Synchronization2.
         PresentTiming,                              // @brief PresentTiming.
         UnifiedImageLayouts,                        // @brief UnifiedImageLayouts.
+        MeshShader,                                 // @brief MeshShader.
 
         Count
     };

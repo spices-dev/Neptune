@@ -75,15 +75,15 @@ namespace Neptune::Vulkan {
 		{
 			m_Context->Registry<ITransferThreadQueue>();
 		}
-		if (m_Context->Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->HasQueueFamily(VK_QUEUE_VIDEO_DECODE_BIT_KHR))
+		if (m_Context->Get<IExtensions>()->GetContext().Has<Extension::IVideoDecode>())
 		{
 			m_Context->Registry<IVideoDecodeThreadQueue>();
 		}
-		if (m_Context->Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->HasQueueFamily(VK_QUEUE_VIDEO_ENCODE_BIT_KHR))
+		if (m_Context->Get<IExtensions>()->GetContext().Has<Extension::IVideoEncode>())
 		{
 			m_Context->Registry<IVideoEncodeThreadQueue>();
 		}
-		if (m_Context->Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->HasQueueFamily(VK_QUEUE_OPTICAL_FLOW_BIT_NV))
+		if (m_Context->Get<IExtensions>()->GetContext().Has<Extension::IOpticalFlow>())
 		{
 			m_Context->Registry<IOpticalFlowThreadQueue>();
 		}

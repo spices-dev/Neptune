@@ -41,12 +41,12 @@
 #include "Device/Graphics/Backend/Vulkan/Extension/Synchronization2.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/PresentTiming.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/UnifiedImageLayouts.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/MeshShader.h"
 
 // Device
 //m_ExtensionProperties.push_back(VK_KHR_SHADER_CLOCK_EXTENSION_NAME);
 //m_ExtensionProperties.push_back(VK_KHR_SHADER_NON_SEMANTIC_INFO_EXTENSION_NAME);
 //m_ExtensionProperties.push_back(VK_KHR_SPIRV_1_4_EXTENSION_NAME);
-//m_ExtensionProperties.push_back(VK_EXT_MESH_SHADER_EXTENSION_NAME);
 //m_ExtensionProperties.push_back(VK_KHR_SHADER_FLOAT_CONTROLS_EXTENSION_NAME);
 //m_ExtensionProperties.push_back(VK_KHR_FRAGMENT_SHADING_RATE_EXTENSION_NAME);
 //m_ExtensionProperties.push_back(VK_EXT_NESTED_COMMAND_BUFFER_EXTENSION_NAME);
