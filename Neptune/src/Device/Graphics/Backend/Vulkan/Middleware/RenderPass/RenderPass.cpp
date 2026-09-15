@@ -38,7 +38,7 @@ namespace Neptune::Vulkan::Middleware {
 		description.stencilLoadOp                   = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
 		description.stencilStoreOp                  = VK_ATTACHMENT_STORE_OP_DONT_CARE;
 		description.initialLayout                   = m_ImageLayout->From(VK_IMAGE_LAYOUT_UNDEFINED);
-		description.finalLayout                     = m_ImageLayout->From(VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL);
+		description.finalLayout                     = m_ImageLayout->From(VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
 											        
 		VkClearValue                                  clearValue{};
 		clearValue.color                            = { 0.0f, 0.0f, 0.0f, 1.0f };

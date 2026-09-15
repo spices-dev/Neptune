@@ -80,7 +80,7 @@ namespace Neptune::Vulkan::Extension {
         * 
         * @return Returns Present Queue Family.
         */
-        uint32_t GetPresentQueueFamily() const { return m_PresentQueueFamily.value_or(UINT32_MAX); }
+        uint32_t GetPresentQueueFamily() const { return m_PresentQueueFamily.value_or(VK_QUEUE_FAMILY_IGNORED); }
         
         /**
         * @brief Is Present Queue Family Valid.

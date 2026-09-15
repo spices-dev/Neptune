@@ -136,7 +136,7 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
         
-        static uint32_t null = UINT32_MAX;
+        static uint32_t null = VK_QUEUE_FAMILY_IGNORED;
         
         if (!m_QueueFamilies.contains(bit))
         {
@@ -152,7 +152,7 @@ namespace Neptune::Vulkan::Extension {
         
         if (!m_QueueFamilies.contains(bit))
         {
-            return UINT32_MAX;
+            return VK_QUEUE_FAMILY_IGNORED;
         }
         
         return m_QueueFamilies.at(bit).second;

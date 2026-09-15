@@ -11,7 +11,6 @@
 #include "RenderBackend.h"
 #include "Device/Graphics/Frontend/RHI/RenderPass.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/TimelineSemaphore.h"
-#include "Device/Graphics/Backend/Vulkan/Extension/Synchronization2.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/InfrastructureHeader.h"
 #include "Device/Graphics/Backend/Vulkan/AInfrastructure/AccessibleInfrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderPass.h"
@@ -21,7 +20,6 @@
 #include "World/Component/Component.h"
 #include "Data/Clock.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/RenderPass/IRenderPass.h"
-#include "Device/Graphics/Backend/Vulkan/Middleware/ImageLayout/IImageLayout.h"
 #include "Device/Graphics/Backend/Vulkan/Converter.h"
 
 namespace Neptune::Vulkan {
@@ -87,48 +85,6 @@ namespace Neptune::Vulkan {
 
             context.Get<IGraphicCommandBuffer>()->Begin(beginInfo, clock.m_FrameIndex);
 		}
-
-		{
-			auto imageLayout = Middleware::IImageLayout::Create(GetContext());
-			
-			VkImageMemoryBarrier2                     barrier{};
-			barrier.sType                           = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2;
-			barrier.srcStageMask                    = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT;
-			barrier.srcAccessMask                   = VK_ACCESS_2_NONE;
-			barrier.dstStageMask                    = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT;
-			barrier.dstAccessMask                   = VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT;
-			barrier.oldLayout                       = imageLayout->From(VK_IMAGE_LAYOUT_UNDEFINED);
-			barrier.newLayout                       = imageLayout->From(VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL);
-			barrier.srcQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
-			barrier.dstQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
-			barrier.image                           = GetContext().Get<ISwapChain>()->GetImage(clock.m_ImageIndex);
-			barrier.subresourceRange                = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
-
-			if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::ISynchronization2>())
-			{
-				VkDependencyInfo                      info{};
-				info.sType                          = VK_STRUCTURE_TYPE_DEPENDENCY_INFO;
-				info.imageMemoryBarrierCount        = 1;
-				info.pImageMemoryBarriers           = &barrier;
-				
-				context.Get<IGraphicCommandBuffer>()->IHandle(clock.m_FrameIndex)->CmdPipelineBarrier2(info);
-			}
-			else
-			{
-				VkImageMemoryBarrier                  memory{};
-				memory.sType                        = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-				memory.srcAccessMask                = ToVkAccessFlags(barrier.srcAccessMask);
-				memory.dstAccessMask                = ToVkAccessFlags(barrier.dstAccessMask);
-				memory.srcQueueFamilyIndex          = barrier.srcQueueFamilyIndex;
-				memory.dstQueueFamilyIndex          = barrier.dstQueueFamilyIndex;
-				memory.image                        = barrier.image;
-				memory.subresourceRange             = barrier.subresourceRange;
-				memory.oldLayout                    = barrier.oldLayout;
-				memory.newLayout                    = barrier.newLayout;
-				
-				context.Get<IGraphicCommandBuffer>()->IHandle(clock.m_FrameIndex)->CmdPipelineBarrier(ToVkPipelineStageFlags(barrier.srcStageMask), ToVkPipelineStageFlags(barrier.dstStageMask), 0, memory);
-			}
-		}
     }
 
     void RenderBackend::EndFrame(Scene* scene) const
@@ -138,48 +94,6 @@ namespace Neptune::Vulkan {
 		const auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
 
     	auto& context = m_GraphicsBackend->GetContext();
-
-		{
-			auto imageLayout = Middleware::IImageLayout::Create(GetContext());
-			
-			VkImageMemoryBarrier2                     barrier{};
-			barrier.sType                           = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2;
-			barrier.srcStageMask                    = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT;
-			barrier.srcAccessMask                   = VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT;
-			barrier.dstStageMask                    = VK_PIPELINE_STAGE_2_BOTTOM_OF_PIPE_BIT;
-			barrier.dstAccessMask                   = VK_ACCESS_2_NONE;
-			barrier.oldLayout                       = imageLayout->From(VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL);
-			barrier.newLayout                       = imageLayout->From(VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
-			barrier.srcQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
-			barrier.dstQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
-			barrier.image                           = GetContext().Get<ISwapChain>()->GetImage(clock.m_ImageIndex);
-			barrier.subresourceRange               = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
-
-			if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::ISynchronization2>())
-			{
-				VkDependencyInfo                      info{};
-				info.sType                          = VK_STRUCTURE_TYPE_DEPENDENCY_INFO;
-				info.imageMemoryBarrierCount        = 1;
-				info.pImageMemoryBarriers           = &barrier;
-				
-				context.Get<IGraphicCommandBuffer>()->IHandle(clock.m_FrameIndex)->CmdPipelineBarrier2(info);
-			}
-			else
-			{
-				VkImageMemoryBarrier                  memory{};
-				memory.sType                        = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-				memory.srcAccessMask                = ToVkAccessFlags(barrier.srcAccessMask);
-				memory.dstAccessMask                = ToVkAccessFlags(barrier.dstAccessMask);
-				memory.srcQueueFamilyIndex          = barrier.srcQueueFamilyIndex;
-				memory.dstQueueFamilyIndex          = barrier.dstQueueFamilyIndex;
-				memory.image                        = barrier.image;
-				memory.subresourceRange             = barrier.subresourceRange;
-				memory.oldLayout                    = barrier.oldLayout;
-				memory.newLayout                    = barrier.newLayout;
-				
-				context.Get<IGraphicCommandBuffer>()->IHandle(clock.m_FrameIndex)->CmdPipelineBarrier(ToVkPipelineStageFlags(barrier.srcStageMask), ToVkPipelineStageFlags(barrier.dstStageMask), 0, memory);
-			}
-		}
 	    
 		{
 			context.Get<IComputeCommandBuffer>()->End(clock.m_FrameIndex);

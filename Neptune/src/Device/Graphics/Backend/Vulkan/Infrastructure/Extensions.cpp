@@ -75,7 +75,7 @@ namespace Neptune::Vulkan {
 		m_Context.Registry<Extension::IDynamicRenderingLocalRead>        (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IScalarBlockLayout>                (Extension::EExtensionState::Core);
 		m_Context.Registry<Extension::ITimelineSemaphore>                (Extension::EExtensionState::Core);
-		m_Context.Registry<Extension::ISynchronization2>                 (Extension::EExtensionState::Core);
+		m_Context.Registry<Extension::ISynchronization2>                 (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IPresentTiming>                    (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IUnifiedImageLayouts>              (Extension::EExtensionState::Extent);
 	}
