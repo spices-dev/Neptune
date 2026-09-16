@@ -7,6 +7,7 @@
 #pragma once
 #include "Core/Core.h"
 #include "RHI.h"
+#include "Device/Graphics/Frontend/Enum.h"
 
 namespace Neptune::RHI {
 	
@@ -41,8 +42,9 @@ namespace Neptune::RHI {
         * @brief Create Buffer.
         * 
         * @param[in] size Buffer Size.
+        * @param[in] usage Graphic::EBufferUsage.
         */
-        virtual void CreateBuffer(uint64_t size) = 0;
+        virtual void CreateBuffer(uint64_t size, Graphic::EBufferUsage usage = Graphic::EBufferUsage::None) = 0;
 
         /**
         * @brief Write host data to Buffer.
@@ -103,8 +105,9 @@ namespace Neptune::RHI {
         * @brief Create Buffer.
         * 
         * @param[in] size Buffer Size.
+        * @param[in] usage Graphic::EBufferUsage.
         */
-        void CreateBuffer(uint64_t size) const { return m_Impl->CreateBuffer(size); }
+        void CreateBuffer(uint64_t size, Graphic::EBufferUsage usage = Graphic::EBufferUsage::None) const { return m_Impl->CreateBuffer(size, usage); }
 
         /**
         * @brief Write host data to Buffer.

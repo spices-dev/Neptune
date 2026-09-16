@@ -126,6 +126,13 @@ namespace Neptune::Vulkan::Unit {
 		vkCmdPushConstants(m_Handle, layout, VK_SHADER_STAGE_ALL, offset, size, data);
 	}
 	
+	void CommandBuffer::FillBuffer(VkBuffer dstBuffer, VkDeviceSize dstOffset, VkDeviceSize size, uint32_t data) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdFillBuffer(m_Handle, dstBuffer, dstOffset, size, data);
+	}
+	
 	void CommandBuffer::Draw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) const
 	{
 		NEPTUNE_PROFILE_ZONE

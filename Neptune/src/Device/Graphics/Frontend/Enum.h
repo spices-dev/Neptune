@@ -131,5 +131,18 @@ namespace Neptune::Graphic {
         
         Count
     };
+    
+    /**
+    * @brief Enum of Buffer Usage.
+    */
+    enum class EBufferUsage : uint8_t
+    {
+        None = 0,                    // @brief None Usage.
+        Vertex,                      // @brief VertexBuffer.
+        Index,                       // @brief IndexBuffer.
+        Indirect,                    // @brief IndirectBuffer.
+        
+        Count
+    };
 
 }

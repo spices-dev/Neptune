@@ -18,6 +18,7 @@ namespace Neptune::RHI {
 	class Pipeline;
 	class DescriptorList;
 	class IndexBuffer;
+	class Buffer;
 }
 
 namespace Neptune::OpenGL {
@@ -118,6 +119,16 @@ namespace Neptune::OpenGL {
 		void CmdUpdateShaderConstant(const void* data, uint32_t size, uint32_t offset = 0) const override;
 		
 		/**
+		* @brief Interface of FillBuffer.
+		*
+		* @param[in] buffer Buffer.
+		* @param[in] dstOffset offset.
+		* @param[in] size size.
+		* @param[in] data data.
+		*/
+		void CmdFillBuffer(const SP<RHI::Buffer>& buffer, uint64_t dstOffset, uint64_t size, uint32_t data) const override;
+		
+		/**
 		* @brief Interface of Draw.
 		* 
 		* @param[in] vertexCount .
@@ -138,6 +149,26 @@ namespace Neptune::OpenGL {
 		*/
 		void CmdDrawIndexed(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const override;
 
+		/**
+		* @brief Interface of DrawIndexedIndirect.
+		*
+		* @param[in] buffer Buffer.
+		* @param[in] offset .
+		* @param[in] drawCount .
+		* @param[in] stride .
+		*/
+		void CmdDrawIndexedIndirect(const SP<RHI::Buffer>& buffer, uint64_t offset, uint32_t drawCount, uint32_t stride) const override;
+		
+		/**
+		* @brief Interface of DrawIndirect.
+		*
+		* @param[in] buffer Buffer.
+		* @param[in] offset .
+		* @param[in] drawCount .
+		* @param[in] stride .
+		*/
+		void CmdDrawIndirect(const SP<RHI::Buffer>& buffer, uint64_t offset, uint32_t drawCount, uint32_t stride) const override;
+		
 		/**
 		* @brief Interface of Dispatch.
 		* 

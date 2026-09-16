@@ -71,9 +71,7 @@ namespace Neptune::Tool {
         }
         catch (const std::exception& e)
         {
-            NEPTUNE_LOG_CORE(E) << "tinyply exception: " << e.what();
-            
-            return false;
+            NEPTUNE_LOG_CORE(W) << "tinyply exception: " << e.what();
         }
 
         try
@@ -324,12 +322,19 @@ namespace Neptune::Tool {
             }
         }
         
+        if (n)
         {
             auto& normals = obj->m_Desc.normals.host;
 			
             normals->resize(n->count);
 			
             memcpy(normals->data(), n->buffer.get(), n->buffer.size_bytes());
+        }
+        else
+        {
+            auto& normals = obj->m_Desc.normals.host;
+			
+            normals->resize(p->count, {});
         }
         
         {

@@ -12,13 +12,8 @@
 
 #include "Header/PreRendererLayout.glsl"
 #include "Header/GS3DDescLayout.glsl"
+#include "Header/GSProjection.glsl"
 
-/*****************************************************************************************/
-
-/***************************************Constant******************************************/
-
-const float kGSMaxRadiusRatio = 0.35;
-        
 /*****************************************************************************************/
         
 /************************************Vertex Output****************************************/
@@ -64,16 +59,6 @@ layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Sorts
 Sorts sorts;
 
 /*****************************************************************************************/
-
-mat3 QuatToMat3(vec4 q)
-{
-    float x = q.x, y = q.y, z = q.z, w = q.w;
-        
-    return 
-    mat3(1.0 - 2.0*(y*y + z*z), 2.0*(x*y + w*z),       2.0*(x*z - w*y),
-        2.0*(x*y - w*z),       1.0 - 2.0*(x*x + z*z), 2.0*(y*z + w*x),
-        2.0*(x*z + w*y),       2.0*(y*z - w*x),       1.0 - 2.0*(x*x + y*y));
-}
 
 void EvalSHBasis(vec3 dir, out float basis[16])
 {
@@ -155,84 +140,32 @@ void main()
                 
         return;
     }
-        
-    model = mat4(1.0, 0.0,   0.0,   0.0,
-                0.0,   1.0, 0.0,   0.0,
-                0.0,   0.0,   1.0, 0.0,
-                0.0,   0.0,   0.0,   1.0);
             
     vec3  worldPos  = (model * vec4(positions.i[gID], 1.0)).xyz;
     vec3  scale     = scales.i[gID];
     vec4  quat      = orientations.i[gID];
     float opacity   = alphas.i[gID];
     vec3  baseColor = colors.i[gID];
-
-    vec4 viewPos = view.view * vec4(worldPos, 1.0);
-    vec4 clipPos = view.projection * viewPos;
-
-    if (viewPos.z <= 0.01f)
-    {
-        CullSplat();
-            
-        return;
-    }
-
-    mat3 R = QuatToMat3(quat);
-    mat3 S = mat3(scale.x, 0.0, 0.0,
-                  0.0, scale.y, 0.0,
-                  0.0, 0.0, scale.z);
-    mat3 Sigma = R * S * S * transpose(R);
-
-    mat3 W = mat3(view.view);
-    float focalX = view.projection[0][0] * (view.sceneTextureSize.x  * 0.5);
-    float focalY = view.projection[1][1] * (view.sceneTextureSize.y * 0.5);
-
-    float invZ  = 1.0 / viewPos.z;
-    float invZ2 = invZ * invZ;
-    mat3 J = mat3(focalX * invZ              , 0.0                        , 0.0,
-                  0.0                        , focalY * invZ              , 0.0,
-                  -focalX * viewPos.x * invZ2, -focalY * viewPos.y * invZ2, 0.0);
-    
-    mat3 T   = J * W;
-    mat3 cov = T * Sigma * transpose(T);
-
-    cov[0][0] += 0.3;
-    cov[1][1] += 0.3;
-    
-    float a = cov[0][0];
-    float b = cov[0][1];
-    float c = cov[1][1];
-
-    float det = a * c - b * b;
-    if (det <= 0.0)
-    {
-        CullSplat();
-        return;
-    }
-    
-    float mid     = 0.5 * (a + c);
-    float lambda1 = mid + sqrt(max(0.1, mid * mid - det));
-    float lambda2 = mid - sqrt(max(0.1, mid * mid - det));
-    float radius  = ceil(3.0 * sqrt(max(lambda1, lambda2)));
-
-    float maxRadius = kGSMaxRadiusRatio * min(view.sceneTextureSize.x, view.sceneTextureSize.y);
         
-    if (!(radius > 0.0 && radius <= maxRadius))
+    vec4 clipPos, viewPos; vec3 conic; vec2 majorAxis, minorAxis; float r1, r2, radius;
+    if(!ProjectGaussian(worldPos, scale, quat,
+                        clipPos, viewPos, conic,
+                        majorAxis, r1,
+                        minorAxis, r2,
+                        radius))
     {
         CullSplat();
+
         return;
     }
-        
-    float invDet = 1.0 / det;
-    vec3 conic = vec3(c * invDet, -b * invDet, a * invDet);
 
     const vec2 corners[4] = vec2[](vec2(-1,-1), vec2(1,-1), vec2(-1,1), vec2(1,1));
-    vec2 corner       = corners[cID];
-    vec2 screenOffset = corner * radius;
+    vec2 corner           = corners[cID];
+    vec2 screenOffset     = corner.x * r1 * majorAxis + corner.y * r2 * minorAxis;
 
     vec2 ndcOffset = screenOffset / vec2(view.sceneTextureSize.x, view.sceneTextureSize.y) * 2.0;
     
-    gl_Position    = clipPos;
+    gl_Position     = clipPos;
     gl_Position.xy += ndcOffset * clipPos.w;
 
     vec3 camPos = view.inView[3].xyz;

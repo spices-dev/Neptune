@@ -184,11 +184,11 @@ namespace Neptune::Vulkan {
 				{
 					coreSatisfied = false;
 					
-					NEPTUNE_LOG_CORE(E) << "Device Property Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+					NEPTUNE_LOG_CORE(E) << "Device Property Required: [ " << Vulkan::ToString(e) << " ], Which is not satisfied";
 				}
 				else
 				{
-					NEPTUNE_LOG_CORE(W) << "Device Property Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+					NEPTUNE_LOG_CORE(W) << "Device Property Required: [ " << Vulkan::ToString(e) << " ], Which is not satisfied";
 				}
 				
 				removedExtension.emplace_back(e);
@@ -228,11 +228,11 @@ namespace Neptune::Vulkan {
 				{
 					coreSatisfied = false;
 
-					NEPTUNE_LOG_CORE(E) << "Device Feature Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+					NEPTUNE_LOG_CORE(E) << "Device Feature Required: [ " << Vulkan::ToString(e) << " ], Which is not satisfied";
 				}
 				else
 				{
-					NEPTUNE_LOG_CORE(I) << "Device Feature Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+					NEPTUNE_LOG_CORE(W) << "Device Feature Required: [ " << Vulkan::ToString(e) << " ], Which is not satisfied";
 				}
 				
 				removedExtension.emplace_back(e);
@@ -277,11 +277,11 @@ namespace Neptune::Vulkan {
 				{
 					coreSatisfied = false;
 
-					NEPTUNE_LOG_CORE(E) << "Device Surface Capabilities Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+					NEPTUNE_LOG_CORE(E) << "Device Surface Capabilities Required: [ " << Vulkan::ToString(e) << " ], Which is not satisfied";
 				}
 				else
 				{
-					NEPTUNE_LOG_CORE(I) << "Device Surface Capabilities Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+					NEPTUNE_LOG_CORE(W) << "Device Surface Capabilities Required: [ " << Vulkan::ToString(e) << " ], Which is not satisfied";
 				}
 				
 				removedExtension.emplace_back(e);
@@ -315,11 +315,11 @@ namespace Neptune::Vulkan {
 				{
 					coreSatisfied = false;
 
-					NEPTUNE_LOG_CORE(E) << "Device Queue Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+					NEPTUNE_LOG_CORE(E) << "Device Queue Required: [ " << Vulkan::ToString(e) << " ], Which is not satisfied";
 				}
 				else
 				{
-					NEPTUNE_LOG_CORE(I) << "Device Queue Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+					NEPTUNE_LOG_CORE(W) << "Device Queue Required: [ " << Vulkan::ToString(e) << " ], Which is not satisfied";
 				}
 				
 				removedExtension.emplace_back(e);
@@ -361,11 +361,11 @@ namespace Neptune::Vulkan {
 				{
 					coreSatisfied = false;
 
-					NEPTUNE_LOG_CORE(E) << "Device Surface Formats Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+					NEPTUNE_LOG_CORE(E) << "Device Surface Formats Required: [ " << Vulkan::ToString(e) << " ], Which is not satisfied";
 				}
 				else
 				{
-					NEPTUNE_LOG_CORE(I) << "Device Surface Formats Required: " << Vulkan::ToString(e) << ", Which is not satisfied";
+					NEPTUNE_LOG_CORE(W) << "Device Surface Formats Required: [ " << Vulkan::ToString(e) << " ], Which is not satisfied";
 				}
 				
 				removedExtension.emplace_back(e);

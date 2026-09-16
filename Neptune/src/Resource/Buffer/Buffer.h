@@ -1,6 +1,7 @@
 #pragma once
 #include "Core/Core.h"
 #include "Core/Memory/Enum.h"
+#include "Device/Graphics/Frontend/Enum.h"
 
 namespace Neptune {
 
@@ -11,7 +12,8 @@ namespace Neptune {
 
     struct BufferCreateInfo
     {
-        uint32_t          size         = 100;
+        uint32_t                 size  = 100;
+        Graphic::EBufferUsage    usage = Graphic::EBufferUsage::None;
     };
     
     class Buffer

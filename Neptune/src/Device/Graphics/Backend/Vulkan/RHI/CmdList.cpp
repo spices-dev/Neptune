@@ -14,11 +14,13 @@
 #include "Device/Graphics/Backend/Vulkan/RHI/Pipeline.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/DescriptorList.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/IndexBuffer.h"
+#include "Device/Graphics/Backend/Vulkan/RHI/Buffer.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/VideoSession.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/QueryPool.h"
 #include "Device/Graphics/Frontend/RHI/RenderPass.h"
 #include "Data/Clock.h"
 #include "Device/Graphics/Backend/Vulkan/Converter.h"
+#include "Device/Graphics/Frontend/RHI/Buffer.h"
 
 namespace Neptune::Vulkan {
 	
@@ -124,6 +126,13 @@ namespace Neptune::Vulkan {
 		
 		m_CommandBuffer->PushConstants(m_PipelineLayout, data, size, offset);
 	}
+	
+	void CmdList::CmdFillBuffer(const SP<RHI::Buffer>& buffer, uint64_t dstOffset, uint64_t size, uint32_t data) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_CommandBuffer->FillBuffer(buffer->GetRHIImpl<Buffer>()->Handle(), dstOffset, size, data);
+	}
 
 	void CmdList::CmdDraw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) const
 	{
@@ -137,6 +146,20 @@ namespace Neptune::Vulkan {
 		NEPTUNE_PROFILE_ZONE
 		
 		m_CommandBuffer->DrawIndexed(indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
+	}
+	
+	void CmdList::CmdDrawIndexedIndirect(const SP<RHI::Buffer>& buffer, uint64_t offset, uint32_t drawCount, uint32_t stride) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_CommandBuffer->DrawIndexedIndirect(buffer->GetRHIImpl<Buffer>()->Handle(), offset, drawCount, stride);
+	}
+
+	void CmdList::CmdDrawIndirect(const SP<RHI::Buffer>& buffer, uint64_t offset, uint32_t drawCount, uint32_t stride) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_CommandBuffer->DrawIndirect(buffer->GetRHIImpl<Buffer>()->Handle(), offset, drawCount, stride);
 	}
 	
 	void CmdList::CmdDispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const

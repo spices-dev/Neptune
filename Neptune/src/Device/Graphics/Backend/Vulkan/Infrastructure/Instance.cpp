@@ -216,11 +216,11 @@ namespace Neptune::Vulkan {
 				{
 					coreSatisfied = false;
                 		
-					NEPTUNE_LOG_CORE(E) << "Instance Layer Required: " << target << ", Which is not satisfied";
+					NEPTUNE_LOG_CORE(E) << "Instance Layer Required: [ " << target << " ], Which is not satisfied";
 				}
 				else
 				{
-					NEPTUNE_LOG_CORE(W) << "Instance Layer Required: " << target << ", Which is not satisfied";
+					NEPTUNE_LOG_CORE(W) << "Instance Layer Required: [ " << target << " ], Which is not satisfied";
 				}
 
                 removedLayer.emplace_back(e);

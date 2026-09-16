@@ -189,11 +189,11 @@ namespace Neptune::OpenGL {
 				{
 					coreSatisfied = false;
 					
-					NEPTUNE_LOG_CORE(E) << "Extension Property Required: " << OpenGL::ToString(e) << ", Which is not satisfied";
+					NEPTUNE_LOG_CORE(E) << "Extension Property Required: [ " << OpenGL::ToString(e) << " ], Which is not satisfied";
 				}
 				else
 				{
-					NEPTUNE_LOG_CORE(W) << "Extension Property Required: " << OpenGL::ToString(e) << ", Which is not satisfied";
+					NEPTUNE_LOG_CORE(W) << "Extension Property Required: [ " << OpenGL::ToString(e) << " ], Which is not satisfied";
 				}
 				
 				removedExtension.emplace_back(e);

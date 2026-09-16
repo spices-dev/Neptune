@@ -12,6 +12,7 @@
 
 #include "Header/PreRendererLayout.glsl"
 #include "Header/GS3DDescLayout.glsl"
+#include "Header/GSProjection.glsl"
 
 /*****************************************************************************************/
 
@@ -32,25 +33,26 @@ layout(push_constant) uniform Push
     uint gsCount;
 };
         
-/**
-* @brief GS3DDesc Address.
-*/
-layout(set = 1, binding = 0) uniform UBO1 { uint64_t descAddress; };  /* @see GS3DDesc */
 
-/**
-* @brief Sort Address.
-*/
-layout(set = 1, binding = 1) uniform UBO2 { uint64_t sortAddress; };  /* @see Sort */
+layout(set = 1, binding = 0) uniform UBO1 { uint64_t descAddress; };                 // @brief GS3DDesc Address.
+layout(set = 1, binding = 1) uniform UBO2 { uint64_t sortAddress; };                 // @brief Sort Address.
+layout(set = 1, binding = 2) uniform UBO3 { uint64_t indirectAddress; };             // @brief Indirect Address.
 
-/**
-* @brief Sort Buffer.
-*/
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Sorts
+layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Sorts            //  @brief Sort Buffer.
 {
     uint64_t i[];             /* @biref Sort list. */
 };
 Sorts sorts;
 
+layout(buffer_reference, scalar, buffer_reference_align = 4) buffer DrawIndirectCommand     // @brief DrawIndirectCommand Buffer.
+{
+    uint vertexCount;
+    uint instanceCount;
+    uint firstVertex;
+    uint firstInstance;
+};
+DrawIndirectCommand drawIndirectCommand;
+        
 /*****************************************************************************************/
 
 /**
@@ -71,32 +73,40 @@ void main()
 {
     ExplainGS3DDesciption(descAddress);
 
-    sorts = Sorts(sortAddress);
+    sorts               = Sorts(sortAddress);
+    drawIndirectCommand = DrawIndirectCommand(indirectAddress);
 
-    uint idx = gl_GlobalInvocationID.x;
-    if (idx >= paddedN)
+    uint idx     = gl_GlobalInvocationID.x;
+    if (idx >= paddedN) return;
+
+    if (idx >= gsCount)
     {
+        sorts.i[idx] = (uint64_t(0xFFFFFFFFu) << 32) | uint64_t(0xFFFFFFFFu);
+
         return;
     }
 
-    if (idx < gsCount)
-    {
-        model = mat4(1.0, 0.0,   0.0,   0.0,
-                     0.0,   1.0, 0.0,   0.0,
-                     0.0,   0.0,   1.0, 0.0,
-                     0.0,   0.0,   0.0,   1.0);
-            
-        vec3 worldPos = (model * vec4(positions.i[idx], 1.0)).xyz;
-        vec4 viewPos  = view.view * vec4(worldPos, 1.0);
-        float depth   = viewPos.z;
+    model = mat4(1.0,0,0,0, 0,1.0,0,0, 0,0,1.0,0, 0,0,0,1.0);
         
-        uint key = EncodeDepthKey(depth);
-        sorts.i[idx] = (uint64_t(key) << 32) | uint64_t(idx);
-    }
-    else
+    vec3 worldPos = (model * vec4(positions.i[idx], 1.0)).xyz;
+    vec3 scale    = scales.i[idx];
+    vec4 quat     = orientations.i[idx];
+
+    vec4 clipPos, viewPos; vec3 conic; vec2 majorAxis, minorAxis; float r1, r2, radius;
+    if(!ProjectGaussian(worldPos, scale, quat, 
+                        clipPos, viewPos, conic, 
+                        majorAxis, r1, 
+                        minorAxis, r2, 
+                        radius))
     {
         sorts.i[idx] = (uint64_t(0xFFFFFFFFu) << 32) | uint64_t(0xFFFFFFFFu);
+    
+        return;
     }
+    
+    uint key = EncodeDepthKey(viewPos.z);
+    sorts.i[idx] = (uint64_t(key) << 32) | uint64_t(idx);
+    atomicAdd(drawIndirectCommand.instanceCount, 1u);
 }
 
 /*****************************************************************************************/

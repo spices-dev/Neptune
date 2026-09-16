@@ -143,6 +143,16 @@ namespace Neptune::Vulkan::Unit {
 		void PushConstants(VkPipelineLayout layout, const void* data, uint32_t size, uint32_t offset = 0) const;
 		
 		/**
+		* @brief FillBuffer.
+		*
+		* @param[in] dstBuffer VkBuffer.
+		* @param[in] dstOffset offset.
+		* @param[in] size size.
+		* @param[in] data data.
+		*/
+		void FillBuffer(VkBuffer dstBuffer, VkDeviceSize dstOffset, VkDeviceSize size, uint32_t data) const;
+		
+		/**
 		* @brief Draw.
 		*
 		* @param[in] vertexCount .

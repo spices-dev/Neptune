@@ -57,7 +57,8 @@ namespace Neptune::Render {
         SP<RHI::Pipeline> m_SPipeline;                               // @brief Sort Pipeline
 
         InFlightResource<RHI::Buffer> m_SortBuffer;                  // @brief Sort Buffer
+        InFlightResource<RHI::Buffer> m_IndirectBuffer;              // @brief Indirect Buffer
         
-        SP<RHI::Buffer> m_SortParam;                                 // @brief Sort Buffer
+        SP<RHI::Buffer> m_SortParam;                                 // @brief Sort Param Buffer
     };
 }

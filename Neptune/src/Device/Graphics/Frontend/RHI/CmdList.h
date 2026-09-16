@@ -124,6 +124,16 @@ namespace Neptune::RHI {
 		virtual void CmdUpdateShaderConstant(const void* data, uint32_t size, uint32_t offset = 0) const = 0;
 		
 		/**
+		* @brief Interface of FillBuffer.
+		*
+		* @param[in] buffer Buffer.
+		* @param[in] dstOffset offset.
+		* @param[in] size size.
+		* @param[in] data data.
+		*/
+		virtual void CmdFillBuffer(const SP<class Buffer>& buffer, uint64_t dstOffset, uint64_t size, uint32_t data) const = 0;
+		
+		/**
 		* @brief Interface of Draw.
 		* 
 		* @param[in] vertexCount .
@@ -144,6 +154,26 @@ namespace Neptune::RHI {
 		*/
 		virtual void CmdDrawIndexed(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const = 0;
 
+		/**
+		* @brief Interface of DrawIndexedIndirect.
+		*
+		* @param[in] buffer Buffer.
+		* @param[in] offset .
+		* @param[in] drawCount .
+		* @param[in] stride .
+		*/
+		virtual void CmdDrawIndexedIndirect(const SP<class Buffer>& buffer, uint64_t offset, uint32_t drawCount, uint32_t stride) const = 0;
+		
+		/**
+		* @brief Interface of DrawIndirect.
+		*
+		* @param[in] buffer Buffer.
+		* @param[in] offset .
+		* @param[in] drawCount .
+		* @param[in] stride .
+		*/
+		virtual void CmdDrawIndirect(const SP<class Buffer>& buffer, uint64_t offset, uint32_t drawCount, uint32_t stride) const = 0;
+		
 		/**
 		* @brief Interface of Dispatch.
 		* 
@@ -256,6 +286,16 @@ namespace Neptune::RHI {
 		void CmdUpdateShaderConstant(const void* data, uint32_t size, uint32_t offset = 0) const { RHICmdList::m_Impl->CmdUpdateShaderConstant(data, size, offset); }
 		
 		/**
+		* @brief Interface of FillBuffer.
+		*
+		* @param[in] buffer Buffer.
+		* @param[in] dstOffset offset.
+		* @param[in] size size.
+		* @param[in] data data.
+		*/
+		void CmdFillBuffer(const SP<class Buffer>& buffer, uint64_t dstOffset, uint64_t size, uint32_t data) const { RHICmdList::m_Impl->CmdFillBuffer(buffer, dstOffset, size, data); }
+		
+		/**
 		* @brief Interface of Draw.
 		* 
 		* @param[in] vertexCount .
@@ -276,6 +316,26 @@ namespace Neptune::RHI {
 		*/
 		void CmdDrawIndexed(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const { RHICmdList::m_Impl->CmdDrawIndexed(indexCount, instanceCount, firstIndex, vertexOffset, firstInstance); }
 
+		/**
+		* @brief Interface of DrawIndexedIndirect.
+		*
+		* @param[in] buffer Buffer.
+		* @param[in] offset .
+		* @param[in] drawCount .
+		* @param[in] stride .
+		*/
+		void CmdDrawIndexedIndirect(const SP<class Buffer>& buffer, uint64_t offset, uint32_t drawCount, uint32_t stride) const { RHICmdList::m_Impl->CmdDrawIndexedIndirect(buffer, offset, drawCount, stride); }
+		
+		/**
+		* @brief Interface of DrawIndirect.
+		*
+		* @param[in] buffer Buffer.
+		* @param[in] offset .
+		* @param[in] drawCount .
+		* @param[in] stride .
+		*/
+		void CmdDrawIndirect(const SP<class Buffer>& buffer, uint64_t offset, uint32_t drawCount, uint32_t stride) const { RHICmdList::m_Impl->CmdDrawIndirect(buffer, offset, drawCount, stride); }
+		
 		/**
 		* @brief Interface of Dispatch.
 		* 

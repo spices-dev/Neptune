@@ -40,6 +40,16 @@ namespace Neptune::Render {
 			
 				m_SortBuffer.Get(i) = s->GetRHIResource();
 			}
+			
+			for (int i = 0; i < MaxFrameInFlight; ++i)
+			{
+				std::stringstream ss;
+				ss << "TransparentIndirectBuffer_" << i;
+				
+				auto s = resourcePool.Access(ss.str());
+			
+				m_IndirectBuffer.Get(i) = s->GetRHIResource();
+			}
 		}
 		
 		RenderTargetAttachmentInfo   info{};
@@ -158,11 +168,11 @@ namespace Neptune::Render {
 
 		cmdList.CmdBindDescriptor(m_DescriptorList.Get(clock.m_FrameIndex));
 
-		cmdList.CmdBindIndexBuffer(m_IndexBuffer);
+		//cmdList.CmdBindIndexBuffer(m_IndexBuffer);
 		
 		cmdList.CmdUpdateShaderConstant(&gsCount, sizeof(gsCount));
 		
-		cmdList.CmdDrawIndexed(4, gsCount, 0, 0, 0);
+		cmdList.CmdDrawIndirect(m_IndirectBuffer.Get(clock.m_FrameIndex), 0, 1, 16);
 
 		cmdList.CmdEndRenderPass();
 	}

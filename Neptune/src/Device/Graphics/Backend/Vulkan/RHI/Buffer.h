@@ -46,8 +46,9 @@ namespace Neptune::Vulkan {
         * @brief Create Buffer.
         *
         * @param[in] size Buffer Size.
+        * @param[in] usage Graphic::EBufferUsage.
         */
-        void CreateBuffer(uint64_t size) override;
+        void CreateBuffer(uint64_t size, Graphic::EBufferUsage usage = Graphic::EBufferUsage::None) override;
 
         /**
         * @brief Write host data to Buffer.
@@ -78,6 +79,15 @@ namespace Neptune::Vulkan {
         * @param[in] name Buffer Name.
         */
         void SetName(const std::string& name) const override;
+        
+    public:
+        
+        /**
+        * @brief Get Unit Handle.
+        *
+        * @return Returns Unit Handle.
+        */
+        const Unit::Buffer::Handle& Handle() const { return m_Buffer.Handle(); }
         
     private:
 

@@ -97,6 +97,27 @@ namespace Neptune::Render {
 				
 				m_SortBuffer.Get(i) = resourcePool.Access(ss.str())->GetRHIResource();
 			}
+			
+			for (int i = 0; i < MaxFrameInFlight; ++i)
+			{
+				std::stringstream ss;
+				ss << "TransparentIndirectBuffer_" << i;
+				
+				if (!resourcePool.Has(ss.str()))
+				{
+					auto s = resourcePool.Load<Buffer>(ss.str(), BufferCreateInfo{ 16, Graphic::EBufferUsage::Indirect } );
+				
+					s->GetRHIResource()->SetName(ss.str());
+					
+					std::array<uint32_t, 4> data { 4, 0, 0, 0 }; 
+					
+					s->GetRHIResource()->WriteToBuffer(data.data(), 16);
+					
+					s->GetRHIResource()->Flush();
+				}
+				
+				m_IndirectBuffer.Get(i) = resourcePool.Access(ss.str())->GetRHIResource();
+			}
 		}
 		
 		{
@@ -106,6 +127,7 @@ namespace Neptune::Render {
 				m_KDescriptorList.Get(i)->AddShaderConstant(2 * sizeof(uint32_t));
 				m_KDescriptorList.Get(i)->AddUniformBuffer(1, 0, sizeof(uint64_t));
 				m_KDescriptorList.Get(i)->AddUniformBuffer(1, 1, sizeof(uint64_t));
+				m_KDescriptorList.Get(i)->AddUniformBuffer(1, 2, sizeof(uint64_t));
 				m_KDescriptorList.Get(i)->CombineSharedLayout();
 				m_KDescriptorList.Get(i)->Build();
 			}
@@ -206,15 +228,21 @@ namespace Neptune::Render {
 		
 		{
 			auto sortBufferAddress = m_SortBuffer.Get(clock.m_FrameIndex)->GetDeviceAddress();
+			
+			auto indirectBufferAddress = m_IndirectBuffer.Get(clock.m_FrameIndex)->GetDeviceAddress();
 		
 			m_KDescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 0, &item->GetDescDeviceAddress());
 			
 			m_KDescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 1, &sortBufferAddress);
 			
+			m_KDescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 2, &indirectBufferAddress);
+			
 			RHI::CmdList cmdList;
 
 			cmdList.SetComputeCmdList(clock);
 
+			cmdList.CmdFillBuffer(m_IndirectBuffer.Get(clock.m_FrameIndex), 4, 4, 0);
+			
 			cmdList.CmdBindPipeline(m_KPipeline);
 
 			cmdList.CmdBindDescriptor(m_KDescriptorList.Get(clock.m_FrameIndex));

@@ -10,19 +10,20 @@
 
 #include "Buffer.h"
 #include "CmdList2.h"
+#include "Device/Graphics/Backend/Vulkan/Converter.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
 
 namespace Neptune::Vulkan {
     
-    void Buffer::CreateBuffer(uint64_t size)
+    void Buffer::CreateBuffer(uint64_t size, Graphic::EBufferUsage usage)
     {
         NEPTUNE_PROFILE_ZONE
         
         VkBufferCreateInfo                   info{};
         info.sType                         = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
         info.size                          = size;
-        info.usage                         = VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT;
+        info.usage                         = VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT | ToVkBufferUsageFlags(usage);
         info.sharingMode                   = VK_SHARING_MODE_EXCLUSIVE;
         info.queueFamilyIndexCount         = 1;
         info.pQueueFamilyIndices           = &GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);

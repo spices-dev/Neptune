@@ -72,6 +72,11 @@ namespace Neptune::OpenGL {
 		
 	}
 	
+	void CmdList::CmdFillBuffer(const SP<RHI::Buffer>& buffer, uint64_t dstOffset, uint64_t size, uint32_t data) const
+	{
+		NEPTUNE_PROFILE_ZONE
+	}
+	
 	void CmdList::CmdDraw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) const
 	{
 		NEPTUNE_PROFILE_ZONE
@@ -82,6 +87,16 @@ namespace Neptune::OpenGL {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+	}
+	
+	void CmdList::CmdDrawIndexedIndirect(const SP<RHI::Buffer>& buffer, uint64_t offset, uint32_t drawCount, uint32_t stride) const
+	{
+		NEPTUNE_PROFILE_ZONE
+	}
+	
+	void CmdList::CmdDrawIndirect(const SP<RHI::Buffer>& buffer, uint64_t offset, uint32_t drawCount, uint32_t stride) const
+	{
+		NEPTUNE_PROFILE_ZONE
 	}
 	
 	void CmdList::CmdDispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const

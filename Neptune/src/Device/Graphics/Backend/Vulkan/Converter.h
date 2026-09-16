@@ -154,6 +154,15 @@ namespace Neptune::Vulkan {
 	TextureFormat ToTextureFormat(VkFormat f);
 
 	/**
+	* @brief Convert EBufferUsage to VkBufferUsageFlags.
+	*
+	* @param[in] u EBufferUsage.
+	*
+	* @return Returns VkBufferUsageFlags.
+	*/
+	VkBufferUsageFlags ToVkBufferUsageFlags(Graphic::EBufferUsage u);
+	
+	/**
 	* @brief Convert VkMemoryHeapFlags to std::string.
 	*
 	* @param[in] flag VkMemoryHeapFlags.
