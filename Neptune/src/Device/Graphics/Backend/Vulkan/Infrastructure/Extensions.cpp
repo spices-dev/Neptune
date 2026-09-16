@@ -46,6 +46,7 @@ namespace Neptune::Vulkan {
 #ifdef NEPTUNE_DEBUG
 		
 		m_Context.Registry<Extension::IDebugUtils>                       (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::ILayerSetting>                     (Extension::EExtensionState::Extent);
 		
 #endif
 		
@@ -65,7 +66,6 @@ namespace Neptune::Vulkan {
 		m_Context.Registry<Extension::IVulkan13>                         (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IPortability>                      (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IQueue>                            (Extension::EExtensionState::Core);
-		m_Context.Registry<Extension::ILayerSetting>                     (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IDynamicRendering>                 (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IExternalMemoryHost>               (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::ICopyMemoryIndirect>               (Extension::EExtensionState::Extent);

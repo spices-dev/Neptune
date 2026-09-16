@@ -25,6 +25,12 @@ namespace Neptune::GLFW {
     {
         NEPTUNE_PROFILE_ZONE
 
+        // Error event Callback.
+        glfwSetErrorCallback([](int error, const char* description){
+
+            NEPTUNE_LOG_CORE(E) << "glfwError: " << error << " | " << description;
+        });
+        
         // Initialize the library
         if(!glfwInit()) 
         {
@@ -126,12 +132,6 @@ namespace Neptune::GLFW {
 
         // print the version on the console
         NEPTUNE_LOG_CORE(I) << glfwGetVersionString();
-
-        // Error event Callback.
-        glfwSetErrorCallback([](int error, const char* description){
-
-            NEPTUNE_LOG_CORE(E) << "glfwError: " << error << " | " << description;
-        });
 
         // Framebuffer resize event Callback, not in use.
         //glfwSetFramebufferSizeCallback(m_Windows, WindowsResizeCallback);

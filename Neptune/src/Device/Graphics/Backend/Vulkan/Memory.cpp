@@ -12,6 +12,10 @@
 #include "Core.h"
 #include "Core/Memory/Enum.h"
 
+#ifdef NP_PLATFORM_MACOS
+#include <malloc/malloc.h>
+#endif
+
 namespace Neptune::Vulkan {
 
 	namespace {
