@@ -28,7 +28,7 @@ namespace Neptune::Direct3D12::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		CommandQueue() : Unit() {}
+		CommandQueue() = default;
 
 		/**
 		* @brief Destructor Function.

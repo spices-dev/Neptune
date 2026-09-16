@@ -28,7 +28,7 @@ namespace Neptune::OpenGL::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		VertexArray() : Unit() {}
+		VertexArray() = default;
 
 		/**
 		* @brief Destructor Function.

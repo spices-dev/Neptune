@@ -28,7 +28,7 @@ namespace Neptune::OpenGL::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		Program() : Unit() {}
+		Program() = default;
 
 		/**
 		* @brief Destructor Function.

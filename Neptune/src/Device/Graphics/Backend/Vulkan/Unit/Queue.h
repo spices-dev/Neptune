@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		Queue() : Unit() {}
+		Queue() = default;
 
 		/**
 		* @brief Destructor Function.

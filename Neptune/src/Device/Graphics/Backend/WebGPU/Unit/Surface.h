@@ -28,7 +28,7 @@ namespace Neptune::WebGPU::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		Surface() : Unit() {}
+		Surface() = default;
 
 		/**
 		* @brief Destructor Function.

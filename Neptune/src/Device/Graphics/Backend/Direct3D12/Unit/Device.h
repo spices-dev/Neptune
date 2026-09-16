@@ -28,7 +28,7 @@ namespace Neptune::Direct3D12::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		Device() : Unit() {}
+		Device() = default;
 
 		/**
 		* @brief Destructor Function.

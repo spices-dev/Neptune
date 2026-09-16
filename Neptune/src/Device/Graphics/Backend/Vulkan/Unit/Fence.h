@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		Fence() : Unit() {}
+		Fence() = default;
 
 		/**
 		* @brief Destructor Function.

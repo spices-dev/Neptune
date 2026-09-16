@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
         /**
         * @brief Constructor Function.
         */
-        Tensor() : Unit() {}
+        Tensor() = default;
 
         /**
         * @brief Destructor Function.

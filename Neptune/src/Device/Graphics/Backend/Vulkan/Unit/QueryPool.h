@@ -29,7 +29,7 @@ namespace Neptune::Vulkan::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		QueryPool() : Unit() {}
+		QueryPool() = default;
 
 		/**
 		* @brief Destructor Function.

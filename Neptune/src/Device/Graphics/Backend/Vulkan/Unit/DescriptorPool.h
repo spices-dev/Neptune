@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		DescriptorPool() : Unit() {}
+		DescriptorPool() = default;
 
 		/**
 		* @brief Destructor Function.

@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
         /**
         * @brief Constructor Function.
         */
-        ShaderInstrumentation() : Unit() {}
+        ShaderInstrumentation() = default;
 
         /**
         * @brief Destructor Function.

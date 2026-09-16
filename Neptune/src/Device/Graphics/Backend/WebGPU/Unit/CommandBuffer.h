@@ -28,7 +28,7 @@ namespace Neptune::WebGPU::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		CommandBuffer() : Unit() {}
+		CommandBuffer() = default;
 
 		/**
 		* @brief Destructor Function.

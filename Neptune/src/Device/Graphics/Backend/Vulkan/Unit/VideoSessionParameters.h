@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		VideoSessionParameters() : Unit() {}
+		VideoSessionParameters() = default;
 
 		/**
 		* @brief Destructor Function.

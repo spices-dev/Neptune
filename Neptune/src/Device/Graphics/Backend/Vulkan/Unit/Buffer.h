@@ -31,7 +31,7 @@ namespace Neptune::Vulkan::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		Buffer() : Unit() {}
+		Buffer() = default;
 
 		/**
 		* @brief Destructor Function.

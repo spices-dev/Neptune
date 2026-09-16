@@ -28,7 +28,7 @@ namespace Neptune::Metal::Unit {
         /**
         * @brief Constructor Function.
         */
-        AutoreleasePool() : Unit() {}
+        AutoreleasePool() = default;
 
         /**
         * @brief Destructor Function.

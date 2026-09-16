@@ -28,7 +28,7 @@ namespace Neptune::WebGPU::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		Queue() : Unit() {}
+		Queue() = default;
 
 		/**
 		* @brief Destructor Function.

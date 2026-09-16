@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		SamplerYcbcrConversion() : Unit() {}
+		SamplerYcbcrConversion() = default;
 
 		/**
 		* @brief Destructor Function.

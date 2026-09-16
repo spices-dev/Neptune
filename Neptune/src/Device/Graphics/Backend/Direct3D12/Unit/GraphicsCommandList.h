@@ -28,7 +28,7 @@ namespace Neptune::Direct3D12::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		GraphicsCommandList() : Unit() {}
+		GraphicsCommandList() = default;
 
 		/**
 		* @brief Destructor Function.

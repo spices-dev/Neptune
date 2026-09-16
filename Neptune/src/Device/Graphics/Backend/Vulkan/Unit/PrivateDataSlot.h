@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
         /**
         * @brief Constructor Function.
         */
-        PrivateDataSlot() : Unit() {}
+        PrivateDataSlot() = default;
 
         /**
         * @brief Destructor Function.

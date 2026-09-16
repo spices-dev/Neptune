@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		CommandBuffer() : Unit() {}
+		CommandBuffer() = default;
 
 		/**
 		* @brief Destructor Function.

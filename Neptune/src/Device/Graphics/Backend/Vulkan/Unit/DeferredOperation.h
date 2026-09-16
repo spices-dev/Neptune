@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
         /**
         * @brief Constructor Function.
         */
-        DeferredOperation() : Unit() {}
+        DeferredOperation() = default;
 
         /**
         * @brief Destructor Function.

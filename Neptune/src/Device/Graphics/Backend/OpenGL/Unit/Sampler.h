@@ -28,7 +28,7 @@ namespace Neptune::OpenGL::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		Sampler() : Unit() {}
+		Sampler() = default;
 
 		/**
 		* @brief Destructor Function.

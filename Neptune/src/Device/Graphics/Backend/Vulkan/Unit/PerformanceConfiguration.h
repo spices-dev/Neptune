@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
         /**
         * @brief Constructor Function.
         */
-        PerformanceConfiguration() : Unit() {}
+        PerformanceConfiguration() = default;
 
         /**
         * @brief Destructor Function.

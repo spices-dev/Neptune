@@ -30,7 +30,7 @@ namespace Neptune::Vulkan::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		SwapChain() : Unit() {}
+		SwapChain() = default;
 
 		/**
 		* @brief Destructor Function.

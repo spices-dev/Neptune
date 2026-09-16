@@ -28,7 +28,7 @@ namespace Neptune::Metal::Unit {
         /**
         * @brief Constructor Function.
         */
-        RenderPipelineState() : Unit() {}
+        RenderPipelineState() = default;
 
         /**
         * @brief Destructor Function.

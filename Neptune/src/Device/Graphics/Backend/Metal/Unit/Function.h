@@ -28,7 +28,7 @@ namespace Neptune::Metal::Unit {
         /**
         * @brief Constructor Function.
         */
-        Function() : Unit() {}
+        Function() = default;
 
         /**
         * @brief Destructor Function.

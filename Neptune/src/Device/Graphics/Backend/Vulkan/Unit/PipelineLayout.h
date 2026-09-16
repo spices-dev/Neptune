@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		PipelineLayout() : Unit() {}
+		PipelineLayout() = default;
 
 		/**
 		* @brief Destructor Function.

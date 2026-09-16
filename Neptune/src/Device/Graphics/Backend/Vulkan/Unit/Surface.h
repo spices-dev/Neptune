@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		Surface() : Unit() {}
+		Surface() = default;
 
 		/**
 		* @brief Destructor Function.

@@ -28,7 +28,7 @@ namespace Neptune::Direct3D11::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		Fence() : Unit() {}
+		Fence() = default;
 
 		/**
 		* @brief Destructor Function.

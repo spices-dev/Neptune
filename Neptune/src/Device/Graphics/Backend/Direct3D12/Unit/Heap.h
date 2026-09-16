@@ -28,7 +28,7 @@ namespace Neptune::Direct3D12::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		Heap() : Unit() {}
+		Heap() = default;
 
 		/**
 		* @brief Destructor Function.

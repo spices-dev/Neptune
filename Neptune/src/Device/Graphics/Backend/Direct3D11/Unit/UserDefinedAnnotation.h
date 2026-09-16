@@ -28,7 +28,7 @@ namespace Neptune::Direct3D11::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		UserDefinedAnnotation() : Unit() {}
+		UserDefinedAnnotation() = default;
 
 		/**
 		* @brief Destructor Function.

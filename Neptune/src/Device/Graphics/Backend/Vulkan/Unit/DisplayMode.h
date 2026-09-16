@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
         /**
         * @brief Constructor Function.
         */
-        DisplayMode() : Unit() {}
+        DisplayMode() = default;
 
         /**
         * @brief Destructor Function.

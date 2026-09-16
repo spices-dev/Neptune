@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
         /**
         * @brief Constructor Function.
         */
-        Micromap() : Unit() {}
+        Micromap() = default;
 
         /**
         * @brief Destructor Function.

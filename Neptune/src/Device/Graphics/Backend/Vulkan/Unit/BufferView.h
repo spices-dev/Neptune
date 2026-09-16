@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
         /**
         * @brief Constructor Function.
         */
-        BufferView() : Unit() {}
+        BufferView() = default;
 
         /**
         * @brief Destructor Function.

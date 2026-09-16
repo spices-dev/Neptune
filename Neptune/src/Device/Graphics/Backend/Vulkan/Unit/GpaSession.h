@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
         /**
         * @brief Constructor Function.
         */
-        GpaSession() : Unit() {}
+        GpaSession() = default;
 
         /**
         * @brief Destructor Function.

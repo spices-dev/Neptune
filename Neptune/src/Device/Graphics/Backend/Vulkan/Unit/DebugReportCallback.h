@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
         /**
         * @brief Constructor Function.
         */
-        DebugReportCallback() : Unit() {}
+        DebugReportCallback() = default;
 
         /**
         * @brief Destructor Function.

@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		RenderPass() : Unit() {}
+		RenderPass() = default;
 
 		/**
 		* @brief Destructor Function.

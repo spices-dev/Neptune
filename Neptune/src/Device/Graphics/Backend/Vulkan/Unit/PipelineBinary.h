@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
         /**
         * @brief Constructor Function.
         */
-        PipelineBinary() : Unit() {}
+        PipelineBinary() = default;
 
         /**
         * @brief Destructor Function.

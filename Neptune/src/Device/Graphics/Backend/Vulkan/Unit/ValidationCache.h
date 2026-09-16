@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
         /**
         * @brief Constructor Function.
         */
-        ValidationCache() : Unit() {}
+        ValidationCache() = default;
 
         /**
         * @brief Destructor Function.

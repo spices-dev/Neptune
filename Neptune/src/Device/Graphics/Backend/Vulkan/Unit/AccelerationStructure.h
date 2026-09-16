@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
         /**
         * @brief Constructor Function.
         */
-        AccelerationStructure() : Unit() {}
+        AccelerationStructure() = default;
 
         /**
         * @brief Destructor Function.

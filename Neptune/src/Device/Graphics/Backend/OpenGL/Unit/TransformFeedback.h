@@ -28,7 +28,7 @@ namespace Neptune::OpenGL::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		TransformFeedback() : Unit() {}
+		TransformFeedback() = default;
 
 		/**
 		* @brief Destructor Function.

@@ -28,7 +28,7 @@ namespace Neptune::Direct3D11::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		CommandList() : Unit() {}
+		CommandList() = default;
 
 		/**
 		* @brief Destructor Function.

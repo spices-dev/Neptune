@@ -28,7 +28,7 @@ namespace Neptune::OpenGL::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		Query() : Unit() {}
+		Query() = default;
 
 		/**
 		* @brief Destructor Function.

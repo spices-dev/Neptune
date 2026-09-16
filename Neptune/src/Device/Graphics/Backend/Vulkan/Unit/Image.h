@@ -31,7 +31,7 @@ namespace Neptune::Vulkan::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		Image() : Unit() {}
+		Image() = default;
 
 		/**
 		* @brief Destructor Function.

@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
         /**
         * @brief Constructor Function.
         */
-        DataGraphPipelineSession() : Unit() {}
+        DataGraphPipelineSession() = default;
 
         /**
         * @brief Destructor Function.

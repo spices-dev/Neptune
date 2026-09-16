@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
         /**
         * @brief Constructor Function.
         */
-        TensorView() : Unit() {}
+        TensorView() = default;
 
         /**
         * @brief Destructor Function.

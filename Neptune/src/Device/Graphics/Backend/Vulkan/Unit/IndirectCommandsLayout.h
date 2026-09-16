@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
         /**
         * @brief Constructor Function.
         */
-        IndirectCommandsLayout() : Unit() {}
+        IndirectCommandsLayout() = default;
 
         /**
         * @brief Destructor Function.

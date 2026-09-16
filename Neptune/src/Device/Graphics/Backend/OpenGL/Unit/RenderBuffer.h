@@ -28,7 +28,7 @@ namespace Neptune::OpenGL::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		RenderBuffer() : Unit() {}
+		RenderBuffer() = default;
 
 		/**
 		* @brief Destructor Function.

@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		Device() : Unit() {}
+		Device() = default;
 
 		/**
 		* @brief Destructor Function.

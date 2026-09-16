@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Unit {
 		/**
 		* @brief Constructor Function.
 		*/
-		OpticalFlowSession() : Unit() {}
+		OpticalFlowSession() = default;
 
 		/**
 		* @brief Destructor Function.
