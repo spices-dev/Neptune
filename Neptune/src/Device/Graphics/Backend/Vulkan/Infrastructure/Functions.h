@@ -70,7 +70,8 @@ namespace Neptune::Vulkan {
 		VK_FUNCTION_POINTER(vkSetDebugUtilsObjectTagEXT                     )
 
 		// @brief DeviceFault Function. 
-		VK_FUNCTION_POINTER(vkGetDeviceFaultInfoEXT                         )
+		VK_FUNCTION_POINTER(vkGetDeviceFaultReportsKHR                      )
+		VK_FUNCTION_POINTER(vkGetDeviceFaultDebugInfoKHR                    )
 		
 		// @brief RayTracing Function.					             
 		VK_FUNCTION_POINTER(vkGetRayTracingShaderGroupHandlesKHR            )

@@ -51,7 +51,8 @@ namespace Neptune::Vulkan {
 		
 		if(GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDeviceFault>())
 		{
-			EXPLAIN_VK_FUNCTION_POINTER(vkGetDeviceFaultInfoEXT                         )
+			EXPLAIN_VK_FUNCTION_POINTER(vkGetDeviceFaultReportsKHR                      )
+			EXPLAIN_VK_FUNCTION_POINTER(vkGetDeviceFaultDebugInfoKHR                    )
 		}
 		
 		if(GetContext().Get<IExtensions>()->GetContext().Has<Extension::IRayTracing>())

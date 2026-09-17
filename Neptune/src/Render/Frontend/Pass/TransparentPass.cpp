@@ -65,7 +65,6 @@ namespace Neptune::Render {
 		for (int i = 0; i < MaxFrameInFlight; ++i)
 		{
 			m_DescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
-			m_DescriptorList.Get(i)->AddShaderConstant(sizeof(uint32_t));
 			m_DescriptorList.Get(i)->AddUniformBuffer(1, 0, sizeof(uint64_t));
 			m_DescriptorList.Get(i)->AddUniformBuffer(1, 1, sizeof(uint64_t));
 			m_DescriptorList.Get(i)->CombineSharedLayout();
@@ -169,8 +168,6 @@ namespace Neptune::Render {
 		cmdList.CmdBindDescriptor(m_DescriptorList.Get(clock.m_FrameIndex));
 
 		//cmdList.CmdBindIndexBuffer(m_IndexBuffer);
-		
-		cmdList.CmdUpdateShaderConstant(&gsCount, sizeof(gsCount));
 		
 		cmdList.CmdDrawIndirect(m_IndirectBuffer.Get(clock.m_FrameIndex), 0, 1, 16);
 

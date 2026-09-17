@@ -21,101 +21,99 @@ namespace Neptune::Vulkan {
 	 	* @brief Handle Device Lost Result.
 	 	* 
 	 	* @param device VkDevice.
-	 	* @param vkGetDeviceFaultInfoEXT PFN_vkGetDeviceFaultInfoEXT.
+	 	* @param vkGetDeviceFaultReportsKHR PFN_vkGetDeviceFaultReportsKHR.
 	 	* @param ss DebugInfoStringStream.
 	 	*/
-        void HandleDeviceLostResult(VkDevice device, PFN_vkGetDeviceFaultInfoEXT vkGetDeviceFaultInfoEXT, std::stringstream& ss)
+        void HandleDeviceLostResult(VkDevice device, PFN_vkGetDeviceFaultReportsKHR vkGetDeviceFaultReportsKHR, std::stringstream& ss)
 		{
         	NEPTUNE_PROFILE_ZONE
         	
-			VkDeviceFaultCountsEXT                      faultCounts{};
-            faultCounts.sType                         = VK_STRUCTURE_TYPE_DEVICE_FAULT_COUNTS_EXT;
+        	uint32_t faultCount = 0;
 
-            auto result = vkGetDeviceFaultInfoEXT(device, &faultCounts, nullptr);
+        	VkResult result = vkGetDeviceFaultReportsKHR(device, 0, &faultCount, nullptr);
+
             if (result != VK_SUCCESS) 
             {
                 NEPTUNE_LOG_CORE(E) << "Device Lost: Failed to Query Fault Counts.";
                 return;
             }
 
-            std::vector<VkDeviceFaultAddressInfoEXT> addressInfos(faultCounts.addressInfoCount);
-            std::vector<VkDeviceFaultVendorInfoEXT> vendorInfos(faultCounts.vendorInfoCount);
-            std::vector<uint8_t> vendorBinary(faultCounts.vendorBinarySize);
+        	if (faultCount == 0)
+        	{
+        		NEPTUNE_LOG_CORE(W) << "Device Lost: Nothing Report.";
+        		return;
+        	}
 
-            VkDeviceFaultInfoEXT                        faultInfo{};
-            faultInfo.sType                           = VK_STRUCTURE_TYPE_DEVICE_FAULT_INFO_EXT;
-            faultInfo.pAddressInfos                   = addressInfos.data();
-            faultInfo.pVendorInfos                    = vendorInfos.data();
-            faultInfo.pVendorBinaryData               = vendorBinary.data();
+        	std::vector<VkDeviceFaultInfoKHR> faultInfos(faultCount, { VK_STRUCTURE_TYPE_DEVICE_FAULT_INFO_KHR });
 
-            result = vkGetDeviceFaultInfoEXT(device, &faultCounts, &faultInfo);
+        	result = vkGetDeviceFaultReportsKHR(device, 0, &faultCount, faultInfos.data());
             if (result != VK_SUCCESS && result != VK_INCOMPLETE) 
             {
                 NEPTUNE_LOG_CORE(E) << "Device Lost: Failed to Query Fault Info.";
                 return;
             }
 
-            ss << "\n" << "Description: " << faultInfo.description << "\n";
-
-            for (uint32_t i = 0; i < faultCounts.addressInfoCount; i++) 
-            {
-                const auto& addr = addressInfos[i];
-                const char* typeStr = "Unknown";
-                switch (addr.addressType) 
-                {
-                    case VK_DEVICE_FAULT_ADDRESS_TYPE_READ_INVALID_EXT:                     typeStr = "Invalid Read";                break;
-                    case VK_DEVICE_FAULT_ADDRESS_TYPE_WRITE_INVALID_EXT:                    typeStr = "Invalid Write";               break;
-                    case VK_DEVICE_FAULT_ADDRESS_TYPE_EXECUTE_INVALID_EXT:                  typeStr = "Invalid Execute";             break;
-                    case VK_DEVICE_FAULT_ADDRESS_TYPE_INSTRUCTION_POINTER_FAULT_EXT:        typeStr = "Instruction Pointer Fault";   break;
+        	std::ranges::for_each(faultInfos, [&](const auto& faultInfo) {
+        		
+        		std::stringstream info;
+        		
+        		info << "\n" << "Description: " << faultInfo.description << "\n";
+        		
+        		const char* typeStr = "Unknown";
+        		
+        		switch (faultInfo.faultAddressInfo.addressType)
+        		{
+        			case VK_DEVICE_FAULT_ADDRESS_TYPE_READ_INVALID_EXT:                     typeStr = "Invalid Read";                break;
+					case VK_DEVICE_FAULT_ADDRESS_TYPE_WRITE_INVALID_EXT:                    typeStr = "Invalid Write";               break;
+					case VK_DEVICE_FAULT_ADDRESS_TYPE_EXECUTE_INVALID_EXT:                  typeStr = "Invalid Execute";             break;
+					case VK_DEVICE_FAULT_ADDRESS_TYPE_INSTRUCTION_POINTER_FAULT_EXT:        typeStr = "Instruction Pointer Fault";   break;
 					case VK_DEVICE_FAULT_ADDRESS_TYPE_NONE_EXT:                             typeStr = "Invalid Read";                break;
 					case VK_DEVICE_FAULT_ADDRESS_TYPE_INSTRUCTION_POINTER_UNKNOWN_EXT:      typeStr = "Instruction Pointer unknown"; break;
 					case VK_DEVICE_FAULT_ADDRESS_TYPE_INSTRUCTION_POINTER_INVALID_EXT:      typeStr = "Instruction Pointer invalid"; break;
-                }
+        			default:                                                                typeStr = "Unknown";
+        		}
+        		
+        		uint64_t lower = faultInfo.instructionAddressInfo.reportedAddress & ~(faultInfo.instructionAddressInfo.addressPrecision - 1);
+				uint64_t upper = faultInfo.instructionAddressInfo.reportedAddress | (faultInfo.instructionAddressInfo.addressPrecision - 1);
+        		
+        		ss << "\n" << "    Address: type = " << typeStr << ", reported = " << (unsigned long long)faultInfo.instructionAddressInfo.reportedAddress << ", precision = " << (unsigned long long)faultInfo.instructionAddressInfo.addressPrecision
+        		   << "\n" << "    Address range :" << lower << " - " << upper << "\n";
+        		
+        		ss << "    Vendor: description = " << faultInfo.vendorInfo.description << "\n";
+        		
+        		if (faultInfo.vendorInfo.vendorFaultCode > 0)
+        		{
+        			try
+        			{
+						std::filesystem::path dumpPath = "DeviceLostDump.bin";
 
-                uint64_t lower = addr.reportedAddress & ~(addr.addressPrecision - 1);
-                uint64_t upper = addr.reportedAddress | (addr.addressPrecision - 1);
+						std::ofstream file(dumpPath, std::ios::binary);
 
-                ss << "Address[" << i << "]: type = " << typeStr << ", reported = " << (unsigned long long)addr.reportedAddress << ", precision = " << (unsigned long long)addr.addressPrecision
-                    << "Address range :" << (unsigned long long)lower << " - " << (unsigned long long)upper << "\n";
-            }
+						if (file.is_open())
+						{
+							file.write(reinterpret_cast<const char*>(faultInfo.vendorInfo.vendorFaultData), static_cast<std::streamsize>(faultInfo.vendorInfo.vendorFaultCode));
+							file.close();
 
-            for (uint32_t i = 0; i < faultCounts.vendorInfoCount; i++) 
-            {
-                const auto& vendor = vendorInfos[i];
-                
-                ss << "Vendor[" << i << "]: description = " << vendor.description << "\n";
-            }
-
-            if (faultCounts.vendorBinarySize > 0) 
-            {
-				try
-				{
-					std::filesystem::path dumpPath = "DeviceLostDump.bin";
-
-					std::ofstream file(dumpPath, std::ios::binary);
-
-					if (file.is_open())
-					{
-						file.write(reinterpret_cast<const char*>(vendorBinary.data()), static_cast<std::streamsize>(faultCounts.vendorBinarySize));
-						file.close();
-
-						NEPTUNE_LOG_CORE(E) << "Device Lost Vendor binary crash dump saved to " << dumpPath.string();
+							NEPTUNE_LOG_CORE(E) << "Device Lost Vendor binary crash dump saved to " << dumpPath.string();
+						}
+						else
+						{
+							NEPTUNE_LOG_CORE(E) << "Failed to open device lost dump file";
+						}
 					}
-					else
+					catch (const std::filesystem::filesystem_error& e)
 					{
-						NEPTUNE_LOG_CORE(E) << "Failed to open device lost dump file";
+						NEPTUNE_LOG_CORE(E) << "Filesystem error saving device lost dump: " << e.what();
 					}
-				}
-				catch (const std::filesystem::filesystem_error& e)
-				{
-					NEPTUNE_LOG_CORE(E) << "Filesystem error saving device lost dump: " << e.what();
-				}
-				catch (const std::exception& e)
-				{
-					NEPTUNE_LOG_CORE(E) << "Unexpected error saving device lost dump: " << e.what();
-				}
-            }
-
+					catch (const std::exception& e)
+					{
+						NEPTUNE_LOG_CORE(E) << "Unexpected error saving device lost dump: " << e.what();
+					}
+        		}
+        		
+        		ss << info.str();
+        	});
+        	
             NEPTUNE_LOG_CORE(E) << ss.str();
 		}
 		
@@ -227,7 +225,7 @@ namespace Neptune::Vulkan {
 		return VK_FALSE;
 	}
 	
-	void HandleResult(VkResult result, VkPhysicalDevice physicalDevice, VkDevice device, bool deviceFaultValid, bool memoryBudget, PFN_vkGetDeviceFaultInfoEXT vkGetDeviceFaultInfoEXT)
+	void HandleResult(VkResult result, VkPhysicalDevice physicalDevice, VkDevice device, bool deviceFaultValid, bool memoryBudget, PFN_vkGetDeviceFaultReportsKHR vkGetDeviceFaultReportsKHR)
 	{
         NEPTUNE_PROFILE_ZONE
 
@@ -290,9 +288,9 @@ namespace Neptune::Vulkan {
 		std::stringstream ss;
 		ss << "Vulkan Error: [ " << label << " ]";
 
-		if (result == VK_ERROR_DEVICE_LOST && vkGetDeviceFaultInfoEXT && device && deviceFaultValid)
+		if (result == VK_ERROR_DEVICE_LOST && vkGetDeviceFaultReportsKHR && device && deviceFaultValid)
 		{
-			HandleDeviceLostResult(device, vkGetDeviceFaultInfoEXT, ss);
+			HandleDeviceLostResult(device, vkGetDeviceFaultReportsKHR, ss);
 		}
 
         if ((result == VK_ERROR_OUT_OF_HOST_MEMORY || result == VK_ERROR_OUT_OF_DEVICE_MEMORY) && physicalDevice && memoryBudget)

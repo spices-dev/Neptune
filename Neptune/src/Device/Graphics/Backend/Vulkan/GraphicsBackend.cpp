@@ -33,7 +33,7 @@ namespace Neptune::Vulkan {
 				GetContext().Has<IDevice>() ? GetContext().Get<IDevice>()->Handle() : nullptr, 
 				GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDeviceFault>(),
 				GetContext().Get<IExtensions>()->GetContext().Has<Extension::IMemoryBudget>(),
-				GetContext().Has<IFunctions>() ? GetContext().Get<IFunctions>()->vkGetDeviceFaultInfoEXT : nullptr
+				GetContext().Has<IFunctions>() ? GetContext().Get<IFunctions>()->vkGetDeviceFaultReportsKHR : nullptr
 			); 
 		});
 	}

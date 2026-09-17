@@ -33,11 +33,6 @@ vertOut;
 /*****************************************************************************************/
 
 /********************************Descriptor List******************************************/
-
-/**
-* @brief push constant.
-*/
-layout(push_constant) uniform Push { uint gsCount; };
         
 /**
 * @brief GS3DDesc Address.
@@ -133,13 +128,6 @@ void main()
     uint64_t entry = sorts.i[gl_InstanceIndex];
     uint gID = uint(entry & 0xFFFFFFFFu);
     uint cID = gl_VertexIndex;
-
-    if (gID >= gsCount)
-    {
-        CullSplat();
-                
-        return;
-    }
             
     vec3  worldPos  = (model * vec4(positions.i[gID], 1.0)).xyz;
     vec3  scale     = scales.i[gID];

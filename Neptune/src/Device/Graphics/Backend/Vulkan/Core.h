@@ -90,9 +90,9 @@ namespace Neptune::Vulkan {
 	* @param[in] device VkDevice.
 	* @param[in] deviceFaultValid Device Fault Extension Valid.
 	* @param[in] memoryBudget Memory Budget Extension Valid.
-	* @param[in] vkGetDeviceFaultInfoEXT PFN_vkGetDeviceFaultInfoEXT.
+	* @param[in] vkGetDeviceFaultReportsKHR PFN_vkGetDeviceFaultReportsKHR.
 	*/
-	void HandleResult(VkResult result, VkPhysicalDevice physicalDevice, VkDevice device, bool deviceFaultValid, bool memoryBudget, PFN_vkGetDeviceFaultInfoEXT vkGetDeviceFaultInfoEXT);
+	void HandleResult(VkResult result, VkPhysicalDevice physicalDevice, VkDevice device, bool deviceFaultValid, bool memoryBudget, PFN_vkGetDeviceFaultReportsKHR vkGetDeviceFaultReportsKHR);
 
 	#define VULKAN_CHECK(expr)  { auto expr_value = expr; if (expr_value != VK_SUCCESS) { std::invoke(HandleResultDelegate::GetHandler(), expr_value); NEPTUNE_BREAK } }
 }
