@@ -199,7 +199,7 @@ namespace Neptune::Tool {
             
             colors->resize(f_dc->count);
             
-            for (int i = 0; i < f_dc->count; ++i)
+            for (uint64_t i = 0; i < f_dc->count; ++i)
             {
                 auto r = *reinterpret_cast<float*>(addr + 12 * i) * SH_C0 + 0.5f;
                 auto g = *reinterpret_cast<float*>(addr + 12 * i + 4) * SH_C0 + 0.5f;
@@ -216,7 +216,7 @@ namespace Neptune::Tool {
                             
             alphas->resize(opacity->count);
                             
-            for (int i = 0; i < opacity->count; ++i)
+            for (uint64_t i = 0; i < opacity->count; ++i)
             {
                 auto r = *reinterpret_cast<float*>(addr + 4 * i);
                                 
@@ -231,7 +231,7 @@ namespace Neptune::Tool {
                                             
             scales->resize(scale->count);
                                             
-            for (int i = 0; i < scale->count; ++i)
+            for (uint64_t i = 0; i < scale->count; ++i)
             {
                 auto r = glm::exp(*reinterpret_cast<float*>(addr + 12 * i));
                 auto g = glm::exp(*reinterpret_cast<float*>(addr + 12 * i + 4));
@@ -248,7 +248,7 @@ namespace Neptune::Tool {
                     
             orientations->resize(rot->count);
                     
-            for (int i = 0; i < rot->count; ++i)
+            for (uint64_t i = 0; i < rot->count; ++i)
             {
                 auto w = *reinterpret_cast<float*>(addr + 16 * i);
                 auto r = *reinterpret_cast<float*>(addr + 16 * i + 4);
@@ -268,7 +268,7 @@ namespace Neptune::Tool {
                                             
             sphr->resize(f_rest->count);
                                             
-            for (int i = 0; i < f_rest->count; ++i)
+            for (uint64_t i = 0; i < f_rest->count; ++i)
             {
                 auto rest_0 = addr + 180 * i;
                                                 
@@ -289,7 +289,7 @@ namespace Neptune::Tool {
                                             
             sphg->resize(f_rest->count);
                                             
-            for (int i = 0; i < f_rest->count; ++i)
+            for (uint64_t i = 0; i < f_rest->count; ++i)
             {
                 auto rest_15 = addr + 180 * i + 60;
                      
@@ -310,7 +310,7 @@ namespace Neptune::Tool {
                                             
             sphb->resize(f_rest->count);
                                             
-            for (int i = 0; i < f_rest->count; ++i)
+            for (uint64_t i = 0; i < f_rest->count; ++i)
             {
                 auto rest_30 = addr + 180 * i + 120;
                  
@@ -340,7 +340,7 @@ namespace Neptune::Tool {
         {
             auto& albedos = obj->m_Desc.albedos.host;
 			
-            albedos->resize(n->count);
+            albedos->resize(p->count);
             
             memcpy(albedos->data(), obj->m_Desc.colors.host->data(), f_dc->buffer.size_bytes());
         }

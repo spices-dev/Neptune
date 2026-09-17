@@ -51,16 +51,16 @@ namespace Neptune::SOP {
 		
 		Positions                   positions;                           // @brief Position.
 		Colors                      colors;                              // @brief Color.
-		Alphas                      alphas;                              // @brief Alphas.
-		Scales                      scales;                              // @brief Scales.
-		Orientations                orientations;                        // @brief Orientations.
+		Alphas                      alphas;                              // @brief Alpha.
+		Scales                      scales;                              // @brief Scale.
+		Orientations                orientations;                        // @brief Orientation.
 		
 		SPH_R                       sphrs;                               // @brief SPH_R.
 		SPH_G                       sphgs;                               // @brief SPH_G.
 		SPH_B                       sphbs;                               // @brief SPH_B.
 		
 		Normals                     normals;                             // @brief Normal.
-		Albedos                     albedos;                             // @brief Albedos.
+		Albedos                     albedos;                             // @brief Albedo.
 	};
 	
 	/**

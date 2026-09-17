@@ -56,7 +56,7 @@ mat3 QuatToMat3(vec4 q)
 * @return Returns true if visible.
 */
 bool ProjectGaussian(vec3 p, vec3 s, vec4 q,
-    out vec4 clipPos, out vec4 viewPos, vec3 conic, 
+    out vec4 clipPos, out vec4 viewPos, out vec3 conic, 
     out vec2 majorAxis, out float r1,
     out vec2 minorAxis, out float r2, 
     out float radius

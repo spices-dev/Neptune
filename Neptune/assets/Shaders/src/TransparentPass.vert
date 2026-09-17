@@ -128,7 +128,8 @@ void main()
     uint64_t entry = sorts.i[gl_InstanceIndex];
     uint gID = uint(entry & 0xFFFFFFFFu);
     uint cID = gl_VertexIndex;
-            
+        
+    model = mat4(1.0,0,0,0, 0,1.0,0,0, 0,0,1.0,0, 0,0,0,1.0);    
     vec3  worldPos  = (model * vec4(positions.i[gID], 1.0)).xyz;
     vec3  scale     = scales.i[gID];
     vec4  quat      = orientations.i[gID];

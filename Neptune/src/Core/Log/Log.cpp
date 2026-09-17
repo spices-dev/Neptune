@@ -90,20 +90,20 @@ namespace Neptune {
                 case LogLevel::W:     log->ClientWarn(msg);     break;
                 case LogLevel::E:     log->ClientError(msg);    break;
                 case LogLevel::C:     log->ClientCritical(msg); break;
-                default:              log->ClientTrace(msg);      break;
+                default:              log->ClientTrace(msg);    break;
             }
         }
         
 #ifdef NEPTUNE_DEBUG
 
-        if (m_Level == LogLevel::E)
+        if (m_Level >= LogLevel::E)
         {
             NEPTUNE_BREAK
         }
 
 #else
 
-        if (m_Level == LogLevel::C)
+        if (m_Level >= LogStream::LogLevel::C)
         {
             NEPTUNE_BREAK
         }

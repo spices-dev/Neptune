@@ -76,10 +76,10 @@ namespace Neptune::Vulkan {
         		uint64_t lower = faultInfo.instructionAddressInfo.reportedAddress & ~(faultInfo.instructionAddressInfo.addressPrecision - 1);
 				uint64_t upper = faultInfo.instructionAddressInfo.reportedAddress | (faultInfo.instructionAddressInfo.addressPrecision - 1);
         		
-        		ss << "\n" << "    Address: type = " << typeStr << ", reported = " << (unsigned long long)faultInfo.instructionAddressInfo.reportedAddress << ", precision = " << (unsigned long long)faultInfo.instructionAddressInfo.addressPrecision
+        		info << "    Address: type = " << typeStr << ", reported = " << (unsigned long long)faultInfo.instructionAddressInfo.reportedAddress << ", precision = " << (unsigned long long)faultInfo.instructionAddressInfo.addressPrecision
         		   << "\n" << "    Address range :" << lower << " - " << upper << "\n";
         		
-        		ss << "    Vendor: description = " << faultInfo.vendorInfo.description << "\n";
+        		info << "    Vendor: description = " << faultInfo.vendorInfo.description;
         		
         		if (faultInfo.vendorInfo.vendorFaultCode > 0)
         		{
