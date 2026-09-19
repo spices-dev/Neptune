@@ -61,7 +61,7 @@ namespace Neptune::Vulkan {
 		m_Context.Registry<Extension::IVideoEncode>                      (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::ISamplerYcbcrConversion>           (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IMaintenance1>                     (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IBufferDeviceAddress>              (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IBufferDeviceAddress>              (Extension::EExtensionState::Core);
 		m_Context.Registry<Extension::IDescriptorIndexing>               (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IVulkan13>                         (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IPortability>                      (Extension::EExtensionState::Extent);          // @brief Done.
@@ -140,7 +140,7 @@ namespace Neptune::Vulkan {
 		});
 	}
 	
-	void Extensions::BuildIsSurfaceCapabilityChain(void** pNext)
+	void Extensions::BuildSurfaceCapabilityChain(void** pNext)
 	{
 		NEPTUNE_PROFILE_ZONE
 		

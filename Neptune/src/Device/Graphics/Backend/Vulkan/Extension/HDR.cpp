@@ -14,19 +14,11 @@ namespace Neptune::Vulkan::Extension {
     
     namespace {
         
-        enum class EHDRSurface : uint8_t
-        {
-            PQ = 0,
-            HLG,
-            P3,
-            ExSRGB,
-        };
-        
-        std::unordered_map<EHDRSurface, VkSurfaceFormatKHR> s_HDRSurface = {
-            { EHDRSurface::PQ,     { VK_FORMAT_A2R10G10B10_UNORM_PACK32, VK_COLOR_SPACE_HDR10_ST2084_EXT } },
-            { EHDRSurface::HLG,    { VK_FORMAT_A2R10G10B10_UNORM_PACK32, VK_COLOR_SPACE_BT2020_LINEAR_EXT } },
-            { EHDRSurface::P3,     { VK_FORMAT_A2R10G10B10_UNORM_PACK32, VK_COLOR_SPACE_DISPLAY_P3_LINEAR_EXT } },
-            { EHDRSurface::ExSRGB, { VK_FORMAT_R16G16B16A16_SNORM, VK_COLOR_SPACE_EXTENDED_SRGB_NONLINEAR_EXT } },
+        std::unordered_map<Graphic::EHDRSurface, VkSurfaceFormatKHR> s_HDRSurface = {
+            { Graphic::EHDRSurface::PQ,     { VK_FORMAT_A2R10G10B10_UNORM_PACK32, VK_COLOR_SPACE_HDR10_ST2084_EXT } },
+            { Graphic::EHDRSurface::HLG,    { VK_FORMAT_A2R10G10B10_UNORM_PACK32, VK_COLOR_SPACE_BT2020_LINEAR_EXT } },
+            { Graphic::EHDRSurface::P3,     { VK_FORMAT_A2R10G10B10_UNORM_PACK32, VK_COLOR_SPACE_DISPLAY_P3_LINEAR_EXT } },
+            { Graphic::EHDRSurface::ExSRGB, { VK_FORMAT_R16G16B16A16_SNORM, VK_COLOR_SPACE_EXTENDED_SRGB_NONLINEAR_EXT } },
         };
         
     }
@@ -49,12 +41,14 @@ namespace Neptune::Vulkan::Extension {
         
         bool satisfy = false;
         
-        for (auto& hdrSurface : s_HDRSurface | std::views::values)
+        for (auto& [e, hdrSurface] : s_HDRSurface)
         {
             satisfy &= std::ranges::any_of(formats.begin(), formats.end(), [&](const auto& format) {
             
                 return format.format == hdrSurface.format && format.colorSpace == hdrSurface.colorSpace;
             });
+            
+            m_Formats.insert({ e, hdrSurface });
         }
         
         return satisfy;

@@ -15,6 +15,7 @@
 #include "Functions.h"
 #include "Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/HDR.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/IGetSurfaceCapabilities.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/IGetPhysicalDeviceProperties.h"
 #include "Window/Window.h"
@@ -77,12 +78,9 @@ namespace Neptune::Vulkan {
 
 		if(!IsQueueMeetDemand(device, surface)) return false;
 		
-		if (surface)
-		{
-			if(!IsSurfaceCapabilityMeetDemand(device)) return false;
-			
-			if(!IsSurfaceFormatMeetDemand(device, surface)) return false;
-		}
+		if(!IsSurfaceCapabilityMeetDemand(device, surface)) return false;
+
+		if(!IsSurfaceFormatMeetDemand(device, surface)) return false;
 		
 		return true;
 	}
@@ -248,22 +246,25 @@ namespace Neptune::Vulkan {
 		return coreSatisfied;
 	}
 
-	bool PhysicalDevice::IsSurfaceCapabilityMeetDemand(const VkPhysicalDevice& device) const
+	bool PhysicalDevice::IsSurfaceCapabilityMeetDemand(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		VkSurfaceCapabilities2KHR                             capabilities{};
-		capabilities.sType                                  = VK_STRUCTURE_TYPE_SURFACE_CAPABILITIES_2_KHR;
-		capabilities.pNext                                  = nullptr;
+		if (surface)
+		{
+			VkSurfaceCapabilities2KHR                             capabilities{};
+			capabilities.sType                                  = VK_STRUCTURE_TYPE_SURFACE_CAPABILITIES_2_KHR;
+			capabilities.pNext                                  = nullptr;
 
-		VkPhysicalDeviceSurfaceInfo2KHR                       surfaceInfo{};
-		surfaceInfo.sType                                   = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SURFACE_INFO_2_KHR;
-		surfaceInfo.surface                                 = GetContext().Get<ISurface>()->Handle();
-		surfaceInfo.pNext                                   = nullptr;
+			VkPhysicalDeviceSurfaceInfo2KHR                       surfaceInfo{};
+			surfaceInfo.sType                                   = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SURFACE_INFO_2_KHR;
+			surfaceInfo.surface                                 = surface;
+			surfaceInfo.pNext                                   = nullptr;
 		
-		GetContext().Get<IExtensions>()->BuildIsSurfaceCapabilityChain(&capabilities.pNext);
+			GetContext().Get<IExtensions>()->BuildSurfaceCapabilityChain(&capabilities.pNext);
 		
-		Middleware::IGetSurfaceCapabilities::Create(GetContext())->GetCapabilities(device, surfaceInfo, capabilities);
+			Middleware::IGetSurfaceCapabilities::Create(GetContext())->GetCapabilities(device, surfaceInfo, capabilities);
+		}
 		
 		bool coreSatisfied = true;
 		
@@ -339,15 +340,21 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		uint32_t formatCount;
-
-		VULKAN_CHECK(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &formatCount, nullptr))
-		
 		std::vector<VkSurfaceFormatKHR> formats;
-			
-		formats.resize(formatCount);
 		
-		VULKAN_CHECK(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &formatCount, formats.data()))
+		if (surface)
+		{
+			uint32_t formatCount;
+
+			VULKAN_CHECK(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &formatCount, nullptr))
+
+			if (formatCount)
+			{
+				formats.resize(formatCount);
+		
+				VULKAN_CHECK(vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &formatCount, formats.data()))
+			}
+		}
 		
 		bool coreSatisfied = true;
 
@@ -598,6 +605,11 @@ namespace Neptune::Vulkan {
 			}
 		}
 
+		if (auto p = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IHDR>())
+		{
+			property.format = p->GetFormat(Graphic::EHDRSurface::ExSRGB);
+		}
+		
 		uint32_t presentModeCount;
 
 		VULKAN_CHECK(vkGetPhysicalDeviceSurfacePresentModesKHR(Handle(), surface, &presentModeCount, nullptr))

@@ -37,6 +37,17 @@ namespace Neptune::Graphic {
     };
     
     /**
+    * @brief Enum of HDRSurface.
+    */
+    enum class EHDRSurface : uint8_t
+    {
+        PQ = 0,                         // @brief PQ
+        HLG,                            // @brief HLG
+        P3,                             // @brief P3
+        ExSRGB,                         // @brief ExSRGB
+    };
+    
+    /**
     * @brief Enum of Pipeline.
     */
     enum class EPipeline : uint8_t

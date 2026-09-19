@@ -1,6 +1,6 @@
 ﻿/**
-* @file TimelineSemaphore.cpp.
-* @brief The TimelineSemaphore Class Implementation.
+* @file Queue.cpp.
+* @brief The Queue Class Implementation.
 * @author Spices.
 */
 

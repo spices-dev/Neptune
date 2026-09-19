@@ -84,7 +84,7 @@ namespace Neptune::Vulkan {
 		* 
 		* @param[in] pNext pNext Chain.
 		*/
-		void BuildIsSurfaceCapabilityChain(void** pNext);
+		void BuildSurfaceCapabilityChain(void** pNext);
 		
 		/**
 		* @brief Build Device Queue Chain.

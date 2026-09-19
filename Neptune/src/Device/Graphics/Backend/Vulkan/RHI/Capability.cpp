@@ -9,6 +9,12 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "Capability.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Extensions.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/OpticalFlow.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/VideoEncode.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/VideoDecode.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/MeshShader.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/RayTracing.h"
 
 namespace Neptune::Vulkan {
     
@@ -23,9 +29,9 @@ namespace Neptune::Vulkan {
             case Pipeline:                        return true;
             case Shader:                          return true;
             case Query:                           return true;
-            case OpticalFlow:                     return true;
-            case VideoEncode:                     return false;
-            case VideoDecode:                     return true;
+            case OpticalFlow:                     return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IOpticalFlow>();
+            case VideoEncode:                     return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IVideoEncode>();
+            case VideoDecode:                     return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IVideoDecode>();
             default:                              return false;
         }
     }
@@ -39,9 +45,9 @@ namespace Neptune::Vulkan {
         switch (capability)
         {
             case Rasterization:              return true;
-            case Mesh:                       return false;
+            case Mesh:                       return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IMeshShader>();
             case Compute:                    return true;
-            case RayTracing:                 return false;
+            case RayTracing:                 return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IRayTracing>();
             case DataGraph:                  return false;
             case ExecutionGraph:             return false;
             default:                         return false;
@@ -62,15 +68,15 @@ namespace Neptune::Vulkan {
             case Geometry:                    return false;     
             case ClusterCulling:              return false;    
             case Fragment:                    return true;    
-            case Task:                        return false;   
-            case Mesh:                        return false;   
+            case Task:                        return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IMeshShader>();   
+            case Mesh:                        return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IMeshShader>();   
             case Compute:                     return true;   
-            case RayGeneration:               return false;   
-            case Intersection:                return false;    
-            case AnyHit:                      return false;    
-            case ClosestHit:                  return false;    
-            case Miss:                        return false;    
-            case Callable:                    return false; 
+            case RayGeneration:               return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IRayTracing>();   
+            case Intersection:                return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IRayTracing>();    
+            case AnyHit:                      return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IRayTracing>();    
+            case ClosestHit:                  return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IRayTracing>();    
+            case Miss:                        return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IRayTracing>();    
+            case Callable:                    return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IRayTracing>(); 
             default:                          return false;
         }
     }

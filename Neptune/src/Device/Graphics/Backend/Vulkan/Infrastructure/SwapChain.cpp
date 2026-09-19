@@ -84,10 +84,10 @@ namespace Neptune::Vulkan {
 		{
 			VkHdrMetadataEXT                    meta {};
 			meta.sType                        = VK_STRUCTURE_TYPE_HDR_METADATA_EXT;
-			meta.displayPrimaryRed            = { 0.708, 0.292 };
-			meta.displayPrimaryGreen          = { 0.170, 0.797 };
-			meta.displayPrimaryBlue           = { 0.131, 0.046 };
-			meta.whitePoint                   = { 0.3127, 0.3290 };
+			meta.displayPrimaryRed            = { 0.708f, 0.292f };
+			meta.displayPrimaryGreen          = { 0.170f, 0.797f };
+			meta.displayPrimaryBlue           = { 0.131f, 0.046f };
+			meta.whitePoint                   = { 0.3127f, 0.3290f };
 			meta.maxLuminance                 = 1000.0f;
 			meta.minLuminance                 = 0.001f;
 			meta.maxContentLightLevel         = 1000.0f;
@@ -100,17 +100,17 @@ namespace Neptune::Vulkan {
 
 		auto images = m_SwapChain->GetSwapchainImages();
 
-		for (size_t i = 0; i < images.size(); ++i)
-		{
+		std::ranges::for_each(images, [&](const auto& image){
+			
 			auto swapChainImage = CreateUP<Resource::Image>(GetContext());
 
-			swapChainImage->SetImage(images[i]);
+			swapChainImage->SetImage(image);
 			
 			{
 				VkImageViewCreateInfo                   info{};
 				info.sType                            = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
 				info.flags                            = 0;
-				info.image                            = images[i];
+				info.image                            = image;
 
 				info.viewType                         = VK_IMAGE_VIEW_TYPE_2D;
 				info.format                           = property.format.format;
@@ -157,7 +157,7 @@ namespace Neptune::Vulkan {
 			swapChainImage->SetName("SwapChain");
 
 			m_SwapChainImage.emplace_back(std::move(swapChainImage));
-		}
+		});
     }
 
 	bool SwapChain::GetNextImage(VkSemaphore semaphore, uint32_t& imageIndex) const

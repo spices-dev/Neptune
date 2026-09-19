@@ -10,6 +10,7 @@
 
 #include "Core/Core.h"
 #include "Context.h"
+#include "Device/Graphics/Frontend/Enum.h"
 
 namespace Neptune::Vulkan::Extension {
 
@@ -31,7 +32,14 @@ namespace Neptune::Vulkan::Extension {
         */
         ~HDR() override = default;
         
-        const VkSurfaceFormatKHR& GetFormat() const { return m_Formats[0]; }
+        /**
+        * @brief Get HDR Surface.
+        * 
+        * @param[in] surface Graphic::EHDRSurface.
+        * 
+        * @return Returns VkSurfaceFormatKHR.
+        */
+        const VkSurfaceFormatKHR& GetFormat(Graphic::EHDRSurface surface) const { return m_Formats.at(surface); }
         
         /**
         * @brief Is Device Surface Formats satisfied.
@@ -44,7 +52,7 @@ namespace Neptune::Vulkan::Extension {
         
     private:
         
-        std::vector<VkSurfaceFormatKHR> m_Formats;
+        std::unordered_map<Graphic::EHDRSurface, VkSurfaceFormatKHR> m_Formats;
     };
 }
 

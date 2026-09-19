@@ -163,10 +163,11 @@ namespace Neptune::Vulkan {
 		* @brief Is Surface Capability Meet Demand.
 		*
 		* @param[in] device VkPhysicalDevice.
+		* @param[in] surface VkSurfaceKHR.
 		*
 		* @return Returns true if meets.
 		*/
-		bool IsSurfaceCapabilityMeetDemand(const VkPhysicalDevice& device) const;
+		bool IsSurfaceCapabilityMeetDemand(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const;
 		
 		/**
 		* @brief Is Queue Meet Demand.
