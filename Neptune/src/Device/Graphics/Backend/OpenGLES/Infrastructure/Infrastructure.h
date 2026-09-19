@@ -1,0 +1,66 @@
+/**
+* @file Infrastructure.h.
+* @brief The Infrastructure Class Definitions.
+* @author Spices.
+*/
+
+#pragma once
+
+#ifdef NP_GRAPHICS_OPENGLES
+
+#include "Core/Core.h"
+#include "Core/NonCopyable.h"
+#include "Enum.h"
+#include "Device/Graphics/Backend/Common/Infrastructure/Infrastructure.h"
+
+namespace Neptune::OpenGLES {
+
+    using namespace Graphic::Common;
+
+    using CommonInfrastructure = Graphic::Common::Infrastructure<EInfrastructure>;
+
+    using Context = CommonInfrastructure::Context;
+
+    using ContextAccessor = CommonInfrastructure::ContextAccessor;
+
+    /**
+    * @brief OpenGLES::Infrastructure Class.
+    * This class defines the OpenGLES::Infrastructure behaves.
+    */
+    class Infrastructure : public CommonInfrastructure
+    {
+    public:
+
+        using Super = CommonInfrastructure;
+
+    public:
+
+        /**
+        * @brief Destructor Function.
+        */
+        ~Infrastructure() override = default;
+
+    public:
+
+        /**
+        * @brief Turn EInfrastructure to string.
+        * 
+        * @return Returns string EInfrastructure.
+        */
+        std::string ToString() const override;
+
+    protected:
+
+        /**
+        * @brief Constructor Function.
+        *
+        * @param[in] context Context.
+        * @param[in] e EInfrastructure.
+        */
+        explicit Infrastructure(Context& context, EInfrastructure e);
+
+    };
+
+}
+
+#endif

@@ -244,7 +244,9 @@ solution.DefineCppStaticLibrary("Neptune", function()
 
 		-- The Solution Additional External Include Folder.
 		externalincludedirs
-		{}
+		{
+			vendor.Vulkan_Headers.includes,                            -- Library: VulkanSDK Source Folder.
+		}
 
 		-- Android Specific Additional Library Folder.
 		libdirs
