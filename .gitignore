@@ -80,3 +80,9 @@ Makefile
 /vendor/premake
 /vendor/tracy
 .vercel
+
+nepnep/Emscripten/.idea
+nepnep/Emscripten/.next
+nepnep/Emscripten/node_modules
+nepnep/Emscripten/.env.local
+nepnep/Emscripten/public/wasm
