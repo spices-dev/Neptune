@@ -16,7 +16,7 @@
 
 namespace Neptune::Vulkan::Middleware {
 	
-    UP<IQueueSubmit> IQueueSubmit::Create(Context& context)
+    UP<IQueueSubmit> IQueueSubmit::Create(const Context& context)
     {
         NEPTUNE_PROFILE_ZONE
         

@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Middleware {
         * 
         * @return Returns IGetSurfaceCapabilities.
         */
-        static UP<IGetSurfaceCapabilities> Create(Context& context);
+        static UP<IGetSurfaceCapabilities> Create(const Context& context);
 		
         /**
         * @brief Destructor Function.

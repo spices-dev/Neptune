@@ -33,7 +33,7 @@ namespace Neptune::Vulkan::Middleware {
 		* 
 		* @return Returns ISynchronization.
 		*/
-		static UP<ISynchronization> Create(Context& context);
+		static UP<ISynchronization> Create(const Context& context);
 		
 		/**
 		* @brief Destructor Function.

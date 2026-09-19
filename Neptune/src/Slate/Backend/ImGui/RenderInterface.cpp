@@ -392,7 +392,7 @@ namespace Neptune::imgui {
 		ImGui_ImplWGPU_NewFrame();
 	}
 
-	void WebGPUInterface::RenderFrame(void* payload) const
+	void WebGPUInterface::SubmitFrameRHI(void* payload) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		

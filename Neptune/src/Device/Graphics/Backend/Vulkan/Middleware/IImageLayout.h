@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Middleware {
         * 
         * @return Returns IImageLayout.
         */
-        static UP<IImageLayout> Create(Context& context);
+        static UP<IImageLayout> Create(const Context& context);
 		
         /**
         * @brief Destructor Function.

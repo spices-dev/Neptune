@@ -27,10 +27,6 @@ namespace Neptune::WebGPU {
     {
     public:
 
-        using Context = Render::Common::Context<EInfrastructure>;
-
-    public:
-
         /**
         * @brief Constructor Function.
         */

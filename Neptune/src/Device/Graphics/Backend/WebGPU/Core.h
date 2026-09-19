@@ -67,7 +67,7 @@ namespace Neptune::WebGPU {
 	/**
     * @brief WebGPU Device Lost Callback.
     *
-    * @param[in] type WGPUDeviceLostReason.
+    * @param[in] reason WGPUDeviceLostReason.
     * @param[in] message WGPUStringView.
     */
     void DeviceLostCallback(WGPUDevice const*, WGPUDeviceLostReason reason, WGPUStringView message, void*, void*);

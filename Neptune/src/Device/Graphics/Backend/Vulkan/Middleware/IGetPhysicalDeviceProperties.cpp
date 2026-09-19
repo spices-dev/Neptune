@@ -14,7 +14,7 @@
 
 namespace Neptune::Vulkan::Middleware {
 	
-    UP<IGetPhysicalDeviceProperties> IGetPhysicalDeviceProperties::Create(Context& context)
+    UP<IGetPhysicalDeviceProperties> IGetPhysicalDeviceProperties::Create(const Context& context)
     {
         NEPTUNE_PROFILE_ZONE
         

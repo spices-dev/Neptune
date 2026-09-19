@@ -15,7 +15,7 @@
 
 namespace Neptune::Vulkan::Middleware {
 	
-    UP<IImageLayout> IImageLayout::Create(Context& context)
+    UP<IImageLayout> IImageLayout::Create(const Context& context)
     {
         NEPTUNE_PROFILE_ZONE
         

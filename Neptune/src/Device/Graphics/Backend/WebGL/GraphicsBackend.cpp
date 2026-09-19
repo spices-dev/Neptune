@@ -13,9 +13,6 @@
 #include "AInfrastructure/AccessibleInfrastructure.h"
 #include "RHI/RHIHeader.h"
 #include "Window/Window.h"
-#include "World/Scene/Scene.h"
-#include "Data/Clock.h"
-#include "World/Component/Component.h"
 
 namespace Neptune::WebGL {
 
@@ -38,7 +35,7 @@ namespace Neptune::WebGL {
     {
         NEPTUNE_PROFILE_ZONE
 
-        m_Context->UnRegistry();
+        //m_Context->UnRegistry();
     }
 
     Context& GraphicsBackend::GetContext() const

@@ -16,7 +16,7 @@
 
 namespace Neptune::Vulkan::Middleware {
 	
-	UP<ISynchronization> ISynchronization::Create(Context& context)
+	UP<ISynchronization> ISynchronization::Create(const Context& context)
 	{
 		NEPTUNE_PROFILE_ZONE
 		

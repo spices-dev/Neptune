@@ -12,9 +12,7 @@
 #include "Infrastructure/InfrastructureHeader.h"
 #include "AInfrastructure/AccessibleInfrastructure.h"
 #include "RHI/RHIHeader.h"
-#include "World/Scene/Scene.h"
-#include "Data/Clock.h"
-#include "World/Component/Component.h"
+#include "Window/Window.h"
 
 namespace Neptune::WebGPU {
 

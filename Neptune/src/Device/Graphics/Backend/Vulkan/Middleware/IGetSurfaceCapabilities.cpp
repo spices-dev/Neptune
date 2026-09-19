@@ -14,7 +14,7 @@
 
 namespace Neptune::Vulkan::Middleware {
 	
-    UP<IGetSurfaceCapabilities> IGetSurfaceCapabilities::Create(Context& context)
+    UP<IGetSurfaceCapabilities> IGetSurfaceCapabilities::Create(const Context& context)
     {
         NEPTUNE_PROFILE_ZONE
         

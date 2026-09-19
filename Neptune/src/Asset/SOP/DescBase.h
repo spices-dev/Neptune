@@ -60,8 +60,8 @@ namespace Neptune::SOP {
 		
 		using Desc = Attribute<T>;  
 		
-		Desc desc;               // @brief this Desc.
-		uint64_t descAddress;    // @brief this Desc Device Address.
+		Desc desc;                   // @brief this Desc.
+		uint64_t descAddress = 0;    // @brief this Desc Device Address.
 	};
 	
 	template<typename T>

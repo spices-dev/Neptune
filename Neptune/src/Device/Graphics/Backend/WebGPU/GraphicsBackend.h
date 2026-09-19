@@ -13,11 +13,6 @@
 #include "Infrastructure/Enum.h"
 #include "Device/Graphics/Backend/Common/Infrastructure/Context.h"
 
-namespace Neptune {
-
-    class Scene;
-}
-
 namespace Neptune::WebGPU {
 
     /**

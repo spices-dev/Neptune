@@ -28,7 +28,7 @@ namespace Neptune::Vulkan::Middleware {
         * 
         * @return Returns IGetPhysicalDeviceProperties.
         */
-        static UP<IGetPhysicalDeviceProperties> Create(Context& context);
+        static UP<IGetPhysicalDeviceProperties> Create(const Context& context);
 		
         /**
         * @brief Destructor Function.
