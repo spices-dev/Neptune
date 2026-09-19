@@ -49,7 +49,7 @@ namespace Neptune::Vulkan::Middleware {
     	DEBUGUTILS_SETOBJECTNAME(m_Semaphore, "TimeLineSemaphore")
     }
 	
-	VkSemaphore TimeLine2::Semaphore() const
+	VkSemaphore TimeLine2::Semaphore(uint64_t frameId) const
     {
     	NEPTUNE_PROFILE_ZONE
 		
@@ -60,7 +60,7 @@ namespace Neptune::Vulkan::Middleware {
     {
     	NEPTUNE_PROFILE_ZONE
 
-		DEBUGUTILS_SETOBJECTNAME(m_Semaphore, name + "TimeLineFence")
+		DEBUGUTILS_SETOBJECTNAME(m_Semaphore, name + "TimeLineSemaphore")
     }
 }
 

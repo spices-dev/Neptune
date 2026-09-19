@@ -30,18 +30,18 @@ namespace Neptune::Vulkan {
         m_TimeLine->Wait(value);
     }
     
-    VkSemaphore TimeLine::Semaphore() const
+    VkSemaphore TimeLine::Semaphore(uint64_t frameId) const
     {
         NEPTUNE_PROFILE_ZONE
         
-        return m_TimeLine->Semaphore();
+        return m_TimeLine->Semaphore(frameId);
     }
     
-    VkFence TimeLine::Fence(uint64_t value) const
+    VkFence TimeLine::Fence(uint64_t frameId) const
     {
         NEPTUNE_PROFILE_ZONE
         
-        return m_TimeLine->Fence(value);
+        return m_TimeLine->Fence(frameId);
     }
 
     void TimeLine::SetName() const

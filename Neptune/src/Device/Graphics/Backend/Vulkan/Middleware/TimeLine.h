@@ -11,6 +11,7 @@
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/Fence.h"
+#include "Device/Graphics/Backend/Vulkan/Unit/Semaphore.h"
 #include "ITimeLine.h"
 
 namespace Neptune::Vulkan::Middleware {
@@ -45,9 +46,11 @@ namespace Neptune::Vulkan::Middleware {
 		/**
 		* @brief Interface of Get Semaphore.
 		* 
+		* @param[in] frameId Frame Id;
+		* 
 		* @return Returns VkSemaphore.
 		*/
-		VkSemaphore Semaphore() const override { return VK_NULL_HANDLE; }
+		VkSemaphore Semaphore(uint64_t frameId) const override;
         
 		/**
 		* @brief Interface of Get Fence.
@@ -76,7 +79,8 @@ namespace Neptune::Vulkan::Middleware {
 		
 	private:
 		
-		std::vector<UP<Unit::Fence>> m_Fences;        // @brief Container of this Fence.
+		std::vector<UP<Unit::Fence>> m_Fences;                // @brief Container of this Fence.
+		std::vector<UP<Unit::Semaphore>> m_Semaphores;        // @brief Container of this Semaphore.
 		
 	};
 }

@@ -252,6 +252,7 @@ namespace Neptune::Vulkan {
 		case VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT:                 return VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT;
 		case VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT:        return VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
 		case VK_PIPELINE_STAGE_2_BOTTOM_OF_PIPE_BIT:                 return VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
+		case VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT:                   return VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
 		default:
 			{
 				NEPTUNE_LOG_CORE(E) << "Unsupported VkPipelineStageFlags To VkPipelineStageFlags2.";

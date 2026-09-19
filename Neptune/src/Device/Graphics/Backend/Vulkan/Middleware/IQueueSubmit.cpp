@@ -38,8 +38,6 @@ namespace Neptune::Vulkan::Middleware {
         {
             for (uint32_t i = 0; i < info.waitSemaphoreInfoCount; ++i)
             {
-                if (!info.pWaitSemaphoreInfos[i].semaphore) continue;
-                
                 wait.emplace_back(info.pWaitSemaphoreInfos[i].semaphore);
                 
                 waitStages.emplace_back(ToVkPipelineStageFlags(info.pWaitSemaphoreInfos[i].stageMask));
@@ -50,8 +48,6 @@ namespace Neptune::Vulkan::Middleware {
         {
             for (uint32_t i = 0; i < info.commandBufferInfoCount; ++i)
             {
-                if (!info.pCommandBufferInfos[i].commandBuffer) continue;
-                
                 commandBuffer.emplace_back(info.pCommandBufferInfos[i].commandBuffer);
             }
         }
@@ -60,8 +56,6 @@ namespace Neptune::Vulkan::Middleware {
         {
             for (uint32_t i = 0; i < info.signalSemaphoreInfoCount; ++i)
             {
-                if (!info.pSignalSemaphoreInfos[i].semaphore) continue;
-                
                 signal.emplace_back(info.pSignalSemaphoreInfos[i].semaphore);
             }
         }

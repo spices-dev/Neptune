@@ -49,18 +49,20 @@ namespace Neptune::Vulkan {
         /**
         * @brief Interface of Get Semaphore.
         * 
+        * @param[in] frameId Frame Id;
+        * 
         * @return Returns VkSemaphore.
         */
-        VkSemaphore Semaphore() const;
+        VkSemaphore Semaphore(uint64_t frameId) const;
         
         /**
         * @brief Interface of Get Fence.
         * 
-        * @param[in] value Wait Value;
+        * @param[in] frameId Frame Id;
         * 
         * @return Returns VkFence.
         */
-        VkFence Fence(uint64_t value) const;
+        VkFence Fence(uint64_t frameId) const;
         
     private:
         

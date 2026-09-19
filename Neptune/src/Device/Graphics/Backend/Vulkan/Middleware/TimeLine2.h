@@ -44,9 +44,11 @@ namespace Neptune::Vulkan::Middleware {
     	/**
 		* @brief Interface of Get Semaphore.
 		* 
+		* @param[in] frameId Frame Id;
+		* 
 		* @return Returns VkSemaphore.
 		*/
-    	VkSemaphore Semaphore() const override;
+    	VkSemaphore Semaphore(uint64_t frameId) const override;
         
     	/**
 		* @brief Interface of Get Fence.
