@@ -86,11 +86,11 @@ namespace Neptune::Vulkan {
 		m_Context->Registry<Extension::IMeshShader>                       (Extension::EExtensionState::Extent);
 	}
 	
-	UP<Extensions> Extensions::Copy() const
+	SP<Extensions> Extensions::Copy() const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		auto extensions = CreateUP<Extensions>(ContextAccessor::GetContext(), GetEInfrastructure(), m_Window);
+		auto extensions = CreateSP<Extensions>(ContextAccessor::GetContext(), GetEInfrastructure(), m_Window);
 		
 		for (int i = 0; i < static_cast<int>(EExtension::Count); ++i)
 		{
@@ -103,7 +103,7 @@ namespace Neptune::Vulkan {
 		return extensions;
 	}
 
-	void Extensions::CopyFrom(const UP<Extensions>& extensions)
+	void Extensions::CopyFrom(const SP<Extensions>& extensions)
 	{
 		NEPTUNE_PROFILE_ZONE
 		

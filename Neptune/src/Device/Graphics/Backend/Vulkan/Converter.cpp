@@ -330,6 +330,21 @@ namespace Neptune::Vulkan {
 			default:                                    return "NonNamed";
 		}
 	}
+
+	std::string ToString(VkPhysicalDeviceType type)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		switch (type)
+		{
+			case VK_PHYSICAL_DEVICE_TYPE_OTHER:             return "Other";
+			case VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU:    return "Integrated";
+			case VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU:      return "Discrete";
+			case VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU:       return "Virtual";
+			case VK_PHYSICAL_DEVICE_TYPE_CPU:               return "CPU";
+			default:                                        return "NonNamed";
+		}
+	}
 }
 
 #endif

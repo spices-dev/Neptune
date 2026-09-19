@@ -49,14 +49,14 @@ namespace Neptune::Vulkan {
 		* 
 		* @return Returns copied Extensions.
 		*/
-		UP<Extensions> Copy() const;
+		SP<Extensions> Copy() const;
 		
 		/**
 		* @brief Copy from extensions.
 		* 
 		* @param[in] extensions Extensions.
 		*/
-		void CopyFrom(const UP<Extensions>& extensions);
+		void CopyFrom(const SP<Extensions>& extensions);
 		
 		/**
 		* @brief Get Extension::EContext.

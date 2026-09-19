@@ -55,6 +55,57 @@ namespace Neptune::Container::Test {
 	}
 
 	/**
+	* @brief Testing Keys.
+	*/
+	TEST_F(LinkedUnorderedMapTest, Keys) {
+
+		NEPTUNE_TEST_PROFILE_FUNCTION
+
+		{
+			auto keys = c1.Keys();
+
+			EXPECT_EQ(keys.size(), 3);
+			EXPECT_EQ(keys[0], 1);
+			EXPECT_EQ(keys[1], 2);
+			EXPECT_EQ(keys[2], 3);
+		}
+
+		c1.PushBack(4, "4");
+
+		{
+			auto keys = c1.Keys();
+
+			EXPECT_EQ(keys.size(), 4);
+			EXPECT_EQ(keys[0], 1);
+			EXPECT_EQ(keys[1], 2);
+			EXPECT_EQ(keys[2], 3);
+			EXPECT_EQ(keys[3], 4);
+		}
+
+		c1.PushBack(2, "5");
+
+		{
+			auto keys = c1.Keys();
+
+			EXPECT_EQ(keys.size(), 4);
+			EXPECT_EQ(keys[0], 1);
+			EXPECT_EQ(keys[1], 2);
+			EXPECT_EQ(keys[2], 3);
+			EXPECT_EQ(keys[3], 4);
+		}
+
+		{
+			auto keys = c1.Keys();
+
+			EXPECT_EQ(keys.size(), 4);
+			EXPECT_EQ(keys[0], 1);
+			EXPECT_EQ(keys[1], 2);
+			EXPECT_EQ(keys[2], 3);
+			EXPECT_EQ(keys[3], 4);
+		}
+	}
+
+	/**
 	* @brief Testing RemoveElement.
 	*/
 	TEST_F(LinkedUnorderedMapTest, RemoveElement) {

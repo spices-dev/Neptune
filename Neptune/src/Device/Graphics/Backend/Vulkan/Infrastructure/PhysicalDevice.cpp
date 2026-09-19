@@ -18,6 +18,7 @@
 #include "Device/Graphics/Backend/Vulkan/Extension/HDR.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/IGetSurfaceCapabilities.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/IGetPhysicalDeviceProperties.h"
+#include "Device/Graphics/Backend/Vulkan/Converter.h"
 #include "Window/Window.h"
 
 namespace Neptune::Vulkan {
@@ -48,25 +49,31 @@ namespace Neptune::Vulkan {
         std::vector<VkPhysicalDevice> PhysicalDevices(deviceCount);
         VULKAN_CHECK(vkEnumeratePhysicalDevices(instance, &deviceCount, PhysicalDevices.data()))
 		
-		// Iter all physical and select one suitable.
+		Container::LinkedUnorderedMap<VkPhysicalDevice, SP<Extensions>> satisfied;
+		
 		for (const auto& physicalDevice : PhysicalDevices)
 		{
-			// All this condition need satisfied.
-			if (DeviceDetection(physicalDevice))
+			if (auto extensions = DeviceDetection(physicalDevice))
 			{
-				m_PhysicalDevice.SetHandle(physicalDevice);
-
-				PropertiesQuery();
-				
-				NEPTUNE_LOG_CORE(I) << "Vulkan PhysicalDevice Selected.";
-				return;
+				satisfied.PushBack(physicalDevice, extensions);
 			}
 		}
-
-		NEPTUNE_LOG_CORE(E) << "Failed to find GPU Physical Device that satisfied our needs.";
+		if (satisfied.Empty())
+		{
+			NEPTUNE_LOG_CORE(E) << "Failed to find GPU Physical Device that satisfied our needs.";
+			return;
+		}
+		
+		auto best = SelectBestDevice(satisfied.Keys());
+		
+		GetContext().Get<IExtensions>()->CopyFrom(satisfied.At(best));
+		
+		m_PhysicalDevice.SetHandle(best);
+		
+		PropertiesQuery();
     }
 
-	bool PhysicalDevice::DeviceDetection(const VkPhysicalDevice& device) const
+	SP<Extensions> PhysicalDevice::DeviceDetection(const VkPhysicalDevice& device) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -74,21 +81,45 @@ namespace Neptune::Vulkan {
 		
 		auto* surface = GetContext().Has<ISurface>() ? GetContext().Get<ISurface>()->Handle() : nullptr;
 
-		if(!IsExtensionMeetDemand          (extensions.get(), device         )) return false;
+		if(!IsExtensionMeetDemand          (extensions.get(), device         )) return nullptr;
   
-		if(!IsPropertyMeetDemand           (extensions.get(), device         )) return false;
+		if(!IsPropertyMeetDemand           (extensions.get(), device         )) return nullptr;
   
-		if(!IsFeatureMeetDemand            (extensions.get(), device         )) return false;
+		if(!IsFeatureMeetDemand            (extensions.get(), device         )) return nullptr;
   
-		if(!IsQueueMeetDemand              (extensions.get(), device, surface)) return false;
+		if(!IsQueueMeetDemand              (extensions.get(), device, surface)) return nullptr;
 		  
-		if(!IsSurfaceCapabilityMeetDemand  (extensions.get(), device, surface)) return false;
+		if(!IsSurfaceCapabilityMeetDemand  (extensions.get(), device, surface)) return nullptr;
   
-		if(!IsSurfaceFormatMeetDemand      (extensions.get(), device, surface)) return false;
+		if(!IsSurfaceFormatMeetDemand      (extensions.get(), device, surface)) return nullptr;
 		
-		GetContext().Get<IExtensions>()->CopyFrom(extensions);
+		return extensions;
+	}
+	
+	VkPhysicalDevice PhysicalDevice::SelectBestDevice(const std::vector<VkPhysicalDevice>& devices) const
+	{
+		NEPTUNE_PROFILE_ZONE
 		
-		return true;
+		std::stringstream ss;
+		
+		ss << "Device List: ";
+		
+		for (size_t i = 0; i < devices.size(); ++i)
+		{
+			VkPhysicalDeviceProperties props;
+			vkGetPhysicalDeviceProperties(devices[i], &props);
+			
+			ss <<"\n" << "Device [ " << i << " ]: " << "\n"
+				<< "    Name:        " << props.deviceName << "\n"
+				<< "    Type:        " << Vulkan::ToString(props.deviceType) << "\n"
+				<< "    API Version: " << VK_VERSION_MAJOR(props.apiVersion) << "." << VK_VERSION_MINOR(props.apiVersion) << "." << VK_VERSION_PATCH(props.apiVersion);
+		}
+		
+		ss << "\n" << "Device Selected first.";
+		
+		NEPTUNE_LOG_CORE(I) << ss.str();
+		
+		return devices.front();
 	}
 	
 	void PhysicalDevice::PropertiesQuery()

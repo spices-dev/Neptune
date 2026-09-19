@@ -179,6 +179,15 @@ namespace Neptune::Vulkan {
 	* @return Returns std::string.
 	*/
 	std::string ToString(VkQueueFlagBits bit);
+	
+	/**
+	* @brief Convert VkPhysicalDeviceType to std::string.
+	*
+	* @param[in] type VkPhysicalDeviceType.
+	*
+	* @return Returns std::string.
+	*/
+	std::string ToString(VkPhysicalDeviceType type);
 
 }
 

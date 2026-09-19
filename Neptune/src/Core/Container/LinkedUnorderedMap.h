@@ -146,6 +146,13 @@ namespace Neptune::Container {
 		*/
 		const K& EndK() const;
 		
+		/**
+		* @brief Get Keys.
+		* 
+		* @return Returns Keys.
+		*/
+		std::vector<K> Keys() const;
+		
 	private:
 		
 		std::list<K> m_Keys;                 // @brief The container keeps iter in order.
@@ -309,5 +316,13 @@ namespace Neptune::Container {
 		if (m_Keys.empty()) return kNull;
 
 		return m_Keys.back();
+	}
+
+	template <typename K, typename V>
+	std::vector<K> LinkedUnorderedMap<K, V>::Keys() const
+	{
+		std::shared_lock lock(m_Mutex);
+		
+		return { m_Keys.begin(), m_Keys.end() };
 	}
 }

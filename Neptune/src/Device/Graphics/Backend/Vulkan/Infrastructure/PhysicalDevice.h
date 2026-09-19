@@ -11,6 +11,7 @@
 #include "Core/Core.h"
 #include "Infrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/PhysicalDevice.h"
+#include "Core/Container/LinkedUnorderedMap.h"
 
 #include <vector>
 #include <optional>
@@ -128,9 +129,18 @@ namespace Neptune::Vulkan {
 		* 
 		* @param[in] device VkPhysicalDevice.
 		* 
-		* @return Returns true if meets.
+		* @return Returns Extensions.
 		*/
-		bool DeviceDetection(const VkPhysicalDevice& device) const;
+		SP<class Extensions> DeviceDetection(const VkPhysicalDevice& device) const;
+		
+		/**
+		* @brief Select Best PhysicalDevice.
+		* 
+		* @param[in] devices VkPhysicalDevice.
+		* 
+		* @return Returns best VkPhysicalDevice.
+		*/
+		VkPhysicalDevice SelectBestDevice(const std::vector<VkPhysicalDevice>& devices) const;
 		
 		/**
 		* @brief Properties Query.
