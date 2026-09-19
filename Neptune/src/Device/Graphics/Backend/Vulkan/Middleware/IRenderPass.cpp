@@ -22,11 +22,11 @@ namespace Neptune::Vulkan::Middleware {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		if (context.Get<IExtensions>()->GetContext().Has<Extension::IDynamicRendering>())
+		if (context.Get<IExtensions>()->GetContext()->Has<Extension::IDynamicRendering>())
 		{
 			return CreateUP<RenderPass3>(context);
 		}
-		if (context.Get<IExtensions>()->GetContext().Has<Extension::ICreateRenderPass2>())
+		if (context.Get<IExtensions>()->GetContext()->Has<Extension::ICreateRenderPass2>())
 		{
 			return CreateUP<RenderPass2>(context);
 		}

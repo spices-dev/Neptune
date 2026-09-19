@@ -29,9 +29,9 @@ namespace Neptune::Vulkan {
             case Pipeline:                        return true;
             case Shader:                          return true;
             case Query:                           return true;
-            case OpticalFlow:                     return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IOpticalFlow>();
-            case VideoEncode:                     return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IVideoEncode>();
-            case VideoDecode:                     return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IVideoDecode>();
+            case OpticalFlow:                     return GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IOpticalFlow>();
+            case VideoEncode:                     return GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IVideoEncode>();
+            case VideoDecode:                     return GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IVideoDecode>();
             default:                              return false;
         }
     }
@@ -45,9 +45,9 @@ namespace Neptune::Vulkan {
         switch (capability)
         {
             case Rasterization:              return true;
-            case Mesh:                       return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IMeshShader>();
+            case Mesh:                       return GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IMeshShader>();
             case Compute:                    return true;
-            case RayTracing:                 return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IRayTracing>();
+            case RayTracing:                 return GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IRayTracing>();
             case DataGraph:                  return false;
             case ExecutionGraph:             return false;
             default:                         return false;
@@ -68,15 +68,15 @@ namespace Neptune::Vulkan {
             case Geometry:                    return false;     
             case ClusterCulling:              return false;    
             case Fragment:                    return true;    
-            case Task:                        return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IMeshShader>();   
-            case Mesh:                        return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IMeshShader>();   
+            case Task:                        return GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IMeshShader>();   
+            case Mesh:                        return GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IMeshShader>();   
             case Compute:                     return true;   
-            case RayGeneration:               return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IRayTracing>();   
-            case Intersection:                return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IRayTracing>();    
-            case AnyHit:                      return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IRayTracing>();    
-            case ClosestHit:                  return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IRayTracing>();    
-            case Miss:                        return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IRayTracing>();    
-            case Callable:                    return GetContext().Get<IExtensions>()->GetContext().Has<Extension::IRayTracing>(); 
+            case RayGeneration:               return GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IRayTracing>();   
+            case Intersection:                return GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IRayTracing>();    
+            case AnyHit:                      return GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IRayTracing>();    
+            case ClosestHit:                  return GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IRayTracing>();    
+            case Miss:                        return GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IRayTracing>();    
+            case Callable:                    return GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IRayTracing>(); 
             default:                          return false;
         }
     }

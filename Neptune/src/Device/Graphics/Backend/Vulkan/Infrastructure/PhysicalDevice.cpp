@@ -56,6 +56,8 @@ namespace Neptune::Vulkan {
 			{
 				m_PhysicalDevice.SetHandle(physicalDevice);
 
+				PropertiesQuery();
+				
 				NEPTUNE_LOG_CORE(I) << "Vulkan PhysicalDevice Selected.";
 				return;
 			}
@@ -64,28 +66,45 @@ namespace Neptune::Vulkan {
 		NEPTUNE_LOG_CORE(E) << "Failed to find GPU Physical Device that satisfied our needs.";
     }
 
-	bool PhysicalDevice::DeviceDetection(const VkPhysicalDevice& device)
+	bool PhysicalDevice::DeviceDetection(const VkPhysicalDevice& device) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
+		auto extensions = GetContext().Get<IExtensions>()->Copy();
+		
 		auto* surface = GetContext().Has<ISurface>() ? GetContext().Get<ISurface>()->Handle() : nullptr;
 
-		if(!IsExtensionMeetDemand(device)) return false;
-
-		if(!IsPropertyMeetDemand(device)) return false;
-
-		if(!IsFeatureMeetDemand(device)) return false;
-
-		if(!IsQueueMeetDemand(device, surface)) return false;
+		if(!IsExtensionMeetDemand          (extensions.get(), device         )) return false;
+  
+		if(!IsPropertyMeetDemand           (extensions.get(), device         )) return false;
+  
+		if(!IsFeatureMeetDemand            (extensions.get(), device         )) return false;
+  
+		if(!IsQueueMeetDemand              (extensions.get(), device, surface)) return false;
+		  
+		if(!IsSurfaceCapabilityMeetDemand  (extensions.get(), device, surface)) return false;
+  
+		if(!IsSurfaceFormatMeetDemand      (extensions.get(), device, surface)) return false;
 		
-		if(!IsSurfaceCapabilityMeetDemand(device, surface)) return false;
-
-		if(!IsSurfaceFormatMeetDemand(device, surface)) return false;
+		GetContext().Get<IExtensions>()->CopyFrom(extensions);
 		
 		return true;
 	}
 	
-	bool PhysicalDevice::IsExtensionMeetDemand(const VkPhysicalDevice& device)
+	void PhysicalDevice::PropertiesQuery()
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		VkPhysicalDeviceProperties2          deviceProperties{};
+		deviceProperties.sType             = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2;
+		deviceProperties.pNext             = nullptr;
+
+		Middleware::IGetPhysicalDeviceProperties::Create(GetContext())->GetProperties(m_PhysicalDevice.GetHandle(), deviceProperties);
+
+		m_Properties                       = deviceProperties.properties;
+	}
+	
+	bool PhysicalDevice::IsExtensionMeetDemand(Extensions* extensions, const VkPhysicalDevice& device) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -108,12 +127,12 @@ namespace Neptune::Vulkan {
 		
 		std::vector<EExtension> removedExtension;
 		
-		GetContext().Get<IExtensions>()->GetContext().View([&](const auto e, const auto& extension) {
+		extensions->GetContext()->View([&](const auto e, const auto& extension) {
     		
 			bool satisfy = true;
-			const auto& extensions = extension->GetDeviceExtensions();
+			const auto& exts = extension->GetDeviceExtensions();
     		
-			auto filtered = std::views::keys(extensions | std::views::filter([](const auto& pair) {
+			auto filtered = std::views::keys(exts | std::views::filter([](const auto& pair) {
 				return pair.second;
 			}));
 			
@@ -138,11 +157,7 @@ namespace Neptune::Vulkan {
 				}
 			});
     		
-			if (satisfy)
-			{
-				m_ExtensionProperties.insert(m_ExtensionProperties.end(), filtered.begin(), filtered.end());
-			}
-			else
+			if (!satisfy)
 			{
 				removedExtension.emplace_back(e);
 			}
@@ -150,13 +165,13 @@ namespace Neptune::Vulkan {
     	
 		std::ranges::for_each(removedExtension, [&](const auto& e) {
     		
-			GetContext().Get<IExtensions>()->GetContext().UnRegistry(e);
+			extensions->GetContext()->UnRegistry(e);
 		});
     	
 		return coreSatisfied;
 	}
 
-	bool PhysicalDevice::IsPropertyMeetDemand(const VkPhysicalDevice& device)
+	bool PhysicalDevice::IsPropertyMeetDemand(Extensions* extensions, const VkPhysicalDevice& device) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -164,17 +179,15 @@ namespace Neptune::Vulkan {
 		deviceProperties.sType             = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2;
 		deviceProperties.pNext             = nullptr;
 
-		GetContext().Get<IExtensions>()->BuildPropertyChain(&deviceProperties.pNext);
+		extensions->BuildPropertyChain(&deviceProperties.pNext);
 
 		Middleware::IGetPhysicalDeviceProperties::Create(GetContext())->GetProperties(device, deviceProperties);
-
-		m_Properties                       = deviceProperties.properties;
 
 		bool coreSatisfied = true;
 		
 		std::vector<EExtension> removedExtension;
 		
-		GetContext().Get<IExtensions>()->GetContext().View([&](const auto e, const auto& extension) {
+		extensions->GetContext()->View([&](const auto e, const auto& extension) {
 			
 			if (!extension->IsPropertiesSatisfied())
 			{
@@ -196,13 +209,13 @@ namespace Neptune::Vulkan {
 		
 		std::ranges::for_each(removedExtension, [&](const auto& e) {
     		
-			GetContext().Get<IExtensions>()->GetContext().UnRegistry(e);
+			extensions->GetContext()->UnRegistry(e);
 		});
 		
 		return coreSatisfied;
 	}
 
-	bool PhysicalDevice::IsFeatureMeetDemand(const VkPhysicalDevice& device) const
+	bool PhysicalDevice::IsFeatureMeetDemand(Extensions* extensions, const VkPhysicalDevice& device) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -210,7 +223,7 @@ namespace Neptune::Vulkan {
 		deviceFeatures.sType                                = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
 		deviceFeatures.pNext                                = nullptr;
 		
-		GetContext().Get<IExtensions>()->BuildFeatureChain(&deviceFeatures.pNext);
+		extensions->BuildFeatureChain(&deviceFeatures.pNext);
 
 		vkGetPhysicalDeviceFeatures2(device, &deviceFeatures);
 
@@ -218,7 +231,7 @@ namespace Neptune::Vulkan {
 		
 		std::vector<EExtension> removedExtension;
 		
-		GetContext().Get<IExtensions>()->GetContext().View([&](const auto e, const auto& extension) {
+		extensions->GetContext()->View([&](const auto e, const auto& extension) {
 			
 			if (!extension->IsFeaturesSatisfied())
 			{
@@ -240,13 +253,13 @@ namespace Neptune::Vulkan {
 		
 		std::ranges::for_each(removedExtension, [&](const auto& e) {
     		
-			GetContext().Get<IExtensions>()->GetContext().UnRegistry(e);
+			extensions->GetContext()->UnRegistry(e);
 		});
 		
 		return coreSatisfied;
 	}
 
-	bool PhysicalDevice::IsSurfaceCapabilityMeetDemand(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const
+	bool PhysicalDevice::IsSurfaceCapabilityMeetDemand(Extensions* extensions, const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
@@ -261,7 +274,7 @@ namespace Neptune::Vulkan {
 			surfaceInfo.surface                                 = surface;
 			surfaceInfo.pNext                                   = nullptr;
 		
-			GetContext().Get<IExtensions>()->BuildSurfaceCapabilityChain(&capabilities.pNext);
+			extensions->BuildSurfaceCapabilityChain(&capabilities.pNext);
 		
 			Middleware::IGetSurfaceCapabilities::Create(GetContext())->GetCapabilities(device, surfaceInfo, capabilities);
 		}
@@ -270,7 +283,7 @@ namespace Neptune::Vulkan {
 		
 		std::vector<EExtension> removedExtension;
 		
-		GetContext().Get<IExtensions>()->GetContext().View([&](const auto e, const auto& extension) {
+		extensions->GetContext()->View([&](const auto e, const auto& extension) {
 			
 			if (!extension->IsSurfaceCapabilitiesSatisfied())
 			{
@@ -292,23 +305,23 @@ namespace Neptune::Vulkan {
 		
 		std::ranges::for_each(removedExtension, [&](const auto& e) {
     		
-			GetContext().Get<IExtensions>()->GetContext().UnRegistry(e);
+			extensions->GetContext()->UnRegistry(e);
 		});
 		
 		return coreSatisfied;
 	}
 	
-	bool PhysicalDevice::IsQueueMeetDemand(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const
+	bool PhysicalDevice::IsQueueMeetDemand(Extensions* extensions, const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		auto queueChain = GetContext().Get<IExtensions>()->BuildQueueChain(device, surface);
+		auto queueChain = extensions->BuildQueueChain(device, surface);
 		
 		bool coreSatisfied = true;
 
 		std::vector<EExtension> removedExtension;
 		
-		GetContext().Get<IExtensions>()->GetContext().View([&](const auto e, const auto& extension) {
+		extensions->GetContext()->View([&](const auto e, const auto& extension) {
 			
 			if (!extension->IsQueueSatisfied(queueChain))
 			{
@@ -330,13 +343,13 @@ namespace Neptune::Vulkan {
 		
 		std::ranges::for_each(removedExtension, [&](const auto& e) {
 
-			GetContext().Get<IExtensions>()->GetContext().UnRegistry(e);
+			extensions->GetContext()->UnRegistry(e);
 		});
 		
 		return coreSatisfied;
 	}
 
-	bool PhysicalDevice::IsSurfaceFormatMeetDemand(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const
+	bool PhysicalDevice::IsSurfaceFormatMeetDemand(Extensions* extensions, const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
@@ -360,7 +373,7 @@ namespace Neptune::Vulkan {
 
 		std::vector<EExtension> removedExtension;
 		
-		GetContext().Get<IExtensions>()->GetContext().View([&](const auto e, const auto& extension) {
+		extensions->GetContext()->View([&](const auto e, const auto& extension) {
 			
 			if (!extension->IsSurfaceFormatsSatisfied(formats))
 			{
@@ -382,7 +395,7 @@ namespace Neptune::Vulkan {
 		
 		std::ranges::for_each(removedExtension, [&](const auto& e) {
 
-			GetContext().Get<IExtensions>()->GetContext().UnRegistry(e);
+			extensions->GetContext()->UnRegistry(e);
 		});
 		
 		return coreSatisfied;
@@ -605,7 +618,7 @@ namespace Neptune::Vulkan {
 			}
 		}
 
-		if (auto p = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IHDR>())
+		if (auto p = GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IHDR>())
 		{
 			property.format = p->GetFormat(Graphic::EHDRSurface::ExSRGB);
 		}
@@ -637,11 +650,24 @@ namespace Neptune::Vulkan {
 		return m_SwapChainProperty;
 	}
 
-	const std::vector<const char*>& PhysicalDevice::GetExtensionRequirements() const
+	std::vector<const char*> PhysicalDevice::GetExtensionRequirements() const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		return m_ExtensionProperties;
+		std::vector<const char*> extensions;
+		
+		GetContext().Get<IExtensions>()->GetContext()->View([&](const auto e, const auto& extension) {
+				
+			const auto& exts = extension->GetDeviceExtensions();
+  				
+			auto filtered = std::views::keys(exts | std::views::filter([](const auto& pair) {
+				return pair.second;
+			}));
+			
+			extensions.insert(extensions.end(), filtered.begin(), filtered.end());
+		});
+		
+		return extensions;
 	}
 
 	std::vector<VkFormat> PhysicalDevice::GetVideoFormats(VkImageUsageFlags imageUsage, const std::vector<VkVideoProfileInfoKHR>& videoProfile)

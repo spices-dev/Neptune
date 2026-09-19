@@ -56,9 +56,9 @@ namespace Neptune::Vulkan {
 		
         switch (GetEInfrastructure())
         {
-            case GraphicQueue: return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
-            case PresentQueue: return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetPresentQueueFamily();
-            case ComputeQueue: return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_COMPUTE_BIT);
+            case GraphicQueue: return GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
+            case PresentQueue: return GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetPresentQueueFamily();
+            case ComputeQueue: return GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_COMPUTE_BIT);
             default: return 0;
         }
     }

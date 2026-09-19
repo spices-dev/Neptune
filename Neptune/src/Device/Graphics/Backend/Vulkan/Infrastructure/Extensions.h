@@ -45,18 +45,32 @@ namespace Neptune::Vulkan {
 		~Extensions() override = default;
 		
 		/**
+		* @brief Copy from this.
+		* 
+		* @return Returns copied Extensions.
+		*/
+		UP<Extensions> Copy() const;
+		
+		/**
+		* @brief Copy from extensions.
+		* 
+		* @param[in] extensions Extensions.
+		*/
+		void CopyFrom(const UP<Extensions>& extensions);
+		
+		/**
 		* @brief Get Extension::EContext.
 		* 
 		* @return Returns Extension::EContext.
 		*/
-		const Extension::EContext<EExtension>& GetContext() const { return m_Context; }
+		const SP<Extension::EContext<EExtension>>& GetContext() const { return m_Context; }
 		
 		/**
 		* @brief Get Extension::EContext.
 		*
 		* @return Returns Extension::EContext.
 		*/
-		Extension::EContext<EExtension>& GetContext() { return m_Context; }
+		SP<Extension::EContext<EExtension>>& GetContext() { return m_Context; }
 		
 		/**
 		* @brief Build Device Feature Chain.
@@ -100,15 +114,13 @@ namespace Neptune::Vulkan {
         
         /**
         * @brief Create Extension.
-        * 
-        * @param[in] window Window.
         */
-        void Create(const Window* window);
+        void Create();
 		
     private:
     
-        Extension::EContext<EExtension> m_Context; // @brief This EContext.
-		
+        SP<Extension::EContext<EExtension>> m_Context; // @brief This EContext.
+		const Window* m_Window;                        // @brief Window. 
 	};
 	
 }

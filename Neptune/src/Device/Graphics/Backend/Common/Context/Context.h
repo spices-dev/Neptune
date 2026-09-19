@@ -140,6 +140,15 @@ namespace Neptune::Graphic::Common {
         /**
         * @brief Is registry IContextElement.
         *
+        * @param[in] e E.
+        * 
+        * @return Returns true if registry.
+        */
+        bool Has(E e) const requires IsNotEmptyEnum<E>;
+        
+        /**
+        * @brief Is registry IContextElement.
+        *
         * @tparam I IContextElement Definitions.
         * 
         * @return Returns true if registry.
@@ -233,7 +242,17 @@ namespace Neptune::Graphic::Common {
 
         return static_cast<I::T*>(m_Infrastructures[position].get());
     }
-    
+
+    template <typename Element, typename E> requires IsEnum<E>
+    bool Context<Element, E>::Has(E e) const requires IsNotEmptyEnum<E>
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        const auto position = static_cast<uint8_t>(e);
+
+        return m_Infrastructures[position] != nullptr;
+    }
+
     template<typename Element, typename E> requires IsEnum<E>
     template<typename I>
     requires IsIContextElement<Element, I> && 

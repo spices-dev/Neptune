@@ -16,13 +16,14 @@ namespace Neptune::Vulkan {
 
 	Extensions::Extensions(Context& context, EInfrastructure e, const Window* window)
 		: Infrastructure(context, e)
+		, m_Window(window)
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		Create(window);
+		Create();
 	}
 
-	void Extensions::Create(const Window* window)
+	void Extensions::Create()
 	{
 		NEPTUNE_PROFILE_ZONE
 		
@@ -34,53 +35,79 @@ namespace Neptune::Vulkan {
 		
 		Extension::Extension::SetApiVersion(apiVersion);
 		
-		if (window)
+		m_Context = CreateSP<Extension::EContext<EExtension>>();
+		
+		if (m_Window)
 		{
-			m_Context.Registry<Extension::ISwapChain>(Extension::EExtensionState::Core, window->Extension());           // @brief Done.
+			m_Context->Registry<Extension::ISwapChain>(Extension::EExtensionState::Core, m_Window->Extension());           // @brief Done.
 		}
 		else
 		{
-			m_Context.Registry<Extension::ISwapChain>(Extension::EExtensionState::Extent, std::vector{ VK_KHR_SURFACE_EXTENSION_NAME });
+			m_Context->Registry<Extension::ISwapChain>(Extension::EExtensionState::Extent, std::vector{ VK_KHR_SURFACE_EXTENSION_NAME });
 		}
 		
 #ifdef NEPTUNE_DEBUG
 		
-		m_Context.Registry<Extension::IDebugUtils>                       (Extension::EExtensionState::Extent);          // @brief Done.
-		m_Context.Registry<Extension::ILayerSetting>                     (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context->Registry<Extension::IDebugUtils>                       (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context->Registry<Extension::ILayerSetting>                     (Extension::EExtensionState::Extent);          // @brief Done.
 		
 #endif
 		
-		m_Context.Registry<Extension::IDescriptorBuffer>                 (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IDescriptorHeap>                   (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IDeviceFault>                      (Extension::EExtensionState::Extent);          // @brief Done.
-		m_Context.Registry<Extension::IMemoryBudget>                     (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IHDR>                              (Extension::EExtensionState::Extent);          // @brief Done.
-		m_Context.Registry<Extension::IOpticalFlow>                      (Extension::EExtensionState::Extent);          // @brief Done.
-		m_Context.Registry<Extension::IRayTracing>                       (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IVideoDecode>                      (Extension::EExtensionState::Extent);          // @brief Done.
-		m_Context.Registry<Extension::IVideoEncode>                      (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::ISamplerYcbcrConversion>           (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IMaintenance1>                     (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IBufferDeviceAddress>              (Extension::EExtensionState::Core);
-		m_Context.Registry<Extension::IDescriptorIndexing>               (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IVulkan13>                         (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IPortability>                      (Extension::EExtensionState::Extent);          // @brief Done.
-		m_Context.Registry<Extension::IQueue>                            (Extension::EExtensionState::Core);            // @brief Done.
-		m_Context.Registry<Extension::IDynamicRendering>                 (Extension::EExtensionState::Extent);          // @brief Done.
-		m_Context.Registry<Extension::IExternalMemoryHost>               (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::ICopyMemoryIndirect>               (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IDeviceGeneratedCommands>          (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IGetPhysicalDeviceProperties2>     (Extension::EExtensionState::Extent);          // @brief Done.
-		m_Context.Registry<Extension::IPageableDeviceLocalMemory>        (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IGetSurfaceCapabilities2>          (Extension::EExtensionState::Extent);          // @brief Done.
-		m_Context.Registry<Extension::ICreateRenderPass2>                (Extension::EExtensionState::Extent);          // @brief Done.
-		m_Context.Registry<Extension::IDynamicRenderingLocalRead>        (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IScalarBlockLayout>                (Extension::EExtensionState::Core);
-		m_Context.Registry<Extension::ITimelineSemaphore>                (Extension::EExtensionState::Extent);          // @brief Done.
-		m_Context.Registry<Extension::ISynchronization2>                 (Extension::EExtensionState::Extent);          // @brief Done.
-		m_Context.Registry<Extension::IPresentTiming>                    (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IUnifiedImageLayouts>              (Extension::EExtensionState::Extent);          // @brief Done.
-		m_Context.Registry<Extension::IMeshShader>                       (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IDescriptorBuffer>                 (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IDescriptorHeap>                   (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IDeviceFault>                      (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context->Registry<Extension::IMemoryBudget>                     (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IHDR>                              (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context->Registry<Extension::IOpticalFlow>                      (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context->Registry<Extension::IRayTracing>                       (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IVideoDecode>                      (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context->Registry<Extension::IVideoEncode>                      (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::ISamplerYcbcrConversion>           (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IMaintenance1>                     (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IBufferDeviceAddress>              (Extension::EExtensionState::Core);
+		m_Context->Registry<Extension::IDescriptorIndexing>               (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IVulkan13>                         (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IPortability>                      (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context->Registry<Extension::IQueue>                            (Extension::EExtensionState::Core);            // @brief Done.
+		m_Context->Registry<Extension::IDynamicRendering>                 (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context->Registry<Extension::IExternalMemoryHost>               (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::ICopyMemoryIndirect>               (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IDeviceGeneratedCommands>          (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IGetPhysicalDeviceProperties2>     (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context->Registry<Extension::IPageableDeviceLocalMemory>        (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IGetSurfaceCapabilities2>          (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context->Registry<Extension::ICreateRenderPass2>                (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context->Registry<Extension::IDynamicRenderingLocalRead>        (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IScalarBlockLayout>                (Extension::EExtensionState::Core);
+		m_Context->Registry<Extension::ITimelineSemaphore>                (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context->Registry<Extension::ISynchronization2>                 (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context->Registry<Extension::IPresentTiming>                    (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IUnifiedImageLayouts>              (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context->Registry<Extension::IMeshShader>                       (Extension::EExtensionState::Extent);
+	}
+	
+	UP<Extensions> Extensions::Copy() const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		auto extensions = CreateUP<Extensions>(ContextAccessor::GetContext(), GetEInfrastructure(), m_Window);
+		
+		for (int i = 0; i < static_cast<int>(EExtension::Count); ++i)
+		{
+			if (!m_Context->Has(static_cast<EExtension>(i)))
+			{
+				extensions->GetContext()->UnRegistry(static_cast<EExtension>(i)); 
+			}
+		}
+		
+		return extensions;
+	}
+
+	void Extensions::CopyFrom(const UP<Extensions>& extensions)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_Context = extensions->GetContext();
 	}
 	
 	void Extensions::BuildFeatureChain(void** pNext)
@@ -89,7 +116,7 @@ namespace Neptune::Vulkan {
 		
 		std::function filter = [](VkStructureType){ return true; };
 		
-		m_Context.View([&](const auto e, const auto& extension) {
+		m_Context->View([&](const auto e, const auto& extension) {
 
 			auto last = pNext;
 			
@@ -114,7 +141,7 @@ namespace Neptune::Vulkan {
 			return true;
 		};
 		
-		m_Context.View([&](const auto e, const auto& extension) {
+		m_Context->View([&](const auto e, const auto& extension) {
 
 			auto last = pNext;
 			
@@ -130,7 +157,7 @@ namespace Neptune::Vulkan {
 		
 		std::function filter = [](VkStructureType){ return true; };
 		
-		m_Context.View([&](const auto e, const auto& extension) {
+		m_Context->View([&](const auto e, const auto& extension) {
 
 			auto last = pNext;
 			
@@ -146,7 +173,7 @@ namespace Neptune::Vulkan {
 		
 		std::function filter = [](VkStructureType){ return true; };
 		
-		m_Context.View([&](const auto e, const auto& extension) {
+		m_Context->View([&](const auto e, const auto& extension) {
 
 			auto last = pNext;
 			
@@ -160,7 +187,7 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		const auto& queue = m_Context.Get<Extension::IQueue>();
+		const auto& queue = m_Context->Get<Extension::IQueue>();
 		
 		return queue->Query(device, surface);
 	}

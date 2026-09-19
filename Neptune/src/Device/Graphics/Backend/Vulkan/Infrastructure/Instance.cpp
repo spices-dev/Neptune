@@ -57,7 +57,7 @@ namespace Neptune::Vulkan {
     	
         VkValidationFeaturesEXT					   validationFeatures{};
 
-		if (const auto debugUtils = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IDebugUtils>())
+		if (const auto debugUtils = GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IDebugUtils>())
 		{
 			validationFeatures.sType						    = VK_STRUCTURE_TYPE_VALIDATION_FEATURES_EXT;
 			validationFeatures.enabledValidationFeatureCount    = static_cast<uint32_t>(debugUtils->GetFeatures().size());
@@ -68,7 +68,7 @@ namespace Neptune::Vulkan {
     	
         std::vector<VkLayerSettingEXT> settings;
 
-        if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::ILayerSetting>())
+        if (GetContext().Get<IExtensions>()->GetContext()->Has<Extension::ILayerSetting>())
         {
             GetContext().Get<ILayers>()->BuildLayerSettingChain(settings);
         }
@@ -99,12 +99,12 @@ namespace Neptune::Vulkan {
 		createInfo.ppEnabledLayerNames           = m_LayerProperties.data();
         createInfo.pNext                         = &settingInfo;
 
-        if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDebugUtils>())
+        if (GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IDebugUtils>())
         {
             settingInfo.pNext                    = &debugInfo;
         }
 
-    	if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IPortability>())
+    	if (GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IPortability>())
     	{
     		createInfo.flags                     = VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
     	}
@@ -119,7 +119,7 @@ namespace Neptune::Vulkan {
 
 		GetContext().Get<IFunctions>()->Init(Handle());
 
-        if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDebugUtils>())
+        if (GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IDebugUtils>())
         {
             m_DebugMessenger.SetFunctor(
                 GetContext().Get<IFunctions>()->vkCreateDebugUtilsMessengerEXT,
@@ -144,7 +144,7 @@ namespace Neptune::Vulkan {
     	
     	std::vector<EExtension> removedExtension;
     	
-    	GetContext().Get<IExtensions>()->GetContext().View([&](const auto e, const auto& extension) {
+    	GetContext().Get<IExtensions>()->GetContext()->View([&](const auto e, const auto& extension) {
     		
     		bool satisfy = true;
     		const auto& extensions = extension->GetInstanceExtensions();
@@ -186,7 +186,7 @@ namespace Neptune::Vulkan {
     	
     	std::ranges::for_each(removedExtension, [&](const auto& e) {
     		
-    		GetContext().Get<IExtensions>()->GetContext().UnRegistry(e);
+    		GetContext().Get<IExtensions>()->GetContext()->UnRegistry(e);
     	});
     	
     	return coreSatisfied;

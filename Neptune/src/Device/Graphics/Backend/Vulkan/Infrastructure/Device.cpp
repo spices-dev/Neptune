@@ -38,7 +38,7 @@ namespace Neptune::Vulkan {
     	std::vector<UP<std::vector<float>>> queuePriorities;
     	std::unordered_map<uint32_t, VkDeviceQueueCreateInfo> queueInfoMap;
 
-		auto queue = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>();
+		auto queue = GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>();
 
 		for (const auto& family : queue->GetQueueFamilies() | std::views::values)
 		{
@@ -97,17 +97,20 @@ namespace Neptune::Vulkan {
 
     	vkGetPhysicalDeviceFeatures2(physicalDevice->Handle(), &deviceFeatures);
 
+		auto extensions = physicalDevice->GetExtensionRequirements();
+
         VkDeviceCreateInfo                                        createInfo{};
 		createInfo.sType                                        = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 		createInfo.pQueueCreateInfos                            = filtered.data();
 		createInfo.queueCreateInfoCount                         = filtered.size();
 		createInfo.pEnabledFeatures                             = VK_NULL_HANDLE;
-		createInfo.enabledExtensionCount                        = physicalDevice->GetExtensionRequirements().size();
-		createInfo.ppEnabledExtensionNames                      = physicalDevice->GetExtensionRequirements().data();
+		createInfo.enabledExtensionCount                        = extensions.size();
+		createInfo.ppEnabledExtensionNames                      = extensions.data();
 		createInfo.enabledLayerCount                            = 0;
 		createInfo.pNext                                        = &deviceFeatures;
 
 		m_Device.CreateDevice(physicalDevice->Handle(), &createInfo);
+
 		DEBUGUTILS_SETOBJECTNAME(m_Device, physicalDevice->GetProperties().deviceName)
     }
 

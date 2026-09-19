@@ -32,7 +32,7 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		if(GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDebugUtils>())
+		if(GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IDebugUtils>())
 		{
 			EXPLAIN_VK_FUNCTION_POINTER(vkCreateDebugUtilsMessengerEXT                  )
 			EXPLAIN_VK_FUNCTION_POINTER(vkDestroyDebugUtilsMessengerEXT                 )
@@ -49,13 +49,13 @@ namespace Neptune::Vulkan {
 			EXPLAIN_VK_FUNCTION_POINTER(vkSetDebugUtilsObjectTagEXT                     )
 		}
 		
-		if(GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDeviceFault>())
+		if(GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IDeviceFault>())
 		{
 			EXPLAIN_VK_FUNCTION_POINTER(vkGetDeviceFaultReportsKHR                      )
 			EXPLAIN_VK_FUNCTION_POINTER(vkGetDeviceFaultDebugInfoKHR                    )
 		}
 		
-		if(GetContext().Get<IExtensions>()->GetContext().Has<Extension::IRayTracing>())
+		if(GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IRayTracing>())
 		{
 			EXPLAIN_VK_FUNCTION_POINTER(vkGetRayTracingShaderGroupHandlesKHR            )
 			EXPLAIN_VK_FUNCTION_POINTER(vkCmdTraceRaysKHR                               )
@@ -70,12 +70,12 @@ namespace Neptune::Vulkan {
 			EXPLAIN_VK_FUNCTION_POINTER(vkCmdCopyAccelerationStructureKHR               )
 		}
 
-		if(GetContext().Get<IExtensions>()->GetContext().Has<Extension::IMeshShader>())
+		if(GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IMeshShader>())
 		{
 			EXPLAIN_VK_FUNCTION_POINTER(vkCmdDrawMeshTasksEXT                           )
 		}
 
-		if(GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDeviceGeneratedCommands>())
+		if(GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IDeviceGeneratedCommands>())
 		{
 			EXPLAIN_VK_FUNCTION_POINTER(vkCreateIndirectCommandsLayoutNV                )
 			EXPLAIN_VK_FUNCTION_POINTER(vkDestroyIndirectCommandsLayoutNV               )
@@ -93,7 +93,7 @@ namespace Neptune::Vulkan {
 		EXPLAIN_VK_FUNCTION_POINTER(vkCopyMemoryToImageEXT                          )
 		EXPLAIN_VK_FUNCTION_POINTER(vkCopyImageToMemoryEXT                          )
 
-		if(GetContext().Get<IExtensions>()->GetContext().Has<Extension::IVideoDecode>() || GetContext().Get<IExtensions>()->GetContext().Has<Extension::IVideoEncode>())
+		if(GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IVideoDecode>() || GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IVideoEncode>())
 		{
 			EXPLAIN_VK_FUNCTION_POINTER(vkGetPhysicalDeviceVideoCapabilitiesKHR         )
 			EXPLAIN_VK_FUNCTION_POINTER(vkCreateVideoSessionParametersKHR               )
@@ -110,7 +110,7 @@ namespace Neptune::Vulkan {
 			EXPLAIN_VK_FUNCTION_POINTER(vkCmdEndVideoCodingKHR                          )
 		}
 		
-		if(GetContext().Get<IExtensions>()->GetContext().Has<Extension::IOpticalFlow>())
+		if(GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IOpticalFlow>())
 		{
 			EXPLAIN_VK_FUNCTION_POINTER(vkCreateOpticalFlowSessionNV                    )
 			EXPLAIN_VK_FUNCTION_POINTER(vkDestroyOpticalFlowSessionNV                   )
@@ -119,7 +119,7 @@ namespace Neptune::Vulkan {
 			EXPLAIN_VK_FUNCTION_POINTER(vkBindOpticalFlowSessionImageNV                 )
 		}
 		
-		if(GetContext().Get<IExtensions>()->GetContext().Has<Extension::IHDR>())
+		if(GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IHDR>())
 		{
 			EXPLAIN_VK_FUNCTION_POINTER(vkSetHdrMetadataEXT                             )
 		}

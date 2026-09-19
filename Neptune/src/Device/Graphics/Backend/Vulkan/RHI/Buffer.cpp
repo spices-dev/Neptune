@@ -26,7 +26,7 @@ namespace Neptune::Vulkan {
         info.usage                         = VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT | ToVkBufferUsageFlags(usage);
         info.sharingMode                   = VK_SHARING_MODE_EXCLUSIVE;
         info.queueFamilyIndexCount         = 1;
-        info.pQueueFamilyIndices           = &GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
+        info.pQueueFamilyIndices           = &GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
         
         m_Buffer.CreateBuffer(info, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
     }
@@ -43,7 +43,7 @@ namespace Neptune::Vulkan {
         info.usage                         = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
         info.sharingMode                   = VK_SHARING_MODE_EXCLUSIVE;
         info.queueFamilyIndexCount         = 1;
-        info.pQueueFamilyIndices           = &GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
+        info.pQueueFamilyIndices           = &GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
     
         m_StagingBuffer->CreateBuffer(info, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
     

@@ -63,12 +63,12 @@ namespace Neptune::Vulkan {
 		
         switch (GetEInfrastructure())
         {
-            case GraphicThreadQueue:     return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
-            case ComputeThreadQueue:     return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_COMPUTE_BIT);
-            case TransferThreadQueue:    return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_TRANSFER_BIT);
-            case VideoEncodeThreadQueue: return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_VIDEO_ENCODE_BIT_KHR);
-            case VideoDecodeThreadQueue: return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_VIDEO_DECODE_BIT_KHR);
-            case OpticalFlowThreadQueue: return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_OPTICAL_FLOW_BIT_NV);
+            case GraphicThreadQueue:     return GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
+            case ComputeThreadQueue:     return GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_COMPUTE_BIT);
+            case TransferThreadQueue:    return GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_TRANSFER_BIT);
+            case VideoEncodeThreadQueue: return GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_VIDEO_ENCODE_BIT_KHR);
+            case VideoDecodeThreadQueue: return GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_VIDEO_DECODE_BIT_KHR);
+            case OpticalFlowThreadQueue: return GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_OPTICAL_FLOW_BIT_NV);
             default: return 0;
         }
     }
@@ -81,12 +81,12 @@ namespace Neptune::Vulkan {
 		
         switch (GetEInfrastructure())
         {
-            case GraphicThreadQueue:     return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamilyCount(VK_QUEUE_GRAPHICS_BIT);
-            case ComputeThreadQueue:     return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamilyCount(VK_QUEUE_COMPUTE_BIT);
-            case TransferThreadQueue:    return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamilyCount(VK_QUEUE_TRANSFER_BIT);
-            case VideoEncodeThreadQueue: return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamilyCount(VK_QUEUE_VIDEO_ENCODE_BIT_KHR);
-            case VideoDecodeThreadQueue: return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamilyCount(VK_QUEUE_VIDEO_DECODE_BIT_KHR);
-            case OpticalFlowThreadQueue: return GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamilyCount(VK_QUEUE_OPTICAL_FLOW_BIT_NV);
+            case GraphicThreadQueue:     return GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamilyCount(VK_QUEUE_GRAPHICS_BIT);
+            case ComputeThreadQueue:     return GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamilyCount(VK_QUEUE_COMPUTE_BIT);
+            case TransferThreadQueue:    return GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamilyCount(VK_QUEUE_TRANSFER_BIT);
+            case VideoEncodeThreadQueue: return GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamilyCount(VK_QUEUE_VIDEO_ENCODE_BIT_KHR);
+            case VideoDecodeThreadQueue: return GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamilyCount(VK_QUEUE_VIDEO_DECODE_BIT_KHR);
+            case OpticalFlowThreadQueue: return GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamilyCount(VK_QUEUE_OPTICAL_FLOW_BIT_NV);
             default: return 0;
         }
     }

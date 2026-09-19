@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Middleware {
     {
         NEPTUNE_PROFILE_ZONE
         
-        if (context.Get<IExtensions>()->GetContext().Has<Extension::IGetSurfaceCapabilities2>())
+        if (context.Get<IExtensions>()->GetContext()->Has<Extension::IGetSurfaceCapabilities2>())
         {
             return CreateUP<GetSurfaceCapabilities2>();
         }

@@ -20,7 +20,7 @@ namespace Neptune::Vulkan::Middleware {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		if (context.Get<IExtensions>()->GetContext().Has<Extension::ISynchronization2>())
+		if (context.Get<IExtensions>()->GetContext()->Has<Extension::ISynchronization2>())
 		{
 			return CreateUP<Synchronization2>();
 		}

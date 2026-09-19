@@ -165,7 +165,7 @@ namespace Neptune::Vulkan {
 												VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT |
 												VMA_ALLOCATION_CREATE_HOST_ACCESS_RANDOM_BIT           ;
 
-		if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IBufferDeviceAddress>())
+		if (GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IBufferDeviceAddress>())
 		{
 			createInfo.flags                 |= VMA_ALLOCATOR_CREATE_BUFFER_DEVICE_ADDRESS_BIT;
 		}

@@ -20,7 +20,7 @@ namespace Neptune::Vulkan::Middleware {
     {
         NEPTUNE_PROFILE_ZONE
         
-        if (context.Get<IExtensions>()->GetContext().Has<Extension::ITimelineSemaphore>())
+        if (context.Get<IExtensions>()->GetContext()->Has<Extension::ITimelineSemaphore>())
         {
             return CreateUP<QueueSubmit2>();
         }

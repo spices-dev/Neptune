@@ -31,8 +31,8 @@ namespace Neptune::Vulkan {
 				result, 
 				GetContext().Has<IPhysicalDevice>() ? GetContext().Get<IPhysicalDevice>()->Handle() : nullptr,
 				GetContext().Has<IDevice>() ? GetContext().Get<IDevice>()->Handle() : nullptr, 
-				GetContext().Get<IExtensions>()->GetContext().Has<Extension::IDeviceFault>(),
-				GetContext().Get<IExtensions>()->GetContext().Has<Extension::IMemoryBudget>(),
+				GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IDeviceFault>(),
+				GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IMemoryBudget>(),
 				GetContext().Has<IFunctions>() ? GetContext().Get<IFunctions>()->vkGetDeviceFaultReportsKHR : nullptr
 			); 
 		});
@@ -57,33 +57,33 @@ namespace Neptune::Vulkan {
 		m_Context->Registry<IPhysicalDevice>();
 		m_Context->Registry<IDevice>();
 
-		if (m_Context->Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->HasPresentQueueFamily())
+		if (m_Context->Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->HasPresentQueueFamily())
 		{
 			m_Context->Registry<IPresentQueue>();
 		}
-		if (m_Context->Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->HasQueueFamily(VK_QUEUE_GRAPHICS_BIT))
+		if (m_Context->Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->HasQueueFamily(VK_QUEUE_GRAPHICS_BIT))
 		{
 			m_Context->Registry<IGraphicQueue>();
 			m_Context->Registry<IGraphicThreadQueue>();
 		}
-		if (m_Context->Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->HasQueueFamily(VK_QUEUE_COMPUTE_BIT))
+		if (m_Context->Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->HasQueueFamily(VK_QUEUE_COMPUTE_BIT))
 		{
 			m_Context->Registry<IComputeQueue>();
 			m_Context->Registry<IComputeThreadQueue>();
 		}
-		if (m_Context->Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->HasQueueFamily(VK_QUEUE_TRANSFER_BIT))
+		if (m_Context->Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->HasQueueFamily(VK_QUEUE_TRANSFER_BIT))
 		{
 			m_Context->Registry<ITransferThreadQueue>();
 		}
-		if (m_Context->Get<IExtensions>()->GetContext().Has<Extension::IVideoDecode>())
+		if (m_Context->Get<IExtensions>()->GetContext()->Has<Extension::IVideoDecode>())
 		{
 			m_Context->Registry<IVideoDecodeThreadQueue>();
 		}
-		if (m_Context->Get<IExtensions>()->GetContext().Has<Extension::IVideoEncode>())
+		if (m_Context->Get<IExtensions>()->GetContext()->Has<Extension::IVideoEncode>())
 		{
 			m_Context->Registry<IVideoEncodeThreadQueue>();
 		}
-		if (m_Context->Get<IExtensions>()->GetContext().Has<Extension::IOpticalFlow>())
+		if (m_Context->Get<IExtensions>()->GetContext()->Has<Extension::IOpticalFlow>())
 		{
 			m_Context->Registry<IOpticalFlowThreadQueue>();
 		}
@@ -163,7 +163,7 @@ namespace Neptune::Vulkan {
 		context.Registry<AApiVersion>          (m_Context->Get<IInstance>()->GetApiVersion());
 		context.Registry<APhysicalDevice>      (m_Context->Get<IPhysicalDevice>()->Handle());
 		context.Registry<ADevice>              (m_Context->Get<IDevice>()->Handle());
-		context.Registry<AGraphicQueueFamily>  (m_Context->Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT));
+		context.Registry<AGraphicQueueFamily>  (m_Context->Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT));
 		context.Registry<AGraphicQueue>        (m_Context->Get<IGraphicQueue>()->Handle());
 		context.Registry<ADescriptorPool>      (m_Context->Get<IDescriptorPool>()->Handle());
 		context.Registry<AMSAASamples>         (VK_SAMPLE_COUNT_1_BIT);

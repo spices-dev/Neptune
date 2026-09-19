@@ -19,12 +19,12 @@ namespace Neptune::Vulkan::Middleware {
     {
         NEPTUNE_PROFILE_ZONE
         
-        if (context.Get<IExtensions>()->GetContext().Has<Extension::IUnifiedImageLayouts>())
+        if (context.Get<IExtensions>()->GetContext()->Has<Extension::IUnifiedImageLayouts>())
         {
             return CreateUP<ImageLayout2>();
         }
 
-        return CreateUP<ImageLayout>(context.Get<IExtensions>()->GetContext().Has<Extension::IDynamicRendering>());
+        return CreateUP<ImageLayout>(context.Get<IExtensions>()->GetContext()->Has<Extension::IDynamicRendering>());
     }
 
     VkImageLayout ImageLayout::From(VkImageLayout layout) const

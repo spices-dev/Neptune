@@ -76,7 +76,7 @@ namespace Neptune::Vulkan {
 		*
 		* @return Returns Extensions.
 		*/
-		const std::vector<const char*>& GetExtensionRequirements() const;
+		std::vector<const char*> GetExtensionRequirements() const;
 
 		/**
 		* @brief Get Properties.
@@ -130,64 +130,75 @@ namespace Neptune::Vulkan {
 		* 
 		* @return Returns true if meets.
 		*/
-		bool DeviceDetection(const VkPhysicalDevice& device);
+		bool DeviceDetection(const VkPhysicalDevice& device) const;
+		
+		/**
+		* @brief Properties Query.
+		*/
+		void PropertiesQuery();
 		
 		/**
 		* @brief Is Extension Meet Demand.
 		* 
+		* @param[in] extensions Extensions.
 		* @param[in] device VkPhysicalDevice.
 		* 
 		* @return Returns true if meets.
 		*/
-		bool IsExtensionMeetDemand(const VkPhysicalDevice& device);
+		bool IsExtensionMeetDemand(class Extensions* extensions, const VkPhysicalDevice& device) const;
 
 		/**
 		* @brief Is Property Meet Demand.
 		*
+		* @param[in] extensions Extensions.
 		* @param[in] device VkPhysicalDevice.
 		*
 		* @return Returns true if meets.
 		*/
-		bool IsPropertyMeetDemand(const VkPhysicalDevice& device);
+		bool IsPropertyMeetDemand(class Extensions* extensions, const VkPhysicalDevice& device) const;
 
 		/**
 		* @brief Is Feature Meet Demand.
 		*
+		* @param[in] extensions Extensions.
 		* @param[in] device VkPhysicalDevice.
 		*
 		* @return Returns true if meets.
 		*/
-		bool IsFeatureMeetDemand(const VkPhysicalDevice& device) const;
+		bool IsFeatureMeetDemand(class Extensions* extensions, const VkPhysicalDevice& device) const;
 
 		/**
 		* @brief Is Surface Capability Meet Demand.
 		*
+		* @param[in] extensions Extensions.
 		* @param[in] device VkPhysicalDevice.
 		* @param[in] surface VkSurfaceKHR.
 		*
 		* @return Returns true if meets.
 		*/
-		bool IsSurfaceCapabilityMeetDemand(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const;
+		bool IsSurfaceCapabilityMeetDemand(class Extensions* extensions, const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const;
 		
 		/**
 		* @brief Is Queue Meet Demand.
 		*
+		* @param[in] extensions Extensions.
 		* @param[in] device VkPhysicalDevice.
 		* @param[in] surface VkSurfaceKHR.
 		*
 		* @return Returns true if meets.
 		*/
-		bool IsQueueMeetDemand(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const;
+		bool IsQueueMeetDemand(class Extensions* extensions, const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const;
 
 		/**
 		* @brief Is Surface Format Meet Demand.
 		*
+		* @param[in] extensions Extensions.
 		* @param[in] device VkPhysicalDevice.
 		* @param[in] surface VkSurfaceKHR.
 		*
 		* @return Returns true if meets.
 		*/
-		bool IsSurfaceFormatMeetDemand(const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const;
+		bool IsSurfaceFormatMeetDemand(class Extensions* extensions, const VkPhysicalDevice& device, const VkSurfaceKHR& surface) const;
 		
 		/**
 		* @brief Is Queue OpticalFlow Session Supported.
@@ -212,7 +223,6 @@ namespace Neptune::Vulkan {
 	private:
 
 		Unit::PhysicalDevice        m_PhysicalDevice;              // @brief This PhysicalDevice.
-		std::vector<const char*>    m_ExtensionProperties;         // @brief Extensions.
 		VkPhysicalDeviceProperties  m_Properties;                  // @brief VkPhysicalDeviceProperties.
 		SwapChainProperty           m_SwapChainProperty;           // @brief SwapChainProperty.
 	};

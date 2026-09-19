@@ -45,7 +45,7 @@ namespace Neptune::Vulkan::Resource {
 
 		auto bufferSize = (((size ? size : VideoDecodeBufferDefaultSize) + (alignment - 1)) & ~(alignment - 1));
 
-		auto family = GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_VIDEO_DECODE_BIT_KHR);
+		auto family = GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_VIDEO_DECODE_BIT_KHR);
 		
 		VkBufferCreateInfo                   info{};
 		info.sType                         = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;

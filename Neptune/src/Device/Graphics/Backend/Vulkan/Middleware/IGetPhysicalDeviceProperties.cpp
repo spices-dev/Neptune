@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Middleware {
     {
         NEPTUNE_PROFILE_ZONE
         
-        if (context.Get<IExtensions>()->GetContext().Has<Extension::IGetPhysicalDeviceProperties2>())
+        if (context.Get<IExtensions>()->GetContext()->Has<Extension::IGetPhysicalDeviceProperties2>())
         {
             return CreateUP<GetPhysicalDeviceProperties2>();
         }

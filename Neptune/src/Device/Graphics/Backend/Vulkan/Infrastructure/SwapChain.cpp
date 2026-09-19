@@ -50,8 +50,8 @@ namespace Neptune::Vulkan {
 
 			uint32_t queueFamilyIndices[2] = 
 			{ 
-				GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT),
-				GetContext().Get<IExtensions>()->GetContext().Get<Extension::IQueue>()->GetPresentQueueFamily()
+				GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT),
+				GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetPresentQueueFamily()
 			};
 
 			if (queueFamilyIndices[0] != queueFamilyIndices[1])
@@ -80,7 +80,7 @@ namespace Neptune::Vulkan {
 			DEBUGUTILS_SETOBJECTNAME(*m_SwapChain, ToString())
 		}
     	
-		if (GetContext().Get<IExtensions>()->GetContext().Has<Extension::IHDR>())
+		if (GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IHDR>())
 		{
 			VkHdrMetadataEXT                    meta {};
 			meta.sType                        = VK_STRUCTURE_TYPE_HDR_METADATA_EXT;
