@@ -11,8 +11,8 @@
 #include "ISynchronization.h"
 #include "Synchronization.h"
 #include "Synchronization2.h"
-#include "Device/Graphics/Backend/Vulkan/Extension/Synchronization2.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Extensions.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/Synchronization2.h"
 
 namespace Neptune::Vulkan::Middleware {
 	
@@ -24,10 +24,8 @@ namespace Neptune::Vulkan::Middleware {
 		{
 			return CreateUP<Synchronization2>();
 		}
-		else
-		{
-			return CreateUP<Synchronization>();
-		}
+
+		return CreateUP<Synchronization>();
 	}
 }
 

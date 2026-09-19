@@ -10,7 +10,6 @@
 
 #include "RenderPass.h"
 
-#include "Device/Graphics/Backend/Direct3D11/Infrastructure/DebugUtilsObject.h"
 #include "Device/Graphics/Backend/Vulkan/Converter.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Device.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/PhysicalDevice.h"

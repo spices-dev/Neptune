@@ -13,34 +13,33 @@
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/DebugUtilsObject.h"
 
 namespace Neptune::Vulkan::Resource {
+	
+	Queue::Queue(Context& context)
+		: ContextAccessor(context)
+		, m_TimeLine(Middleware::ITimeLine::Create(context, 1))
+		, m_QueueSubmit(Middleware::IQueueSubmit::Create(context))
+	{}
 
     void Queue::CreateQueue(Unit::Queue::Handle queue)
     {
         NEPTUNE_PROFILE_ZONE
         
         m_Queue.SetHandle(queue);
-        
-        m_Semaphore.CreateSemaphore();
 
         DEBUGUTILS_SETOBJECTNAME(m_Queue, "Queue")
     }
-	
-    void Queue::Submit(const VkSubmitInfo& info) const
+
+    void Queue::Submit(VkCommandBuffer commandBuffer)
     {
         NEPTUNE_PROFILE_ZONE
-        
-        m_Queue.Submit(info);
-    }
-    
-    void Queue::Submit2(VkCommandBuffer commandBuffer) const
-    {
-        NEPTUNE_PROFILE_ZONE
+		
+		++m_Time;
 		
 		VkSemaphoreSubmitInfo                  signalInfo{};
 		signalInfo.sType                     = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
 		signalInfo.stageMask                 = VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT;
-		signalInfo.semaphore                 = m_Semaphore.Handle();
-		signalInfo.value                     = m_Semaphore.Next();
+		signalInfo.semaphore                 = m_TimeLine->Semaphore();
+		signalInfo.value                     = m_Time;
     	
 		VkCommandBufferSubmitInfo              commandInfo{};
 		commandInfo.sType                    = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO;
@@ -55,22 +54,22 @@ namespace Neptune::Vulkan::Resource {
 		submitInfo.signalSemaphoreInfoCount  = 1;
 		submitInfo.pSignalSemaphoreInfos     = &signalInfo;
 
-		m_Queue.Submit2(submitInfo);
+		m_QueueSubmit->Submit(&m_Queue, submitInfo, m_TimeLine->Fence(m_Time));
     }
 	
-	void Queue::WaitQueue() const
+	void Queue::WaitTimeLine() const
 	{
     	NEPTUNE_PROFILE_ZONE
     	
-    	m_Queue.Wait();
+		m_TimeLine->Wait(m_Time);
     }
 	
-	void Queue::WaitSemaphore()
-    {
-    	NEPTUNE_PROFILE_ZONE
-    	
-    	m_Semaphore.Wait();
-    }
+	void Queue::Wait() const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_Queue.Wait();
+	}
 	
 	void Queue::SetName(const std::string& name) const
     {
@@ -78,7 +77,7 @@ namespace Neptune::Vulkan::Resource {
 
         DEBUGUTILS_SETOBJECTNAME(m_Queue, name)
 
-        m_Semaphore.SetName(name +"Semaphore");
+        m_TimeLine->SetName(name);
     }
 }
 

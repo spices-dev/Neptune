@@ -36,7 +36,7 @@ namespace Neptune::Vulkan {
 		
 		if (window)
 		{
-			m_Context.Registry<Extension::ISwapChain>(Extension::EExtensionState::Core, window->Extension());
+			m_Context.Registry<Extension::ISwapChain>(Extension::EExtensionState::Core, window->Extension());           // @brief Done.
 		}
 		else
 		{
@@ -45,41 +45,41 @@ namespace Neptune::Vulkan {
 		
 #ifdef NEPTUNE_DEBUG
 		
-		m_Context.Registry<Extension::IDebugUtils>                       (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::ILayerSetting>                     (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IDebugUtils>                       (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context.Registry<Extension::ILayerSetting>                     (Extension::EExtensionState::Extent);          // @brief Done.
 		
 #endif
 		
 		m_Context.Registry<Extension::IDescriptorBuffer>                 (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IDescriptorHeap>                   (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IDeviceFault>                      (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IDeviceFault>                      (Extension::EExtensionState::Extent);          // @brief Done.
 		m_Context.Registry<Extension::IMemoryBudget>                     (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IHDR>                              (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IOpticalFlow>                      (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IHDR>                              (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context.Registry<Extension::IOpticalFlow>                      (Extension::EExtensionState::Extent);          // @brief Done.
 		m_Context.Registry<Extension::IRayTracing>                       (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IVideoDecode>                      (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IVideoDecode>                      (Extension::EExtensionState::Extent);          // @brief Done.
 		m_Context.Registry<Extension::IVideoEncode>                      (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::ISamplerYcbcrConversion>           (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IMaintenance1>                     (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IBufferDeviceAddress>              (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IDescriptorIndexing>               (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IVulkan13>                         (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IPortability>                      (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IQueue>                            (Extension::EExtensionState::Core);
-		m_Context.Registry<Extension::IDynamicRendering>                 (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IPortability>                      (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context.Registry<Extension::IQueue>                            (Extension::EExtensionState::Core);            // @brief Done.
+		m_Context.Registry<Extension::IDynamicRendering>                 (Extension::EExtensionState::Extent);          // @brief Done.
 		m_Context.Registry<Extension::IExternalMemoryHost>               (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::ICopyMemoryIndirect>               (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IDeviceGeneratedCommands>          (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IGetPhysicalDeviceProperties2>     (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IGetPhysicalDeviceProperties2>     (Extension::EExtensionState::Extent);          // @brief Done.
 		m_Context.Registry<Extension::IPageableDeviceLocalMemory>        (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IGetSurfaceCapabilities2>          (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::ICreateRenderPass2>                (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IGetSurfaceCapabilities2>          (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context.Registry<Extension::ICreateRenderPass2>                (Extension::EExtensionState::Extent);          // @brief Done.
 		m_Context.Registry<Extension::IDynamicRenderingLocalRead>        (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IScalarBlockLayout>                (Extension::EExtensionState::Core);
-		m_Context.Registry<Extension::ITimelineSemaphore>                (Extension::EExtensionState::Core);
-		m_Context.Registry<Extension::ISynchronization2>                 (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::ITimelineSemaphore>                (Extension::EExtensionState::Core);            // @brief Done.
+		m_Context.Registry<Extension::ISynchronization2>                 (Extension::EExtensionState::Extent);          // @brief Done.
 		m_Context.Registry<Extension::IPresentTiming>                    (Extension::EExtensionState::Extent);
-		m_Context.Registry<Extension::IUnifiedImageLayouts>              (Extension::EExtensionState::Extent);
+		m_Context.Registry<Extension::IUnifiedImageLayouts>              (Extension::EExtensionState::Extent);          // @brief Done.
 		m_Context.Registry<Extension::IMeshShader>                       (Extension::EExtensionState::Extent);
 	}
 	

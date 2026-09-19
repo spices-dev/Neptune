@@ -9,9 +9,9 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "IImageLayout.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/UnifiedImageLayouts.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/DynamicRendering.h"
-#include "Device/Graphics/Backend/Vulkan/Infrastructure/Extensions.h"
 
 namespace Neptune::Vulkan::Middleware {
 	
@@ -23,10 +23,8 @@ namespace Neptune::Vulkan::Middleware {
         {
             return CreateUP<ImageLayout2>();
         }
-        else
-        {
-            return CreateUP<ImageLayout>(context.Get<IExtensions>()->GetContext().Has<Extension::IDynamicRendering>());
-        }
+
+        return CreateUP<ImageLayout>(context.Get<IExtensions>()->GetContext().Has<Extension::IDynamicRendering>());
     }
 
     VkImageLayout ImageLayout::From(VkImageLayout layout) const

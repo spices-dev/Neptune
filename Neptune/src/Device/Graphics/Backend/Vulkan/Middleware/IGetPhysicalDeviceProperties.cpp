@@ -22,10 +22,8 @@ namespace Neptune::Vulkan::Middleware {
         {
             return CreateUP<GetPhysicalDeviceProperties2>();
         }
-        else
-        {
-            return CreateUP<GetPhysicalDeviceProperties>();
-        }
+
+        return CreateUP<GetPhysicalDeviceProperties>();
     }
     
     void GetPhysicalDeviceProperties::GetProperties(VkPhysicalDevice device, VkPhysicalDeviceProperties2& properties) const

@@ -89,18 +89,9 @@ namespace Neptune::Vulkan {
 		}
 		
 		m_Context->Registry<IMemoryAllocator>();
-					  
-		if (m_Context->Get<IExtensions>()->GetContext().Has<Extension::ITimelineSemaphore>())
-		{
-			m_Context->Registry<IGraphicTimelineSemaphore>();
-			m_Context->Registry<IComputeTimelineSemaphore>();
-		}
-		else
-		{
-			m_Context->Registry<IComputeQueueSemaphore>(MaxFrameInFlight);
-			m_Context->Registry<IGraphicFence>(MaxFrameInFlight);
-			m_Context->Registry<IComputeFence>(MaxFrameInFlight);
-		}
+
+		m_Context->Registry<IGraphicTimeLine>(MaxFrameInFlight);
+		m_Context->Registry<IComputeTimeLine>(MaxFrameInFlight);
 		
 		m_Context->Registry<IGraphicQueueSemaphore>(SwapChainImageCount);
 

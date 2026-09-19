@@ -38,12 +38,8 @@ namespace Neptune::Vulkan {
         MemoryAllocator,                     // @brief VMA.
         SwapChain,                           // @brief SwapChain.
 
-        GraphicTimelineSemaphore,            // @brief GraphicTimelineSemaphore.
-        ComputeTimelineSemaphore,            // @brief ComputeTimelineSemaphore.
-                
-        ComputeQueueSemaphore,               // @brief Main Thread Compute QueueSemaphore.
-        GraphicFence,                        // @brief Main Thread Graphic Fence.
-        ComputeFence,                        // @brief Main Thread Compute Fence.
+        GraphicTimeLine,                     // @brief GraphicTimeLine.
+        ComputeTimeLine,                     // @brief ComputeTimeLine.
         
         GraphicImageSemaphore,               // @brief Main Thread Graphic ImageSemaphore.
         GraphicQueueSemaphore,               // @brief Main Thread Graphic QueueSemaphore.

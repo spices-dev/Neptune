@@ -63,9 +63,9 @@ namespace Neptune::Vulkan {
     	
     	if (clock.m_FrameId > MaxFrameInFlight)
 		{
-			context.Get<IComputeTimelineSemaphore>()->Wait(clock.m_FrameId - MaxFrameInFlight);
+			context.Get<IComputeTimeLine>()->Wait(clock.m_FrameId - MaxFrameInFlight);
 
-			context.Get<IGraphicTimelineSemaphore>()->Wait(clock.m_FrameId - MaxFrameInFlight);
+			context.Get<IGraphicTimeLine>()->Wait(clock.m_FrameId - MaxFrameInFlight);
 		}
 
 		{
@@ -107,7 +107,7 @@ namespace Neptune::Vulkan {
 			VkSemaphoreSubmitInfo                  signalInfo{};
 			signalInfo.sType                     = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
 			signalInfo.stageMask                 = VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT;
-			signalInfo.semaphore                 = context.Get<IComputeTimelineSemaphore>()->Handle();
+			signalInfo.semaphore                 = context.Get<IComputeTimeLine>()->Semaphore();
 			signalInfo.value                     = clock.m_FrameId;
 
 			VkCommandBufferSubmitInfo              commandInfo{};
@@ -123,7 +123,7 @@ namespace Neptune::Vulkan {
 			submitInfo.signalSemaphoreInfoCount  = 1;
 			submitInfo.pSignalSemaphoreInfos     = &signalInfo;
 
-			context.Get<IComputeQueue>()->Submit2(submitInfo);
+			context.Get<IComputeQueue>()->Submit(submitInfo, context.Get<IComputeTimeLine>()->Fence(clock.m_FrameId));
 
 			DEBUGUTILS_ENDQUEUELABEL(context.Get<IComputeQueue>()->Handle())
 		}
@@ -136,18 +136,12 @@ namespace Neptune::Vulkan {
 			waitInfo0.stageMask                  = VK_PIPELINE_STAGE_2_VERTEX_SHADER_BIT;
 			waitInfo0.semaphore                  = context.Get<IGraphicImageSemaphore>()->Handle(clock.m_FrameIndex);
 			
-			VkSemaphoreSubmitInfo                  waitInfo1{};
-			waitInfo1.sType                      = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
-			waitInfo1.stageMask                  = VK_PIPELINE_STAGE_2_VERTEX_SHADER_BIT;
-			waitInfo1.semaphore                  = context.Get<IComputeTimelineSemaphore>()->Handle();
-			waitInfo1.value                      = clock.m_FrameId;
-			
-			VkSemaphoreSubmitInfo waitInfo[]     = { waitInfo0, waitInfo1 };
+			VkSemaphoreSubmitInfo waitInfo[]     = { waitInfo0 };
 			
 			VkSemaphoreSubmitInfo                  signalInfo0{};
 			signalInfo0.sType                    = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
 			signalInfo0.stageMask                = VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT;
-			signalInfo0.semaphore                = context.Get<IGraphicTimelineSemaphore>()->Handle();
+			signalInfo0.semaphore                = context.Get<IGraphicTimeLine>()->Semaphore();
 			signalInfo0.value                    = clock.m_FrameId;
 
 			VkSemaphoreSubmitInfo                  signalInfo1{};
@@ -163,14 +157,14 @@ namespace Neptune::Vulkan {
 
 			VkSubmitInfo2                          submitInfo{};
 			submitInfo.sType                     = VK_STRUCTURE_TYPE_SUBMIT_INFO_2;
-			submitInfo.waitSemaphoreInfoCount    = 2;
+			submitInfo.waitSemaphoreInfoCount    = 1;
 			submitInfo.pWaitSemaphoreInfos       = waitInfo;
 			submitInfo.commandBufferInfoCount    = 1;
 			submitInfo.pCommandBufferInfos       = &commandInfo;
 			submitInfo.signalSemaphoreInfoCount  = 2;
 			submitInfo.pSignalSemaphoreInfos     = signalInfo;
 
-			context.Get<IGraphicQueue>()->Submit2(submitInfo);
+			context.Get<IGraphicQueue>()->Submit(submitInfo, context.Get<IGraphicTimeLine>()->Fence(clock.m_FrameId));
 
 			DEBUGUTILS_ENDQUEUELABEL(context.Get<IGraphicQueue>()->Handle())
 		}

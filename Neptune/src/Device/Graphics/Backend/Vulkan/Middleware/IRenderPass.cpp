@@ -11,8 +11,10 @@
 #include "IRenderPass.h"
 #include "RenderPass.h"
 #include "RenderPass2.h"
-#include "Device/Graphics/Backend/Vulkan/Extension/DynamicRendering.h"
+#include "RenderPass3.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Extensions.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/DynamicRendering.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/CreateRenderPass2.h"
 
 namespace Neptune::Vulkan::Middleware {
 	
@@ -22,12 +24,14 @@ namespace Neptune::Vulkan::Middleware {
 		
 		if (context.Get<IExtensions>()->GetContext().Has<Extension::IDynamicRendering>())
 		{
+			return CreateUP<RenderPass3>(context);
+		}
+		if (context.Get<IExtensions>()->GetContext().Has<Extension::ICreateRenderPass2>())
+		{
 			return CreateUP<RenderPass2>(context);
 		}
-		else
-		{
-			return CreateUP<RenderPass>(context);
-		}
+		
+		return CreateUP<RenderPass>(context);
 	}
 }
 

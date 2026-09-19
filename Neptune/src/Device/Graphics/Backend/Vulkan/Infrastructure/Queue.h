@@ -11,6 +11,7 @@
 #include "Core/Core.h"
 #include "Infrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/Queue.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/IQueueSubmit.h"
 
 namespace Neptune::Vulkan {
 
@@ -49,17 +50,10 @@ namespace Neptune::Vulkan {
 		/**
 		* @brief Submit CommandBuffer to Queue.
 		*
-		* @param[in] info VkSubmitInfo.
+		* @param[in] info VkSubmitInfo2.
 		* @param[in] fence VkFence.
 		*/
-		void Submit(const VkSubmitInfo& info, VkFence fence = VK_NULL_HANDLE) const;
-
-		/**
-		* @brief Submit CommandBuffer to Queue 2.
-		*
-		* @param[in] info VkSubmitInfo2.
-		*/
-		void Submit2(const VkSubmitInfo2& info) const;
+		void Submit(const VkSubmitInfo2& info, VkFence fence = VK_NULL_HANDLE) const;
 		
 		/**
 		* @brief Queue Wait idle.
@@ -82,7 +76,8 @@ namespace Neptune::Vulkan {
 
 	private:
 
-		Unit::Queue m_Queue;    // @brief This Queue.
+		Unit::Queue m_Queue;                           // @brief This Queue.
+		UP<Middleware::IQueueSubmit> m_QueueSubmit;    // @brief This QueueSubmit.
 	};
 
 }

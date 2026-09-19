@@ -20,11 +20,11 @@ namespace Neptune::Vulkan::Unit {
 		VULKAN_CHECK(vkQueueSubmit(m_Handle, 1, &info, fence))
 	}
 
-	void Queue::Submit2(const VkSubmitInfo2& info) const
+	void Queue::Submit2(const VkSubmitInfo2& info, VkFence fence) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		VULKAN_CHECK(vkQueueSubmit2(m_Handle, 1, &info, VK_NULL_HANDLE))
+		VULKAN_CHECK(vkQueueSubmit2(m_Handle, 1, &info, fence))
 	}
 	
 	void Queue::Wait() const

@@ -46,9 +46,9 @@ namespace Neptune::Vulkan {
 
 		DEBUGUTILS_BEGINQUEUELABEL(queue->Handle(), m_ThreadQueue->ToString())
 
-		queue->Submit2(m_CommandBuffer->GetHandle());
+		queue->Submit(m_CommandBuffer->GetHandle());
 
-		queue->WaitSemaphore();
+		queue->WaitTimeLine();
 
 		DEBUGUTILS_ENDQUEUELABEL(queue->Handle())
 

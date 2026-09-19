@@ -10,14 +10,15 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
+#include "Device/Graphics/Backend/Vulkan/Unit/RenderPass.h"
+#include "Device/Graphics/Backend/Vulkan/Unit/FrameBuffer.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/IImageLayout.h"
-#include "Device/Graphics/Backend/Vulkan/Middleware/ISynchronization.h"
 #include "IRenderPass.h"
 
 namespace Neptune::Vulkan::Middleware {
 	
 	/**
-	* @brief Implement of Dynamic Rendering.
+	* @brief Implement of Classic RenderPass and FrameBuffer.
 	*/
 	class RenderPass2 : public ContextAccessor, public IRenderPass
 	{
@@ -55,7 +56,7 @@ namespace Neptune::Vulkan::Middleware {
 		*
 		* @param[in] count Flight Frames.
 		*/
-		void Build(uint32_t count) override {}
+		void Build(uint32_t count) override;
 
 		/**
 		* @brief Interface Begin RenderPass.
@@ -71,20 +72,20 @@ namespace Neptune::Vulkan::Middleware {
 		* @param[in] commandBuffer CommandBuffer.
 		*/
 		void EndRenderPass(const Unit::CommandBuffer* commandBuffer) const override;
-
+		
 		/**
 		* @brief Interface Get VkRenderPass Handle.
 		* 
 		* @return Returns VkRenderPass Handle.
 		*/
-		VkRenderPass Handle() const override { return VK_NULL_HANDLE; }
+		VkRenderPass Handle() const override { return m_RenderPass.GetHandle(); }
 		
 		/**
 		* @brief Interface Get VkPipelineRenderingCreateInfo.
 		* 
 		* @return Returns VkPipelineRenderingCreateInfo.
 		*/
-		VkPipelineRenderingCreateInfo* GetRenderingInfo() override;
+		VkPipelineRenderingCreateInfo* GetRenderingInfo() override { return nullptr; }
 		
 		/**
 		* @brief Interface Get VkPipelineColorBlendStateCreateInfo.
@@ -92,6 +93,15 @@ namespace Neptune::Vulkan::Middleware {
 		* @return Returns VkPipelineColorBlendStateCreateInfo.
 		*/
 		const VkPipelineColorBlendStateCreateInfo& GetColorBlendInfo() override;
+		
+	public:
+
+		/**
+		* @brief Get ColorBlends.
+		*
+		* @return Returns VkPipelineColorBlendAttachmentState.
+		*/
+		const std::vector<VkPipelineColorBlendAttachmentState>& GetColorBlends() const { return m_ColorBlends; }
 		
 	private:
 
@@ -101,19 +111,19 @@ namespace Neptune::Vulkan::Middleware {
 		* @param[in] extent VkExtent2D.
 		*/
 		void StoreExtent(const VkExtent2D& extent);
-		
+
 	private:
-		
-		std::vector<VkFormat>                             m_ColorAttachmentFormats;          // @brief VkFormat.
-		VkPipelineColorBlendStateCreateInfo               m_ColorBlendInfo{};		   	     // @brief VkPipelineColorBlendStateCreateInfo.
-		VkPipelineRenderingCreateInfo                     m_RenderingInfo{};                 // @brief VkPipelineRenderingCreateInfo.
-		std::vector<VkRenderingAttachmentInfo>            m_AttachmentInfos;           	     // @brief VkRenderingAttachmentInfo.
-		std::vector<VkImageMemoryBarrier2>                m_AttachmentInBarriers;            // @brief VkImageMemoryBarrier2.
-		std::vector<VkImageMemoryBarrier2>                m_AttachmentOutBarriers;           // @brief VkImageMemoryBarrier2.
+
+		Unit::RenderPass                                  m_RenderPass;                      // @brief This RenderPass.
+		std::vector<SP<Unit::FrameBuffer>>                m_FrameBuffers;                    // @brief Container of FrameBuffer.
+
+		VkPipelineColorBlendStateCreateInfo               m_ColorBlendInfo{};				 // @brief VkPipelineColorBlendStateCreateInfo.
+		std::vector<VkAttachmentDescription2>             m_AttachmentDescriptions;          // @brief VkAttachmentDescription2.
+		std::vector<VkAttachmentReference2>               m_ColorAttachmentReference;        // @brief VkAttachmentReference2.
 		std::vector<VkPipelineColorBlendAttachmentState>  m_ColorBlends;					 // @brief VkPipelineColorBlendAttachmentState.
-		std::optional<uint32_t>                           m_SwapChainImageIndex;		     // @brief SwapChainImageIndex.
+		std::vector<VkClearValue>                         m_ClearValues;					 // @brief VkClearValue.
+		std::vector<VkImageView>                          m_ImageViews;						 // @brief VkImageView.
 		UP<IImageLayout>                                  m_ImageLayout;		        	 // @brief IImageLayout.
-		UP<ISynchronization>                              m_Synchronization;		         // @brief ISynchronization.
 		std::optional<VkExtent2D>                         m_Extent;							 // @brief VkExtent2D.
 	};
 }

@@ -10,7 +10,8 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
-#include "Device/Graphics/Backend/Vulkan/Resource/TimelineSemaphore.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/ITimeLine.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/IQueueSubmit.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/Queue.h"
 
 namespace Neptune::Vulkan::Resource {
@@ -28,7 +29,7 @@ namespace Neptune::Vulkan::Resource {
         *
         * @param[in] context Context.
         */
-        explicit Queue(Context& context) : ContextAccessor(context), m_Semaphore(context) {}
+        explicit Queue(Context& context);
 
         /**
         * @brief Destructor Function.
@@ -48,30 +49,23 @@ namespace Neptune::Vulkan::Resource {
         * @param[in] queue Unit::Queue::Handle.
         */
         void CreateQueue(Unit::Queue::Handle queue);
-		
+        
         /**
         * @brief Submit.
         * 
-        * @param[in] info VkSubmitInfo.
-        */
-        void Submit(const VkSubmitInfo& info) const;
-        
-        /**
-        * @brief Submit2.
-        * 
         * @param[in] commandBuffer VkCommandBuffer.
         */
-        void Submit2(VkCommandBuffer commandBuffer) const;
+        void Submit(VkCommandBuffer commandBuffer);
         
         /**
-        * @brief Wait Queue.
+        * @brief WaitTimeLine.
         */
-        void WaitQueue() const;
+        void WaitTimeLine() const;
         
         /**
-        * @brief Wait Semaphore.
+        * @brief Wait.
         */
-        void WaitSemaphore();
+        void Wait() const;
         
         /**
         * @brief Set Name.
@@ -82,8 +76,10 @@ namespace Neptune::Vulkan::Resource {
         
     private:
         
-        Unit::Queue           m_Queue;         // @brief This Queue.
-        TimelineSemaphore     m_Semaphore;     // @brief This Semaphore.
+        Unit::Queue                  m_Queue;            // @brief This Queue.
+        UP<Middleware::ITimeLine>    m_TimeLine;         // @brief This TimeLine.
+        UP<Middleware::IQueueSubmit> m_QueueSubmit;      // @brief This QueueSubmit.
+        uint64_t                     m_Time = 0;         // @brief This TimeLine Time.
     };
 }
 

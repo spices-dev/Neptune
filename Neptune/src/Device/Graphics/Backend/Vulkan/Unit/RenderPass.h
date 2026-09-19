@@ -36,13 +36,6 @@ namespace Neptune::Vulkan::Unit {
 		~RenderPass() override;
 
 		/**
-		* @brief Set Functor.
-		*
-		* @param[in] create PFN_vkCreateRenderPass2KHR.
-		*/
-		void SetFunctor(PFN_vkCreateRenderPass2KHR create);
-
-		/**
 		* @brief Create RenderPass.
 		*
 		* @param[in] device VkDevice.

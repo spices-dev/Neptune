@@ -123,11 +123,6 @@ namespace Neptune::Vulkan {
 		{
 			EXPLAIN_VK_FUNCTION_POINTER(vkSetHdrMetadataEXT                             )
 		}
-		
-		if(GetContext().Get<IExtensions>()->GetContext().Has<Extension::ICreateRenderPass2>())
-		{
-			EXPLAIN_VK_FUNCTION_POINTER(vkCreateRenderPass2KHR                          )
-		}
 	}
 }
 

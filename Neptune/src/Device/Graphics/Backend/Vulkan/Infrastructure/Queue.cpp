@@ -18,6 +18,7 @@ namespace Neptune::Vulkan {
 
     Queue::Queue(Context& context, EInfrastructure e)
         : Infrastructure(context, e)
+        , m_QueueSubmit(Middleware::IQueueSubmit::Create(context))
     {
         NEPTUNE_PROFILE_ZONE
 
@@ -33,18 +34,11 @@ namespace Neptune::Vulkan {
         DEBUGUTILS_SETOBJECTNAME(m_Queue, ToString())
     }
 
-    void Queue::Submit(const VkSubmitInfo& info, VkFence fence) const
+    void Queue::Submit(const VkSubmitInfo2& info, VkFence fence) const
     {
         NEPTUNE_PROFILE_ZONE
 
-        m_Queue.Submit(info, fence);
-    }
-
-    void Queue::Submit2(const VkSubmitInfo2& info) const
-    {
-        NEPTUNE_PROFILE_ZONE
-        
-        m_Queue.Submit2(info);
+        m_QueueSubmit->Submit(&m_Queue, info, fence);
     }
     
     void Queue::Wait() const

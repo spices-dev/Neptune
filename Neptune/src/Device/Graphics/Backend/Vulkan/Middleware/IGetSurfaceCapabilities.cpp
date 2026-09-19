@@ -22,10 +22,8 @@ namespace Neptune::Vulkan::Middleware {
         {
             return CreateUP<GetSurfaceCapabilities2>();
         }
-        else
-        {
-            return CreateUP<GetSurfaceCapabilities>();
-        }
+
+        return CreateUP<GetSurfaceCapabilities>();
     }
 
     void GetSurfaceCapabilities::GetCapabilities(VkPhysicalDevice device, const VkPhysicalDeviceSurfaceInfo2KHR& surfaceInfo, VkSurfaceCapabilities2KHR& surfaceCapabilities) const

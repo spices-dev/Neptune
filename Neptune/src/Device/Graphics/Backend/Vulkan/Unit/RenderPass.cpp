@@ -21,13 +21,6 @@ namespace Neptune::Vulkan::Unit {
 		vkDestroyRenderPass(m_Device, m_Handle, GetAllocator());
 	}
 
-	void RenderPass::SetFunctor(PFN_vkCreateRenderPass2KHR create)
-	{
-		NEPTUNE_PROFILE_ZONE
-
-		vkCreateRenderPass2KHR = create;
-	}
-
 	void RenderPass::CreateRenderPass(VkDevice device, const VkRenderPassCreateInfo& info)
 	{
 		NEPTUNE_PROFILE_ZONE
@@ -46,8 +39,8 @@ namespace Neptune::Vulkan::Unit {
 		assert(device);
 
 		m_Device = device;
-		
-		VULKAN_CHECK(vkCreateRenderPass2KHR(device, &info, GetAllocator(), &m_Handle))
+
+		VULKAN_CHECK(vkCreateRenderPass2(device, &info, GetAllocator(), &m_Handle))
 	}
 }
 
