@@ -3,7 +3,7 @@ import { PiWarningFill } from 'react-icons/pi'
 
 export default function InfoBar() {
     const info = {
-        warning: 'This is a ssssssssssssssssssssswarning!',
+        warning: 'This is a warning!',
         string: 'https://thumbs/256*25',
         progress: 28
     }

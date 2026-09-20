@@ -1,15 +1,15 @@
 ﻿import COLORS from '@/types/colors'
-import ToolsBarItem from '@/components/neptuneEditor/viewport/ToolsBarItem'
+import ToolsBarItem from '@/components/nepnep/viewport/ToolsBarItem'
 import { FaList } from 'react-icons/fa'
-import MenuItem from '@/components/neptuneEditor/viewport/MenuItem'
-import Separator from '@/components/neptuneEditor/mainMenu/Separator'
+import MenuItem from '@/components/nepnep/viewport/MenuItem'
+import Separator from '@/components/nepnep/mainMenu/Separator'
 import { FaRegLightbulb } from 'react-icons/fa6'
 import { ImEye } from 'react-icons/im'
 import { BsCameraReelsFill } from 'react-icons/bs'
-import SideBar from '@/components/neptuneEditor/viewport/SideBar'
+import SideBar from '@/components/nepnep/viewport/SideBar'
 import { LiaWaveSquareSolid } from 'react-icons/lia'
 import { MdLightMode } from 'react-icons/md'
-import StaticsPanel from '@/components/neptuneEditor/viewport/StaticsPanel'
+import StaticsPanel from '@/components/nepnep/viewport/StaticsPanel'
 
 export default function ToolsBar(){
     return (

@@ -1,5 +1,5 @@
 ﻿import COLORS from '../../../types/colors'
-import Separator from '@/components/neptuneEditor/mainMenu/Separator'
+import Separator from '@/components/nepnep/mainMenu/Separator'
 import OperatorItem from './OperatorItem'
 import { IoMdPlay } from 'react-icons/io'
 import { LuImageUpscale } from 'react-icons/lu'

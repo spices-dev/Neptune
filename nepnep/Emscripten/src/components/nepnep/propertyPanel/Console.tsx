@@ -1,5 +1,5 @@
 ﻿import PropertyPanel from './PropertyPanel'
-import Separator from '@/components/neptuneEditor/mainMenu/Separator'
+import Separator from '@/components/nepnep/mainMenu/Separator'
 import { FiDelete } from 'react-icons/fi'
 import COLORS from '@/types/colors'
 import { SlNote } from 'react-icons/sl'
