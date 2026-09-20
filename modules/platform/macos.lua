@@ -36,6 +36,8 @@ module.GetGraphicsFeatures = function()
         "NP_GRAPHICS_OPENGL",                              -- Graphics: OpenGL
         "NP_GRAPHICS_VULKAN",                              -- Graphics: Vulkan
         "VK_ENABLE_BETA_EXTENSIONS",                       -- Enable Vulkan Beta Extensions
+        "VK_USE_PLATFORM_MACOS_MVK",                       -- Enable Vulkan MacOS Extensions
+        "VK_USE_PLATFORM_METAL_EXT",                       -- Enable Vulkan Metal Extensions
         "NP_GRAPHICS_METAL",                               -- Graphics: Metal
     }
 

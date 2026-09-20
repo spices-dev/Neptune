@@ -25,6 +25,7 @@ module.GetGraphicsFeatures = function()
         "NP_GRAPHICS_OPENGLES",                            -- Graphics: OpenGLES
         "NP_GRAPHICS_VULKAN",                              -- Graphics: Vulkan
         "VK_ENABLE_BETA_EXTENSIONS",                       -- Enable Vulkan Beta Extensions
+        "VK_USE_PLATFORM_ANDROID_KHR",                     -- Enable Vulkan Android Extensions
     }
 
     return list

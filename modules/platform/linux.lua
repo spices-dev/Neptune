@@ -36,6 +36,9 @@ module.GetGraphicsFeatures = function()
         "NP_GRAPHICS_OPENGL",                              -- Graphics: OpenGL
         "NP_GRAPHICS_VULKAN",                              -- Graphics: Vulkan
         "VK_ENABLE_BETA_EXTENSIONS",                       -- Enable Vulkan Beta Extensions
+        "VK_USE_PLATFORM_XLIB_KHR",                        -- Enable Vulkan XLIB Extensions
+        "VK_USE_PLATFORM_XCB_KHR",                         -- Enable Vulkan XCB Extensions
+        "VK_USE_PLATFORM_WAYLAND_KHR",                     -- Enable Vulkan Wayland Extensions
     }
 
     return list

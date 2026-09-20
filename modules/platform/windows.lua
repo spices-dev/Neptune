@@ -47,6 +47,7 @@ module.GetGraphicsFeatures = function()
         "NP_GRAPHICS_OPENGL",                              -- Graphics: OpenGL
         "NP_GRAPHICS_VULKAN",                              -- Graphics: Vulkan
         "VK_ENABLE_BETA_EXTENSIONS",                       -- Enable Vulkan Beta Extensions
+        "VK_USE_PLATFORM_WIN32_KHR",                       -- Enable Vulkan Win32 Extensions
         "NP_GRAPHICS_DIRECT3D11",                          -- Graphics: Direct3D11
         "NP_GRAPHICS_DIRECT3D12",                          -- Graphics: Direct3D12
     }

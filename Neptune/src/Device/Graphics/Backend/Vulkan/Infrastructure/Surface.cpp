@@ -33,7 +33,7 @@ namespace Neptune::Vulkan {
 #endif
             
 #ifdef NP_WINDOW_ANDROIDNATIVE
-            case WindowImplement::AndroidNative: return CreateUP<Android::Surface>(context, e, window);
+            case WindowImplement::AndroidNative: return CreateUP<AndroidNative::Surface>(context, e, window);
 #endif
             
             default:

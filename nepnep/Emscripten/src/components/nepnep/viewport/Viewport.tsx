@@ -1,5 +1,5 @@
 ﻿import COLORS from '@/types/colors'
-import NeptuneCanvas from './NepnepCanvas'
+import NepnepCanvas from './NepnepCanvas'
 import ToolsBar from './ToolsBar'
 
 export default function Viewport() {
