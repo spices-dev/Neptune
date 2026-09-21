@@ -8,20 +8,72 @@
 #include "Input.h"
 
 #if defined(NP_WINDOW_GLFW) || defined(NP_WINDOW_EMSCRIPTENGLFW)
-
 #include "GLFW/InputImpl.h"
-
 #endif
+
+#include "None/InputImpl.h"
 
 namespace Neptune {
 
-    /**
-    * @brief Instance a WindowsInput single instance.
-    */
+    namespace {
+        
+        UP<Input> s_Instance = nullptr;
+    }
+    
+    void Input::Create(WindowImplement implement)
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        switch (implement)
+        {
+            case WindowImplement::GLFW:
+            case WindowImplement::emscripten_glfw:
 #if defined(NP_WINDOW_GLFW) || defined(NP_WINDOW_EMSCRIPTENGLFW)
-    
-    std::unique_ptr<Input> Input::s_Instance = std::make_unique<GLFW::InputImpl>();
-    
+            {
+                s_Instance = CreateUP<GLFW::InputImpl>();
+                break;
+            }
 #endif
+            default:
+            {
+                s_Instance = CreateUP<InputNone::InputImpl>();
+                break;
+            }
+        }
+    }
 
+    bool Input::IsKeyPressed(const int& keycode)
+    {
+        NEPTUNE_PROFILE_ZONE
+
+        return s_Instance->IsKeyPressedImpl(keycode);
+    }
+
+    bool Input::IsMouseButtonPressed(const int& button)
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        return s_Instance->IsMouseButtonPressedImpl(button);
+    }
+
+    std::pair<float, float> Input::GetMousePosition()
+    {
+        NEPTUNE_PROFILE_ZONE
+
+        return s_Instance->GetMousePositionImpl();
+    }
+
+    float Input::GetMouseX()
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        return s_Instance->GetMouseXImpl();
+    }
+
+    float Input::GetMouseY()
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        return s_Instance->GetMouseYImpl();
+    }
 }

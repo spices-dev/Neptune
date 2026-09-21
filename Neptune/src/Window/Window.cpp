@@ -6,6 +6,7 @@
 
 #include "Pchheader.h"
 #include "Window.h"
+#include "Core/Input/Input.h"
 
 #ifdef NP_WINDOW_EMSCRIPTENGLFW
 #include "Window/EmscriptenGLFW/WindowImpl.h"
@@ -85,6 +86,10 @@ namespace Neptune {
 
     Window::Window(WindowImplement implement)
         : m_WindowImplement(implement)
-    {}
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        Input::Create(implement);
+    }
 
 }

@@ -7,6 +7,7 @@
 #pragma once
 #include "Core/Core.h"
 #include "Core/NonCopyable.h"
+#include "Window/Enum.h"
 
 namespace Neptune {
 
@@ -15,6 +16,15 @@ namespace Neptune {
     */
     class Input : public NonCopyable
     {
+    public:
+        
+        /**
+        * @brief Create Input.
+        * 
+        * @param[in] implement WindowImplement.
+        */
+        static void Create(WindowImplement implement);
+        
     public:
 
         /**
@@ -34,7 +44,7 @@ namespace Neptune {
         * 
         * @return Returns true if given Key is Pressed.
         */
-        static bool IsKeyPressed(const int& keycode) { return s_Instance->IsKeyPressedImpl(keycode); }
+        static bool IsKeyPressed(const int& keycode);
 
         /**
         * @brief Query If given Mouse Button is Pressed.
@@ -43,28 +53,28 @@ namespace Neptune {
         * 
         * @return Returns true if given Key is Pressed.
         */
-        static bool IsMouseButtonPressed(const int& button) { return s_Instance->IsMouseButtonPressedImpl(button); }
+        static bool IsMouseButtonPressed(const int& button);
 
         /**
         * @brief Query Mouse Position in Windows.
         * 
         * @return Returns the pair of Mouse Position in Windows.
         */
-        static std::pair<float, float> GetMousePosition() { return s_Instance->GetMousePositionImpl(); }
+        static std::pair<float, float> GetMousePosition();
 
         /**
         * @brief Query Mouse X Position in Windows.
         * 
         * @return Returns the Mouse X Position in Windows.
         */
-        static float GetMouseX() { return s_Instance->GetMouseXImpl(); }
+        static float GetMouseX();
 
         /**
         * @brief Query Mouse Y Position in Windows.
         * 
         * @return Returns the Mouse Y Position in Windows.
         */
-        static float GetMouseY() { return s_Instance->GetMouseYImpl(); }
+        static float GetMouseY();
 
     protected:
 
@@ -111,13 +121,6 @@ namespace Neptune {
         * @return Returns the Mouse Y Position in Windows.
         */
         virtual float GetMouseYImpl() = 0;
-
-    private:
-
-        /**
-        * @brief Platform Specific Input Class.
-        */
-        static std::unique_ptr<Input> s_Instance;
     };
 
 }

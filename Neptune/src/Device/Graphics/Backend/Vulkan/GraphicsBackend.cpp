@@ -45,9 +45,9 @@ namespace Neptune::Vulkan {
     	
 		m_Context = CreateUP<Context>();
 
+		m_Context->Registry<IFunctions>();
 		m_Context->Registry<ILayers>();
 		m_Context->Registry<IExtensions>(window);
-		m_Context->Registry<IFunctions>();
 		m_Context->Registry<IInstance>();
 		m_Context->Registry<IDebugUtilsObject>();
 		if (window)

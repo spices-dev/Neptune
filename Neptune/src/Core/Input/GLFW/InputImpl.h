@@ -14,7 +14,7 @@
 namespace Neptune::GLFW {
 
     /**
-    * @brief This Class Is gltf Specific Input Class.
+    * @brief This Class Is glfw Specific Input Class.
     */
     class InputImpl : public Input
     {
