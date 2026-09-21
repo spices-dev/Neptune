@@ -12,15 +12,6 @@
 
 namespace Neptune::Vulkan::Unit {
 
-	void OpticalFlowSession::SetFunctor(PFN_vkCreateOpticalFlowSessionNV create, PFN_vkDestroyOpticalFlowSessionNV destroy, PFN_vkBindOpticalFlowSessionImageNV bind)
-	{
-		NEPTUNE_PROFILE_ZONE
-
-		vkCreateOpticalFlowSessionNV    = create;
-		vkDestroyOpticalFlowSessionNV   = destroy;
-		vkBindOpticalFlowSessionImageNV = bind;
-	}	
-
 	OpticalFlowSession::~OpticalFlowSession()
 	{
 		NEPTUNE_PROFILE_ZONE

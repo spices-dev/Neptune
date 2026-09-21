@@ -32,8 +32,7 @@ namespace Neptune::Vulkan {
 				GetContext().Has<IPhysicalDevice>() ? GetContext().Get<IPhysicalDevice>()->Handle() : nullptr,
 				GetContext().Has<IDevice>() ? GetContext().Get<IDevice>()->Handle() : nullptr, 
 				GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IDeviceFault>(),
-				GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IMemoryBudget>(),
-				GetContext().Has<IFunctions>() ? GetContext().Get<IFunctions>()->vkGetDeviceFaultReportsKHR : nullptr
+				GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IMemoryBudget>()
 			); 
 		});
 	}
@@ -48,6 +47,7 @@ namespace Neptune::Vulkan {
 
 		m_Context->Registry<ILayers>();
 		m_Context->Registry<IExtensions>(window);
+		m_Context->Registry<IFunctions>();
 		m_Context->Registry<IInstance>();
 		m_Context->Registry<IDebugUtilsObject>();
 		if (window)

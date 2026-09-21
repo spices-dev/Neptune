@@ -10,6 +10,10 @@
 
 #include "RenderBackendInterface.h"
 
+#ifdef NP_GRAPHICS_VULKAN
+#include <volk.h>
+#endif
+
 namespace Neptune::AndroidNative {
 
 	UP<APIInterface> CreateInterface(RenderBackendEnum backend)

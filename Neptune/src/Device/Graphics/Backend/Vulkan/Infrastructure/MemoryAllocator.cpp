@@ -8,12 +8,16 @@
 
 #ifdef NP_GRAPHICS_VULKAN
 
+#include "Instance.h"
+
+#define VMA_STATIC_VULKAN_FUNCTIONS 0
+#define VMA_DYNAMIC_VULKAN_FUNCTIONS 1
 #define VMA_IMPLEMENTATION
 
 #include "MemoryAllocator.h"
-#include "Instance.h"
 #include "PhysicalDevice.h"
 #include "Device.h"
+#include "Functions.h"
 #include "Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/BufferDeviceAddress.h"
 #include "Core/Memory/Enum.h"
@@ -168,6 +172,15 @@ namespace Neptune::Vulkan {
 		if (GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IBufferDeviceAddress>())
 		{
 			createInfo.flags                 |= VMA_ALLOCATOR_CREATE_BUFFER_DEVICE_ADDRESS_BIT;
+		}
+		
+		VmaVulkanFunctions                      functor{};
+		functor.vkGetInstanceProcAddr         = vkGetInstanceProcAddr;
+		functor.vkGetDeviceProcAddr           = vkGetDeviceProcAddr;
+		
+		if (GetContext().Has<IFunctions>())
+		{
+			createInfo.pVulkanFunctions       = &functor;
 		}
 		
 #ifdef NEPTUNE_DEBUG

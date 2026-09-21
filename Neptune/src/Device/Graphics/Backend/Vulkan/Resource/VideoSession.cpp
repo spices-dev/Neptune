@@ -27,27 +27,6 @@ namespace Neptune::Vulkan::Resource {
 		constexpr uint32_t MaxStdSPSCount = 32;
 		constexpr uint32_t MaxStdPPSCount = 256;
 	}					   
-	
-	VideoSession::VideoSession(Context& context)
-		: ContextAccessor(context)
-		, m_DPB(context)
-	{
-		NEPTUNE_PROFILE_ZONE
-
-		m_Session.SetFunctor(
-			GetContext().Get<IFunctions>()->vkCreateVideoSessionKHR, 
-			GetContext().Get<IFunctions>()->vkDestroyVideoSessionKHR,
-			GetContext().Get<IFunctions>()->vkBindVideoSessionMemoryKHR
-		);
-
-		m_Parameters.SetFunctor(
-			GetContext().Get<IFunctions>()->vkCreateVideoSessionParametersKHR, 
-			GetContext().Get<IFunctions>()->vkDestroyVideoSessionParametersKHR, 
-			GetContext().Get<IFunctions>()->vkUpdateVideoSessionParametersKHR
-		);
-
-		CreateBuffer();
-	}
 
 	void VideoSession::CreateBuffer(VkDeviceSize size)
 	{
@@ -112,10 +91,10 @@ namespace Neptune::Vulkan::Resource {
 		vkGetPhysicalDeviceMemoryProperties(GetContext().Get<IPhysicalDevice>()->Handle(), &memProperties);
 		
 		uint32_t memoryRequirementsCount = 0;
-		VULKAN_CHECK(GetContext().Get<IFunctions>()->vkGetVideoSessionMemoryRequirementsKHR(GetContext().Get<IDevice>()->Handle(), Handle(), &memoryRequirementsCount, NULL))
+		VULKAN_CHECK(vkGetVideoSessionMemoryRequirementsKHR(GetContext().Get<IDevice>()->Handle(), Handle(), &memoryRequirementsCount, NULL))
 
 		std::vector<VkVideoSessionMemoryRequirementsKHR> memoryRequirements(memoryRequirementsCount, { VK_STRUCTURE_TYPE_VIDEO_SESSION_MEMORY_REQUIREMENTS_KHR });
-		VULKAN_CHECK(GetContext().Get<IFunctions>()->vkGetVideoSessionMemoryRequirementsKHR(GetContext().Get<IDevice>()->Handle(), Handle(), &memoryRequirementsCount, memoryRequirements.data()))
+		VULKAN_CHECK(vkGetVideoSessionMemoryRequirementsKHR(GetContext().Get<IDevice>()->Handle(), Handle(), &memoryRequirementsCount, memoryRequirements.data()))
 
         std::vector<VkBindVideoSessionMemoryInfoKHR> sessionBindMemorys(memoryRequirementsCount, { VK_STRUCTURE_TYPE_BIND_VIDEO_SESSION_MEMORY_INFO_KHR });
 

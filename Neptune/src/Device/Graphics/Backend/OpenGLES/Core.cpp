@@ -31,7 +31,7 @@ namespace Neptune::OpenGLES {
 		return s_Handler;
 	}
 
-	void GLAPIENTRY DebugCallback(GLenum source, GLenum type, GLuint id,
+	void GL_APIENTRY DebugCallback(GLenum source, GLenum type, GLuint id,
 		GLenum severity, GLsizei length, const GLchar* message, const void* userParam
 	) {
 		NEPTUNE_PROFILE_ZONE

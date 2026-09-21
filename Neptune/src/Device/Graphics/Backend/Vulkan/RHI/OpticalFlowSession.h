@@ -40,7 +40,7 @@ namespace Neptune::Vulkan {
 		*
 		* @param[in] context Context.
 		*/
-		explicit OpticalFlowSession(Context& context);
+		explicit OpticalFlowSession(Context& context) : ContextAccessor(context) {}
 
 		/**
 		* @brief Destructor Function.

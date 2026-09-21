@@ -12,7 +12,9 @@
 #ifdef NP_COMPILER_MSVC
 #include <intrin.h>
 #else
+#ifdef NP_PLATFORM_WINDOWS
 #include <cpuid.h>
+#endif
 #endif
 
 namespace Neptune::Vulkan {
@@ -99,6 +101,7 @@ namespace Neptune::Vulkan {
                 }
 
 #else
+#ifdef NP_PLATFORM_WINDOWS
                 std::array<uint32_t, 4> cpui;
 
                 if (__get_cpuid(0, &cpui[0], &cpui[1], &cpui[2], &cpui[3])) {
@@ -118,7 +121,7 @@ namespace Neptune::Vulkan {
                         f_7_ECX_ = cpui[2];
                     }
                 }
-
+#endif
 #endif
 
             };
@@ -144,9 +147,11 @@ namespace Neptune::Vulkan {
         else if (__builtin_cpu_supports("avx2")) { return SIMD_ISA::AVX2; }
         else if (__builtin_cpu_supports("ssse3")) { return SIMD_ISA::SSSE3; };
 #elif defined(__aarch64__)
+#ifdef NP_PLATFORM_WINDOWS
         long hwcaps = getauxval(AT_HWCAP);
         if (hwcaps & HWCAP_SVE) { return SIMD_ISA::SVE; }
         else if (hwcaps & HWCAP_ASIMD) { return SIMD_ISA::NEON; }
+#endif
 #elif defined(__ARM_ARCH_7A__) || defined(_M_ARM64)
         return SIMD_ISA::NEON;
 #endif

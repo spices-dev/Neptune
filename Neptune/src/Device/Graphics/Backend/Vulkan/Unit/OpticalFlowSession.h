@@ -36,15 +36,6 @@ namespace Neptune::Vulkan::Unit {
 		~OpticalFlowSession() override;
 
 		/**
-		* @brief Set Functor.
-		* 
-		* @param[in] create PFN_vkCreateOpticalFlowSessionNV.
-		* @param[in] destroy PFN_vkDestroyOpticalFlowSessionNV.
-		* @param[in] bind PFN_vkBindOpticalFlowSessionImageNV.
-		*/
-		void SetFunctor(PFN_vkCreateOpticalFlowSessionNV create, PFN_vkDestroyOpticalFlowSessionNV destroy, PFN_vkBindOpticalFlowSessionImageNV bind);
-
-		/**
 		* @brief Create OpticalFlowSession.
 		*
 		* @param[in] device VkDevice.
@@ -64,9 +55,6 @@ namespace Neptune::Vulkan::Unit {
 	private:
 
 		VkDevice                            m_Device = VK_NULL_HANDLE;            // @brief VkDevice
-		PFN_vkCreateOpticalFlowSessionNV    vkCreateOpticalFlowSessionNV;         // @brief PFN_vkCreateOpticalFlowSessionNV
-		PFN_vkDestroyOpticalFlowSessionNV   vkDestroyOpticalFlowSessionNV;        // @brief PFN_vkDestroyOpticalFlowSessionNV
-		PFN_vkBindOpticalFlowSessionImageNV vkBindOpticalFlowSessionImageNV;      // @brief PFN_vkBindOpticalFlowSessionImageNV
 
 	};
 }

@@ -12,7 +12,6 @@
 #include "Device.h"
 #include "Instance.h"
 #include "Surface.h"
-#include "Functions.h"
 #include "Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/HDR.h"
@@ -441,10 +440,10 @@ namespace Neptune::Vulkan {
 		formatInfo.usage                     = usage;
 
 		uint32_t count = 0;
-		VULKAN_CHECK(GetContext().Get<IFunctions>()->vkGetPhysicalDeviceOpticalFlowImageFormatsNV(Handle(), &formatInfo, &count, nullptr))
+		VULKAN_CHECK(vkGetPhysicalDeviceOpticalFlowImageFormatsNV(Handle(), &formatInfo, &count, nullptr))
 
 		std::vector<VkOpticalFlowImageFormatPropertiesNV> formats(count, { VK_STRUCTURE_TYPE_OPTICAL_FLOW_IMAGE_FORMAT_PROPERTIES_NV });
-		VULKAN_CHECK(GetContext().Get<IFunctions>()->vkGetPhysicalDeviceOpticalFlowImageFormatsNV(Handle(), &formatInfo, &count, formats.data()))
+		VULKAN_CHECK(vkGetPhysicalDeviceOpticalFlowImageFormatsNV(Handle(), &formatInfo, &count, formats.data()))
 
 		if (!std::ranges::any_of(formats.begin(), formats.end(), [&](const auto& f) { return f.format == format; }))
 		{
@@ -554,7 +553,7 @@ namespace Neptune::Vulkan {
 			}
 		}
 
-		VULKAN_CHECK(GetContext().Get<IFunctions>()->vkGetPhysicalDeviceVideoCapabilitiesKHR(Handle(), &videoProfile, &capabilities))
+		VULKAN_CHECK(vkGetPhysicalDeviceVideoCapabilitiesKHR(Handle(), &videoProfile, &capabilities))
 
 		if (decodeCapabilities.flags & VK_VIDEO_DECODE_CAPABILITY_DPB_AND_OUTPUT_COINCIDE_BIT_KHR)
 		{
@@ -717,10 +716,10 @@ namespace Neptune::Vulkan {
 		videoFormatInfo.pNext                  = &videoProfiles;
 
 		uint32_t supportedFormatCount = 0;
-        VULKAN_CHECK(GetContext().Get<IFunctions>()->vkGetPhysicalDeviceVideoFormatPropertiesKHR(Handle(), &videoFormatInfo, &supportedFormatCount, nullptr))
+        VULKAN_CHECK(vkGetPhysicalDeviceVideoFormatPropertiesKHR(Handle(), &videoFormatInfo, &supportedFormatCount, nullptr))
 
 		std::vector<VkVideoFormatPropertiesKHR> supportedFormats(supportedFormatCount, { VK_STRUCTURE_TYPE_VIDEO_FORMAT_PROPERTIES_KHR });
-		VULKAN_CHECK(GetContext().Get<IFunctions>()->vkGetPhysicalDeviceVideoFormatPropertiesKHR(Handle(), &videoFormatInfo, &supportedFormatCount, supportedFormats.data()))
+		VULKAN_CHECK(vkGetPhysicalDeviceVideoFormatPropertiesKHR(Handle(), &videoFormatInfo, &supportedFormatCount, supportedFormats.data()))
 
 		std::vector<VkFormat> formats;
 		std::ranges::for_each(supportedFormats, [&](const auto& format){

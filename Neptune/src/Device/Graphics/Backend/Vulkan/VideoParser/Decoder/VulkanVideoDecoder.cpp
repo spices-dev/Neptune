@@ -290,6 +290,7 @@ namespace Neptune::Vulkan {
         }
         else
 #elif defined(__aarch64__) || defined(__ARM_ARCH_7A__) || defined(_M_ARM64)
+#ifdef NP_PLATFORM_WINDOWS
 #if defined(__aarch64__)
         if (m_NextStartCode == SIMD_ISA::SVE)
         {
@@ -304,6 +305,7 @@ namespace Neptune::Vulkan {
             }
             else
 #endif // __ARM_NEON
+#endif
 #endif
             {
                 return ParseByteStreamC(pck, pParsedBytes);

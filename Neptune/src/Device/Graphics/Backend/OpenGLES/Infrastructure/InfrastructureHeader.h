@@ -8,6 +8,7 @@
 
 #ifdef NP_GRAPHICS_OPENGLES
 
+#include "Device/Graphics/Backend/OpenGLES/Core.h"
 #include "Device/Graphics/Backend/OpenGLES/Infrastructure/Infrastructure.h"
 
 #endif

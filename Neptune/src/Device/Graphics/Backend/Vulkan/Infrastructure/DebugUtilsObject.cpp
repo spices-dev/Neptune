@@ -9,7 +9,6 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "DebugUtilsObject.h"
-#include "Functions.h"
 #include "Device.h"
 
 namespace Neptune::Vulkan {
@@ -26,14 +25,14 @@ namespace Neptune::Vulkan {
 		labelInfo.sType                = VK_STRUCTURE_TYPE_DEBUG_UTILS_LABEL_EXT;
 		labelInfo.pLabelName           = caption.c_str();
 
-		GetContext().Get<IFunctions>()->vkCmdBeginDebugUtilsLabelEXT(cmdBuffer, &labelInfo);
+		vkCmdBeginDebugUtilsLabelEXT(cmdBuffer, &labelInfo);
 	}
 
 	void DebugUtilsObject::EndLabel(VkCommandBuffer cmdBuffer) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		GetContext().Get<IFunctions>()->vkCmdEndDebugUtilsLabelEXT(cmdBuffer);
+		vkCmdEndDebugUtilsLabelEXT(cmdBuffer);
 	}
 
 	void DebugUtilsObject::InsertLabel(VkCommandBuffer cmdBuffer, const std::string& caption) const
@@ -44,7 +43,7 @@ namespace Neptune::Vulkan {
 		labelInfo.sType            = VK_STRUCTURE_TYPE_DEBUG_UTILS_LABEL_EXT;
 		labelInfo.pLabelName       = caption.c_str();
 
-		GetContext().Get<IFunctions>()->vkCmdInsertDebugUtilsLabelEXT(cmdBuffer, &labelInfo);
+		vkCmdInsertDebugUtilsLabelEXT(cmdBuffer, &labelInfo);
 	}
 
 	void DebugUtilsObject::BeginQueueLabel(VkQueue queue, const std::string& caption) const
@@ -55,14 +54,14 @@ namespace Neptune::Vulkan {
 		labelInfo.sType           = VK_STRUCTURE_TYPE_DEBUG_UTILS_LABEL_EXT;
 		labelInfo.pLabelName      = caption.c_str();
 
-		GetContext().Get<IFunctions>()->vkQueueBeginDebugUtilsLabelEXT(queue, &labelInfo);
+		vkQueueBeginDebugUtilsLabelEXT(queue, &labelInfo);
 	}
 
 	void DebugUtilsObject::EndQueueLabel(VkQueue queue) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		GetContext().Get<IFunctions>()->vkQueueEndDebugUtilsLabelEXT(queue);
+		vkQueueEndDebugUtilsLabelEXT(queue);
 	}
 
 	void DebugUtilsObject::InsertQueueLabel(VkQueue queue, const std::string& caption) const
@@ -73,7 +72,7 @@ namespace Neptune::Vulkan {
 		labelInfo.sType           = VK_STRUCTURE_TYPE_DEBUG_UTILS_LABEL_EXT;
 		labelInfo.pLabelName      = caption.c_str();
 
-		GetContext().Get<IFunctions>()->vkQueueInsertDebugUtilsLabelEXT(queue, &labelInfo);
+		vkQueueInsertDebugUtilsLabelEXT(queue, &labelInfo);
 	}
 }
 

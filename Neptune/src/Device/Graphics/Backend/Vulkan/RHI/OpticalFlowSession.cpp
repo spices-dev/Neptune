@@ -9,7 +9,6 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "OpticalFlowSession.h"
-#include "Device/Graphics/Backend/Vulkan/Infrastructure/Functions.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Device.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/PhysicalDevice.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderTarget.h"
@@ -18,18 +17,6 @@
 #include "Device/Graphics/Frontend/RHI/RenderTarget.h"
 
 namespace Neptune::Vulkan {
-
-	OpticalFlowSession::OpticalFlowSession(Context& context)
-		: ContextAccessor(context)
-	{
-		NEPTUNE_PROFILE_ZONE
-
-		m_Session.SetFunctor(
-			GetContext().Get<IFunctions>()->vkCreateOpticalFlowSessionNV,
-			GetContext().Get<IFunctions>()->vkDestroyOpticalFlowSessionNV,
-			GetContext().Get<IFunctions>()->vkBindOpticalFlowSessionImageNV
-		);
-	}
 
 	void OpticalFlowSession::SetInputRenderTarget(const SP<RHI::RenderTarget>& rt)
 	{

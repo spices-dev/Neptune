@@ -20,13 +20,6 @@ namespace Neptune::Vulkan::Unit {
 
 		vkDestroySwapchainKHR(m_Device, m_Handle, GetAllocator());
 	}
-	
-	void SwapChain::SetFunctor(PFN_vkSetHdrMetadataEXT setHdrMetadata)
-	{
-		NEPTUNE_PROFILE_ZONE
-		
-		vkSetHdrMetadataEXT = setHdrMetadata;
-	}
 
 	void SwapChain::CreateSwapchain(VkDevice device, const VkSwapchainCreateInfoKHR& createInfo)
 	{

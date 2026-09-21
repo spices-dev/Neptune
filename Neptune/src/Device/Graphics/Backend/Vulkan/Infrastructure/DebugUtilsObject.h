@@ -10,7 +10,6 @@
 
 #include "Core/Core.h"
 #include "Infrastructure.h"
-#include "Functions.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/Device.h"
 
 namespace Neptune::Vulkan {
@@ -146,7 +145,7 @@ namespace Neptune::Vulkan {
 		name_info.objectHandle            = reinterpret_cast<uint64_t>(unit.GetHandle());
 		name_info.pObjectName             = caption.c_str();
 
-		VULKAN_CHECK(GetContext().Get<IFunctions>()->vkSetDebugUtilsObjectNameEXT(m_Device, &name_info))
+		VULKAN_CHECK(vkSetDebugUtilsObjectNameEXT(m_Device, &name_info))
 	}
 
 	template<>
@@ -164,7 +163,7 @@ namespace Neptune::Vulkan {
 		name_info.objectHandle            = reinterpret_cast<uint64_t>(unit.GetHandle());
 		name_info.pObjectName             = caption.c_str();
 
-		VULKAN_CHECK(GetContext().Get<IFunctions>()->vkSetDebugUtilsObjectNameEXT(unit.GetHandle(), &name_info))
+		VULKAN_CHECK(vkSetDebugUtilsObjectNameEXT(unit.GetHandle(), &name_info))
 	}
 	
 	template <typename Unit>
@@ -182,7 +181,7 @@ namespace Neptune::Vulkan {
 		tag_info.tagSize                  = captions.size();
 		tag_info.pTag                     = captions.data();
 		
-		VULKAN_CHECK(GetContext().Get<IFunctions>()->vkSetDebugUtilsObjectTagEXT(m_Device, &tag_info))
+		VULKAN_CHECK(vkSetDebugUtilsObjectTagEXT(m_Device, &tag_info))
 	}
 }
 

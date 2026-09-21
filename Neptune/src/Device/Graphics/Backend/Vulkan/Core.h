@@ -14,7 +14,7 @@
 #include "Memory.h"
 #include "Render/Frontend/Core.h"
 
-#include <vulkan/vulkan.h>
+#include <volk.h>
 #include <functional>
 
 namespace Neptune::Vulkan {
@@ -90,9 +90,8 @@ namespace Neptune::Vulkan {
 	* @param[in] device VkDevice.
 	* @param[in] deviceFaultValid Device Fault Extension Valid.
 	* @param[in] memoryBudget Memory Budget Extension Valid.
-	* @param[in] vkGetDeviceFaultReportsKHR PFN_vkGetDeviceFaultReportsKHR.
 	*/
-	void HandleResult(VkResult result, VkPhysicalDevice physicalDevice, VkDevice device, bool deviceFaultValid, bool memoryBudget, PFN_vkGetDeviceFaultReportsKHR vkGetDeviceFaultReportsKHR);
+	void HandleResult(VkResult result, VkPhysicalDevice physicalDevice, VkDevice device, bool deviceFaultValid, bool memoryBudget);
 
 	#define VULKAN_CHECK(expr)  { auto expr_value = expr; if (expr_value != VK_SUCCESS) { std::invoke(HandleResultDelegate::GetHandler(), expr_value); NEPTUNE_BREAK } }
 }

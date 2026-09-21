@@ -103,6 +103,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		{
 			vendor.GLFW.includes,                                 -- Library: GLFW Source Folder.
 			vendor.Vulkan_Headers.includes,                       -- Library: VulkanSDK Source Folder.
+			vendor.volk.includes,                                 -- Library: volk Source Folder.
 			vendor.Glad.includes,                                 -- Library: Glad Source Folder.
 			vendor.DirectX_Headers.includes,                      -- Library: DirectX-Headers Source Folder.
 			vendor.WinPixEventRuntime.includes,                   -- Library: WinPixEventRuntime Source Folder.
@@ -145,6 +146,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		{
 			vendor.GLFW.includes,                                      -- Library: GLFW Source Folder.
 			vendor.Vulkan_Headers.includes,                            -- Library: VulkanSDK Source Folder.
+			vendor.volk.includes,                                      -- Library: volk Source Folder.
 			vendor.Glad.includes,                                      -- Library: Glad Source Folder.
 			vendor.RenderDoc.includes,                                 -- Library: RenderDoc Source Folder.
 		}
@@ -179,6 +181,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		{
 			vendor.GLFW.includes,                                      -- Library: GLFW Source Folder.
 			vendor.Vulkan_Headers.includes,                            -- Library: VulkanSDK Source Folder.
+			vendor.volk.includes,                                      -- Library: volk Source Folder.
 			vendor.Glad.includes,                                      -- Library: Glad Source Folder.
 			vendor.metal_cpp.includes,                                 -- Library: metal-cpp Source Folder.
 			vendor.RenderDoc.includes,                                 -- Library: RenderDoc Source Folder.
@@ -246,6 +249,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		externalincludedirs
 		{
 			vendor.Vulkan_Headers.includes,                            -- Library: VulkanSDK Source Folder.
+			vendor.volk.includes,                                      -- Library: volk Source Folder.
 		}
 
 		-- Android Specific Additional Library Folder.
@@ -310,7 +314,6 @@ solution.DefineCppStaticLibrary("Neptune", function()
 			-- Windows Specific Library Folder.
 			libdirs
 			{
-				vendor.Vulkan.library_dirs,                                -- Library: VulkanSDK.
 				vendor.WinPixEventRuntime.library_dirs,                    -- Library: WinPixEventRuntime.
 				vendor.ffmpeg.library_dirs,                                -- Library: ffmpeg.
 			}
@@ -318,7 +321,6 @@ solution.DefineCppStaticLibrary("Neptune", function()
 			-- Windows Specific Solution Dependency.
 			links
 			{
-				vendor.Vulkan.libraries,                                   -- Dependency: Vulkan
 				vendor.Direct3D11.libraries,                               -- Dependency: Direct3D11
 				vendor.DirectX12AgilitySDK.libraries,                      -- Dependency: DirectX12AgilitySDK
 				vendor.WinPixEventRuntime.libraries,                       -- Dependency: WinPixEventRuntime
@@ -348,15 +350,11 @@ solution.DefineCppStaticLibrary("Neptune", function()
 
 			-- Linux Specific Additional Library Folder.
 			libdirs
-			{
-				vendor.Vulkan.library_dirs,                                -- Library: VulkanSDK.
-			}
+			{}
 
 			-- Linux Specific Runtime Additional Library Folder.
 			runpathdirs
-			{
-				vendor.Vulkan.library_dirs,                                -- Runtime Library: VulkanSDK.
-			}
+			{}
 
 			-- Linux Specific Solution Dependency.
 			links
@@ -373,15 +371,11 @@ solution.DefineCppStaticLibrary("Neptune", function()
 
 			-- MacOS Specific Additional Library Folder.
 			libdirs
-			{
-				vendor.Vulkan.library_dirs,                                -- Library: VulkanSDK.
-			}
+			{}
 
 			-- MacOS Specific Runtime Additional Library Folder.
 			runpathdirs
-			{
-				vendor.Vulkan.library_dirs,                                -- Runtime Library: VulkanSDK.
-			}
+			{}
 
 			-- MacOS Specific Solution Dependency.
 			links

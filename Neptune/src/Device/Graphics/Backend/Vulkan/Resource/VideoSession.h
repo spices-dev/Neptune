@@ -45,7 +45,7 @@ namespace Neptune::Vulkan::Resource {
 		*
 		* @param[in] context Context.
 		*/
-		explicit VideoSession(Context& context);
+		explicit VideoSession(Context& context) : ContextAccessor(context), m_DPB(context) {}
 
 		/**
 		* @brief Destructor Function.

@@ -8,7 +8,7 @@
 
 #ifdef NP_GRAPHICS_VULKAN
 
-#include <vulkan/vulkan.h>
+#include <volk.h>
 
 namespace Neptune::Vulkan {
 

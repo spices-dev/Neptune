@@ -55,7 +55,7 @@ namespace Neptune::OpenGLES {
 	* @param[in] message Message data.
 	* @param[im] userParam Callback.
 	*/
-	void GLAPIENTRY DebugCallback(GLenum source, GLenum type, GLuint id,
+	void GL_APIENTRY DebugCallback(GLenum source, GLenum type, GLuint id,
 		GLenum severity, GLsizei length, const GLchar* message, const void* userParam
 	);
 	

@@ -10,6 +10,7 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Frontend/GraphicsFrontend.h"
+#include "Infrastructure/Enum.h"
 #include "Device/Graphics/Backend/Common/Infrastructure/Context.h"
 
 namespace Neptune::OpenGLES {

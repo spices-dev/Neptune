@@ -58,3 +58,6 @@
 [submodule "Neptune/vendor/Vulkan-Headers"]
 	path = Neptune/vendor/Vulkan-Headers
 	url = https://github.com/KhronosGroup/Vulkan-Headers.git
+[submodule "Neptune/vendor/volk"]
+	path = Neptune/vendor/volk
+	url = https://github.com/zeux/volk.git

@@ -36,13 +36,6 @@ namespace Neptune::Vulkan::Unit {
 		* @brief Destructor Function.
 		*/
 		~SwapChain() override;
-
-		/**
-		* @brief Set Functor.
-		* 
-		* @param[in] setHdrMetadata PFN_vkSetHdrMetadataEXT.
-		*/
-		void SetFunctor(PFN_vkSetHdrMetadataEXT setHdrMetadata);
 		
 		/**
 		* @brief Create Swapchain.
@@ -79,7 +72,6 @@ namespace Neptune::Vulkan::Unit {
 	private:
 
 		VkDevice m_Device = nullptr;                  // @brief VkDevice.
-		PFN_vkSetHdrMetadataEXT vkSetHdrMetadataEXT;  // @brief PFN_vkCreateOpticalFlowSessionNV
 	};
 }
 

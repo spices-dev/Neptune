@@ -39,7 +39,7 @@ namespace Neptune::OpenGLES {
 
         RenderFrontend::OnShutDown();
 
-        m_GraphicsBackend->OnShutDown();
+        //m_GraphicsBackend->OnShutDown();
     }
 
     void RenderBackend::BeginFrame(Scene* scene) const
@@ -49,15 +49,9 @@ namespace Neptune::OpenGLES {
         const auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
 
         {
-            GetContext().Get<IGraphicFence>()->Wait(clock.m_FrameIndex);
-        }
-
-        {
-            DEBUGUTILS_BEGINLABEL(0, "MainGraphicQueue")
-            
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             
-            glClearDepth(1.0f);
+            glClearDepthf(1.0f);
             
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
@@ -66,18 +60,6 @@ namespace Neptune::OpenGLES {
     void RenderBackend::EndFrame(Scene* scene) const
     {
         NEPTUNE_PROFILE_ZONE
-
-        {
-            DEBUGUTILS_ENDLABEL()
-        }
-
-        {
-            DEBUGUTILS_BEGINLABEL(0, "PresentQueue")
-            
-            GetContext().Get<IWindowContext>()->SwapBuffers();
-
-            DEBUGUTILS_ENDLABEL()
-        }
     }
 
     void RenderBackend::Wait() const

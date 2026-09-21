@@ -114,18 +114,11 @@ namespace Neptune::Vulkan {
     	m_ApiVersion = appInfo.apiVersion;
     	
     	NEPTUNE_LOG_CORE(I) << "Instance Create With apiVersion: [ " << appInfo.apiVersion << " ]";
-    	
-		GetContext().Registry<IFunctions>();
 
-		GetContext().Get<IFunctions>()->Init(Handle());
+		GetContext().Get<IFunctions>()->LoadInstance(Handle());
 
         if (GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IDebugUtils>())
         {
-            m_DebugMessenger.SetFunctor(
-                GetContext().Get<IFunctions>()->vkCreateDebugUtilsMessengerEXT,
-                GetContext().Get<IFunctions>()->vkDestroyDebugUtilsMessengerEXT
-            );
-
             m_DebugMessenger.CreateDebugUtilsMessenger(Handle(), debugInfo);
         }
     }

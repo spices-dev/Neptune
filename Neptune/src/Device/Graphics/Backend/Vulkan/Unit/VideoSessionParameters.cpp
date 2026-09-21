@@ -21,15 +21,6 @@ namespace Neptune::Vulkan::Unit {
 		vkDestroyVideoSessionParametersKHR(m_Device, m_Handle, GetAllocator());
 	}
 
-	void VideoSessionParameters::SetFunctor(PFN_vkCreateVideoSessionParametersKHR create, PFN_vkDestroyVideoSessionParametersKHR destroy, PFN_vkUpdateVideoSessionParametersKHR update)
-	{
-		NEPTUNE_PROFILE_ZONE
-
-		vkCreateVideoSessionParametersKHR  = create;
-		vkDestroyVideoSessionParametersKHR = destroy;
-		vkUpdateVideoSessionParametersKHR  = update;
-	}
-
 	void VideoSessionParameters::CreateVideoSessionParameters(VkDevice device, const VkVideoSessionParametersCreateInfoKHR& createInfo)
 	{
 		NEPTUNE_PROFILE_ZONE

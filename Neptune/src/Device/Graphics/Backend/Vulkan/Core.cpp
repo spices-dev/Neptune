@@ -21,10 +21,9 @@ namespace Neptune::Vulkan {
 	 	* @brief Handle Device Lost Result.
 	 	* 
 	 	* @param device VkDevice.
-	 	* @param vkGetDeviceFaultReportsKHR PFN_vkGetDeviceFaultReportsKHR.
 	 	* @param ss DebugInfoStringStream.
 	 	*/
-        void HandleDeviceLostResult(VkDevice device, PFN_vkGetDeviceFaultReportsKHR vkGetDeviceFaultReportsKHR, std::stringstream& ss)
+        void HandleDeviceLostResult(VkDevice device, std::stringstream& ss)
 		{
         	NEPTUNE_PROFILE_ZONE
         	
@@ -225,7 +224,7 @@ namespace Neptune::Vulkan {
 		return VK_FALSE;
 	}
 	
-	void HandleResult(VkResult result, VkPhysicalDevice physicalDevice, VkDevice device, bool deviceFaultValid, bool memoryBudget, PFN_vkGetDeviceFaultReportsKHR vkGetDeviceFaultReportsKHR)
+	void HandleResult(VkResult result, VkPhysicalDevice physicalDevice, VkDevice device, bool deviceFaultValid, bool memoryBudget)
 	{
         NEPTUNE_PROFILE_ZONE
 
@@ -288,9 +287,9 @@ namespace Neptune::Vulkan {
 		std::stringstream ss;
 		ss << "Vulkan Error: [ " << label << " ]";
 
-		if (result == VK_ERROR_DEVICE_LOST && vkGetDeviceFaultReportsKHR && device && deviceFaultValid)
+		if (result == VK_ERROR_DEVICE_LOST && device && deviceFaultValid)
 		{
-			HandleDeviceLostResult(device, vkGetDeviceFaultReportsKHR, ss);
+			HandleDeviceLostResult(device, ss);
 		}
 
         if ((result == VK_ERROR_OUT_OF_HOST_MEMORY || result == VK_ERROR_OUT_OF_DEVICE_MEMORY) && physicalDevice && memoryBudget)

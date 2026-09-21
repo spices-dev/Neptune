@@ -14,15 +14,6 @@
 
 namespace Neptune::Vulkan {
 
-#define VK_FUNCTION_POINTER(function)          \
-	PFN_##function function = nullptr;
-
-#define EXPLAIN_VK_FUNCTION_POINTER(function)  \
-	function = reinterpret_cast<PFN_##function>(vkGetInstanceProcAddr(instance, #function));  \
-	if(!function){                                                                            \
-		NEPTUNE_LOG_CORE(E) << "Vulkan Function: " << #function << " Not found.";             \
-	}
-
 	using IFunctions = IInfrastructure<class Functions, EInfrastructure::Functions>;
 
 	/**
@@ -47,91 +38,25 @@ namespace Neptune::Vulkan {
 		~Functions() override = default;
 
 		/**
-		* @brief Initialize.
+		* @brief LoadInstance.
 		* 
 		* @param[in] instance VkInstance
 		*/
-		void Init(VkInstance instance);
+		void LoadInstance(VkInstance instance);
 
-		// @brief Debug Functions. 
-		VK_FUNCTION_POINTER(vkCreateDebugUtilsMessengerEXT                  )
-		VK_FUNCTION_POINTER(vkDestroyDebugUtilsMessengerEXT                 )
-
-		// @brief DebugUtils Function.  
-		VK_FUNCTION_POINTER(vkCmdBeginDebugUtilsLabelEXT                    )
-		VK_FUNCTION_POINTER(vkCmdEndDebugUtilsLabelEXT                      )
-		VK_FUNCTION_POINTER(vkCmdInsertDebugUtilsLabelEXT                   )
-														                    
-		VK_FUNCTION_POINTER(vkQueueBeginDebugUtilsLabelEXT                  )
-		VK_FUNCTION_POINTER(vkQueueEndDebugUtilsLabelEXT                    )
-		VK_FUNCTION_POINTER(vkQueueInsertDebugUtilsLabelEXT                 )
-														                    
-		VK_FUNCTION_POINTER(vkSetDebugUtilsObjectNameEXT                    )
-		VK_FUNCTION_POINTER(vkSetDebugUtilsObjectTagEXT                     )
-
-		// @brief DeviceFault Function. 
-		VK_FUNCTION_POINTER(vkGetDeviceFaultReportsKHR                      )
-		VK_FUNCTION_POINTER(vkGetDeviceFaultDebugInfoKHR                    )
+		/**
+		* @brief LoadDevice.
+		* 
+		* @param[in] device VkDevice
+		*/
+		void LoadDevice(VkDevice device);
 		
-		// @brief RayTracing Function.					             
-		VK_FUNCTION_POINTER(vkGetRayTracingShaderGroupHandlesKHR            )
-		VK_FUNCTION_POINTER(vkCmdTraceRaysKHR                               )
-		VK_FUNCTION_POINTER(vkCreateRayTracingPipelinesKHR                  )
-		VK_FUNCTION_POINTER(vkCreateAccelerationStructureKHR                )
-		VK_FUNCTION_POINTER(vkDestroyAccelerationStructureKHR               )
-		VK_FUNCTION_POINTER(vkCmdBuildAccelerationStructuresKHR             )
-		VK_FUNCTION_POINTER(vkCopyAccelerationStructureKHR                  )
-		VK_FUNCTION_POINTER(vkGetAccelerationStructureDeviceAddressKHR      )
-		VK_FUNCTION_POINTER(vkCmdWriteAccelerationStructuresPropertiesKHR   )
-		VK_FUNCTION_POINTER(vkGetAccelerationStructureBuildSizesKHR         )
-		VK_FUNCTION_POINTER(vkCmdCopyAccelerationStructureKHR               )
+	private:
 
-		// @brief Mesh Shader Function. 
-		VK_FUNCTION_POINTER(vkCmdDrawMeshTasksEXT                           )
-
-		// @brief DGC Function. 
-		VK_FUNCTION_POINTER(vkCreateIndirectCommandsLayoutNV                )
-		VK_FUNCTION_POINTER(vkDestroyIndirectCommandsLayoutNV               )
-		VK_FUNCTION_POINTER(vkCmdExecuteGeneratedCommandsNV                 )
-		VK_FUNCTION_POINTER(vkGetGeneratedCommandsMemoryRequirementsNV      )
-		VK_FUNCTION_POINTER(vkCmdPreprocessGeneratedCommandsNV              )
-
-		// @brief Aftermath Function. 
-		VK_FUNCTION_POINTER(vkCmdSetCheckpointNV                            )
-
-		// @brief Tracy Vulkan Context Collect Function 
-		VK_FUNCTION_POINTER(vkGetPhysicalDeviceCalibrateableTimeDomainsEXT  )
-		VK_FUNCTION_POINTER(vkGetCalibratedTimestampsEXT                    )
-		VK_FUNCTION_POINTER(vkResetQueryPool                                )
-
-		// @brief Copy data to image from host directly. 
-		VK_FUNCTION_POINTER(vkCopyMemoryToImageEXT                          )
-		VK_FUNCTION_POINTER(vkCopyImageToMemoryEXT                          )
-
-		// @brief Video Encode/Decode 
-		VK_FUNCTION_POINTER(vkGetPhysicalDeviceVideoCapabilitiesKHR         )
-		VK_FUNCTION_POINTER(vkCreateVideoSessionParametersKHR               )
-		VK_FUNCTION_POINTER(vkDestroyVideoSessionParametersKHR              )
-		VK_FUNCTION_POINTER(vkUpdateVideoSessionParametersKHR               )
-		VK_FUNCTION_POINTER(vkGetPhysicalDeviceVideoFormatPropertiesKHR     )
-		VK_FUNCTION_POINTER(vkGetVideoSessionMemoryRequirementsKHR          )
-		VK_FUNCTION_POINTER(vkBindVideoSessionMemoryKHR                     )
-		VK_FUNCTION_POINTER(vkCreateVideoSessionKHR                         )
-		VK_FUNCTION_POINTER(vkDestroyVideoSessionKHR                        )
-		VK_FUNCTION_POINTER(vkCmdBeginVideoCodingKHR                        )
-		VK_FUNCTION_POINTER(vkCmdControlVideoCodingKHR                      )
-		VK_FUNCTION_POINTER(vkCmdDecodeVideoKHR                             )
-		VK_FUNCTION_POINTER(vkCmdEndVideoCodingKHR                          )
-
-		// @brief Optical Flow. 
-		VK_FUNCTION_POINTER(vkCreateOpticalFlowSessionNV                   )
-		VK_FUNCTION_POINTER(vkDestroyOpticalFlowSessionNV                  )
-		VK_FUNCTION_POINTER(vkCmdOpticalFlowExecuteNV                      )
-		VK_FUNCTION_POINTER(vkGetPhysicalDeviceOpticalFlowImageFormatsNV   )
-		VK_FUNCTION_POINTER(vkBindOpticalFlowSessionImageNV                )
-		
-		// @brief HDR. 
-		VK_FUNCTION_POINTER(vkSetHdrMetadataEXT                            )
+		/**
+		* @brief Create Functions.
+		*/
+		void Create();
 	};
 	
 }

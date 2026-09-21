@@ -9,6 +9,7 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "Device.h"
+#include "Functions.h"
 #include "PhysicalDevice.h"
 #include "DebugUtilsObject.h"
 #include "Extensions.h"
@@ -111,6 +112,8 @@ namespace Neptune::Vulkan {
 
 		m_Device.CreateDevice(physicalDevice->Handle(), &createInfo);
 
+    	GetContext().Get<IFunctions>()->LoadDevice(Handle());
+    	
 		DEBUGUTILS_SETOBJECTNAME(m_Device, physicalDevice->GetProperties().deviceName)
     }
 

@@ -8,7 +8,7 @@
 
 #if defined(NP_PROFILER_TRACY) && defined(NP_GRAPHICS_VULKAN)
 
-#include <vulkan/vulkan.h>
+#include <volk.h>
 #include <tracy/TracyVulkan.hpp>
 
 #define NEPTUNE_PROFILE_CREATE_DEVICE_CONTEXT(...)           TracyVkContext(__VA_ARGS__)

@@ -10,7 +10,6 @@
 
 #include "CmdList2.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/ThreadCommandPool.h"
-#include "Device/Graphics/Backend/Vulkan/Infrastructure/Functions.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Device.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/ThreadQueue.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/DebugUtilsObject.h"
@@ -135,7 +134,7 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		m_CommandBuffer->BeginVideoCoding(GetContext().Get<IFunctions>()->vkCmdBeginVideoCodingKHR, info);
+		m_CommandBuffer->BeginVideoCoding(vkCmdBeginVideoCodingKHR, info);
 	}
 
 	void CmdList2::CmdControlVideoCoding() const
@@ -147,14 +146,14 @@ namespace Neptune::Vulkan {
 		controlInfo.flags                          = VK_VIDEO_CODING_CONTROL_RESET_BIT_KHR;
 		controlInfo.pNext                          = nullptr;
 
-		m_CommandBuffer->ControlVideoCoding(GetContext().Get<IFunctions>()->vkCmdControlVideoCodingKHR, controlInfo);
+		m_CommandBuffer->ControlVideoCoding(vkCmdControlVideoCodingKHR, controlInfo);
 	}
 
 	void CmdList2::CmdDecodeVideo(const VkVideoDecodeInfoKHR& info) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		m_CommandBuffer->DecodeVideo(GetContext().Get<IFunctions>()->vkCmdDecodeVideoKHR, info);
+		m_CommandBuffer->DecodeVideo(vkCmdDecodeVideoKHR, info);
 	}
 
 	void CmdList2::CmdEndVideoCoding() const
@@ -164,7 +163,7 @@ namespace Neptune::Vulkan {
 		VkVideoEndCodingInfoKHR                      info{};
 		info.sType                                 = VK_STRUCTURE_TYPE_VIDEO_END_CODING_INFO_KHR;
 
-		m_CommandBuffer->EndVideoCoding(GetContext().Get<IFunctions>()->vkCmdEndVideoCodingKHR, info);
+		m_CommandBuffer->EndVideoCoding(vkCmdEndVideoCodingKHR, info);
 	}
 
 	void CmdList2::CmdOpticalFlowExecute() const
@@ -175,7 +174,7 @@ namespace Neptune::Vulkan {
 		info.sType                                 = VK_STRUCTURE_TYPE_OPTICAL_FLOW_EXECUTE_INFO_NV;
 		info.flags                                 = 0;
 
-		m_CommandBuffer->OpticalFlowExecute(GetContext().Get<IFunctions>()->vkCmdOpticalFlowExecuteNV, m_OpticalFlowSession->Handle(), info);
+		m_CommandBuffer->OpticalFlowExecute(vkCmdOpticalFlowExecuteNV, m_OpticalFlowSession->Handle(), info);
 	}
 	
 }

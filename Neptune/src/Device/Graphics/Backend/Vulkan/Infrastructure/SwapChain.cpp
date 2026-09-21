@@ -92,8 +92,6 @@ namespace Neptune::Vulkan {
 			meta.minLuminance                 = 0.001f;
 			meta.maxContentLightLevel         = 1000.0f;
 			meta.maxFrameAverageLightLevel    = 100.0f;
-
-			m_SwapChain->SetFunctor(GetContext().Get<IFunctions>()->vkSetHdrMetadataEXT);
 			
 			m_SwapChain->SetHdrMetadata(meta);
 		}

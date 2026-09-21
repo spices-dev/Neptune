@@ -1,6 +1,6 @@
 #include "Pchheader.h"
 
-#ifdef NP_GRAPHICS_VULKAN
+#if defined(NP_GRAPHICS_VULKAN) && defined(NP_PLATFORM_WINDOWS)
 
 #if defined(__aarch64__) || defined(__ARM_ARCH_7A__) || defined(_M_ARM64)
 #include "arm_neon.h"

@@ -7,7 +7,7 @@
 #include "VulkanVideoParserIf.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/VideoSession.h"
 
-#include <vulkan/vulkan.h>
+#include <volk.h>
 #include <atomic>
 #include <cassert>
 #include <vector>
@@ -77,8 +77,10 @@ namespace Neptune::Vulkan {
         bool ParseByteStreamAVX512(const VkParserBitstreamPacket* pck, size_t* pParsedBytes);
         bool ParseByteStreamSSSE3(const VkParserBitstreamPacket* pck, size_t* pParsedBytes);
 #elif defined(__aarch64__) || defined(_M_ARM64)
+#ifdef NP_PLATFORM_WINDOWS
         bool ParseByteStreamSVE(const VkParserBitstreamPacket* pck, size_t* pParsedBytes);
         bool ParseByteStreamNEON(const VkParserBitstreamPacket* pck, size_t* pParsedBytes);
+#endif
 #elif defined(__ARM_ARCH_7A__)
         bool ParseByteStreamNEON(const VkParserBitstreamPacket* pck, size_t* pParsedBytes);
 #endif

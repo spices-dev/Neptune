@@ -45,46 +45,4 @@ module.includes = {
     GetVulkanSDKPath(),                                                               -- Include: VulkanSDK
 }
 
-if os.target() == "windows" then
-
-    -- Library Directories
-    module.library_dirs = {
-        GetVulkanSDKPath() .. "/../Lib",                                              -- Library Directries: VulkanSDK Folder
-    }
-
-    -- Library Dependencies
-    module.libraries = {
-        "vulkan-1",                                                                   -- Library: vulkan
-    }
-
-end
-
-if os.target() == "linux" then
-
-    -- Library Directories
-    module.library_dirs = {
-        GetVulkanSDKPath() .. "/../lib",                                              -- Library Directries: VulkanSDK Folder
-    }
-
-    -- Library Dependencies
-    module.libraries = {
-        "vulkan",                                                                     -- Library: vulkan
-    }
-
-end
-
-if os.target() == "macosx" then
-
-    -- Library Directories
-    module.library_dirs = {
-        GetVulkanSDKPath() .. "/../lib",                                              -- Library Directries: VulkanSDK Folder
-    }
-
-    -- Library Dependencies
-    module.libraries = {
-        "vulkan",                                                                     -- Library: vulkan
-    }
-
-end
-
 return module

@@ -40,15 +40,6 @@ namespace Neptune::Vulkan::Unit {
 		~VideoSession() override;
 
 		/**
-		* @brief Set Functor.
-		* 
-		* @param[in] create PFN_vkCreateVideoSessionKHR.
-		* @param[in] destroy PFN_vkDestroyVideoSessionKHR.
-		* @param[in] bind PFN_vkBindVideoSessionMemoryKHR.
-		*/
-		void SetFunctor(PFN_vkCreateVideoSessionKHR create, PFN_vkDestroyVideoSessionKHR destroy, PFN_vkBindVideoSessionMemoryKHR bind);
-
-		/**
 		* @brief Create VideoSession.
 		*
 		* @param[in] device VkDevice.
@@ -77,9 +68,6 @@ namespace Neptune::Vulkan::Unit {
 
 		VkDevice                              m_Device = VK_NULL_HANDLE;                        // @brief VkDevice.
 		std::vector<VkDeviceMemory>           m_Memories{};                                     // @brief VkDeviceMemory.
-		PFN_vkCreateVideoSessionKHR           vkCreateVideoSessionKHR = VK_NULL_HANDLE;         // @brief PFN_vkCreateVideoSessionKHR.
-		PFN_vkDestroyVideoSessionKHR          vkDestroyVideoSessionKHR = VK_NULL_HANDLE;        // @brief PFN_vkDestroyVideoSessionKHR.
-		PFN_vkBindVideoSessionMemoryKHR       vkBindVideoSessionMemoryKHR = VK_NULL_HANDLE;     // @brief PFN_vkBindVideoSessionMemoryKHR.
 		VkMemoryPropertyFlags                 m_Flags;                                          // @brief VkMemoryPropertyFlags.
 	};
 }
