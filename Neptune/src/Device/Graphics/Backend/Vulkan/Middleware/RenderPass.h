@@ -11,9 +11,13 @@
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/RenderPass.h"
-#include "Device/Graphics/Backend/Vulkan/Unit/FrameBuffer.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/IImageLayout.h"
 #include "IRenderPass.h"
+
+namespace Neptune::Vulkan::Unit {
+	
+	class FrameBuffer;
+}
 
 namespace Neptune::Vulkan::Middleware {
 	
@@ -115,7 +119,7 @@ namespace Neptune::Vulkan::Middleware {
 	private:
 
 		Unit::RenderPass                                  m_RenderPass;                      // @brief This RenderPass.
-		std::vector<SP<Unit::FrameBuffer>>                m_FrameBuffers;                    // @brief Container of FrameBuffer.
+		std::vector<UP<Unit::FrameBuffer>>                m_FrameBuffers;                    // @brief Container of FrameBuffer.
 
 		VkPipelineColorBlendStateCreateInfo               m_ColorBlendInfo{};				 // @brief VkPipelineColorBlendStateCreateInfo.
 		std::vector<VkAttachmentDescription>              m_AttachmentDescriptions;          // @brief VkAttachmentDescription.

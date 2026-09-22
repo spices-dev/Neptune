@@ -17,6 +17,7 @@
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/SwapChain.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderTarget.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/CommandBuffer.h"
+#include "Device/Graphics/Backend/Vulkan/Unit/FrameBuffer.h"
 
 namespace Neptune::Vulkan::Middleware {
 	
@@ -180,11 +181,11 @@ namespace Neptune::Vulkan::Middleware {
 			info.height                                 = m_Extent.value().height;
 			info.layers                                 = 1;
 
-			auto frameBuffer = CreateSP<Unit::FrameBuffer>();
+			auto frameBuffer = CreateUP<Unit::FrameBuffer>();
 
 			frameBuffer->CreateFrameBuffer(GetContext().Get<IDevice>()->Handle(), info);
 
-			m_FrameBuffers.emplace_back(frameBuffer);
+			m_FrameBuffers.emplace_back(std::move(frameBuffer));
 
 			DEBUGUTILS_SETOBJECTNAME(*frameBuffer, "FrameBuffer")
 		}

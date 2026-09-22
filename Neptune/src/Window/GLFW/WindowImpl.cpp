@@ -28,7 +28,11 @@ namespace Neptune::GLFW {
         // Error event Callback.
         glfwSetErrorCallback([](int error, const char* description){
 
-            NEPTUNE_LOG_CORE(E) << "glfwError: " << error << " | " << description;
+            if (description && strstr(description, "[Warning]")) {
+                NEPTUNE_LOG_CORE(W) << "glfw: " << error << " | " << description;
+            } else {
+                NEPTUNE_LOG_CORE(E) << "glfw: " << error << " | " << description;
+            }
         });
         
         // Initialize the library
@@ -42,7 +46,6 @@ namespace Neptune::GLFW {
 
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);                                  // @brief Set glfw enable resize feature.
         glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);                                  // @brief Set glfw enable title tab.
-        glfwWindowHint(GLFW_CONTEXT_RELEASE_BEHAVIOR, GLFW_RELEASE_BEHAVIOR_NONE);  // @brief Set glfw release behavior(no flush).
 
         const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 

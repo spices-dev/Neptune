@@ -27,7 +27,14 @@ namespace Neptune {
     {
         NEPTUNE_PROFILE_ZONE
 
+#ifdef NP_PLATFORM_ANDROID
+        m_SlateFrontend = SlateFrontend::Create(SlateBackendEnum::ImGui, RenderBackendEnum::Vulkan, WindowImplement::AndroidNative);
+#elif defined(NP_PLATFORM_EMSCRIPTEN)
+        m_SlateFrontend = SlateFrontend::Create(SlateBackendEnum::ImGui, RenderBackendEnum::WebGPU, WindowImplement::emscripten_glfw);
+#else
         m_SlateFrontend = SlateFrontend::Create(SlateBackendEnum::ImGui, RenderBackendEnum::Vulkan, WindowImplement::GLFW);
+#endif
+
     }
 
     void LogicalSystem::OnSystemShutDown()

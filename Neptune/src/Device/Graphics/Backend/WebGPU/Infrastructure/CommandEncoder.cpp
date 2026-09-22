@@ -51,7 +51,8 @@ namespace Neptune::WebGPU {
         
         auto sp = CreateSP<Unit::CommandBuffer>();
         
-        WGPUCommandBufferDescriptor    desc{};
+        WGPUCommandBufferDescriptor desc{};
+        
         sp->SetHandle(wgpuCommandEncoderFinish(m_CommandEncoders[index]->GetHandle(), &desc));
         
         DEBUGUTILS_SETOBJECTNAME(*sp, "CommandBuffer")

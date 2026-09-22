@@ -53,6 +53,15 @@ namespace Neptune::WebGPU {
         const Unit::CommandEncoder::Handle& Handle(uint32_t index = 0) const { return m_CommandEncoders[index]->GetHandle(); }
 
         /**
+        * @brief Get Unit Handle Interface.
+        *
+        * @param[in] index Handle index.
+        *
+        * @return Returns Unit Handle Interface.
+        */
+        const SP<Unit::CommandEncoder>& IHandle(uint32_t index = 0) const { return m_CommandEncoders[index]; }
+        
+        /**
         * @brief Begin CommandEncoder.
         * 
         * @param[in] index Handle index.

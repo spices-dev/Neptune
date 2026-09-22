@@ -50,6 +50,14 @@ namespace Neptune::WebGPU::Unit {
 		*/
 		void SetName(const std::string& name) const;
 		
+		/**
+		* @brief Begin RenderPass.
+		*
+		* @param[in] info WGPURenderPassDescriptor.
+		* 
+		* @return Returns WGPURenderPassEncoder.
+		*/
+		WGPURenderPassEncoder BeginRenderPass(const WGPURenderPassDescriptor& info) const;
 	};
 }
 

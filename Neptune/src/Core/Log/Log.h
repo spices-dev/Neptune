@@ -80,13 +80,15 @@ namespace Neptune {
         /**
         * @brief Severity Levels
         */
-        enum class LogLevel
+        enum class LogLevel : uint8_t
         {
             T,     // @brief Trace
             I,     // @brief Info
             W,     // @brief Warning
             E,     // @brief Error
-            C      // @brief CRITICAL
+            C,     // @brief CRITICAL
+            
+            Count,
         };
         
         /**

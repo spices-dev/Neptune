@@ -250,12 +250,4 @@ solution.DefineCppExecutable("Editor", function()
 					or 'cp -rf "%{cfg.targetdir}/." "%{wks.location}/nepnep/Emscripten/public/wasm/Release/Editor"'
 			}
 
-	-- Platform: Android
-	filter "system:android"
-
-		-- Android: shared library
-		kind "SharedLib"
-
-	filter {}
-
 end)

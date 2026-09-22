@@ -15,7 +15,7 @@ namespace Neptune {
         
         UP<Log> s_Log = nullptr;
         
-        bool s_IsInitialized = false;
+        std::atomic_bool s_IsInitialized = false;
     }
     
     const UP<Log>& Log::Get()
@@ -62,7 +62,7 @@ namespace Neptune {
         
         if (!Log::IsInitialized())
         {
-            std::cout << msg << "\n" << std::endl;
+            std::cout << msg << '\n';
             
             return;
         }

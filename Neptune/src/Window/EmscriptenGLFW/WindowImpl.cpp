@@ -29,7 +29,11 @@ namespace Neptune::EmscriptenGLFW {
         // Error event Callback.
         glfwSetErrorCallback([](int error, const char* description){
 
-            NEPTUNE_LOG_CORE(E) << "glfwError: " << error << " | " << description;
+            if (description && strstr(description, "[Warning]")) {
+                NEPTUNE_LOG_CORE(W) << "glfw: " << error << " | " << description;
+            } else {
+                NEPTUNE_LOG_CORE(E) << "glfw: " << error << " | " << description;
+            }
         });
         
         // Initialize the library
@@ -43,14 +47,6 @@ namespace Neptune::EmscriptenGLFW {
 
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);                               // @brief no OpenGL (use canvas2D)
         glfwWindowHint(GLFW_SCALE_FRAMEBUFFER, GLFW_FALSE);                         // @brief make it not Hi DPI Aware (simplify rendering code a bit)
-        glfwWindowHint(GLFW_CONTEXT_RELEASE_BEHAVIOR, GLFW_RELEASE_BEHAVIOR_NONE);  // @brief Set glfw release behavior(no flush).
-
-        const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-        glfwWindowHint(GLFW_RED_BITS     , mode->redBits     );
-        glfwWindowHint(GLFW_GREEN_BITS   , mode->greenBits   );
-        glfwWindowHint(GLFW_BLUE_BITS    , mode->blueBits    );
-        glfwWindowHint(GLFW_REFRESH_RATE , mode->refreshRate );
 
         // Setting the association window <-> canvas
         emscripten_glfw_set_next_window_canvas_selector(HTMLCanvas.data());

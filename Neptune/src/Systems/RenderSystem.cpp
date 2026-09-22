@@ -25,7 +25,14 @@ namespace Neptune {
     {
         NEPTUNE_PROFILE_ZONE
 
+#ifdef NP_PLATFORM_ANDROID
         m_RenderFrontend = RenderFrontend::Create(RenderBackendEnum::Vulkan);
+#elif defined(NP_PLATFORM_EMSCRIPTEN)
+        m_RenderFrontend = RenderFrontend::Create(RenderBackendEnum::WebGPU);
+#else
+        m_RenderFrontend = RenderFrontend::Create(RenderBackendEnum::Vulkan);
+#endif
+        
     }
 
     void RenderSystem::OnSystemShutDown()

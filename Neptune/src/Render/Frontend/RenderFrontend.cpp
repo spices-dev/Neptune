@@ -156,6 +156,8 @@ namespace Neptune {
 
         m_RenderPasses = {};
 
+#ifdef NP_PLATFORM_WINDOWS
+        
         {
             auto pass = CreateSP<Render::PrePass>();
             pass->SetRTSize(rtSize);
@@ -187,6 +189,8 @@ namespace Neptune {
 
             AddPass(pass);
         }
+
+#endif
 
         {
             auto pass = CreateSP<Render::SlatePass>();

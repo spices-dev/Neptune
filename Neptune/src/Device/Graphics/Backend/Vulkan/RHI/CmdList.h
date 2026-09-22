@@ -10,9 +10,13 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
-#include "Device/Graphics/Backend/Vulkan/Unit/CommandBuffer.h"
 #include "Device/Graphics/Frontend/RHI/CmdList.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/ISynchronization.h"
+
+namespace Neptune::WebGPU::Unit {
+	
+	class CommandBuffer;
+}
 
 namespace Neptune::RHI {
 

@@ -8,7 +8,7 @@
 #include "WindowInterface.h"
 #include "Window/Window.h"
 
-#ifdef NP_WINDOW_GLFW
+#if defined(NP_WINDOW_GLFW) || defined(NP_WINDOW_EMSCRIPTENGLFW)
 #include <backends/imgui_impl_glfw.h>
 #include "GLFW/glfw3.h"
 #endif
@@ -24,6 +24,9 @@ namespace Neptune::imgui {
 #ifdef NP_WINDOW_GLFW
 			case WindowImplement::GLFW: return CreateUP<GLFWInterface>();
 #endif
+#ifdef NP_WINDOW_EMSCRIPTENGLFW
+			case WindowImplement::emscripten_glfw: return CreateUP<GLFWInterface>();
+#endif
 			default:
 			{
 				NEPTUNE_LOG_CORE(C) << "Not supported WindowImplement in ImGui Slate Configuration.";
@@ -32,7 +35,7 @@ namespace Neptune::imgui {
 		}
 	}
 
-#ifdef NP_WINDOW_GLFW
+#if defined(NP_WINDOW_GLFW) || defined(NP_WINDOW_EMSCRIPTENGLFW)
 	
 	void GLFWInterface::OnInitialize(RenderBackendEnum e) const
 	{
@@ -40,7 +43,6 @@ namespace Neptune::imgui {
 
 		switch (e)
 		{
-#ifndef NP_PLATFORM_EMSCRIPTEN
 			case RenderBackendEnum::OpenGL:
 			{
 				ImGui_ImplGlfw_InitForOpenGL(static_cast<GLFWwindow*>(Window::Instance().NativeWindow()), true);
@@ -51,37 +53,29 @@ namespace Neptune::imgui {
 				ImGui_ImplGlfw_InitForVulkan(static_cast<GLFWwindow*>(Window::Instance().NativeWindow()), true);
 				break;
 			}
-#endif
-#ifdef NP_PLATFORM_WINDOWS
 			case RenderBackendEnum::Direct3D11:
 			case RenderBackendEnum::Direct3D12:
 			{
 				ImGui_ImplGlfw_InitForOther(static_cast<GLFWwindow*>(Window::Instance().NativeWindow()), true);
 				break;
 			}
-#endif
-#ifdef NP_GRAPHICS_METAL
-		case RenderBackendEnum::Metal:
+			case RenderBackendEnum::Metal:
 			{
 				ImGui_ImplGlfw_InitForOther(static_cast<GLFWwindow*>(Window::Instance().NativeWindow()), true);
 				break;
 			}
-#endif
-#ifdef NP_PLATFORM_EMSCRIPTEN
 			case RenderBackendEnum::WebGL:
 			case RenderBackendEnum::WebGPU:
 			{
 				ImGui_ImplGlfw_InitForOther(static_cast<GLFWwindow*>(Window::Instance().NativeWindow()), true);
 				break;
 			}
-#endif
 			default:
 			{
 				NEPTUNE_LOG_CORE(E) << "Unsupported RenderBackendEnum in GLFWInterface::OnInitialize.";
 				break;
 			}
 		}
-		
 	}
 
 	void GLFWInterface::OnShutDown() const

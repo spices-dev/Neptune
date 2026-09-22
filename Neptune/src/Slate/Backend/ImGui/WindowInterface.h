@@ -64,7 +64,7 @@ namespace Neptune::imgui {
     */
     UP<WindowInterface> CreateWindowInterface(WindowImplement implement);
 
-#ifdef NP_WINDOW_GLFW
+#if defined(NP_WINDOW_GLFW) || defined(NP_WINDOW_EMSCRIPTENGLFW)
     
     /**
     * @brief GLFW APIInterface.

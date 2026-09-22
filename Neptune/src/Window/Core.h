@@ -10,7 +10,7 @@
 
 namespace Neptune {
 
-	constexpr std::string_view HTMLCanvas = "#neptune";       // @brief Surface HTML Canvas.
-	constexpr std::string_view HTMLDiv    = "#neptune-div";   // @brief Surface HTML Div.
+	constexpr std::string_view HTMLCanvas = "#nepnep";       // @brief Surface HTML Canvas.
+	constexpr std::string_view HTMLDiv    = "#nepnep-div";   // @brief Surface HTML Div.
 	
 }

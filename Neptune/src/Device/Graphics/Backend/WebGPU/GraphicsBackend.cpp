@@ -67,6 +67,8 @@ namespace Neptune::WebGPU {
 
         switch(e)
 		{
+            case RHI::ERHI::RenderPass:       return std::static_pointer_cast<RHI::RHIRenderPass::Impl>    (CreateSP<RenderPass>           (*m_Context));
+            case RHI::ERHI::CmdList:          return std::static_pointer_cast<RHI::RHICmdList::Impl>       (CreateSP<CmdList>              (*m_Context));
 			default:                          NEPTUNE_LOG_CORE(E) << "WebGPU do not support RHI: [ " << ToString(e) << " ].";          return nullptr;
 		}
 	}
@@ -83,33 +85,7 @@ namespace Neptune::WebGPU {
         
         return context.GetInfrastructures();
 	}
-
-/*    void RenderBackend::RenderFrame()
-    {
-        NEPTUNE_PROFILE_ZONE
-
-        WGPUSurfaceTexture swapChainTexture;
-        wgpuSurfaceGetCurrentTexture(m_Context->Get<Surface>()->Handle(), &swapChainTexture);
-
-        WGPURenderPassColorAttachment                 color_attachments = {};
-        color_attachments.depthSlice                = WGPU_DEPTH_SLICE_UNDEFINED;
-        color_attachments.loadOp                    = WGPULoadOp_Clear;
-        color_attachments.storeOp                   = WGPUStoreOp_Store;
-        color_attachments.clearValue                = { 1.0, 0.0, 0.0, 1.0 };
-        color_attachments.view                      = wgpuTextureCreateView(swapChainTexture.texture, nullptr);
-
-        WGPURenderPassDescriptor                      render_pass_desc = {};
-        render_pass_desc.colorAttachmentCount       = 1;
-        render_pass_desc.colorAttachments           = &color_attachments;
-        render_pass_desc.depthStencilAttachment     = nullptr;
-
-        WGPURenderPassEncoder pass = wgpuCommandEncoderBeginRenderPass(graphicCommandEncoder, &render_pass_desc);
-        //ImGui_ImplWGPU_RenderDrawData(ImGui::GetDrawData(), pass);
-        wgpuRenderPassEncoderEnd(pass);
-
-        wgpuTextureViewRelease(color_attachments.view);
-        wgpuRenderPassEncoderRelease(pass);
-    }*/
+    
 }
 
 #endif

@@ -8,4 +8,7 @@
 
 #ifdef NP_GRAPHICS_WEBGPU
 
+#include "Device/Graphics/Backend/WebGPU/RHI/RenderPass.h"
+#include "Device/Graphics/Backend/WebGPU/RHI/CmdList.h"
+
 #endif

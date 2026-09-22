@@ -82,10 +82,6 @@ module.GetExecutableLinkOptions = function()
         table.insert(linkoptions, "-lGLESv3")                            -- Dependency: GLESv3
         table.insert(linkoptions, "-lEGL")                               -- Dependency: EGL
     end
-    
-    if table.contains(graphics, "NP_GRAPHICS_VULKAN") then
-        table.insert(linkoptions, "-lvulkan")                            -- Dependency: vulkan
-    end
 
     return linkoptions
 

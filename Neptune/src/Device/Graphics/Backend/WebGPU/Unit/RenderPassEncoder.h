@@ -34,19 +34,6 @@ namespace Neptune::WebGPU::Unit {
 		* @brief Destructor Function.
 		*/
 		~RenderPassEncoder() override;
-
-		/**
-		* @brief Begin RenderPassEncoder.
-		* 
-		* @param[in] encoder WGPUCommandEncoder.
-		* @param[in] desc WGPURenderPassDescriptor.
-		*/
-		void Begin(WGPUCommandEncoder encoder,  const WGPURenderPassDescriptor& desc);
-		
-		/**
-		* @brief End RenderPassEncoder.
-		*/
-		void End() const;
 		
 		/**
 		* @brief Set Unit name.
@@ -55,6 +42,10 @@ namespace Neptune::WebGPU::Unit {
 		*/
 		void SetName(const std::string& name) const;
 
+		/**
+		* @brief End RenderPass.
+		*/
+		void EndRenderPass() const;
 	};
 }
 

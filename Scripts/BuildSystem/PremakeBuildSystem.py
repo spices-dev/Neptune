@@ -188,6 +188,8 @@ class PremakeBuildSystem(BuildSystem):
             "APP_PLATFORM=android-24",
             "APP_STL=c++_shared",
             "APP_SHORT_COMMANDS=true",
+            f"NDK_OUT={self.solutionDirectory}/bin-int/{config.capitalize()}-android-AARCH64",
+            f"NDK_LIBS_OUT={self.solutionDirectory}/bin/{config.capitalize()}-android-AARCH64",
             "-j" + str(os.cpu_count() or 8),
         ]
 

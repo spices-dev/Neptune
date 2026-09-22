@@ -107,6 +107,14 @@ module.DefineCppExecutable = function(name, callback)
 
             callback()
 
+            -- Platform: Android
+            filter "system:android"
+
+                -- Android: shared library
+                kind "SharedLib"
+
+            filter {}
+
             -- Private Config
             usage "PRIVATE"
 
