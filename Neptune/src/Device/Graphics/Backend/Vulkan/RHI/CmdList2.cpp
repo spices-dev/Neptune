@@ -9,6 +9,7 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "CmdList2.h"
+#include "Device/Graphics/Backend/Vulkan/Unit/CommandBuffer.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/ThreadCommandPool.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Device.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/ThreadQueue.h"
