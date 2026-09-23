@@ -27,7 +27,15 @@ namespace Neptune::Vulkan::Resource {
 		constexpr uint32_t MaxStdVPSCount = 16;
 		constexpr uint32_t MaxStdSPSCount = 32;
 		constexpr uint32_t MaxStdPPSCount = 256;
-	}					   
+	}
+
+	VideoSession::VideoSession(Context& context)
+		: ContextAccessor(context), m_DPB(context)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		CreateBuffer();
+	}
 
 	void VideoSession::CreateBuffer(VkDeviceSize size)
 	{
