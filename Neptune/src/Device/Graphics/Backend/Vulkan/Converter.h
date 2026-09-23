@@ -100,13 +100,22 @@ namespace Neptune::Vulkan {
 	VkAttachmentLoadOp ToVkAttachmentLoadOp(AttachmentOP op);
 
 	/**
-	* @brief Convert AttachmentLayout to VkImageLayout.
+	* @brief Convert EImageLayout to VkImageLayout.
 	*
-	* @param[in] l AttachmentLayout.
+	* @param[in] l EImageLayout.
 	*
 	* @return Returns VkImageLayout.
 	*/
-	VkImageLayout ToVkImageLayout(AttachmentLayout l);
+	VkImageLayout ToVkImageLayout(Graphic::EImageLayout l);
+
+	/**
+	* @brief Convert EImageAspect to VkImageAspectFlags.
+	*
+	* @param[in] a EImageAspect.
+	*
+	* @return Returns VkImageAspectFlags.
+	*/
+	VkImageAspectFlags ToVkImageAspectFlags(Graphic::EImageAspect a);
 
 	/**
 	* @brief Convert EPipelineAccess to VkAccessFlags2.

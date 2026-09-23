@@ -9,6 +9,7 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "DecodePictureBuffer.h"
+#include "Device/Graphics/Backend/Vulkan/RHI/CmdList2.h"
 
 namespace Neptune::Vulkan::Resource {
 
@@ -46,14 +47,24 @@ namespace Neptune::Vulkan::Resource {
 		m_Image[index]->SetName("DecodeImageBuffer");
 	}
 
-	void DecodePictureBuffer::TransitionLayout(VkImageLayout newLayout) const
+	void DecodePictureBuffer::TransitionLayout(const Graphic::ImageBarrierDesc& desc) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		for (int i = 0; i < m_Image.size(); i++)
-		{
-			m_Image[i]->TransitionLayout(newLayout);
-		}
+		CmdList2 cmdList(GetContext());
+			
+		cmdList.SetGraphicCmdList();
+			
+		cmdList.Begin();
+		
+		std::ranges::for_each(m_Image, [&](const auto& image){
+
+			cmdList.CmdInsertBarrier(image->Handle(), desc);
+		});
+		
+		cmdList.End();
+			
+		cmdList.SubmitWait();
 	}
 
 	uint8_t DecodePictureBuffer::PopDecodeSlot()

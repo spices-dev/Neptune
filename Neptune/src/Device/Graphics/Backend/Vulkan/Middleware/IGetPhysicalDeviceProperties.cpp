@@ -26,6 +26,18 @@ namespace Neptune::Vulkan::Middleware {
         return CreateUP<GetPhysicalDeviceProperties>();
     }
     
+    UP<IGetPhysicalDeviceProperties> IGetPhysicalDeviceProperties::Create(Extensions* extensions)
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        if (extensions->GetContext()->Has<Extension::IGetPhysicalDeviceProperties2>())
+        {
+            return CreateUP<GetPhysicalDeviceProperties2>();
+        }
+
+        return CreateUP<GetPhysicalDeviceProperties>();
+    }
+    
     void GetPhysicalDeviceProperties::GetProperties(VkPhysicalDevice device, VkPhysicalDeviceProperties2& properties) const
     {
         NEPTUNE_PROFILE_ZONE

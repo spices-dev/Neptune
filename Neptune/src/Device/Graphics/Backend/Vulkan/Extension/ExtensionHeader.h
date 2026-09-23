@@ -19,6 +19,8 @@
 #include "Device/Graphics/Backend/Vulkan/Extension/VideoEncode.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/SamplerYcbcrConversion.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Maintenance1.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/Maintenance4.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/Maintenance5.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/MemoryBudget.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/DebugUtils.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/BufferDeviceAddress.h"

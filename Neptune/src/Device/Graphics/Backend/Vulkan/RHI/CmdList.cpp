@@ -10,11 +10,14 @@
 
 #include "CmdList.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/CommandBuffer.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Extensions.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderPass.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/Pipeline.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/DescriptorList.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/IndexBuffer.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/Buffer.h"
+#include "Device/Graphics/Backend/Vulkan/RHI/RenderTarget.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/VideoSession.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/QueryPool.h"
 #include "Device/Graphics/Frontend/RHI/RenderPass.h"
@@ -169,18 +172,25 @@ namespace Neptune::Vulkan {
 		m_CommandBuffer->Dispatch(groupCountX, groupCountY, groupCountZ);
 	}
 	
-	void CmdList::CmdInsertBarrier(const Graphic::MemoryBarrierDesc& barrier) const
+	void CmdList::CmdInsertBarrier(const SP<RHI::RenderTarget>& renderTarget, const Graphic::ImageBarrierDesc& desc) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		VkMemoryBarrier2                 memory{};
-		memory.sType                   = VK_STRUCTURE_TYPE_MEMORY_BARRIER_2;
-		memory.srcAccessMask           = ToVkAccessFlags(barrier.srcAccess);
-		memory.dstAccessMask           = ToVkAccessFlags(barrier.dstAccess);
-		memory.srcStageMask            = ToVkPipelineStageFlags(barrier.srcStage);
-		memory.dstStageMask            = ToVkPipelineStageFlags(barrier.dstStage);
+		CmdInsertBarrier(renderTarget->GetRHIImpl<RenderTarget>()->Handle(), desc);
+	}
+	
+	void CmdList::CmdInsertBarrier(const Graphic::MemoryBarrierDesc& desc) const
+	{
+		NEPTUNE_PROFILE_ZONE
 		
-		m_Synchronization->InsertBarrier(m_CommandBuffer.get(), memory);
+		VkMemoryBarrier2                  barrier{};
+		barrier.sType                   = VK_STRUCTURE_TYPE_MEMORY_BARRIER_2;
+		barrier.srcAccessMask           = ToVkAccessFlags(desc.srcAccess);
+		barrier.dstAccessMask           = ToVkAccessFlags(desc.dstAccess);
+		barrier.srcStageMask            = ToVkPipelineStageFlags(desc.srcStage);
+		barrier.dstStageMask            = ToVkPipelineStageFlags(desc.dstStage);
+		
+		m_Synchronization->InsertBarrier(m_CommandBuffer.get(), barrier);
 	}
 	
 	void CmdList::CmdSetViewport(const glm::vec2& viewPortSize) const
@@ -236,152 +246,28 @@ namespace Neptune::Vulkan {
 		m_CommandBuffer->CopyBuffer(src, dst, region);
 	}
 
-	void CmdList::CmdPipelineBarrier(VkPipelineStageFlags srcMask, VkPipelineStageFlags dstMask, const VkImageMemoryBarrier& barrier) const
-	{
-		NEPTUNE_PROFILE_ZONE
-
-		m_CommandBuffer->CmdPipelineBarrier(srcMask, dstMask, 0, barrier);
-	}
-
-	void CmdList::CmdTransitionLayout(SP<Resource::Image> image, VkImageLayout newLayout) const
+	void CmdList::CmdInsertBarrier(VkImage image, const Graphic::ImageBarrierDesc& desc) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		VkPipelineStageFlags sourceStage;
-		VkPipelineStageFlags destinationStage;
+		VkImageMemoryBarrier2                       barrier{};
+		barrier.sType                             = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2;
+		barrier.srcAccessMask                     = ToVkAccessFlags(desc.memoryDesc.srcAccess);
+		barrier.dstAccessMask                     = ToVkAccessFlags(desc.memoryDesc.dstAccess);
+		barrier.srcStageMask                      = ToVkPipelineStageFlags(desc.memoryDesc.srcStage);
+		barrier.dstStageMask                      = ToVkPipelineStageFlags(desc.memoryDesc.dstStage);
+		barrier.oldLayout                         = ToVkImageLayout(desc.srcLayout);
+		barrier.newLayout                         = ToVkImageLayout(desc.dstLayout);
+		barrier.srcQueueFamilyIndex               = GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
+		barrier.dstQueueFamilyIndex               = GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
+		barrier.image                             = image;
+		barrier.subresourceRange.aspectMask       = ToVkImageAspectFlags(desc.aspect);
+		barrier.subresourceRange.baseMipLevel     = desc.baseMipLevel;
+		barrier.subresourceRange.levelCount       = desc.levelCount;
+		barrier.subresourceRange.baseArrayLayer   = desc.baseArrayLayer;
+		barrier.subresourceRange.layerCount       = desc.layerCount;
 
-		auto oldLayout = image->GetLayout();
-
-		VkImageMemoryBarrier                           barrier{};
-		barrier.sType                                = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-		barrier.oldLayout                            = oldLayout;
-		barrier.newLayout                            = newLayout;
-		barrier.srcQueueFamilyIndex                  = VK_QUEUE_FAMILY_IGNORED;
-		barrier.dstQueueFamilyIndex                  = VK_QUEUE_FAMILY_IGNORED;
-		barrier.image                                = image->Handle();
-		barrier.subresourceRange.aspectMask          = VK_IMAGE_ASPECT_COLOR_BIT;
-		barrier.subresourceRange.baseMipLevel        = 0;
-		barrier.subresourceRange.levelCount          = 1;
-		barrier.subresourceRange.baseArrayLayer      = 0;
-		barrier.subresourceRange.layerCount          = image->GetLayerCount();
-		barrier.srcAccessMask                        = 0;
-		barrier.dstAccessMask                        = 0;
-
-		if (oldLayout == VK_IMAGE_LAYOUT_UNDEFINED && newLayout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL) 
-		{
-			barrier.srcAccessMask = 0;
-			barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-
-			// Don't care what stage the pipeline is in at the start.
-			sourceStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-
-			// Used for copying
-			destinationStage = VK_PIPELINE_STAGE_TRANSFER_BIT;
-		}
-		else if (oldLayout == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL && newLayout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL)
-		{
-			barrier.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
-			barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-
-			// Don't care what stage the pipeline is in at the start.
-			sourceStage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
-
-			// Used for copying
-			destinationStage = VK_PIPELINE_STAGE_TRANSFER_BIT;
-		}
-		else if (oldLayout == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL && newLayout == VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL)
-		{
-			barrier.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
-			barrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-
-			// Don't care what stage the pipeline is in at the start.
-			sourceStage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
-
-			// Used for copying
-			destinationStage = VK_PIPELINE_STAGE_TRANSFER_BIT;
-		}
-		else if (oldLayout == VK_IMAGE_LAYOUT_UNDEFINED && newLayout == VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL) 
-		{
-			barrier.srcAccessMask = 0;
-			barrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-
-			// Don't care what stage the pipeline is in at the start.
-			sourceStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-
-			// Used for copying
-			destinationStage = VK_PIPELINE_STAGE_TRANSFER_BIT;
-		}
-		else if (oldLayout == VK_IMAGE_LAYOUT_UNDEFINED && newLayout == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL)
-		{
-			barrier.srcAccessMask = 0;
-			barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
-
-			// Don't care what stage the pipeline is in at the start.
-			sourceStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-
-			// Used for sampling.
-			destinationStage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
-		}
-		else if (oldLayout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL && newLayout == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) 
-		{
-			barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-			barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
-
-			// From a copying stage to...
-			sourceStage = VK_PIPELINE_STAGE_TRANSFER_BIT;
-
-			// The fragment stage.
-			destinationStage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
-		}
-		else if (oldLayout == VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL && newLayout == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) 
-		{
-			barrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-			barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
-
-			// From a copying stage to...
-			sourceStage = VK_PIPELINE_STAGE_TRANSFER_BIT;
-
-			// The fragment stage.
-			destinationStage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
-		}
-		else if (oldLayout == VK_IMAGE_LAYOUT_UNDEFINED && newLayout == VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL) 
-		{
-			barrier.srcAccessMask = 0;
-			barrier.dstAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
-
-			sourceStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-			destinationStage = VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
-		}
-		else if (oldLayout == VK_IMAGE_LAYOUT_UNDEFINED && newLayout == VK_IMAGE_LAYOUT_GENERAL)
-		{
-			barrier.srcAccessMask = 0;
-			barrier.dstAccessMask = VK_ACCESS_NONE;
-
-			sourceStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-			destinationStage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-		}
-		else 
-		{
-			NEPTUNE_LOG_CORE(W) << "Unsupported Vulkan Image Layout Transition!";
-			return;
-		}
-		if (newLayout == VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL) 
-		{
-			barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT;
-
-			if (image->GetFormat() == VK_FORMAT_D32_SFLOAT_S8_UINT || image->GetFormat() == VK_FORMAT_D24_UNORM_S8_UINT)
-			{
-				barrier.subresourceRange.aspectMask |= VK_IMAGE_ASPECT_STENCIL_BIT;
-			}
-		}
-		else 
-		{
-			barrier.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-		}
-
-		CmdPipelineBarrier(sourceStage, destinationStage, barrier);
-
-		image->SetLayout(newLayout);
+		m_Synchronization->InsertBarrier(m_CommandBuffer.get(), barrier);
 	}
 
 	void CmdList::CmdBeginQuery(uint32_t index) const

@@ -10,6 +10,7 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
+#include "Device/Graphics/Frontend/Memory.h"
 #include "Image.h"
 
 #include <bitset>
@@ -83,9 +84,9 @@ namespace Neptune::Vulkan::Resource {
 		/**
 		* @brief Transform Image Layout.
 		*
-		* @param[in] newLayout VkImageLayout.
+		* @param[in] desc ImageBarrierDesc.
 		*/
-		void TransitionLayout(VkImageLayout newLayout) const;
+		void TransitionLayout(const Graphic::ImageBarrierDesc& desc) const;
 
 		/**
 		* @brief Pop a DecodeSlot.

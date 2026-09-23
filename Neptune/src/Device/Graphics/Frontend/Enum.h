@@ -125,8 +125,11 @@ namespace Neptune::Graphic {
     */
     enum class EPipelineAccess : uint8_t
     {
-        ShaderRead = 0,                   // @brief ShaderRead.
+        None = 0,                         // @brief ShaderRead.
+        ShaderRead,                       // @brief ShaderRead.
         ShaderWrite,                      // @brief ShaderWrite.
+        TransferRead,                     // @brief TransferRead.
+        TransferWrite,                    // @brief TransferWrite.
         
         Count
     };
@@ -139,6 +142,8 @@ namespace Neptune::Graphic {
         VertexShader = 0,                  // @brief VertexShader.
         FragmentShader,                    // @brief FragmentShader.
         ComputeShader,                     // @brief ComputeShader.
+        TopPipeline,                       // @brief TopPipeline.
+        Transfer,                          // @brief Transfer.
         
         Count
     };
@@ -152,6 +157,36 @@ namespace Neptune::Graphic {
         Vertex,                      // @brief VertexBuffer.
         Index,                       // @brief IndexBuffer.
         Indirect,                    // @brief IndirectBuffer.
+        
+        Count
+    };
+    
+    /**
+    * @brief Enum of Image Layout.
+    */
+    enum class EImageLayout : uint8_t
+    {
+        Undefined = 0,               // @brief None Usage.
+        General,                     // @brief VertexBuffer.
+        Attachment,                  // @brief Attachment.
+        ShaderRead,                  // @brief ShaderRead.
+        TransferSrc,                 // @brief TransferSrc.
+        TransferDst,                 // @brief TransferDst.
+        
+        Count
+    };
+
+    /**
+    * @brief Enum of Image Aspect.
+    */
+    enum class EImageAspect : uint8_t
+    {
+        Color = 0,               // @brief Color.
+        Depth,                   // @brief Depth.
+        Stencil,                 // @brief Stencil.
+        Plane0,                  // @brief Plane0.
+        Plane1,                  // @brief Plane1.
+        Plane2,                  // @brief Plane2.
         
         Count
     };

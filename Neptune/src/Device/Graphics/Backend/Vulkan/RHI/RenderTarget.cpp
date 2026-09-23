@@ -80,9 +80,29 @@ namespace Neptune::Vulkan {
             region.extent.height                          = m_Image->Height();
             region.extent.depth                           = 1;
 
-			cmdList.CmdTransitionLayout(m_Image, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
+			{
+				Graphic::ImageBarrierDesc           desc{};
+				desc.memoryDesc.srcAccess         = Graphic::EPipelineAccess::ShaderRead;
+				desc.memoryDesc.dstAccess         = Graphic::EPipelineAccess::TransferRead;
+				desc.memoryDesc.srcStage          = Graphic::EPipelineStage::FragmentShader;
+				desc.memoryDesc.dstStage          = Graphic::EPipelineStage::Transfer;
+				desc.srcLayout                    = Graphic::EImageLayout::ShaderRead;
+				desc.dstLayout                    = Graphic::EImageLayout::TransferSrc;
+            
+				cmdList.CmdInsertBarrier(m_Image->Handle(), desc);
+			}
 
-            cmdList.CmdTransitionLayout(target->IHandle(), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+			{
+				Graphic::ImageBarrierDesc           desc{};
+				desc.memoryDesc.srcAccess         = Graphic::EPipelineAccess::ShaderRead;
+				desc.memoryDesc.dstAccess         = Graphic::EPipelineAccess::TransferWrite;
+				desc.memoryDesc.srcStage          = Graphic::EPipelineStage::FragmentShader;
+				desc.memoryDesc.dstStage          = Graphic::EPipelineStage::Transfer;
+				desc.srcLayout                    = Graphic::EImageLayout::ShaderRead;
+				desc.dstLayout                    = Graphic::EImageLayout::TransferDst;
+				
+				cmdList.CmdInsertBarrier(target->Handle(), desc);
+			}
 
             cmdList.CmdCopyImage(Handle(), target->Handle(), region);
 
@@ -93,9 +113,29 @@ namespace Neptune::Vulkan {
 
             cmdList.CmdCopyImage(Handle(), target->Handle(), region);
 
-			cmdList.CmdTransitionLayout(m_Image, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+			{
+				Graphic::ImageBarrierDesc           desc{};
+				desc.memoryDesc.srcAccess         = Graphic::EPipelineAccess::TransferRead;
+				desc.memoryDesc.dstAccess         = Graphic::EPipelineAccess::ShaderRead;
+				desc.memoryDesc.srcStage          = Graphic::EPipelineStage::Transfer;
+				desc.memoryDesc.dstStage          = Graphic::EPipelineStage::FragmentShader;
+				desc.srcLayout                    = Graphic::EImageLayout::TransferSrc;
+				desc.dstLayout                    = Graphic::EImageLayout::ShaderRead;
+            
+				cmdList.CmdInsertBarrier(m_Image->Handle(), desc);
+			}
 
-            cmdList.CmdTransitionLayout(target->IHandle(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+			{
+				Graphic::ImageBarrierDesc           desc{};
+				desc.memoryDesc.srcAccess         = Graphic::EPipelineAccess::TransferWrite;
+				desc.memoryDesc.dstAccess         = Graphic::EPipelineAccess::ShaderRead;
+				desc.memoryDesc.srcStage          = Graphic::EPipelineStage::Transfer;
+				desc.memoryDesc.dstStage          = Graphic::EPipelineStage::FragmentShader;
+				desc.srcLayout                    = Graphic::EImageLayout::TransferDst;
+				desc.dstLayout                    = Graphic::EImageLayout::ShaderRead;
+            
+				cmdList.CmdInsertBarrier(target->Handle(), desc);
+			}
 		}
 		else
 		{
@@ -112,11 +152,31 @@ namespace Neptune::Vulkan {
 			region.extent.height                          = m_Image->Height();
 			region.extent.depth                           = 1;
 
-			cmdList.CmdTransitionLayout(target->IHandle(), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+			{
+				Graphic::ImageBarrierDesc           desc{};
+				desc.memoryDesc.srcAccess         = Graphic::EPipelineAccess::ShaderRead;
+				desc.memoryDesc.dstAccess         = Graphic::EPipelineAccess::TransferWrite;
+				desc.memoryDesc.srcStage          = Graphic::EPipelineStage::FragmentShader;
+				desc.memoryDesc.dstStage          = Graphic::EPipelineStage::Transfer;
+				desc.srcLayout                    = Graphic::EImageLayout::ShaderRead;
+				desc.dstLayout                    = Graphic::EImageLayout::TransferDst;
+				
+				cmdList.CmdInsertBarrier(target->Handle(), desc);
+			}
 
 			cmdList.CmdCopyImage(Handle(), target->Handle(), region);
 
-			cmdList.CmdTransitionLayout(target->IHandle(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+			{
+				Graphic::ImageBarrierDesc           desc{};
+				desc.memoryDesc.srcAccess         = Graphic::EPipelineAccess::TransferWrite;
+				desc.memoryDesc.dstAccess         = Graphic::EPipelineAccess::ShaderRead;
+				desc.memoryDesc.srcStage          = Graphic::EPipelineStage::Transfer;
+				desc.memoryDesc.dstStage          = Graphic::EPipelineStage::FragmentShader;
+				desc.srcLayout                    = Graphic::EImageLayout::TransferDst;
+				desc.dstLayout                    = Graphic::EImageLayout::ShaderRead;
+            
+				cmdList.CmdInsertBarrier(target->Handle(), desc);
+			}
 		}
 
         cmdList.End();
@@ -160,7 +220,25 @@ namespace Neptune::Vulkan {
 
 			m_Image->CreateImage(createInfo, ToVkMemoryPropertyFlags(info.memoryUsage));
 			
-			m_Image->TransitionLayout(VK_IMAGE_LAYOUT_GENERAL);
+			CmdList2 cmdList(GetContext());
+			
+			cmdList.SetGraphicCmdList();
+			
+			cmdList.Begin();
+			
+			Graphic::ImageBarrierDesc           desc{};
+			desc.memoryDesc.srcAccess         = Graphic::EPipelineAccess::None;
+			desc.memoryDesc.dstAccess         = Graphic::EPipelineAccess::None;
+			desc.memoryDesc.srcStage          = Graphic::EPipelineStage::TopPipeline;
+			desc.memoryDesc.dstStage          = Graphic::EPipelineStage::TopPipeline;
+			desc.srcLayout                    = Graphic::EImageLayout::Undefined;
+			desc.dstLayout                    = Graphic::EImageLayout::General;
+			
+			cmdList.CmdInsertBarrier(m_Image->Handle(), desc);
+			
+			cmdList.End();
+			
+			cmdList.SubmitWait();
 		}
 		
 		{

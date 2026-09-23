@@ -35,14 +35,14 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        m_InstanceExtensions.emplace(name, value);
+        m_InstanceExtensions.insert_or_assign(name, value);
     }
     
     void Extension::AddDeviceExtensions(const char* name, bool value)
     {
         NEPTUNE_PROFILE_ZONE
 
-        m_DeviceExtensions.emplace(name, value);
+        m_DeviceExtensions.insert_or_assign(name, value);
     }
 }
 

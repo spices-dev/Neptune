@@ -168,19 +168,41 @@ namespace Neptune::Vulkan {
 		}
 	}
 
-	VkImageLayout ToVkImageLayout(AttachmentLayout l)
+	VkImageLayout ToVkImageLayout(Graphic::EImageLayout l)
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		switch (l)
 		{
-			case AttachmentLayout::Undefined:           return VK_IMAGE_LAYOUT_UNDEFINED;
-			case AttachmentLayout::General:             return VK_IMAGE_LAYOUT_GENERAL;
-			case AttachmentLayout::Attachment:          return VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL;
-			case AttachmentLayout::ShaderRead:          return VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+			case Graphic::EImageLayout::Undefined:           return VK_IMAGE_LAYOUT_UNDEFINED;
+			case Graphic::EImageLayout::General:             return VK_IMAGE_LAYOUT_GENERAL;
+			case Graphic::EImageLayout::Attachment:          return VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL;
+			case Graphic::EImageLayout::ShaderRead:          return VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+			case Graphic::EImageLayout::TransferSrc:         return VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
+			case Graphic::EImageLayout::TransferDst:         return VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
 			default:
 			{
-				NEPTUNE_LOG_CORE(E) << "Unsupported AttachmentLayout To VkImageLayout.";
+				NEPTUNE_LOG_CORE(E) << "Unsupported EImageLayout To VkImageLayout.";
+				return VK_IMAGE_LAYOUT_UNDEFINED;
+			}
+		}
+	}
+	
+	VkImageAspectFlags ToVkImageAspectFlags(Graphic::EImageAspect a)
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		switch (a)
+		{
+			case Graphic::EImageAspect::Color:          return VK_IMAGE_ASPECT_COLOR_BIT;
+			case Graphic::EImageAspect::Depth:          return VK_IMAGE_ASPECT_DEPTH_BIT;
+			case Graphic::EImageAspect::Stencil:        return VK_IMAGE_ASPECT_STENCIL_BIT;
+			case Graphic::EImageAspect::Plane0:         return VK_IMAGE_ASPECT_PLANE_0_BIT;
+			case Graphic::EImageAspect::Plane1:         return VK_IMAGE_ASPECT_PLANE_1_BIT;
+			case Graphic::EImageAspect::Plane2:         return VK_IMAGE_ASPECT_PLANE_2_BIT;
+			default:
+			{
+				NEPTUNE_LOG_CORE(E) << "Unsupported EImageAspect To VkImageAspectFlags.";
 				return VK_IMAGE_LAYOUT_UNDEFINED;
 			}
 		}

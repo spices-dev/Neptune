@@ -36,6 +36,8 @@ namespace Neptune::Vulkan {
 
 		auto& property = physicalDevice->QuerySwapChainProperty();
 
+    	count = std::clamp(count, property.capabilities.minImageCount, property.capabilities.maxImageCount);
+
     	{
 			VkSwapchainCreateInfoKHR                 createInfo{};
 			createInfo.sType                       = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;

@@ -26,6 +26,18 @@ namespace Neptune::Vulkan::Middleware {
         return CreateUP<GetSurfaceCapabilities>();
     }
 
+    UP<IGetSurfaceCapabilities> IGetSurfaceCapabilities::Create(Extensions* extensions)
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        if (extensions->GetContext()->Has<Extension::IGetSurfaceCapabilities2>())
+        {
+            return CreateUP<GetSurfaceCapabilities2>();
+        }
+
+        return CreateUP<GetSurfaceCapabilities>();
+    }
+    
     void GetSurfaceCapabilities::GetCapabilities(VkPhysicalDevice device, const VkPhysicalDeviceSurfaceInfo2KHR& surfaceInfo, VkSurfaceCapabilities2KHR& surfaceCapabilities) const
     {
         NEPTUNE_PROFILE_ZONE

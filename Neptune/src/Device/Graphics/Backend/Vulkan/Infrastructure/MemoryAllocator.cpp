@@ -20,6 +20,9 @@
 #include "Functions.h"
 #include "Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/BufferDeviceAddress.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/Maintenance4.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/Maintenance5.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/MemoryBudget.h"
 #include "Core/Memory/Enum.h"
 
 namespace Neptune::Vulkan {
@@ -162,16 +165,23 @@ namespace Neptune::Vulkan {
 		createInfo.vulkanApiVersion           = GetContext().Get<IInstance>()->GetApiVersion();
 		createInfo.flags                      = VMA_ALLOCATOR_CREATE_KHR_DEDICATED_ALLOCATION_BIT      | 
 												VMA_ALLOCATOR_CREATE_KHR_BIND_MEMORY2_BIT              |
-												VMA_ALLOCATOR_CREATE_KHR_MAINTENANCE4_BIT              |
-												VMA_ALLOCATOR_CREATE_KHR_MAINTENANCE5_BIT              |
-												VMA_ALLOCATOR_CREATE_EXT_MEMORY_BUDGET_BIT             |
-												VMA_ALLOCATOR_CREATE_EXT_MEMORY_PRIORITY_BIT           |
-												VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT |
-												VMA_ALLOCATION_CREATE_HOST_ACCESS_RANDOM_BIT           ;
+												VMA_ALLOCATOR_CREATE_EXT_MEMORY_PRIORITY_BIT           ;
 
 		if (GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IBufferDeviceAddress>())
 		{
 			createInfo.flags                 |= VMA_ALLOCATOR_CREATE_BUFFER_DEVICE_ADDRESS_BIT;
+		}
+		if (GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IMaintenance4>())
+		{
+			createInfo.flags                 |= VMA_ALLOCATOR_CREATE_KHR_MAINTENANCE4_BIT;
+		}
+		if (GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IMaintenance5>())
+		{
+			createInfo.flags                 |= VMA_ALLOCATOR_CREATE_KHR_MAINTENANCE5_BIT;
+		}
+		if (GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IMemoryBudget>())
+		{
+			createInfo.flags                 |= VMA_ALLOCATOR_CREATE_EXT_MEMORY_BUDGET_BIT;
 		}
 		
 		VmaVulkanFunctions                      functor{};

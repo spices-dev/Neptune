@@ -142,7 +142,7 @@ namespace Neptune::Vulkan {
 		deviceProperties.sType             = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2;
 		deviceProperties.pNext             = nullptr;
 
-		Middleware::IGetPhysicalDeviceProperties::Create(GetContext())->GetProperties(device, deviceProperties);
+		Middleware::IGetPhysicalDeviceProperties::Create(extensions)->GetProperties(device, deviceProperties);
 
 		VkPhysicalDeviceProperties           properties{};
 		properties                         = deviceProperties.properties;
@@ -167,20 +167,18 @@ namespace Neptune::Vulkan {
 			}));
 			
 			std::ranges::for_each(filtered, [&](const auto& name) {
-    			
-				std::string target(name);
-				
-				if (std::ranges::all_of(availableExtensions, [&](const auto& ext) { return ext.extensionName != target; }))
+
+				if (std::ranges::all_of(availableExtensions, [&](const auto& ext) { return ext.extensionName != name; }))
 				{
 					if (extension->GetState() == Extension::EExtensionState::Core)
 					{
 						coreSatisfied = false;
 						
-						NEPTUNE_LOG_CORE(E) << "Device Extension Required: [ " << target << " ], Which is not satisfied with device: " << properties.deviceName;
+						NEPTUNE_LOG_CORE(E) << "Device Extension Required: [ " << name << " ], Which is not satisfied with device: " << properties.deviceName;
 					}
 					else
 					{
-						NEPTUNE_LOG_CORE(W) << "Device Extension Required: [ " << target << " ], Which is not satisfied with device: " << properties.deviceName;
+						NEPTUNE_LOG_CORE(W) << "Device Extension Required: [ " << name << " ], Which is not satisfied with device: " << properties.deviceName;
 					}
     				
 					satisfy = false;
@@ -211,7 +209,7 @@ namespace Neptune::Vulkan {
 
 		extensions->BuildPropertyChain(&deviceProperties.pNext);
 
-		Middleware::IGetPhysicalDeviceProperties::Create(GetContext())->GetProperties(device, deviceProperties);
+		Middleware::IGetPhysicalDeviceProperties::Create(extensions)->GetProperties(device, deviceProperties);
 
 		bool coreSatisfied = true;
 		
@@ -306,7 +304,7 @@ namespace Neptune::Vulkan {
 		
 			extensions->BuildSurfaceCapabilityChain(&capabilities.pNext);
 		
-			Middleware::IGetSurfaceCapabilities::Create(GetContext())->GetCapabilities(device, surfaceInfo, capabilities);
+			Middleware::IGetSurfaceCapabilities::Create(extensions)->GetCapabilities(device, surfaceInfo, capabilities);
 		}
 		
 		bool coreSatisfied = true;

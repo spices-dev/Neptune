@@ -116,13 +116,6 @@ namespace Neptune::Vulkan::Resource {
 		const VkFormat& GetFormat() const { return m_Format; }
 
 		/**
-		* @brief Get Image Layout.
-		*
-		* @return Returns Image Layout.
-		*/
-		const VkImageLayout& GetLayout() const { return m_Layout; }
-
-		/**
 		* @brief Get Image Layer Count.
 		*
 		* @return Returns Image Layer Count.
@@ -143,20 +136,6 @@ namespace Neptune::Vulkan::Resource {
 		*/
 		uint32_t Height() const { return m_Height; }
 
-		/**
-		* @brief Set Image Layout.
-		*
-		* @param[in] layout VkImageLayout.
-		*/
-		void SetLayout(VkImageLayout layout) { m_Layout = layout; }
-
-		/**
-		* @brief Transform Image Layout.
-		*
-		* @param[in] newLayout VkImageLayout.
-		*/
-		void TransitionLayout(VkImageLayout newLayout);
-
 	private:
 
 		Unit::Image                  m_Image;                  // @brief This Image.
@@ -165,7 +144,6 @@ namespace Neptune::Vulkan::Resource {
 		Unit::SamplerYcbcrConversion m_Conversion;             // @brief This SamplerYcbcrConversion.
 
 		VkFormat                     m_Format{};               // @brief VkFormat.
-		VkImageLayout                m_Layout{};               // @brief VkImageLayout.
 		uint32_t                     m_LayerCount = 1;         // @brief Layer Count.
 
 		uint32_t                     m_Width{};                // @brief Width.

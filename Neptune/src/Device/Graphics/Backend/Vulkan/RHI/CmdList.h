@@ -25,6 +25,7 @@ namespace Neptune::RHI {
 	class DescriptorList;
 	class IndexBuffer;
 	class Buffer;
+	class RenderTarget;
 }
 
 namespace Neptune::Vulkan {
@@ -191,9 +192,17 @@ namespace Neptune::Vulkan {
 		/**
 		* @brief Interface of Insert Barrier.
 		* 
-		* @param[in] barrier MemoryBarrierDesc.
+		* @param[in] renderTarget RenderTarget.
+		* @param[in] desc MemoryBarrierDesc.
 		*/
-		void CmdInsertBarrier(const Graphic::MemoryBarrierDesc& barrier) const override;
+		void CmdInsertBarrier(const SP<RHI::RenderTarget>& renderTarget, const Graphic::ImageBarrierDesc& desc) const override;
+		
+		/**
+		* @brief Interface of Insert Barrier.
+		* 
+		* @param[in] desc MemoryBarrierDesc.
+		*/
+		void CmdInsertBarrier(const Graphic::MemoryBarrierDesc& desc) const override;
 		
 		/**
 		* @brief Interface of SetViewport.
@@ -228,24 +237,15 @@ namespace Neptune::Vulkan {
 		* @param[in] region VkBufferCopy.
 		*/
 		void CmdCopyBuffer(VkBuffer src, VkBuffer dst, const VkBufferCopy& region) const;
+
+		/**
+		* @brief Insert Barrier.
+		* 
+		* @param[in] image VkImage.
+		* @param[in] desc MemoryBarrierDesc.
+		*/
+		void CmdInsertBarrier(VkImage image, const Graphic::ImageBarrierDesc& desc) const;
 		
-		/**
-		* @brief Pipeline Barrier.
-		*
-		* @param[in] srcMask VkPipelineStageFlags.
-		* @param[in] dstMask VkPipelineStageFlags.
-		* @param[in] barrier VkImageMemoryBarrier.
-		*/
-		void CmdPipelineBarrier(VkPipelineStageFlags srcMask, VkPipelineStageFlags dstMask, const VkImageMemoryBarrier& barrier) const;
-
-		/**
-		* @brief Transition Layout.
-		*
-		* @param[in] image Image.
-		* @param[in] newLayout VkImageLayout.
-		*/
-		void CmdTransitionLayout(SP<Resource::Image> image, VkImageLayout newLayout) const;
-
 		/**
 		* @brief Begin Query.
 		*

@@ -12,6 +12,11 @@
 #include "Device/Graphics/Backend/Vulkan/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
 
+namespace Neptune::Vulkan {
+	
+	class Extensions;
+}
+
 namespace Neptune::Vulkan::Middleware {
 	
     /**
@@ -30,6 +35,15 @@ namespace Neptune::Vulkan::Middleware {
         */
         static UP<IGetSurfaceCapabilities> Create(const Context& context);
 		
+    	/**
+		* @brief Create IGetSurfaceCapabilities.
+		* 
+		* @param extensions Extensions.
+		* 
+		* @return Returns IGetSurfaceCapabilities.
+		*/
+    	static UP<IGetSurfaceCapabilities> Create(Extensions* extensions);
+    	
         /**
         * @brief Destructor Function.
         */

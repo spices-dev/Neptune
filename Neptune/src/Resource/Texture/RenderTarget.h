@@ -2,6 +2,7 @@
 #include "Core/Core.h"
 #include "Texture.h"
 #include "Core/Memory/Enum.h"
+#include "Device/Graphics/Frontend/Enum.h"
 
 namespace Neptune {
 
@@ -27,22 +28,12 @@ namespace Neptune {
 		Count
 	};
 
-	enum class AttachmentLayout : uint8_t
-	{
-		Undefined = 0,
-		General,
-		Attachment,
-		ShaderRead,
-
-		Count
-	};
-
 	struct RenderTargetAttachmentInfo
 	{
-		bool               enableBlend = false;
-		AttachmentOP       loadOp = AttachmentOP::Clear;
-		AttachmentLayout   inLayout = AttachmentLayout::Undefined;
-		AttachmentLayout   outLayout = AttachmentLayout::Attachment;
+		bool                    enableBlend = false;
+		AttachmentOP            loadOp      = AttachmentOP::Clear;
+		Graphic::EImageLayout   inLayout    = Graphic::EImageLayout::Undefined;
+		Graphic::EImageLayout   outLayout   = Graphic::EImageLayout::Attachment;
 	};
 
 	class RenderTarget

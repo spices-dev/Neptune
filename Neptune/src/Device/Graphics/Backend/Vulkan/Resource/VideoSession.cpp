@@ -13,6 +13,7 @@
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Device.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/PhysicalDevice.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderTarget.h"
+#include "Device/Graphics/Backend/Vulkan/RHI/CmdList2.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/DecodeBuffer.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/QueryPool.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
@@ -241,7 +242,15 @@ namespace Neptune::Vulkan::Resource {
 
 			m_DPB.CreateImage(createInfo, slot);
 
-			m_DPB.TransitionLayout(VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
+			Graphic::ImageBarrierDesc           desc{};
+			desc.memoryDesc.srcAccess         = Graphic::EPipelineAccess::None;
+			desc.memoryDesc.dstAccess         = Graphic::EPipelineAccess::TransferRead;
+			desc.memoryDesc.srcStage          = Graphic::EPipelineStage::TopPipeline;
+			desc.memoryDesc.dstStage          = Graphic::EPipelineStage::Transfer;
+			desc.srcLayout                    = Graphic::EImageLayout::Undefined;
+			desc.dstLayout                    = Graphic::EImageLayout::TransferSrc;
+			
+			m_DPB.TransitionLayout(desc);
         }
 
         {
@@ -345,7 +354,25 @@ namespace Neptune::Vulkan::Resource {
 
 			image->CreateImage(createInfo, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
-			image->TransitionLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+			CmdList2 cmdList(GetContext());
+			
+			cmdList.SetGraphicCmdList();
+			
+			cmdList.Begin();
+			
+			Graphic::ImageBarrierDesc           desc{};
+			desc.memoryDesc.srcAccess         = Graphic::EPipelineAccess::None;
+			desc.memoryDesc.dstAccess         = Graphic::EPipelineAccess::ShaderRead;
+			desc.memoryDesc.srcStage          = Graphic::EPipelineStage::TopPipeline;
+			desc.memoryDesc.dstStage          = Graphic::EPipelineStage::FragmentShader;
+			desc.srcLayout                    = Graphic::EImageLayout::Undefined;
+			desc.dstLayout                    = Graphic::EImageLayout::ShaderRead;
+			
+			cmdList.CmdInsertBarrier(image->Handle(), desc);
+			
+			cmdList.End();
+			
+			cmdList.SubmitWait();
         }
 
         {     
@@ -440,7 +467,25 @@ namespace Neptune::Vulkan::Resource {
 
 			image->CreateImage(createInfo, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
-			image->TransitionLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+			CmdList2 cmdList(GetContext());
+			
+			cmdList.SetGraphicCmdList();
+			
+			cmdList.Begin();
+			
+			Graphic::ImageBarrierDesc           desc{};
+			desc.memoryDesc.srcAccess         = Graphic::EPipelineAccess::None;
+			desc.memoryDesc.dstAccess         = Graphic::EPipelineAccess::ShaderRead;
+			desc.memoryDesc.srcStage          = Graphic::EPipelineStage::TopPipeline;
+			desc.memoryDesc.dstStage          = Graphic::EPipelineStage::FragmentShader;
+			desc.srcLayout                    = Graphic::EImageLayout::Undefined;
+			desc.dstLayout                    = Graphic::EImageLayout::ShaderRead;
+			
+			cmdList.CmdInsertBarrier(image->Handle(), desc);
+			
+			cmdList.End();
+			
+			cmdList.SubmitWait();
         }
 
         {

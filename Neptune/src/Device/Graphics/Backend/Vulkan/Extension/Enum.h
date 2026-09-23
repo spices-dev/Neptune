@@ -27,6 +27,8 @@ namespace Neptune::Vulkan {
         VideoEncode,                                // @brief VideoEncode.
         SamplerYcbcrConversion,                     // @brief SamplerYcbcrConversion.
         Maintenance1,                               // @brief Maintenance1.
+        Maintenance4,                               // @brief Maintenance4.
+        Maintenance5,                               // @brief Maintenance5.
         DebugUtils,                                 // @brief DebugUtils.
         BufferDeviceAddress,                        // @brief BufferDeviceAddress.
         DescriptorIndexing,                         // @brief DescriptorIndexing.
@@ -73,6 +75,7 @@ namespace Neptune::Vulkan {
             case VideoEncode:                     return "VideoEncode";
             case SamplerYcbcrConversion:          return "SamplerYcbcrConversion";
             case Maintenance1:                    return "Maintenance1";
+            case Maintenance4:                    return "Maintenance4";
             case DebugUtils:                      return "DebugUtils";
             case BufferDeviceAddress:             return "BufferDeviceAddress";
             case DescriptorIndexing:              return "DescriptorIndexing";
@@ -94,6 +97,7 @@ namespace Neptune::Vulkan {
             case Synchronization2:                return "Synchronization2";
             case PresentTiming:                   return "PresentTiming";
             case UnifiedImageLayouts:             return "UnifiedImageLayouts";
+            case MeshShader:                      return "MeshShader";
             default:                              return "NonNamed";
         }
     }
