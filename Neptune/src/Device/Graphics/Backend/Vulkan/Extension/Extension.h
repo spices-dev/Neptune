@@ -76,7 +76,7 @@ namespace Neptune::Vulkan::Extension {
         * @param[in] name Extension Name.
         * @param[in] value On/Off.
         */
-        void AddInstanceExtensions(const char* name, bool value = true);
+        void AddInstanceExtensions(const std::string& name, bool value = true);
         
         /**
         * @brief Add VkPhysicalDevice/VkDevice Extension Requirement.
@@ -84,7 +84,7 @@ namespace Neptune::Vulkan::Extension {
         * @param[in] name Extension Name.
         * @param[in] value On/Off.
         */
-        void AddDeviceExtensions(const char* name, bool value = true);
+        void AddDeviceExtensions(const std::string& name, bool value = true);
         
         /**
         * @brief Get VkInstance Extension Requirement.

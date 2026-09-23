@@ -692,7 +692,7 @@ namespace Neptune::Vulkan {
 				return pair.second;
 			}));
 			
-			extensions.insert(extensions.end(), filtered.begin(), filtered.end());
+			std::ranges::for_each(filtered, [&](const auto& name) { extensions.emplace_back(name.c_str()); });
 		});
 		
 		return extensions;

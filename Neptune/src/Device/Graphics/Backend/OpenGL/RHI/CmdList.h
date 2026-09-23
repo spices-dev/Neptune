@@ -19,6 +19,7 @@ namespace Neptune::RHI {
 	class DescriptorList;
 	class IndexBuffer;
 	class Buffer;
+	class RenderTarget;
 }
 
 namespace Neptune::OpenGL {
@@ -181,9 +182,17 @@ namespace Neptune::OpenGL {
 		/**
 		* @brief Interface of Insert Barrier.
 		* 
-		* @param[in] barrier MemoryBarrierDesc.
+		* @param[in] renderTarget RenderTarget.
+		* @param[in] desc MemoryBarrierDesc.
 		*/
-		void CmdInsertBarrier(const Graphic::MemoryBarrierDesc& barrier) const override;
+		void CmdInsertBarrier(const SP<RHI::RenderTarget>& renderTarget, const Graphic::ImageBarrierDesc& desc) const override;
+		
+		/**
+		* @brief Interface of Insert Barrier.
+		* 
+		* @param[in] desc MemoryBarrierDesc.
+		*/
+		void CmdInsertBarrier(const Graphic::MemoryBarrierDesc& desc) const override;
 		
 		/**
 		* @brief Interface of SetViewport.

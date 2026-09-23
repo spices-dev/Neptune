@@ -31,14 +31,14 @@ namespace Neptune::Vulkan::Extension {
         return s_ApiVersion;
     }
     
-    void Extension::AddInstanceExtensions(const char* name, bool value)
+    void Extension::AddInstanceExtensions(const std::string& name, bool value)
     {
         NEPTUNE_PROFILE_ZONE
 
         m_InstanceExtensions.insert_or_assign(name, value);
     }
     
-    void Extension::AddDeviceExtensions(const char* name, bool value)
+    void Extension::AddDeviceExtensions(const std::string& name, bool value)
     {
         NEPTUNE_PROFILE_ZONE
 

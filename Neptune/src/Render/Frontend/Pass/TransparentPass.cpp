@@ -55,8 +55,8 @@ namespace Neptune::Render {
 		RenderTargetAttachmentInfo   info{};
 		info.loadOp                = AttachmentOP::Load;
 		info.enableBlend           = true;
-		info.inLayout              = AttachmentLayout::Attachment;
-		info.outLayout             = AttachmentLayout::Attachment;
+		info.inLayout              = Graphic::EImageLayout::Attachment;
+		info.outLayout             = Graphic::EImageLayout::Attachment;
 
 		m_RenderPass = CreateSP<RHI::RenderPass>();
 		m_RenderPass->AddColorAttachment(ResourcePool<RenderTarget>::Instance().Access("Scene")->GetRHIResource(), info);

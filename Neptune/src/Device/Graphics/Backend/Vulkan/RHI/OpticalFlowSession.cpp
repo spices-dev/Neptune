@@ -100,7 +100,7 @@ namespace Neptune::Vulkan {
 
 		for (const auto& image : m_SessionImages)
 		{
-			m_Session.BindOpticalFlowSessionImage(image.first, image.second->GetView(), image.second->GetLayout());
+			m_Session.BindOpticalFlowSessionImage(image.first, image.second->GetView(), VK_IMAGE_LAYOUT_GENERAL);
 		}
 	}
 }

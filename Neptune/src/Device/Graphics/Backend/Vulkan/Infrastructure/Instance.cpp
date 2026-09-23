@@ -167,7 +167,7 @@ namespace Neptune::Vulkan {
     		
     		if (satisfy)
     		{
-    			m_ExtensionProperties.insert(m_ExtensionProperties.end(), filtered.begin(), filtered.end());
+    			std::ranges::for_each(filtered, [&](const auto& name) { m_ExtensionProperties.emplace_back(name.c_str()); });
     		}
 		    else
 		    {

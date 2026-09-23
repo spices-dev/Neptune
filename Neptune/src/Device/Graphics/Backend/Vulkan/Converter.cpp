@@ -216,8 +216,11 @@ namespace Neptune::Vulkan {
 
 		switch (a)
 		{
+			case EPipelineAccess::None:                 return VK_ACCESS_2_NONE;
 			case EPipelineAccess::ShaderRead:           return VK_ACCESS_2_SHADER_READ_BIT;
 			case EPipelineAccess::ShaderWrite:          return VK_ACCESS_2_SHADER_WRITE_BIT;
+			case EPipelineAccess::TransferRead:         return VK_ACCESS_2_TRANSFER_READ_BIT;
+			case EPipelineAccess::TransferWrite:        return VK_ACCESS_2_TRANSFER_WRITE_BIT;
 			default:
 			{
 				NEPTUNE_LOG_CORE(E) << "Unsupported EPipelineAccess To VkAccessFlags2.";
@@ -237,6 +240,8 @@ namespace Neptune::Vulkan {
 			case EPipelineStage::VertexShader:           return VK_PIPELINE_STAGE_2_VERTEX_SHADER_BIT;
 			case EPipelineStage::FragmentShader:         return VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT;
 			case EPipelineStage::ComputeShader:          return VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT;
+			case EPipelineStage::TopPipeline:            return VK_PIPELINE_STAGE_2_TOP_OF_PIPE_BIT;
+			case EPipelineStage::Transfer:               return VK_PIPELINE_STAGE_2_TRANSFER_BIT;
 			default:
 			{
 				NEPTUNE_LOG_CORE(E) << "Unsupported EPipelineStage To VkPipelineStageFlags2.";

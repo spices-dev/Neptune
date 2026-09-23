@@ -111,6 +111,11 @@ namespace Neptune::WebGPU {
 		
 	}
 
+	void CmdList::CmdInsertBarrier(const SP<RHI::RenderTarget>& renderTarget, const Graphic::ImageBarrierDesc& desc) const
+	{
+		NEPTUNE_PROFILE_ZONE
+	}
+	
 	void CmdList::CmdInsertBarrier(const Graphic::MemoryBarrierDesc& barrier) const
 	{
 		NEPTUNE_PROFILE_ZONE

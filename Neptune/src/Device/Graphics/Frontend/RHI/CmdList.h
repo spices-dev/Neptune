@@ -186,9 +186,17 @@ namespace Neptune::RHI {
 		/**
 		* @brief Interface of Insert Barrier.
 		* 
-		* @param[in] barrier MemoryBarrierDesc.
+		* @param[in] renderTarget RenderTarget.
+		* @param[in] desc MemoryBarrierDesc.
 		*/
-		virtual void CmdInsertBarrier(const Graphic::MemoryBarrierDesc& barrier) const = 0;
+		virtual void CmdInsertBarrier(const SP<class RenderTarget>& renderTarget, const Graphic::ImageBarrierDesc& desc) const = 0;
+		
+		/**
+		* @brief Interface of Insert Barrier.
+		* 
+		* @param[in] desc MemoryBarrierDesc.
+		*/
+		virtual void CmdInsertBarrier(const Graphic::MemoryBarrierDesc& desc) const = 0;
 		
 		/**
 		* @brief Interface of SetViewport.
@@ -348,9 +356,17 @@ namespace Neptune::RHI {
 		/**
 		* @brief Interface of Insert Barrier.
 		* 
-		* @param[in] barrier MemoryBarrierDesc.
+		* @param[in] renderTarget RenderTarget.
+		* @param[in] desc MemoryBarrierDesc.
 		*/
-		void CmdInsertBarrier(const Graphic::MemoryBarrierDesc& barrier) const { RHICmdList::m_Impl->CmdInsertBarrier(barrier); }
+		void CmdInsertBarrier(const SP<class RenderTarget>& renderTarget, const Graphic::ImageBarrierDesc& desc) const { RHICmdList::m_Impl->CmdInsertBarrier(renderTarget, desc); }
+		
+		/**
+		* @brief Interface of Insert Barrier.
+		* 
+		* @param[in] desc MemoryBarrierDesc.
+		*/
+		void CmdInsertBarrier(const Graphic::MemoryBarrierDesc& desc) const { RHICmdList::m_Impl->CmdInsertBarrier(desc); }
 		
 		/**
 		* @brief Interface of SetViewport.
