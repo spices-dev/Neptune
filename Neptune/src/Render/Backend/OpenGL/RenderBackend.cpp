@@ -48,8 +48,10 @@ namespace Neptune::OpenGL {
         
         const auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
 
+        auto& context = m_GraphicsBackend->GetContext();
+        
         {
-            GetContext().Get<IGraphicFence>()->Wait(clock.m_FrameIndex);
+            context.Get<IGraphicFence>()->Wait(clock.m_FrameIndex);
         }
 
         {
@@ -69,6 +71,8 @@ namespace Neptune::OpenGL {
 
         const auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
         
+        auto& context = m_GraphicsBackend->GetContext();
+        
         {
             DEBUGUTILS_ENDLABEL()
         }
@@ -76,13 +80,13 @@ namespace Neptune::OpenGL {
         {
             DEBUGUTILS_BEGINLABEL(0, "PresentQueue")
             
-            GetContext().Get<IWindowContext>()->SwapBuffers();
+            context.Get<IWindowContext>()->SwapBuffers();
 
             DEBUGUTILS_ENDLABEL()
         }
         
         {
-            GetContext().Get<IGraphicFence>()->Signal(clock.m_FrameIndex);
+            context.Get<IGraphicFence>()->Signal(clock.m_FrameIndex);
         }
     }
 

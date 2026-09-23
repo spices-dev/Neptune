@@ -45,6 +45,13 @@ namespace Neptune::Metal {
         const Unit::Device::Handle& Handle() const { return m_Device.GetHandle(); }
 
     private:
+        
+        /**
+        * @brief Create Device.
+        */
+        void Create();
+        
+    private:
 
         Unit::Device m_Device;  // @brief this Device.
     };

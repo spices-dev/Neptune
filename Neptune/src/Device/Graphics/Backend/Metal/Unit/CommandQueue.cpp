@@ -21,6 +21,12 @@ namespace Neptune::Metal::Unit {
         m_Handle->release();
     }
     
+    void CommandQueue::CreateCommandQueue(MTLDevice device)
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        m_Handle = device->newCommandQueue4();
+    }
 }
 
 #endif

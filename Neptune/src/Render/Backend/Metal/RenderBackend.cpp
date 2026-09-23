@@ -10,6 +10,9 @@
 
 #include "RenderBackend.h"
 #include "Device/Graphics/Backend/Metal/Infrastructure/InfrastructureHeader.h"
+#include "Device/Graphics/Backend/Metal/AInfrastructure/AccessibleInfrastructure.h"
+#include "Device/Graphics/Backend/Metal/RHI/RenderPass.h"
+#include "Render/Frontend/Pass/SlatePass.h"
 #include "Window/Window.h"
 #include "World/Scene/Scene.h"
 #include "World/Component/Component.h"
@@ -43,11 +46,21 @@ namespace Neptune::Metal {
     void RenderBackend::BeginFrame(Scene* scene) const
     {
         NEPTUNE_PROFILE_ZONE
+        
+        auto& context = m_GraphicsBackend->GetContext();
+        
+        context.Get<IFrameAutoreleasePool>()->Init();
+        
+        {
+            context.Get<IGraphicDispatchSemaphore>()->Wait();
+        }
     }
 
     void RenderBackend::EndFrame(Scene* scene) const
     {
         NEPTUNE_PROFILE_ZONE
+        
+        GetContext().Get<IFrameAutoreleasePool>()->Release();
     }
 
     void RenderBackend::Wait() const
@@ -73,7 +86,15 @@ namespace Neptune::Metal {
     {
         NEPTUNE_PROFILE_ZONE
 
-        return m_GraphicsBackend->AccessInfrastructure();
+        auto context = AContext(m_GraphicsBackend->AccessInfrastructure());
+
+        auto pass = std::dynamic_pointer_cast<Render::SlatePass>(m_RenderPasses.back());
+        
+        auto desc = pass->GetRenderPass()->GetRHIImpl<RenderPass>()->GetDescriptor();
+        
+        context.Registry<ARenderPassDescriptor>(*desc);
+    	
+        return context.GetInfrastructures();
     }
 }
 

@@ -19,12 +19,14 @@ namespace Neptune::Metal {
     */
     enum class EAccessibleInfrastructure : uint8_t
     {
-        Device = 0,             // @brief Device
+        Device = 0,                      // @brief Device
+        RenderPassDescriptor,            // @brief RenderPassDescriptor
         
         Count
     };
     
-    using ADevice  = Graphic::Common::AccessibleInfrastructure<MTL::Device*, EAccessibleInfrastructure::Device>;
+    using ADevice                = Graphic::Common::AccessibleInfrastructure<MTL::Device*,               EAccessibleInfrastructure::Device>;
+    using ARenderPassDescriptor  = Graphic::Common::AccessibleInfrastructure<MTL::RenderPassDescriptor*, EAccessibleInfrastructure::RenderPassDescriptor>;
     
     using AContext = Graphic::Common::AccessibleContext<EAccessibleInfrastructure>;
     

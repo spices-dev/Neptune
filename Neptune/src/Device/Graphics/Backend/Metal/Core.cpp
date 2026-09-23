@@ -38,7 +38,7 @@ namespace Neptune::Metal {
 		return s_Handler;
 	}
 	
-	void HandleResult(NS::Error* result)
+	void HandleResult(const NS::Error* result)
 	{
         NEPTUNE_PROFILE_ZONE
 		

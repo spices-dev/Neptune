@@ -17,8 +17,15 @@ namespace Neptune::Metal {
     {
 		NEPTUNE_PROFILE_ZONE
 
+        Create();
     }
 
+    void Device::Create()
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        m_Device.CreateDevice();
+    }
 }
 
 #endif

@@ -17,7 +17,7 @@ namespace Neptune::Metal::Unit {
     * @brief Metal::Unit::CommandQueue Class.
     * This class defines the Metal::Unit::CommandQueue behaves.
     */
-    class CommandQueue : public Unit<MTLDevice>
+    class CommandQueue : public Unit<MTLCommandQueue>
     {
     public:
 
@@ -35,6 +35,12 @@ namespace Neptune::Metal::Unit {
         */
         ~CommandQueue() override;
         
+        /**
+        * @brief Create CommandQueue.
+        * 
+        * @param[in] device MTLDevice.
+        */
+        void CreateCommandQueue(MTLDevice device);
     };
 }
 

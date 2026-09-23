@@ -49,7 +49,7 @@ namespace Neptune::Metal {
 	* 
 	* @param[in] result NS::Error*
 	*/
-	void HandleResult(NS::Error* result);
+	void HandleResult(const NS::Error* result);
 
 	#define METAL_CHECK(expr)  { NS::Error* result = nullptr; expr; if(result){ std::invoke(HandleResultDelegate::GetHandler(), result); NEPTUNE_BREAK } }
 }

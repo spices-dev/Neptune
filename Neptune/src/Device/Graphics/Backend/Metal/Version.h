@@ -9,10 +9,12 @@
 #ifdef NP_GRAPHICS_METAL
 
 #include <Metal/Metal.hpp>
+#include <QuartzCore/CAMetalLayer.hpp>
 
 namespace Neptune::Metal {
 
 	using MTLAutoreleasePool                = NS::AutoreleasePool*;
+	using MTLLayer                          = CA::MetalLayer*;
 	
 	//using MTLAccelerationStructure          = MTL4::AccelerationStructure*;
 	using MTLArchive                        = MTL4::Archive*;
@@ -82,6 +84,7 @@ namespace Neptune::Metal {
 	//using MTLPipeline                       = MTL::Pipeline*;
 	using MTLRenderPipelineState            = MTL::RenderPipelineState*;
 	using MTLRenderPipelineDescriptor       = MTL::RenderPipelineDescriptor*;
+	using MTLRenderPassDescriptor           = MTL::RenderPassDescriptor*;
 	//using MTLRasterizationRate              = MTL::RasterizationRate*;
 	using MTLRenderCommandEncoder           = MTL::RenderCommandEncoder*;
 	//using MTLRenderPass                     = MTL::RenderPass*;

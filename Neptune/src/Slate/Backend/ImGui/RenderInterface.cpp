@@ -81,7 +81,7 @@ namespace Neptune::imgui {
 
 #ifdef NP_GRAPHICS_OPENGL
 	
-	void OpenGLInterface::OnInitialize(const AInfrastructures& infrastructure) const
+	void OpenGLInterface::OnInitialize(const AInfrastructures& infrastructure)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -127,7 +127,7 @@ namespace Neptune::imgui {
     
 #ifdef NP_GRAPHICS_VULKAN
 	
-	void VulkanInterface::OnInitialize(const AInfrastructures& infrastructure) const
+	void VulkanInterface::OnInitialize(const AInfrastructures& infrastructure)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -202,7 +202,7 @@ namespace Neptune::imgui {
 
 #ifdef NP_GRAPHICS_DIRECT3D11
 	
-	void Direct3D11Interface::OnInitialize(const AInfrastructures& infrastructure) const
+	void Direct3D11Interface::OnInitialize(const AInfrastructures& infrastructure)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -251,7 +251,7 @@ namespace Neptune::imgui {
     
 #ifdef NP_GRAPHICS_DIRECT3D12
 	
-	void Direct3D12Interface::OnInitialize(const AInfrastructures& infrastructure) const
+	void Direct3D12Interface::OnInitialize(const AInfrastructures& infrastructure)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -313,7 +313,7 @@ namespace Neptune::imgui {
 	
 #ifdef NP_GRAPHICS_METAL
 	
-	void MetalInterface::OnInitialize(const AInfrastructures& infrastructure) const
+	void MetalInterface::OnInitialize(const AInfrastructures& infrastructure)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -323,6 +323,8 @@ namespace Neptune::imgui {
 
 		AContext context(infrastructure);
 
+		m_RenderPassDescriptor = context.Get<ARenderPassDescriptor>();
+		
 		ImGui_ImplMetal_Init(context.Get<ADevice>());
 	}
 	
@@ -337,7 +339,7 @@ namespace Neptune::imgui {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		ImGui_ImplMetal_NewFrame();
+		ImGui_ImplMetal_NewFrame(static_cast<MTL::RenderPassDescriptor*>(m_RenderPassDescriptor));
 	}
 	
 	void MetalInterface::SubmitFrameRHI(void* payload) const
@@ -346,7 +348,9 @@ namespace Neptune::imgui {
 		
 		const ImGuiIO& io = ImGui::GetIO();
 		
-		ImGui_ImplMetal_RenderDrawData(ImGui::GetDrawData(), static_cast<MTL::CommandBuffer*>(payload), nullptr);
+		const auto commandBuffer = static_cast<MTL::CommandBuffer*>(payload);
+		
+		ImGui_ImplMetal_RenderDrawData(ImGui::GetDrawData(), commandBuffer, commandBuffer->renderCommandEncoder(static_cast<MTL::RenderPassDescriptor*>(m_RenderPassDescriptor)));
 
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
@@ -359,7 +363,7 @@ namespace Neptune::imgui {
 	
 #ifdef NP_GRAPHICS_WEBGPU
 	
-	void WebGPUInterface::OnInitialize(const AInfrastructures& infrastructure) const
+	void WebGPUInterface::OnInitialize(const AInfrastructures& infrastructure)
 	{
 		NEPTUNE_PROFILE_ZONE
 

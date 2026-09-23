@@ -39,6 +39,8 @@ namespace Neptune::WebGPU {
 
 	void RenderPass::BeginRenderPass(const Unit::CommandEncoder* commandEncoder)
 	{
+		NEPTUNE_PROFILE_ZONE
+		
 		if (m_SurfaceIndex)
 		{
 			WGPUSurfaceTexture swapChainTexture;

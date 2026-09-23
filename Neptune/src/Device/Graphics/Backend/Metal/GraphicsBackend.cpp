@@ -11,7 +11,7 @@
 #include "GraphicsBackend.h"
 #include "Infrastructure/InfrastructureHeader.h"
 #include "AInfrastructure/AccessibleInfrastructure.h"
-//#include "RHI/RHIHeader.h"
+#include "RHI/RHIHeader.h"
 #include "Window/Window.h"
 
 namespace Neptune::Metal {
@@ -21,7 +21,7 @@ namespace Neptune::Metal {
     {
         NEPTUNE_PROFILE_ZONE
         
-        HandleResultDelegate::SetHandler([&](NS::Error* result) { HandleResult(result); });
+        HandleResultDelegate::SetHandler([&](const NS::Error* result) { HandleResult(result); });
     }
 
     GraphicsBackend::~GraphicsBackend() = default;
@@ -32,7 +32,12 @@ namespace Neptune::Metal {
 
         m_Context = CreateUP<Context>();
         
+        m_Context->Registry<IFrameAutoreleasePool>();
         m_Context->Registry<IDevice>();
+        m_Context->Registry<ILayer>(MaxFrameInFlight);
+        m_Context->Registry<ICommandQueue>();
+        m_Context->Registry<ICommandBuffer>();
+        m_Context->Registry<IGraphicDispatchSemaphore>(MaxFrameInFlight);
     }
 
     void GraphicsBackend::OnShutDown()
