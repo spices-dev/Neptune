@@ -16,7 +16,7 @@ namespace Neptune::RHI {
 	* @brief Specialization of RHIIndexBuffer::Impl
 	*/
 	template<>
-	class RHIIndexBuffer::Impl
+	class RHIIndexBuffer::Impl : public RHIImplEmpty
 	{
 	public:
 

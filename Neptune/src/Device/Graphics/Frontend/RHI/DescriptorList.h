@@ -16,7 +16,7 @@ namespace Neptune::RHI {
 	* @brief Specialization of RHIDescriptorList::Impl
 	*/
 	template<>
-	class RHIDescriptorList::Impl
+	class RHIDescriptorList::Impl : public RHIImplEmpty
 	{
 	public:
 

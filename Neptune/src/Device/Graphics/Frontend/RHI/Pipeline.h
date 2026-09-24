@@ -18,7 +18,7 @@ namespace Neptune::RHI {
 	* @brief Specialization of RHIPipeline::Impl
 	*/
 	template<>
-	class RHIPipeline::Impl
+	class RHIPipeline::Impl : public RHIImplEmpty
 	{
 	public:
 

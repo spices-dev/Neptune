@@ -29,7 +29,7 @@ namespace Neptune::RHI {
 	* @brief Specialization of RHICmdList::Impl
 	*/
 	template<>
-	class RHICmdList::Impl
+	class RHICmdList::Impl : public RHIImplEmpty
 	{
 	public:
 

@@ -53,7 +53,7 @@ namespace Neptune {
         * 
         * @return Returns RHI::Impl
         */
-        virtual std::any CreateRHI(RHI::ERHI e, void* payload) const = 0;
+        virtual UP<RHI::RHIImplEmpty> CreateRHI(RHI::ERHI e, void* payload) const = 0;
 
         /**
         * @brief Interface of Access Infrastructure.

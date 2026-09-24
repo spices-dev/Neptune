@@ -18,7 +18,7 @@ namespace Neptune::RHI {
 	* @brief Specialization of RHIDecoder::Impl
 	*/
 	template<>
-	class RHIDecoder::Impl
+	class RHIDecoder::Impl : public RHIImplEmpty
 	{
 	public:
 

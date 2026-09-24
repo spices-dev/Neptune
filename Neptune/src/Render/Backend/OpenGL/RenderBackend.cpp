@@ -104,7 +104,7 @@ namespace Neptune::OpenGL {
         return m_GraphicsBackend->GetContext();
     }
     
-    std::any RenderBackend::CreateRHI(RHI::ERHI e, void* payload) const
+    UP<RHI::RHIImplEmpty> RenderBackend::CreateRHI(RHI::ERHI e, void* payload) const
 	{
         NEPTUNE_PROFILE_ZONE
 

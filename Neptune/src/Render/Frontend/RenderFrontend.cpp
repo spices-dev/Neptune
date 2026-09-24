@@ -89,7 +89,7 @@ namespace Neptune {
 #endif
    
 #ifdef NP_GRAPHICS_OPENGLES
-        case RenderBackendEnum::OpenGLES: sp = CreateUP<OpenGLES::RenderBackend>(); break;
+            case RenderBackendEnum::OpenGLES: sp = CreateUP<OpenGLES::RenderBackend>(); break;
 #endif
             
 #ifdef NP_GRAPHICS_VULKAN

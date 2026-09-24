@@ -60,7 +60,7 @@ namespace Neptune::Direct3D11 {
         NEPTUNE_PROFILE_ZONE
     }
 
-    std::any GraphicsBackend::CreateRHI(RHI::ERHI e, void* payload) const
+    UP<RHI::RHIImplEmpty> GraphicsBackend::CreateRHI(RHI::ERHI e, void* payload) const
 	{
         NEPTUNE_PROFILE_ZONE
 

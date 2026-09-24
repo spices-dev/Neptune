@@ -18,7 +18,7 @@
 
 namespace Neptune::Vulkan {
 
-	SP<Decoder> Decoder::Create(Context& context, void* payload)
+	UP<Decoder> Decoder::Create(Context& context, void* payload)
 	{
         NEPTUNE_PROFILE_ZONE
 
@@ -26,10 +26,10 @@ namespace Neptune::Vulkan {
 
 		switch(op)
 		{
-		    case VideoOperation::DecodeVP9:  return CreateSP<VP9Decoder>(context);
-		    case VideoOperation::DecodeH264: return CreateSP<H264Decoder>(context);
-		    case VideoOperation::DecodeH265: return CreateSP<H265Decoder>(context);
-		    case VideoOperation::DecodeAV1:  return CreateSP<AV1Decoder>(context);
+		    case VideoOperation::DecodeVP9:  return CreateUP<VP9Decoder>(context);
+		    case VideoOperation::DecodeH264: return CreateUP<H264Decoder>(context);
+		    case VideoOperation::DecodeH265: return CreateUP<H265Decoder>(context);
+		    case VideoOperation::DecodeAV1:  return CreateUP<AV1Decoder>(context);
 		    default:
 		    {
 			    NEPTUNE_LOG_CORE(E) << "Vulkan::Decoder::Create: Unsupported VideoOperation";

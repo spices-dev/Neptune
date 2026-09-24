@@ -22,7 +22,7 @@ namespace Neptune::RHI {
 	* @brief Specialization of RHIRenderTarget::Impl
 	*/
 	template<>
-	class RHIRenderTarget::Impl
+	class RHIRenderTarget::Impl : public RHIImplEmpty
 	{
 	public:
 

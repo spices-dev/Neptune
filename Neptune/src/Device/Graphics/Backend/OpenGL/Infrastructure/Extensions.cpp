@@ -42,15 +42,11 @@ namespace Neptune::OpenGL {
     	if (!IsExtensionMeetDemand())
     	{
     		NEPTUNE_LOG_CORE(C) << "OpenGL Core Extension is not satisfied.";
-
-    		NEPTUNE_BREAK
 		}
         
     	if (!IsPropertyMeetDemand())
     	{
     		NEPTUNE_LOG_CORE(C) << "OpenGL Core Extension Property is not satisfied.";
-
-    		NEPTUNE_BREAK
     	}
     }
 

@@ -18,7 +18,7 @@ namespace Neptune::RHI {
 	* @brief Specialization of RHIOpticalFlow::Impl
 	*/
 	template<>
-	class RHIOpticalFlow::Impl
+	class RHIOpticalFlow::Impl : public RHIImplEmpty
 	{
 	public:
 

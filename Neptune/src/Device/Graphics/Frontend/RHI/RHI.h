@@ -6,6 +6,7 @@
 
 #pragma once
 #include "Core/Core.h"
+#include "Core/Container/Empty.h"
 #include "Enum.h"
 
 #include <functional>
@@ -13,6 +14,8 @@
 
 namespace Neptune::RHI {
 
+	using RHIImplEmpty = Container::Empty;
+	
 	/**
 	* @brief Delegate of RHI.
 	*/
@@ -24,7 +27,7 @@ namespace Neptune::RHI {
 		* @param[in] e ERHI.
 		* @param[in] payload payload of rhi.
 		*/
-		using Creator = std::function<std::any(ERHI e, void* payload)>;
+		using Creator = std::function<UP<RHIImplEmpty>(ERHI e, void* payload)>;
 
 		/**
 		* @brief Set Creator Functor.
@@ -52,7 +55,7 @@ namespace Neptune::RHI {
 		/**
 		* @brief Template of RHI Implement Class.
 		*/
-		class Impl
+		class Impl : public RHIImplEmpty
 		{	
 		public:
 
@@ -75,22 +78,8 @@ namespace Neptune::RHI {
 		* @param[in] payload RHI Construct payload.
 		*/
 		explicit RHI(void* payload = nullptr)
-		{
-			NEPTUNE_PROFILE_ZONE
-
-			auto result = std::invoke(RHIDelegate::GetCreator(), E, payload);
-			
-			if (result.type() == typeid(std::nullptr_t))
-			{
-				NEPTUNE_LOG_CORE(E) << "RHI: [ "<< ToString(E) <<" ] Create Failed.";
-				
-				NEPTUNE_BREAK
-			}
-			else
-			{
-				m_Impl = std::any_cast<SP<Impl>>(result);
-			}
-		}
+			: m_Impl(static_cast<Impl*>(std::invoke(RHIDelegate::GetCreator(), E, payload).release()))
+		{}
 
 		/**
 		* @brief Destructor Function.
@@ -112,6 +101,6 @@ namespace Neptune::RHI {
 
 	protected:
 
-		SP<Impl> m_Impl = nullptr;     // @brief RHI Implement.
+		UP<Impl> m_Impl = nullptr;     // @brief RHI Implement.
 	};
 }

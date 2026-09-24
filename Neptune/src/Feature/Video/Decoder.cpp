@@ -25,8 +25,6 @@ namespace Neptune::Video {
 		else
 		{
 			NEPTUNE_LOG_CORE(E) << "RHI Decoder is not supported.";
-			
-			NEPTUNE_BREAK
 		}
 	}
 

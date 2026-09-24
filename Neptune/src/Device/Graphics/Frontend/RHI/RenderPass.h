@@ -18,7 +18,7 @@ namespace Neptune::RHI {
 	* @brief Specialization of RHIRenderPass::Impl
 	*/
 	template<>
-	class RHIRenderPass::Impl
+	class RHIRenderPass::Impl : public RHIImplEmpty
 	{
 	public:
 

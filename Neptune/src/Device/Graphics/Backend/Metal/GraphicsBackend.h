@@ -62,7 +62,7 @@ namespace Neptune::Metal {
         *
         * @return Returns RHI::Impl
         */
-        std::any CreateRHI(RHI::ERHI e, void* payload) const override;
+        UP<RHI::RHIImplEmpty> CreateRHI(RHI::ERHI e, void* payload) const override;
 
         /**
         * @brief Interface of Access Infrastructure.

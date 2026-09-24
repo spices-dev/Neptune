@@ -582,7 +582,7 @@ namespace Neptune::Vulkan {
 	{
 	public:
 
-		static SP<Decoder> Create(Context& context, void* payload);
+		static UP<Decoder> Create(Context& context, void* payload);
 
 	public:
 

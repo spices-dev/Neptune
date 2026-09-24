@@ -13,11 +13,6 @@
 #include "Device/Graphics/Frontend/RHI/CmdList.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/ISynchronization.h"
 
-namespace Neptune::WebGPU::Unit {
-	
-	class CommandBuffer;
-}
-
 namespace Neptune::RHI {
 
 	class RenderPass;

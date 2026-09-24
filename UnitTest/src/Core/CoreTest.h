@@ -7,6 +7,7 @@
 #pragma once
 
 #include "Core/Container/BitSetTest.h"
+#include "Core/Container/EmptyTest.h"
 #include "Core/Container/KVTupleTest.h"
 #include "Core/Container/LinkedUnorderedMapTest.h"
 #include "Core/Container/SpinLockTest.h"

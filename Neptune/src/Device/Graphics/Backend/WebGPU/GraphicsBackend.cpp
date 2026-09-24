@@ -61,14 +61,14 @@ namespace Neptune::WebGPU {
         m_Context->Get<IQueue>()->OnSubmittedWorkDone();
     }
 
-    std::any GraphicsBackend::CreateRHI(RHI::ERHI e, void* payload) const
+    UP<RHI::RHIImplEmpty> GraphicsBackend::CreateRHI(RHI::ERHI e, void* payload) const
 	{
         NEPTUNE_PROFILE_ZONE
 
         switch(e)
 		{
-            case RHI::ERHI::RenderPass:       return std::static_pointer_cast<RHI::RHIRenderPass::Impl>    (CreateSP<RenderPass>           (*m_Context));
-            case RHI::ERHI::CmdList:          return std::static_pointer_cast<RHI::RHICmdList::Impl>       (CreateSP<CmdList>              (*m_Context));
+            case RHI::ERHI::RenderPass:       return CreateUP<RenderPass>           (*m_Context);
+            case RHI::ERHI::CmdList:          return CreateUP<CmdList>              (*m_Context);
 			default:                          NEPTUNE_LOG_CORE(E) << "WebGPU do not support RHI: [ " << ToString(e) << " ].";          return nullptr;
 		}
 	}
