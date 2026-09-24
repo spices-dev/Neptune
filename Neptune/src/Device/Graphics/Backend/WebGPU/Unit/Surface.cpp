@@ -21,7 +21,7 @@ namespace Neptune::WebGPU::Unit {
 		wgpuSurfaceRelease(m_Handle);
 	}
 
-	void Surface::CreateSurface(WGPUInstance instance, const WGPUSurfaceDescriptor& descriptor)
+	void Surface::CreateSurface(WGPUInstance instance, const WGPUSurfaceDescriptor& desc)
 	{
 		NEPTUNE_PROFILE_ZONE
 

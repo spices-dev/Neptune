@@ -32,18 +32,16 @@ namespace Neptune::WebGPU {
     {
         NEPTUNE_PROFILE_ZONE
         
-        auto sp = CreateSP<Unit::Future>();
+        auto p = CreateUP<Unit::Future>();
         
-        sp->SetHandle(handle);
+        p->SetHandle(handle);
         
-        m_Futures[index] = sp;
+        m_Futures[index] = std::move(p);
     }
     
     void Future::Wait(uint32_t index) const
     {
         NEPTUNE_PROFILE_ZONE
-        
-        if (!m_Futures[index]) return;
         
         m_Futures[index]->Wait(GetContext().Get<IInstance>()->Handle());
     }

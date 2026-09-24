@@ -20,6 +20,8 @@ namespace Neptune::WebGPU::Unit {
 		waitInfo.future                    = m_Handle;
 
 		WEBGPU_WAIT_CHECK(wgpuInstanceWaitAny(instance, 1, &waitInfo, WaitTimeoutNS))
+		
+		assert(waitInfo.completed);
 	}
 }
 

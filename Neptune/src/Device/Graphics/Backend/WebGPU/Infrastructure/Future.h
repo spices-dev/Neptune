@@ -73,7 +73,7 @@ namespace Neptune::WebGPU {
 
     private:
 
-        std::vector<SP<Unit::Future>> m_Futures;  // @brief Container of Futures.
+        std::vector<UP<Unit::Future>> m_Futures;  // @brief Container of Futures.
     };
     
 }

@@ -39,9 +39,9 @@ namespace Neptune::WebGPU::Unit {
 		* @brief Create Surface.
 		*
 		* @param[in] instance WGPUInstance.
-		* @param[in] descriptor WGPUSurfaceDescriptor.
+		* @param[in] desc WGPUSurfaceDescriptor.
 		*/
-		void CreateSurface(WGPUInstance instance, const WGPUSurfaceDescriptor& descriptor);
+		void CreateSurface(WGPUInstance instance, const WGPUSurfaceDescriptor& desc);
 		
 		/**
 		* @brief Set Unit name.
