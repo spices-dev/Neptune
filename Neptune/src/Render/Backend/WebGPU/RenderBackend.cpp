@@ -10,6 +10,7 @@
 
 #include "RenderBackend.h"
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/InfrastructureHeader.h"
+#include "Device/Graphics/Backend/WebGPU/AInfrastructure/AccessibleInfrastructure.h"
 #include "Window/Window.h"
 #include "World/Scene/Scene.h"
 #include "World/Component/Component.h"
@@ -26,9 +27,11 @@ namespace Neptune::WebGPU {
     {
         NEPTUNE_PROFILE_ZONE
 
-        m_GraphicsBackend->OnInitialize();
+        const auto& window = Window::Instance();
         
-        GetContext().Registry<ISurface>();
+        m_GraphicsBackend->OnInitialize(&window);
+        
+        GetContext().Registry<ISurface>(window.Extent());
 
         RenderFrontend::OnInitialize();
     }
@@ -50,12 +53,26 @@ namespace Neptune::WebGPU {
 
         auto& context = m_GraphicsBackend->GetContext();
         
+        if (clock.m_FrameId > MaxFrameInFlight)
         {
-            context.Get<IFuture>()->Wait(clock.m_FrameIndex);
+            context.Get<IComputeTimeLine>()->Wait(clock.m_FrameId - MaxFrameInFlight);
+            
+            context.Get<IGraphicTimeLine>()->Wait(clock.m_FrameId - MaxFrameInFlight);
         }
 
         {
-            context.Get<ICommandEncoder>()->Begin(clock.m_FrameIndex);
+            if (!context.Get<ISurface>()->GetNextImage())
+            {
+                NEPTUNE_BREAK
+                
+                RecreateSwapChain();
+            }
+        }
+
+        {
+            context.Get<IComputeCommandEncoder>()->Begin();
+            
+            context.Get<IGraphicCommandEncoder>()->Begin();
         }
     }
 
@@ -68,14 +85,29 @@ namespace Neptune::WebGPU {
         auto& context = m_GraphicsBackend->GetContext();
         
 		{
-			DEBUGUTILS_BEGINLABEL(context.Get<IQueue>()->Handle(), "MainQueue")
+			DEBUGUTILS_BEGINLABEL(context.Get<IQueue>()->Handle(), "MainComputeQueue")
 
-			context.Get<IFuture>()->SetHandle(clock.m_FrameIndex, context.Get<IQueue>()->Submit(context.Get<ICommandEncoder>()->End(clock.m_FrameIndex)));
+			context.Get<IComputeTimeLine>()->SetHandle(clock.m_FrameId, context.Get<IQueue>()->Submit(context.Get<IComputeCommandEncoder>()->End()));
 
 			DEBUGUTILS_ENDLABEL(context.Get<IQueue>()->Handle())
 		}
         
-        // Present ?
+        {
+            DEBUGUTILS_BEGINLABEL(context.Get<IQueue>()->Handle(), "MainGraphicQueue")
+
+            context.Get<IGraphicTimeLine>()->SetHandle(clock.m_FrameId, context.Get<IQueue>()->Submit(context.Get<IGraphicCommandEncoder>()->End()));
+
+            DEBUGUTILS_ENDLABEL(context.Get<IQueue>()->Handle())
+        }
+        
+        /*{
+            if (!context.Get<ISurface>()->Present())
+            {
+                NEPTUNE_BREAK
+                
+                RecreateSwapChain();
+            }
+        }*/
     }
 
     void RenderBackend::Wait() const

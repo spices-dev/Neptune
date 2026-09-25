@@ -55,7 +55,7 @@ namespace Neptune::GLFW {
         /**
         * @brief Interface of window get extent.
         */
-        glm::ivec2 Extent() const override;
+        glm::uvec2 Extent() const override;
 
         /**
         * @brief Get Window Extension.

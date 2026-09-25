@@ -12,15 +12,18 @@
 #include "Device/Graphics/Backend/WebGPU/Core.h"
 #include "Device/Graphics/Backend/Common/Unit/Unit.h"
 
-#include <entt.hpp>
-
 namespace Neptune::WebGPU::Unit {
 
+	namespace detail {
+	
+		constexpr uint32_t ignore = 0;
+	}
+	
 	using namespace Graphic::Common;
 	
 	template<typename T>
-	requires IsUnit<Graphic::Common::Unit<T, entt::type_hash<T>::value()>>
-	using Unit = Graphic::Common::Unit<T, entt::type_hash<T>::value()>;
+	requires IsUnit<Graphic::Common::Unit<T, detail::ignore>>
+	using Unit = Graphic::Common::Unit<T, detail::ignore>;
 
 }
 

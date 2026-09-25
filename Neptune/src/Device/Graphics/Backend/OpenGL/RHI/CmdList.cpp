@@ -116,7 +116,7 @@ namespace Neptune::OpenGL {
 		
 	}
 	
-	void CmdList::CmdSetViewport(const glm::vec2& viewPortSize) const
+	void CmdList::CmdSetViewport(const glm::uvec2& viewPortSize) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		

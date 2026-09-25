@@ -98,7 +98,7 @@ namespace Neptune::GLFW {
         glfwPollEvents();
     }
 
-    glm::ivec2 WindowImpl::Extent() const
+    glm::uvec2 WindowImpl::Extent() const
     {
         NEPTUNE_PROFILE_ZONE
 

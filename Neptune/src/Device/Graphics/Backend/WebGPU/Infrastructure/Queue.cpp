@@ -25,6 +25,8 @@ namespace Neptune::WebGPU {
         Create();
     }
 
+    Queue::~Queue() = default;
+
     void Queue::Create()
     {
         NEPTUNE_PROFILE_ZONE
@@ -66,7 +68,7 @@ namespace Neptune::WebGPU {
         future.Wait(GetContext().Get<IInstance>()->Handle());
     }
 
-    WGPUFuture Queue::Submit(const SP<Unit::CommandBuffer>& commandBuffer) const
+    WGPUFuture Queue::Submit(const UP<Unit::CommandBuffer>& commandBuffer) const
     {
         NEPTUNE_PROFILE_ZONE
 

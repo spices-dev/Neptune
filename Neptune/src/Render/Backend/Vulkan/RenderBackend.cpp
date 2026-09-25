@@ -10,7 +10,6 @@
 
 #include "RenderBackend.h"
 #include "Device/Graphics/Frontend/RHI/RenderPass.h"
-#include "Device/Graphics/Backend/Vulkan/Extension/TimelineSemaphore.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/InfrastructureHeader.h"
 #include "Device/Graphics/Backend/Vulkan/AInfrastructure/AccessibleInfrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderPass.h"

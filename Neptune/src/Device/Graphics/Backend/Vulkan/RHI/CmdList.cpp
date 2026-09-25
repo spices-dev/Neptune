@@ -193,21 +193,21 @@ namespace Neptune::Vulkan {
 		m_Synchronization->InsertBarrier(m_CommandBuffer.get(), barrier);
 	}
 	
-	void CmdList::CmdSetViewport(const glm::vec2& viewPortSize) const
+	void CmdList::CmdSetViewport(const glm::uvec2& viewPortSize) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		VkViewport                     viewport{};
 		viewport.x                  =  0.0f;
-		viewport.y                  =  viewPortSize.y;
-		viewport.width              =  viewPortSize.x;
-		viewport.height             = -viewPortSize.y;
+		viewport.y                  =  static_cast<float>(viewPortSize.y);
+		viewport.width              =  static_cast<float>(viewPortSize.x);
+		viewport.height             = -static_cast<float>(viewPortSize.y);
 		viewport.minDepth           =  0.0f;
 		viewport.maxDepth           =  1.0f;
 
 		VkExtent2D                    extent;
-		extent.width                = static_cast<uint32_t>(viewPortSize.x);
-		extent.height               = static_cast<uint32_t>(viewPortSize.y);
+		extent.width                = viewPortSize.x;
+		extent.height               = viewPortSize.y;
 
 		VkRect2D                      scissor{};
 		scissor.offset              = { 0, 0 };

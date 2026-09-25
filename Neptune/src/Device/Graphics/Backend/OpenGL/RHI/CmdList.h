@@ -199,7 +199,7 @@ namespace Neptune::OpenGL {
 		*
 		* @param[in] viewPortSize .
 		*/
-		void CmdSetViewport(const glm::vec2& viewPortSize) const override;
+		void CmdSetViewport(const glm::uvec2& viewPortSize) const override;
 
 	protected:
 

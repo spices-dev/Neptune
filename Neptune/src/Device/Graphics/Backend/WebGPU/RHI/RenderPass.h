@@ -89,11 +89,17 @@ namespace Neptune::WebGPU {
 		*/
 		Unit::RenderPassEncoder::Handle Handle() const { return m_RenderPass->GetHandle(); }
 		
+		/**
+		* @brief Interface Get RenderPassEncoder.
+		* 
+		* @return Returns RenderPassEncoder.
+		*/
+		const UP<Unit::RenderPassEncoder>& IHandle() const { return m_RenderPass; }
+		
 	private:
 		
 		UP<Unit::RenderPassEncoder>                m_RenderPass;             // @brief This RenderPass.
 		std::vector<WGPURenderPassColorAttachment> m_Attachments;            // @brief WGPURenderPassColorAttachment.
-		UP<Unit::TextureView>                      m_SurfaceView;            // @brief Surface TextureView.
 		std::optional<uint32_t>                    m_SurfaceIndex;           // @brief Surface Index.
 		
 	};

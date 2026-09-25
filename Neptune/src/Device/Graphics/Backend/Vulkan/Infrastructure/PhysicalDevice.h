@@ -29,7 +29,6 @@ namespace Neptune::Vulkan {
 		VkSurfaceFormatKHR              format;                                 // @brief VkSurfaceFormatKHR.
 		VkPresentModeKHR                presentMode;                            // @brief VkPresentModeKHR.
 		VkExtent2D                      surfaceSize = {0, 0};      // @brief VkExtent2D.
-		VkExtent2D                      viewPortSize = {0, 0};;    // @brief VkExtent2D.
 	};
 
 	/**

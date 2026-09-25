@@ -43,25 +43,7 @@ namespace Neptune::WebGPU {
 		
 		if (m_SurfaceIndex)
 		{
-			WGPUSurfaceTexture swapChainTexture;
-			wgpuSurfaceGetCurrentTexture(GetContext().Get<ISurface>()->Handle(), &swapChainTexture);
-
-			WGPUTextureViewDescriptor      desc{};
-			desc.dimension               = WGPUTextureViewDimension_2D;
-			desc.baseMipLevel            = 0;
-			desc.mipLevelCount           = 1;
-			desc.baseArrayLayer          = 0;
-			desc.arrayLayerCount         = 1;
-			desc.aspect                  = WGPUTextureAspect_Undefined;
-			desc.usage                   = WGPUTextureUsage_RenderAttachment;
-			
-			m_SurfaceView = CreateUP<Unit::TextureView>();
-			
-			m_SurfaceView->CreateTextureView(swapChainTexture.texture, desc);
-			
-			DEBUGUTILS_SETOBJECTNAME(*m_SurfaceView, "SurfaceTextureView")
-			
-			m_Attachments[*m_SurfaceIndex].view = m_SurfaceView->GetHandle();
+			m_Attachments[*m_SurfaceIndex].view = GetContext().Get<ISurface>()->TextureView();
 		}
 		
 		WGPURenderPassDescriptor                      desc{};

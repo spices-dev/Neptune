@@ -15,51 +15,38 @@
 
 namespace Neptune::WebGPU {
 
-    CommandEncoder::CommandEncoder(Context& context, EInfrastructure e, uint32_t count)
+    CommandEncoder::CommandEncoder(Context& context, EInfrastructure e)
 		: Infrastructure(context, e)
-	{
-        NEPTUNE_PROFILE_ZONE
+	{}
 
-        Create(count);
-    }
-
-    void CommandEncoder::Create(uint32_t count)
-    {
-        NEPTUNE_PROFILE_ZONE
-
-        m_CommandEncoders.resize(count);
-    }
-    
-    void CommandEncoder::Begin(uint32_t index)
+    void CommandEncoder::Begin()
     {
         NEPTUNE_PROFILE_ZONE
         
-        auto sp = CreateSP<Unit::CommandEncoder>();
+        m_CommandEncoder = CreateSP<Unit::CommandEncoder>();
         
         WGPUCommandEncoderDescriptor desc{};
         
-        sp->CreateCommandEncoder(GetContext().Get<IDevice>()->Handle(), desc);
+        m_CommandEncoder->CreateCommandEncoder(GetContext().Get<IDevice>()->Handle(), desc);
         
-        m_CommandEncoders[index] = sp;
-        
-        DEBUGUTILS_SETOBJECTNAME(*sp, ToString())
+        DEBUGUTILS_SETOBJECTNAME(*m_CommandEncoder, ToString())
     }
     
-    SP<Unit::CommandBuffer> CommandEncoder::End(uint32_t index)
+    UP<Unit::CommandBuffer> CommandEncoder::End()
     {
         NEPTUNE_PROFILE_ZONE
         
-        auto sp = CreateSP<Unit::CommandBuffer>();
+        auto p = CreateUP<Unit::CommandBuffer>();
         
         WGPUCommandBufferDescriptor desc{};
         
-        sp->SetHandle(wgpuCommandEncoderFinish(m_CommandEncoders[index]->GetHandle(), &desc));
+        p->SetHandle(wgpuCommandEncoderFinish(m_CommandEncoder->GetHandle(), &desc));
         
-        DEBUGUTILS_SETOBJECTNAME(*sp, "CommandBuffer")
+        DEBUGUTILS_SETOBJECTNAME(*p, "CommandBuffer")
         
-        m_CommandEncoders[index].reset();
+        m_CommandEncoder.reset();
         
-        return sp;
+        return p;
     }
 
 }

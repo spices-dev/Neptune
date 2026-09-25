@@ -1,6 +1,6 @@
 /**
-* @file Future.cpp.
-* @brief The Future Class Implementation.
+* @file TimeLine.cpp.
+* @brief The TimeLine Class Implementation.
 * @author Spices.
 */
 
@@ -8,12 +8,12 @@
 
 #ifdef NP_GRAPHICS_WEBGPU
 
-#include "Future.h"
+#include "TimeLine.h"
 #include "Instance.h"
 
 namespace Neptune::WebGPU {
 
-    Future::Future(Context& context, EInfrastructure e, uint32_t count)
+    TimeLine::TimeLine(Context& context, EInfrastructure e, uint32_t count)
 		: Infrastructure(context, e)
 	{
         NEPTUNE_PROFILE_ZONE
@@ -21,14 +21,14 @@ namespace Neptune::WebGPU {
         Create(count);
     }
 
-    void Future::Create(uint32_t count)
+    void TimeLine::Create(uint32_t count)
     {
         NEPTUNE_PROFILE_ZONE
 
         m_Futures.resize(count);
     }
     
-    void Future::SetHandle(uint32_t index, WGPUFuture handle)
+    void TimeLine::SetHandle(uint32_t frameId, WGPUFuture handle)
     {
         NEPTUNE_PROFILE_ZONE
         
@@ -36,14 +36,14 @@ namespace Neptune::WebGPU {
         
         p->SetHandle(handle);
         
-        m_Futures[index] = std::move(p);
+        m_Futures[frameId % m_Futures.size()] = std::move(p);
     }
     
-    void Future::Wait(uint32_t index) const
+    void TimeLine::Wait(uint32_t frameId) const
     {
         NEPTUNE_PROFILE_ZONE
         
-        m_Futures[index]->Wait(GetContext().Get<IInstance>()->Handle());
+        m_Futures[frameId % m_Futures.size()]->Wait(GetContext().Get<IInstance>()->Handle());
     }
 
 }

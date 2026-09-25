@@ -37,9 +37,11 @@ namespace Neptune::WebGPU {
         
         m_Context->Registry<IQueue>();
         
-        m_Context->Registry<IFuture>(MaxFrameInFlight);
+        m_Context->Registry<IGraphicTimeLine>(MaxFrameInFlight);
+        m_Context->Registry<IComputeTimeLine>(MaxFrameInFlight);
         
-        m_Context->Registry<ICommandEncoder>(MaxFrameInFlight);
+        m_Context->Registry<IGraphicCommandEncoder>();
+        m_Context->Registry<IComputeCommandEncoder>();
     }
 
     void GraphicsBackend::OnShutDown()

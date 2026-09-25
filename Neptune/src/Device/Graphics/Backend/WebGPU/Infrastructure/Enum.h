@@ -23,9 +23,11 @@ namespace Neptune::WebGPU {
 
         Queue,                               // @brief Queue.
         
-        Future,                              // @brief Queue Fence.
+        GraphicTimeLine,                     // @brief GraphicTimeLine.
+        ComputeTimeLine,                     // @brief ComputeTimeLine.
 
-        CommandEncoder,                      // @brief CommandEncoder.
+        GraphicCommandEncoder,               // @brief GraphicCommandEncoder.
+        ComputeCommandEncoder,               // @brief ComputeCommandEncoder.
         
         Count
     };

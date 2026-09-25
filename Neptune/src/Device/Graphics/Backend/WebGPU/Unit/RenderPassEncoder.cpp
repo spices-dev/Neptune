@@ -34,6 +34,20 @@ namespace Neptune::WebGPU::Unit {
 		
 		wgpuRenderPassEncoderEnd(m_Handle);
 	}
+	
+	void RenderPassEncoder::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height, float minDepth, float maxDepth) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		wgpuRenderPassEncoderSetViewport(m_Handle, static_cast<float>(x), static_cast<float>(y), static_cast<float>(width), static_cast<float>(height), minDepth, maxDepth);
+	}
+
+	void RenderPassEncoder::SetScissor(uint32_t x, uint32_t y, uint32_t width, uint32_t height) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		wgpuRenderPassEncoderSetScissorRect(m_Handle, x, y, width, height);
+	}
 }
 
 #endif

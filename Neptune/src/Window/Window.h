@@ -11,7 +11,7 @@
 #include "Enum.h"
 #include "Render/Frontend/Enum.h"
 
-#include <glm/ext/vector_int2.hpp>
+#include <glm/ext/vector_uint2.hpp>
 
 namespace Neptune {
 
@@ -84,7 +84,7 @@ namespace Neptune {
         /**
         * @brief Interface of window get extent.
         */
-        virtual glm::ivec2 Extent() const = 0;
+        virtual glm::uvec2 Extent() const = 0;
 
         /**
         * @brief Get Window Extension.

@@ -1,6 +1,6 @@
 /**
-* @file Future.h.
-* @brief The Future Class Definitions.
+* @file TimeLine.h.
+* @brief The TimeLine Class Definitions.
 * @author Spices.
 */
 
@@ -14,13 +14,14 @@
 
 namespace Neptune::WebGPU {
 
-    using IFuture = IInfrastructure<class Future, EInfrastructure::Future>;
+    using IGraphicTimeLine = IInfrastructure<class TimeLine, EInfrastructure::GraphicTimeLine>;
+    using IComputeTimeLine = IInfrastructure<class TimeLine, EInfrastructure::ComputeTimeLine>;
 
     /**
-    * @brief WebGPU::Future Class.
-    * This class defines the WebGPU::Future behaves.
+    * @brief WebGPU::TimeLine Class.
+    * This class defines the WebGPU::TimeLine behaves.
     */
-    class Future : public Infrastructure
+    class TimeLine : public Infrastructure
     {
     public:
 
@@ -31,12 +32,12 @@ namespace Neptune::WebGPU {
         * @param[in] e EInfrastructure.
         * @param[in] count CommandBuffer Counts.
         */
-        Future(Context& context, EInfrastructure e, uint32_t count = 1);
+        TimeLine(Context& context, EInfrastructure e, uint32_t count = 1);
 
         /**
         * @brief Destructor Function.
         */
-        ~Future() override = default;
+        ~TimeLine() override = default;
 
         /**
         * @brief Get Unit Handle.
@@ -50,17 +51,17 @@ namespace Neptune::WebGPU {
         /**
         * @brief Set Unit Handle.
         *
-        * @param[in] index Handle index.
+        * @param[in] frameId FrameId.
         * @param[in] handle WGPUFuture.
         */
-        void SetHandle(uint32_t index, WGPUFuture handle);
+        void SetHandle(uint32_t frameId, WGPUFuture handle);
         
         /**
         * @brief Wait Future idle.
         *
-        * @param[in] index Handle index.
+        * @param[in] frameId FrameId.
         */
-        void Wait(uint32_t index = 0) const;
+        void Wait(uint32_t frameId = 0) const;
         
     private:
 

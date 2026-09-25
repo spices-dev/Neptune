@@ -9,7 +9,7 @@
 #include "RHI.h"
 #include "Device/Graphics/Frontend/Memory.h"
 
-#include <glm/ext/vector_float2.hpp>
+#include <glm/vec2.hpp>
 
 namespace Neptune::Graphic {
 
@@ -203,7 +203,7 @@ namespace Neptune::RHI {
 		* 
 		* @param[in] viewPortSize .
 		*/
-		virtual void CmdSetViewport(const glm::vec2& viewPortSize) const = 0;
+		virtual void CmdSetViewport(const glm::uvec2& viewPortSize) const = 0;
 
 		/***********************************************************************************/
 	};
@@ -373,6 +373,6 @@ namespace Neptune::RHI {
 		*
 		* @param[in] viewPortSize .
 		*/
-		void CmdSetViewport(const glm::vec2& viewPortSize) const { RHICmdList::m_Impl->CmdSetViewport(viewPortSize); }
+		void CmdSetViewport(const glm::uvec2& viewPortSize) const { RHICmdList::m_Impl->CmdSetViewport(viewPortSize); }
 	};
 }

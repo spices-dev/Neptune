@@ -46,6 +46,28 @@ namespace Neptune::WebGPU::Unit {
 		* @brief End RenderPass.
 		*/
 		void EndRenderPass() const;
+		
+		/**
+		* @brief Set Viewport.
+		*
+		* @param[in] x .
+		* @param[in] y .
+		* @param[in] width .
+		* @param[in] height .
+		* @param[in] minDepth .
+		* @param[in] maxDepth .
+		*/
+		void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height, float minDepth, float maxDepth) const;
+
+		/**
+		* @brief Set Scissor.
+		*
+		* @param[in] x .
+		* @param[in] y .
+		* @param[in] width .
+		* @param[in] height .
+		*/
+		void SetScissor(uint32_t x, uint32_t y, uint32_t width, uint32_t height) const;
 	};
 }
 

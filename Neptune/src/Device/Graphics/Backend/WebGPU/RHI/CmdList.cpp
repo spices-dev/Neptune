@@ -11,6 +11,7 @@
 #include "CmdList.h"
 #include "Device/Graphics/Backend/WebGPU/RHI/RenderPass.h"
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/CommandEncoder.h"
+#include "Device/Graphics/Backend/WebGPU/Infrastructure/Surface.h"
 #include "Data/Clock.h"
 
 namespace Neptune::WebGPU {
@@ -22,7 +23,7 @@ namespace Neptune::WebGPU {
 		m_FrameIndex = clock.m_FrameIndex;
 		m_ImageIndex = clock.m_ImageIndex;
 		
-		m_CommandEncoder = GetContext().Get<ICommandEncoder>()->IHandle(m_FrameIndex);
+		m_CommandEncoder = GetContext().Get<IGraphicCommandEncoder>()->IHandle();
 	}
 
 	void CmdList::SetComputeCmdList(const Data::Clock& clock)
@@ -31,6 +32,8 @@ namespace Neptune::WebGPU {
 		
 		m_FrameIndex = clock.m_FrameIndex;
 		m_ImageIndex = clock.m_ImageIndex;
+		
+		m_CommandEncoder = GetContext().Get<IComputeCommandEncoder>()->IHandle();
 	}
 	
 	void* CmdList::GetCommandList() const
@@ -122,10 +125,13 @@ namespace Neptune::WebGPU {
 		
 	}
 	
-	void CmdList::CmdSetViewport(const glm::vec2& viewPortSize) const
+	void CmdList::CmdSetViewport(const glm::uvec2& viewPortSize) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		m_RenderPass->IHandle()->SetViewport(0, 0, viewPortSize.x, viewPortSize.y, 0.0f, 1.0f);
+		
+		m_RenderPass->IHandle()->SetScissor(0, 0, viewPortSize.x, viewPortSize.y);
 	}
 
 	void CmdList::SetRenderPass(const SP<RHI::RenderPass>& renderPass)

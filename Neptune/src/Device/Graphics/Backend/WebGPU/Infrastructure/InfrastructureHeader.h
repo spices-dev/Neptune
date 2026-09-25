@@ -14,7 +14,7 @@
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/Adapter.h"
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/Device.h"
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/Queue.h"
-#include "Device/Graphics/Backend/WebGPU/Infrastructure/Future.h"
+#include "Device/Graphics/Backend/WebGPU/Infrastructure/TimeLine.h"
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/CommandEncoder.h"
 
 #endif

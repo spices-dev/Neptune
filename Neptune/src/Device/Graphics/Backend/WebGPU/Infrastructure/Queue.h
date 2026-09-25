@@ -40,7 +40,7 @@ namespace Neptune::WebGPU {
         /**
         * @brief Destructor Function.
         */
-        ~Queue() override = default;
+        ~Queue() override;
 
         /**
         * @brief Get Unit Handle.
@@ -61,7 +61,7 @@ namespace Neptune::WebGPU {
         * 
         * @return Returns Future.
         */
-        WGPUFuture Submit(const SP<Unit::CommandBuffer>& commandBuffer) const;
+        WGPUFuture Submit(const UP<Unit::CommandBuffer>& commandBuffer) const;
         
     private:
 

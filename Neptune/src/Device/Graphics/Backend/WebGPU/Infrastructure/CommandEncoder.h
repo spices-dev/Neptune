@@ -11,15 +11,12 @@
 #include "Core/Core.h"
 #include "Infrastructure.h"
 #include "Device/Graphics/Backend/WebGPU/Unit/CommandEncoder.h"
+#include "Device/Graphics/Backend/WebGPU/Unit/CommandBuffer.h"
 
 namespace Neptune::WebGPU {
 
-    namespace Unit {
-        
-        class CommandBuffer;
-    }
-    
-    using ICommandEncoder = IInfrastructure<class CommandEncoder, EInfrastructure::CommandEncoder>;
+    using IGraphicCommandEncoder = IInfrastructure<class CommandEncoder, EInfrastructure::GraphicCommandEncoder>;
+    using IComputeCommandEncoder = IInfrastructure<class CommandEncoder, EInfrastructure::ComputeCommandEncoder>;
 
     /**
     * @brief WebGPU::CommandEncoder Class.
@@ -34,9 +31,8 @@ namespace Neptune::WebGPU {
         *
         * @param[in] context Context.
         * @param[in] e EInfrastructure.
-        * @param[in] count CommandBuffer Counts.
         */
-        CommandEncoder(Context& context, EInfrastructure e, uint32_t count = 1);
+        CommandEncoder(Context& context, EInfrastructure e);
 
         /**
         * @brief Destructor Function.
@@ -44,51 +40,34 @@ namespace Neptune::WebGPU {
         ~CommandEncoder() override = default;
 
         /**
-        * @brief Get Unit Handle.
+        * @brief Get CommandEncoder.
         *
-        * @param[in] index Handle index.
+        * @return Returns CommandEncoder.
+        */
+        SP<Unit::CommandEncoder> IHandle() const { return m_CommandEncoder; }
+        
+        /**
+        * @brief Get Unit Handle.
         *
         * @return Returns Unit Handle.
         */
-        const Unit::CommandEncoder::Handle& Handle(uint32_t index = 0) const { return m_CommandEncoders[index]->GetHandle(); }
-
-        /**
-        * @brief Get Unit Handle Interface.
-        *
-        * @param[in] index Handle index.
-        *
-        * @return Returns Unit Handle Interface.
-        */
-        const SP<Unit::CommandEncoder>& IHandle(uint32_t index = 0) const { return m_CommandEncoders[index]; }
+        const Unit::CommandEncoder::Handle& Handle() const { return m_CommandEncoder->GetHandle(); }
         
         /**
         * @brief Begin CommandEncoder.
-        * 
-        * @param[in] index Handle index.
         */
-        void Begin(uint32_t index = 0);
+        void Begin();
 		
         /**
         * @brief End CommandEncoder.
         * 
-        * @param[in] index Handle index.
-        * 
         * return Returns Unit::CommandBuffer.
         */
-        SP<Unit::CommandBuffer> End(uint32_t index = 0);
-        
-    private:
-
-        /**
-        * @brief Create CommandEncoder.
-        *
-        * @param[in] count Future Counts.
-        */
-        void Create(uint32_t count);
+        UP<Unit::CommandBuffer> End();
 
     private:
 
-        std::vector<SP<Unit::CommandEncoder>> m_CommandEncoders;  // @brief Container of CommandEncoders.
+        SP<Unit::CommandEncoder> m_CommandEncoder;  // @brief CommandEncoder.
     };
 
 }
