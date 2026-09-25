@@ -20,8 +20,21 @@ namespace Neptune::WebGPU {
     {
         NEPTUNE_PROFILE_ZONE
 
+	    using enum EInfrastructure;
+		
         switch (GetEInfrastructure())
         {
+			case Extensions:                                          return "Extensions";
+			case Instance:                                            return "Instance";
+			case DebugUtilsObject:                                    return "DebugUtilsObject";
+			case Adapter:                                             return "Adapter";
+			case Device:                                              return "Device";
+			case Surface:                                             return "Surface";
+			case Queue:                                               return "Queue";
+			case GraphicTimeLine:                                     return "GraphicTimeLine";
+			case ComputeTimeLine:                                     return "ComputeTimeLine";
+			case GraphicCommandEncoder:                               return "GraphicCommandEncoder";
+			case ComputeCommandEncoder:                               return "ComputeCommandEncoder";
             default:                                                  return "NonNamed";
         }
     }

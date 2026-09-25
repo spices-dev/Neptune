@@ -195,8 +195,8 @@ namespace Neptune::Vulkan::Extension {
     private:
         
         EExtensionState m_State;                                         // @brief EExtensionState.
-        std::unordered_map<std::string, bool> m_InstanceExtensions;      // @brief VkInstance Extensions.
-        std::unordered_map<std::string, bool> m_DeviceExtensions;        // @brief VkPhysicalDevice/VkDevice Extensions.
+        std::unordered_map<std::string, bool> m_InstanceExtensions{};    // @brief VkInstance Extensions.
+        std::unordered_map<std::string, bool> m_DeviceExtensions{};      // @brief VkPhysicalDevice/VkDevice Extensions.
     };
 
     template <typename T>

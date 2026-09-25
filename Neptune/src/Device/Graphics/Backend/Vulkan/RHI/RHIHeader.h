@@ -8,18 +8,18 @@
 
 #ifdef NP_GRAPHICS_VULKAN
 
-#include "Device/Graphics/Backend/Vulkan/RHI/Capability.h"
-#include "Device/Graphics/Backend/Vulkan/RHI/RenderPass.h"
-#include "Device/Graphics/Backend/Vulkan/RHI/DescriptorList.h"
-#include "Device/Graphics/Backend/Vulkan/RHI/Pipeline.h"
-#include "Device/Graphics/Backend/Vulkan/RHI/Shader.h"
-#include "Device/Graphics/Backend/Vulkan/RHI/RenderTarget.h"
-#include "Device/Graphics/Backend/Vulkan/RHI/VertexBuffer.h"
-#include "Device/Graphics/Backend/Vulkan/RHI/IndexBuffer.h"
-#include "Device/Graphics/Backend/Vulkan/RHI/Buffer.h"
-#include "Device/Graphics/Backend/Vulkan/RHI/CmdList.h"
-#include "Device/Graphics/Backend/Vulkan/RHI/CmdList2.h"
-#include "Device/Graphics/Backend/Vulkan/RHI/Video/Decode/Decoder.h"
-#include "Device/Graphics/Backend/Vulkan/RHI/OpticalFlowSession.h"
+#include "Capability.h"
+#include "RenderPass.h"
+#include "DescriptorList.h"
+#include "Pipeline.h"
+#include "Shader.h"
+#include "RenderTarget.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+#include "Buffer.h"
+#include "CmdList.h"
+#include "CmdList2.h"
+#include "Video/Decode/Decoder.h"
+#include "OpticalFlowSession.h"
 
 #endif

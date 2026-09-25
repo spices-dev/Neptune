@@ -15,11 +15,12 @@ namespace Neptune::WebGPU {
     */
     enum class EInfrastructure : uint8_t
     {
-        Instance = 0,                        // @brief Instance.
+        Extensions = 0,                      // @brief Extensions.
+        Instance,                            // @brief Instance.
         DebugUtilsObject,                    // @brief Label/Name Functors.
-        Surface,                             // @brief Surface.
         Adapter,                             // @brief Adapter.
         Device,                              // @brief LogicalDevice.
+        Surface,                             // @brief Surface.
 
         Queue,                               // @brief Queue.
         

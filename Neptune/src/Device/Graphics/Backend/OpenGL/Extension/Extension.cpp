@@ -24,11 +24,11 @@ namespace Neptune::OpenGL::Extension {
         s_ApiVersion = version;
     }
 
-    void Extension::AddExtensions(const char* name, bool value)
+    void Extension::AddExtensions(const std::string& name, bool value)
     {
         NEPTUNE_PROFILE_ZONE
 
-        m_Extensions.emplace(name, value);
+        m_Extensions.insert_or_assign(name, value);
     }
 
     uint32_t Extension::GetApiVersion() const

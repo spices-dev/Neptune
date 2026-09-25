@@ -65,14 +65,14 @@ namespace Neptune::OpenGL::Extension {
         * @param[in] name Extension Name.
         * @param[in] value On/Off.
         */
-        void AddExtensions(const char* name, bool value = true);
+        void AddExtensions(const std::string& name, bool value = true);
         
         /**
         * @brief Get Extension Requirement.
         * 
         * @return Returns Extension Requirement.
         */
-        const std::unordered_map<const char*, bool>& GetExtensions() const { return m_Extensions; }
+        const std::unordered_map<std::string, bool>& GetExtensions() const { return m_Extensions; }
         
         /**
         * @brief Query Extension Properties.
@@ -107,7 +107,7 @@ namespace Neptune::OpenGL::Extension {
     private:
         
         EExtensionState m_State;                                         // @brief EExtensionState.
-        std::unordered_map<const char*, bool> m_Extensions;              // @brief Extensions.
+        std::unordered_map<std::string, bool> m_Extensions{};            // @brief Extensions.
     };
 
     template <typename T> 

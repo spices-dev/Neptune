@@ -63,8 +63,6 @@ namespace Neptune::WebGPU {
         {
             if (!context.Get<ISurface>()->GetNextImage())
             {
-                NEPTUNE_BREAK
-                
                 RecreateSwapChain();
             }
         }
@@ -99,15 +97,6 @@ namespace Neptune::WebGPU {
 
             DEBUGUTILS_ENDLABEL(context.Get<IQueue>()->Handle())
         }
-        
-        /*{
-            if (!context.Get<ISurface>()->Present())
-            {
-                NEPTUNE_BREAK
-                
-                RecreateSwapChain();
-            }
-        }*/
     }
 
     void RenderBackend::Wait() const

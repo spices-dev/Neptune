@@ -20,6 +20,9 @@ namespace Neptune::WebGPU {
         : GraphicsFrontend(Graphic::EBackend::WebGPU)
     {
         NEPTUNE_PROFILE_ZONE
+        
+        HandleResultDelegate::SetHandler([](WGPUStatus result){ HandleResult(result); });
+        HandleResultDelegate::SetWaitHandler([](WGPUWaitStatus result){ HandleWaitResult(result); });
     }
 
     GraphicsBackend::~GraphicsBackend() = default;

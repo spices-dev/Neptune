@@ -44,6 +44,11 @@ namespace Neptune::WebGPU {
         */
         const Unit::Instance::Handle& Handle() const { return m_Instance.GetHandle(); }
 
+        /**
+        * @brief Process Events.
+        */
+        void ProcessEvents();
+        
     private:
 
         /**
@@ -52,39 +57,32 @@ namespace Neptune::WebGPU {
         void Create();
 
         /**
-        * @brief Create Instance Features.
+        * @brief Check Feature Requirements Satisfied.
+        * 
+        * @return Returns true if satisfied.
         */
-        void GetFeatures();
+        bool CheckFeatureRequirementsSatisfied();
 
         /**
-        * @brief Create Instance Limits.
+        * @brief Check Limit Requirements Satisfied.
+        * 
+        * @return Returns true if satisfied.
         */
-        void GetLimits();
+        bool CheckLimitRequirementsSatisfied();
 
         /**
-        * @brief Is Instance has Feature.
+        * @brief Check WGSLFeature Requirements Satisfied.
+        * 
+        * @return Returns true if satisfied.
         */
-        void HasFeature();
-
-        /**
-        * @brief Get WGSL Features.
-        */
-        void GetWGSLFeatures();
-
-        /**
-        * @brief Is WGSL has Feature.
-        */
-        void HasWGSLFeature();
-
-        /**
-        * @brief Process Events.
-        */
-        void ProcessEvents();
-
+        bool CheckWGSLFeatureRequirementsSatisfied();
+        
     private:
 
-        Unit::Instance m_Instance; // @brief This Instance.
-
+        Unit::Instance m_Instance;                                           // @brief This Instance.
+        std::vector<WGPUInstanceFeatureName>     m_Features;                 // @brief WGPUInstanceFeatureName.
+        std::vector<WGPUWGSLLanguageFeatureName> m_WGSLFeatures;             // @brief WGPUWGSLLanguageFeatureName.
+        
     };
     
 }

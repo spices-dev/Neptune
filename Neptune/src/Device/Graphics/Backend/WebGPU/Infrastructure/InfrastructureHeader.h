@@ -8,13 +8,13 @@
 
 #ifdef NP_GRAPHICS_WEBGPU
 
-#include "Device/Graphics/Backend/WebGPU/Infrastructure/Instance.h"
-#include "Device/Graphics/Backend/WebGPU/Infrastructure/DebugUtilsObject.h"
-#include "Device/Graphics/Backend/WebGPU/Infrastructure/Surface.h"
-#include "Device/Graphics/Backend/WebGPU/Infrastructure/Adapter.h"
-#include "Device/Graphics/Backend/WebGPU/Infrastructure/Device.h"
-#include "Device/Graphics/Backend/WebGPU/Infrastructure/Queue.h"
-#include "Device/Graphics/Backend/WebGPU/Infrastructure/TimeLine.h"
-#include "Device/Graphics/Backend/WebGPU/Infrastructure/CommandEncoder.h"
+#include "Instance.h"
+#include "DebugUtilsObject.h"
+#include "Surface.h"
+#include "Adapter.h"
+#include "Device.h"
+#include "Queue.h"
+#include "TimeLine.h"
+#include "CommandEncoder.h"
 
 #endif

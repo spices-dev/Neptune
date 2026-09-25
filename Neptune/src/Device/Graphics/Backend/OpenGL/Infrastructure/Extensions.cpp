@@ -130,19 +130,17 @@ namespace Neptune::OpenGL {
     		
 			std::ranges::for_each(filtered, [&](const auto& name) {
     			
-				std::string target(name);
-    			
-				if (std::ranges::all_of(availableExtensions, [&](const auto& ext) { return std::string(ext) != target; }))
+				if (std::ranges::all_of(availableExtensions, [&](const auto& ext) { return std::string(ext) != name; }))
 				{
 					if (extension->GetState() == Extension::EExtensionState::Core)
 					{
 						coreSatisfied = false;
                 		
-						NEPTUNE_LOG_CORE(E) << "Extension Required: [ " << target << " ], Which is not satisfied";
+						NEPTUNE_LOG_CORE(E) << "Extension Required: [ " << name << " ], Which is not satisfied";
 					}
 					else
 					{
-						NEPTUNE_LOG_CORE(W) << "Extension Required: [ " << target << " ], Which is not satisfied";
+						NEPTUNE_LOG_CORE(W) << "Extension Required: [ " << name << " ], Which is not satisfied";
 					}
 
 					satisfy = false;
