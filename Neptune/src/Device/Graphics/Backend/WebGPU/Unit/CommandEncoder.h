@@ -60,12 +60,21 @@ namespace Neptune::WebGPU::Unit {
 		WGPURenderPassEncoder BeginRenderPass(const WGPURenderPassDescriptor& desc) const;
 		
 		/**
+		* @brief Copy Texture To Texture.
+		* 
+		* @param[in] source WGPUTexelCopyTextureInfo.
+		* @param[in] destination WGPUTexelCopyTextureInfo.
+		* @param[in] copySize WGPUExtent3D.
+		*/
+		void CopyTextureToTexture(const WGPUTexelCopyTextureInfo& source, const WGPUTexelCopyTextureInfo& destination, const WGPUExtent3D& copySize) const;
+		
+		/**
 		* @brief Copy Buffer To Buffer.
 		* 
 		* @param[in] source WGPUBuffer.
 		* @param[in] sourceOffset .
 		* @param[in] destination WGPUBuffer.
-		* @param[in] destination .
+		* @param[in] destinationOffset .
 		* @param[in] size .
 		*/
 		void CopyBufferToBuffer(WGPUBuffer source, uint64_t sourceOffset, WGPUBuffer destination, uint64_t destinationOffset, uint64_t size) const;

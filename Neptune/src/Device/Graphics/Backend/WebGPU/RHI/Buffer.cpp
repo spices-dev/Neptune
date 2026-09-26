@@ -37,7 +37,7 @@ namespace Neptune::WebGPU {
         
         size = AlignUp(size, static_cast<uint64_t>(4));
         
-        m_StagingBuffer = CreateUP<Resource::Buffer>();
+        m_StagingBuffer = CreateUP<Resource::Buffer>(GetContext());
         
         WGPUBufferDescriptor                  desc{};
         desc.usage                          = WGPUBufferUsage_CopySrc | WGPUBufferUsage_MapWrite;

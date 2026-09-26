@@ -88,7 +88,7 @@ namespace Neptune::WebGPU {
 		*
 		* @return Returns Texture.
 		*/
-		void SetTexture(SP<Resource::Texture> texture) { m_Texture = texture; }
+		void SetTexture(const SP<Resource::Texture>& texture) { m_Texture = texture; }
 
 		/**
 		* @brief Get Unit Handle.

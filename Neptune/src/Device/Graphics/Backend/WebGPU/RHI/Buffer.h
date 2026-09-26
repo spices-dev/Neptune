@@ -28,7 +28,7 @@ namespace Neptune::WebGPU {
         *
         * @param[in] context Context.
         */
-        explicit Buffer(Context& context) : ContextAccessor(context) {}
+        explicit Buffer(Context& context) : ContextAccessor(context), m_Buffer(context) {}
 
         /**
         * @brief Destructor Function.

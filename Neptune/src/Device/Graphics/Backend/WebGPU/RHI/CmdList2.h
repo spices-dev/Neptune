@@ -10,14 +10,10 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Frontend/RHI/CmdList2.h"
+#include "Device/Graphics/Backend/WebGPU/Unit/CommandBuffer.h"
 #include "CmdList.h"
 
 namespace Neptune::WebGPU {
-
-	namespace Unit {
-		
-		class CommandBuffer;
-	}
 	
 	/**
 	* @brief WebGPU::CmdList2 Class.

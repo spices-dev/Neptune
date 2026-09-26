@@ -12,6 +12,114 @@
 
 namespace Neptune::WebGPU {
 	
+	WGPUTextureFormat ToWGPUTextureFormat(TextureFormat f)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		using enum TextureFormat;
+		
+		switch (f)
+		{
+			case RGBA8_UNORM:                      return WGPUTextureFormat_RGBA8Unorm;
+			case RGBA16_SFLOAT:                    return WGPUTextureFormat_RGBA16Float;
+			default:
+			{
+				NEPTUNE_LOG_CORE(E) << "Unsupported TextureFormat To WGPUTextureFormat.";
+				return WGPUTextureFormat_Undefined;
+			}
+		}
+	}
+	
+	WGPUTextureDimension ToWGPUTextureDimension(TextureDomain d)
+	{
+		using enum TextureDomain;
+		
+		switch (d)
+		{
+		case Texture1D:                      return WGPUTextureDimension_1D;
+		case Texture2D:                      return WGPUTextureDimension_2D;
+		case Texture3D:                      return WGPUTextureDimension_3D;
+		case Texture1DArray:                 return WGPUTextureDimension_1D;
+		case Texture2DArray:                 return WGPUTextureDimension_2D;
+		default:
+			{
+				NEPTUNE_LOG_CORE(E) << "Unsupported TextureDomain To WGPUTextureDimension.";
+				return WGPUTextureDimension_Undefined;
+			}
+		}
+	}
+	
+	WGPUTextureViewDimension ToWGPUTextureViewDimension(TextureDomain d)
+	{
+		using enum TextureDomain;
+		
+		switch (d)
+		{
+			case Texture1D:                      return WGPUTextureViewDimension_1D;
+			case Texture2D:                      return WGPUTextureViewDimension_2D;
+			case Texture3D:                      return WGPUTextureViewDimension_3D;
+			case Texture2DArray:                 return WGPUTextureViewDimension_2DArray;
+			default:
+			{
+				NEPTUNE_LOG_CORE(E) << "Unsupported TextureDomain To WGPUTextureViewDimension.";
+				return WGPUTextureViewDimension_Undefined;
+			}
+		}
+	}
+	
+	TextureFormat ToTextureFormat(WGPUTextureFormat f)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		switch (f)
+		{
+			case WGPUTextureFormat_RGBA8Unorm:                  return TextureFormat::RGBA8_UNORM;
+			case WGPUTextureFormat_RGBA16Float:                 return TextureFormat::RGBA16_SFLOAT;
+			default:
+			{
+				NEPTUNE_LOG_CORE(E) << "Unsupported WGPUTextureFormat To TextureFormat.";
+				return TextureFormat::Count;
+			}
+		}
+	}
+	
+	WGPUCullMode ToWGPUCullMode(ECullMode c)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		using enum ECullMode;
+		
+		switch (c)
+		{
+			case None:                  return WGPUCullMode_None;
+			case Front:                 return WGPUCullMode_Front;
+			case Back:                  return WGPUCullMode_Back;
+			default:
+			{
+				NEPTUNE_LOG_CORE(E) << "Unsupported ECullMode To WGPUCullMode.";
+				return WGPUCullMode_Undefined;
+			}
+		}
+	}
+	
+	WGPUPrimitiveTopology ToWGPUPrimitiveTopology(ETopology t)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		using enum ETopology;
+		
+		switch (t)
+		{
+			case TriangleList:                  return WGPUPrimitiveTopology_TriangleList;
+			case TriangleStrip:                 return WGPUPrimitiveTopology_TriangleStrip;
+			default:
+			{
+				NEPTUNE_LOG_CORE(E) << "Unsupported ETopology To WGPUPrimitiveTopology.";
+				return WGPUPrimitiveTopology_Undefined;
+			}
+		}
+	}
+	
 	WGPUBufferUsage ToWGPUBufferUsage(Graphic::EBufferUsage u)
 	{
 		NEPTUNE_PROFILE_ZONE

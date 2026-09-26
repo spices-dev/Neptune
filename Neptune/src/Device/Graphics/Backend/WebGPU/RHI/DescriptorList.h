@@ -115,29 +115,6 @@ namespace Neptune::WebGPU {
 		*/
 		void Build() override;
 
-	public:
-
-		/**
-		* @brief Get DescriptorListLayout.
-		* 
-		* @return Returns DescriptorListLayout.
-		*/
-		const std::vector<VkDescriptorSetLayout>& GetLayouts() const { return m_DescriptorSetLayouts; }
-
-		/**
-		* @brief Get DescriptorList.
-		*
-		* @return Returns DescriptorList.
-		*/
-		const std::map<uint32_t, SP<Resource::DescriptorSet>>& GetSets() const { return m_DescriptorSets; }
-
-		/**
-		* @brief Get VkPushConstantRange.
-		*
-		* @return Returns VkPushConstantRange.
-		*/
-		const std::optional<VkPushConstantRange>& GetPushConstantRange() const { return m_PushConstantRange; }
-
 	private:
 		
 	};

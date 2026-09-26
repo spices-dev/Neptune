@@ -67,10 +67,12 @@ namespace Neptune::WebGPU::Unit {
 
         struct Payload
         {
-            void** hostMemoty = &m_HostMemory;
-            Handle handle     = GetHandle();
-            uint64_t size     = m_Size;
-        } payload;
+            void** hostMemoty;
+            Handle handle;
+            uint64_t size;
+        };
+        
+        Payload payload { &m_HostMemory, GetHandle(), m_Size };
         
         WGPUBufferMapCallbackInfo        callbackInfo{};
         callbackInfo.mode               = WGPUCallbackMode_WaitAnyOnly;

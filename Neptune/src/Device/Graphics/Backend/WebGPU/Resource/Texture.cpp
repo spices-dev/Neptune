@@ -10,6 +10,7 @@
 
 #include "Texture.h"
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/DebugUtilsObject.h"
+#include "Device/Graphics/Backend/WebGPU/Infrastructure/Device.h"
 
 namespace Neptune::WebGPU::Resource {
 
@@ -22,6 +23,20 @@ namespace Neptune::WebGPU::Resource {
 		DEBUGUTILS_SETOBJECTNAME(m_Texture, "Texture")
 	}
 
+	void Texture::CreateTexture(const WGPUTextureDescriptor& desc)
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		m_Format     = desc.format;
+		m_LayerCount = desc.size.depthOrArrayLayers;
+		m_Width      = desc.size.width;
+		m_Height     = desc.size.height;
+		
+		m_Texture.CreateTexture(GetContext().Get<IDevice>()->Handle(), desc);
+
+		DEBUGUTILS_SETOBJECTNAME(m_Texture, "Texture")
+	}
+	
 	void Texture::CreateTextureView(const WGPUTextureViewDescriptor& desc)
 	{
 		NEPTUNE_PROFILE_ZONE
@@ -31,6 +46,15 @@ namespace Neptune::WebGPU::Resource {
 		m_TextureView.CreateTextureView(m_Texture.GetHandle(), desc);
 
 		DEBUGUTILS_SETOBJECTNAME(m_TextureView, "TextureView")
+	}
+	
+	void Texture::CreateSampler(const WGPUSamplerDescriptor& desc)
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		m_TextureSampler.CreateSampler(GetContext().Get<IDevice>()->Handle(), desc);
+
+		DEBUGUTILS_SETOBJECTNAME(m_TextureSampler, "Sampler")
 	}
 
 	void Texture::SetName(const std::string& name) const

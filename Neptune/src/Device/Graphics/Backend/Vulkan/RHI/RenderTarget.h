@@ -89,7 +89,7 @@ namespace Neptune::Vulkan {
 		*
 		* @return Returns image.
 		*/
-		void SetImage(SP<Resource::Image> image) { m_Image = image; }
+		void SetImage(const SP<Resource::Image>& image) { m_Image = image; }
 
 		/**
 		* @brief Get Unit Handle.

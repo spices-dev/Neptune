@@ -10,7 +10,7 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/Infrastructure.h"
-#include "Device/Graphics/Backend/WebGPU/Unit/Pipeline.h"
+#include "Device/Graphics/Backend/WebGPU/Resource/Pipeline.h"
 #include "Device/Graphics/Backend/WebGPU/Unit/PipelineLayout.h"
 #include "Device/Graphics/Frontend/RHI/Pipeline.h"
 
@@ -36,7 +36,7 @@ namespace Neptune::WebGPU {
 		*
 		* @param[in] context Context.
 		*/
-		explicit Pipeline(Context& context) : ContextAccessor(context) {}
+		explicit Pipeline(Context& context) : ContextAccessor(context), m_Pipeline(context) {}
 
 		/**
 		* @brief Destructor Function.
@@ -55,7 +55,7 @@ namespace Neptune::WebGPU {
 		*
 		* @param[in] renderPass RenderPass.
 		*/
-		void SetRenderPass(const SP<RHI::RenderPass>& renderPass) override;
+		void SetRenderPass(const SP<RHI::RenderPass>& renderPass) override {}
 		
 		/**
 		* @brief Interface of Set DescriptorList.
@@ -104,13 +104,6 @@ namespace Neptune::WebGPU {
 	public:
 
 		/**
-		* @brief Get Unit Handle.
-		*
-		* @return Returns Unit Handle.
-		*/
-		const Unit::Pipeline::Handle& Handle() const { return m_Pipeline.GetHandle(); }
-
-		/**
 		* @brief Get PipelineLayout Unit Handle.
 		*
 		* @return Returns PipelineLayout Unit Handle.
@@ -119,6 +112,15 @@ namespace Neptune::WebGPU {
 
 	private:
 		
+		Resource::Pipeline                m_Pipeline;               // @brief Pipeline.
+		Unit::PipelineLayout              m_PipelineLayout;         // @brief PipelineLayout.
+		WGPUVertexState                   m_VertexState{};          // @brief WGPUVertexState.
+		WGPUFragmentState                 m_FragmentState{};        // @brief WGPUFragmentState.
+		WGPUComputeState                  m_ComputeState{};         // @brief WGPUComputeState.
+		     
+		WGPUMultisampleState              m_MultisampleState{};     // @brief WGPUMultisampleState.
+		WGPUPrimitiveState                m_PrimitiveState{};       // @brief WGPUPrimitiveState.
+		WGPUDepthStencilState             m_DepthStencilState{};    // @brief WGPUDepthStencilState.
 	};
 }
 

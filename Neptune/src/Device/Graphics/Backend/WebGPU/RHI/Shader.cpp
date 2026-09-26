@@ -18,7 +18,13 @@ namespace Neptune::WebGPU {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		WGPUShaderModuleDescriptor desc{};
+		WGPUShaderSourceWGSL               wgslDesc{};
+		wgslDesc.chain.sType             = WGPUSType_ShaderSourceWGSL;
+		wgslDesc.code.length             = source.size();
+		wgslDesc.code.data               = reinterpret_cast<const char*>(source.data());
+		
+		WGPUShaderModuleDescriptor         desc{};
+		desc.nextInChain                 = &wgslDesc.chain;
 
 		m_Shader.CreateShaderModule(GetContext().Get<IDevice>()->Handle(), desc);
 	}

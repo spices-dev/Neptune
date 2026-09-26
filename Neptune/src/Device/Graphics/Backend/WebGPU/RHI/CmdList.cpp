@@ -123,8 +123,17 @@ namespace Neptune::WebGPU {
 		m_RenderPass = renderPass->GetRHIImpl<RenderPass>();
 	}
 
+	void CmdList::CmdCopyImage(const WGPUTexelCopyTextureInfo& source, const WGPUTexelCopyTextureInfo& destination, const WGPUExtent3D& copySize) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_CommandEncoder->CopyTextureToTexture(source, destination, copySize);
+	}
+	
 	void CmdList::CmdCopyBuffer(WGPUBuffer source, uint64_t sourceOffset, WGPUBuffer destination, uint64_t destinationOffset, uint64_t size) const
 	{
+		NEPTUNE_PROFILE_ZONE
+		
 		m_CommandEncoder->CopyBufferToBuffer(source, sourceOffset, destination, destinationOffset, size);
 	}
 

@@ -51,11 +51,25 @@ namespace Neptune::WebGPU::Resource {
 		const Unit::Texture::Handle& Handle() const { return m_Texture.GetHandle(); }
 
 		/**
+		* @brief Create Texture.
+		*
+		* @param[in] desc WGPUTextureDescriptor.
+		*/
+		void CreateTexture(const WGPUTextureDescriptor& desc);
+		
+		/**
 		* @brief Create Texture View.
 		*
 		* @param[in] desc WGPUTextureViewDescriptor.
 		*/
 		void CreateTextureView(const WGPUTextureViewDescriptor& desc);
+		
+		/**
+		* @brief Create View.
+		*
+		* @param[in] desc WGPUSamplerDescriptor.
+		*/
+		void CreateSampler(const WGPUSamplerDescriptor& desc);
 		
 		/**
 		* @brief Set Image name.
@@ -78,11 +92,43 @@ namespace Neptune::WebGPU::Resource {
 		*/
 		const Unit::Sampler::Handle& GetSampler() const { return m_TextureSampler.GetHandle(); }
 
+		/**
+		* @brief Get Texture Format.
+		*
+		* @return Returns Texture Format.
+		*/
+		const WGPUTextureFormat& GetFormat() const { return m_Format; }
+
+		/**
+		* @brief Get Texture Layer Count.
+		*
+		* @return Returns Texture Layer Count.
+		*/
+		uint32_t GetLayerCount() const { return m_LayerCount; }
+
+		/**
+		* @brief Get Texture Width.
+		*
+		* @return Returns Texture Width.
+		*/
+		uint32_t Width() const { return m_Width; }
+
+		/**
+		* @brief Get Texture Height.
+		*
+		* @return Returns Texture Height.
+		*/
+		uint32_t Height() const { return m_Height; }
+		
 	private:
 
 		Unit::Texture                m_Texture;                // @brief This Texture.
 		Unit::TextureView            m_TextureView;            // @brief This TextureView.
 		Unit::Sampler                m_TextureSampler;         // @brief This Sampler.
+		WGPUTextureFormat            m_Format;                 // @brief WGPUTextureFormat.
+		uint32_t                     m_LayerCount;             // @brief LayerCount.
+		uint32_t                     m_Width;                  // @brief Width.
+		uint32_t                     m_Height;                 // @brief Height.
 
 	};
 }
