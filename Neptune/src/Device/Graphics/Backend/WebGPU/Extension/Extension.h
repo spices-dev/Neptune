@@ -67,6 +67,14 @@ namespace Neptune::WebGPU::Extension {
         void AddWGSLFeatures(const WGPUWGSLLanguageFeatureName name, bool value = true);
         
         /**
+        * @brief Add Adapter Feature Requirement.
+        * 
+        * @param[in] name WGPUFeatureName.
+        * @param[in] value On/Off.
+        */
+        void AddAdapterFeatures(const WGPUFeatureName name, bool value = true);
+        
+        /**
         * @brief Get Instance Feature Requirement.
         * 
         * @return Returns Instance Feature Requirement.
@@ -81,17 +89,32 @@ namespace Neptune::WebGPU::Extension {
         const std::unordered_map<WGPUWGSLLanguageFeatureName, bool>& GetWGSLFeatures() const { return m_WGSLFeatures; }
         
         /**
+        * @brief Get WGPUFeatureName Requirement.
+        * 
+        * @return Returns WGPUFeatureName Requirement.
+        */
+        const std::unordered_map<WGPUFeatureName, bool>& GetAdapterFeatures() const { return m_AdapterFeatures; }
+        
+        /**
         * @brief Is Instance Limits satisfied.
         * 
         * @return Returns true if satisfied.
         */
         virtual bool IsInstanceLimitsSatisfied(WGPUInstanceLimits limits) const { return true; }
         
+        /**
+        * @brief Is Adapter Limits satisfied.
+        * 
+        * @return Returns true if satisfied.
+        */
+        virtual bool IsAdapterLimitsSatisfied(WGPULimits limits) const { return true; }
+        
     private:
         
         EExtensionState                                       m_State;                    // @brief EExtensionState.
         std::unordered_map<WGPUInstanceFeatureName, bool>     m_InstanceFeatures{};       // @brief Instance Features.
         std::unordered_map<WGPUWGSLLanguageFeatureName, bool> m_WGSLFeatures{};           // @brief WGPUWGSLLanguageFeatureName.
+        std::unordered_map<WGPUFeatureName, bool>             m_AdapterFeatures{};        // @brief WGPUFeatureName.
     };
 }
 

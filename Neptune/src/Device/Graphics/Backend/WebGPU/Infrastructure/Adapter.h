@@ -52,24 +52,18 @@ namespace Neptune::WebGPU {
         void Create();
 
         /**
-        * @brief Get WebGPU Adapter Features.
+        * @brief Check Feature Requirements Satisfied.
+        * 
+        * @return Returns true if satisfied.
         */
-        void GetFeatures();
+        bool CheckFeatureRequirementsSatisfied();
 
         /**
-        * @brief Get WebGPU Adapter Info.
+        * @brief Check Limit Requirements Satisfied.
+        * 
+        * @return Returns true if satisfied.
         */
-        void GetInfo();
-
-        /**
-        * @brief Get WebGPU Adapter Limits.
-        */
-        void GetLimits();
-
-        /**
-        * @brief Is WebGPU Adapter has Features.
-        */
-        void HasFeature();
+        bool CheckLimitRequirementsSatisfied();
 
     private:
 

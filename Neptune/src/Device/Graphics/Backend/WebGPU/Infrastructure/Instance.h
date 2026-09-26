@@ -47,7 +47,7 @@ namespace Neptune::WebGPU {
         /**
         * @brief Process Events.
         */
-        void ProcessEvents();
+        void ProcessEvents() const;
         
     private:
 
@@ -81,7 +81,6 @@ namespace Neptune::WebGPU {
 
         Unit::Instance m_Instance;                                           // @brief This Instance.
         std::vector<WGPUInstanceFeatureName>     m_Features;                 // @brief WGPUInstanceFeatureName.
-        std::vector<WGPUWGSLLanguageFeatureName> m_WGSLFeatures;             // @brief WGPUWGSLLanguageFeatureName.
         
     };
     

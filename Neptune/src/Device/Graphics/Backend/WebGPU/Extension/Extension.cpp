@@ -26,6 +26,13 @@ namespace Neptune::WebGPU::Extension {
         m_WGSLFeatures.insert_or_assign(name, value);
     }
     
+    void Extension::AddAdapterFeatures(const WGPUFeatureName name, bool value)
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        m_AdapterFeatures.insert_or_assign(name, value);
+    }
+    
 }
 
 #endif

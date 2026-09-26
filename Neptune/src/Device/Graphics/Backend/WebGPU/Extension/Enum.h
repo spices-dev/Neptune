@@ -22,6 +22,30 @@ namespace Neptune::WebGPU {
         Packed4x8IntegerDotProduct,                  // @brief Packed4x8IntegerDotProduct.
         UnrestrictedPointerParameters,               // @brief UnrestrictedPointerParameters.
         PointerCompositeAccess,                      // @brief PointerCompositeAccess.
+        CoreFeaturesAndLimits,                       // @brief CoreFeaturesAndLimits.
+        DepthClipControl,                            // @brief DepthClipControl.
+        Depth32FloatStencil8,                        // @brief Depth32FloatStencil8.
+        TextureCompressionBC,                        // @brief TextureCompressionBC.
+        TextureCompressionBCSliced3D,                // @brief TextureCompressionBCSliced3D.
+        TextureCompressionETC2,                      // @brief TextureCompressionETC2.
+        TextureCompressionASTC,                      // @brief TextureCompressionASTC.
+        TextureCompressionASTCSliced3D,              // @brief TextureCompressionASTCSliced3D.
+        TimestampQuery,                              // @brief TimestampQuery.
+        IndirectFirstInstance,                       // @brief IndirectFirstInstance.
+        ShaderF16,                                   // @brief ShaderF16.
+        RG11B10UfloatRenderable,                     // @brief RG11B10UfloatRenderable.
+        BGRA8UnormStorage,                           // @brief BGRA8UnormStorage.
+        Float32Filterable,                           // @brief Float32Filterable.
+        Float32Blendable,                            // @brief Float32Blendable.
+        ClipDistances,                               // @brief ClipDistances.
+        DualSourceBlending,                          // @brief DualSourceBlending.
+        Subgroups,                                   // @brief Subgroups.
+        TextureFormatsTier1,                         // @brief TextureFormatsTier1.
+        TextureFormatsTier2,                         // @brief TextureFormatsTier2.
+        PrimitiveIndex,                              // @brief PrimitiveIndex.
+        Unorm16TextureFormats,                       // @brief Unorm16TextureFormats.
+        Snorm16TextureFormats,                       // @brief Snorm16TextureFormats.
+        MultiDrawIndirect,                           // @brief MultiDrawIndirect.
         
         Count
     };
@@ -41,6 +65,30 @@ namespace Neptune::WebGPU {
             case Packed4x8IntegerDotProduct:                return "Packed4x8IntegerDotProduct";
             case UnrestrictedPointerParameters:             return "UnrestrictedPointerParameters";
             case PointerCompositeAccess:                    return "PointerCompositeAccess";
+            case CoreFeaturesAndLimits:                     return "CoreFeaturesAndLimits";
+            case DepthClipControl:                          return "DepthClipControl";
+            case Depth32FloatStencil8:                      return "Depth32FloatStencil8";
+            case TextureCompressionBC:                      return "TextureCompressionBC";
+            case TextureCompressionBCSliced3D:              return "TextureCompressionBCSliced3D";
+            case TextureCompressionETC2:                    return "TextureCompressionETC2";
+            case TextureCompressionASTC:                    return "TextureCompressionASTC";
+            case TextureCompressionASTCSliced3D:            return "TextureCompressionASTCSliced3D";
+            case TimestampQuery:                            return "TimestampQuery";
+            case IndirectFirstInstance:                     return "IndirectFirstInstance";
+            case ShaderF16:                                 return "ShaderF16";
+            case RG11B10UfloatRenderable:                   return "RG11B10UfloatRenderable";
+            case BGRA8UnormStorage:                         return "BGRA8UnormStorage";
+            case Float32Filterable:                         return "Float32Filterable";
+            case Float32Blendable:                          return "Float32Blendable";
+            case ClipDistances:                             return "ClipDistances";
+            case DualSourceBlending:                        return "DualSourceBlending";
+            case Subgroups:                                 return "Subgroups";
+            case TextureFormatsTier1:                       return "TextureFormatsTier1";
+            case TextureFormatsTier2:                       return "TextureFormatsTier2";
+            case PrimitiveIndex:                            return "PrimitiveIndex";
+            case Unorm16TextureFormats:                     return "Unorm16TextureFormats";
+            case Snorm16TextureFormats:                     return "Snorm16TextureFormats";
+            case MultiDrawIndirect:                         return "MultiDrawIndirect";
             
             default:                                        return "NonNamed";
         }

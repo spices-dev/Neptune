@@ -28,7 +28,7 @@ namespace Neptune::WebGPU {
 
         if (!CheckFeatureRequirementsSatisfied())
         {
-            NEPTUNE_LOG_CORE(E) << "Instance Extension not Satisfied";
+            NEPTUNE_LOG_CORE(E) << "Instance Feature not Satisfied";
             return;
         }
         
@@ -53,7 +53,7 @@ namespace Neptune::WebGPU {
         DEBUGUTILS_SETOBJECTNAME(m_Instance, ToString())
     }
 
-    void Instance::ProcessEvents()
+    void Instance::ProcessEvents() const
     {
         NEPTUNE_PROFILE_ZONE
 
@@ -76,7 +76,7 @@ namespace Neptune::WebGPU {
     	
         std::vector<EExtension> removedExtension;
     	
-        GetContext().Get<IExtensions>()->Extensions::GetContext()->View([&](const auto e, const auto& extension) {
+        GetContext().Get<IExtensions>()->GetContext()->View([&](const auto e, const auto& extension) {
     		
             bool satisfy = true;
             const auto& extensions = extension->GetInstanceFeatures();
@@ -93,11 +93,11 @@ namespace Neptune::WebGPU {
                     {
                         coreSatisfied = false;
                 		
-                        NEPTUNE_LOG_CORE(E) << "Instance Extension Required: [ " << WebGPU::ToString(e) << " ], Which is not satisfied";
+                        NEPTUNE_LOG_CORE(E) << "Instance Feature Required: [ " << WebGPU::ToString(e) << " ], Which is not satisfied";
                     }
                     else
                     {
-                        NEPTUNE_LOG_CORE(W) << "Instance Extension Required: [ " << WebGPU::ToString(e) << " ], Which is not satisfied";
+                        NEPTUNE_LOG_CORE(W) << "Instance Feature Required: [ " << WebGPU::ToString(e) << " ], Which is not satisfied";
                     }
 
                     satisfy = false;
@@ -204,11 +204,7 @@ namespace Neptune::WebGPU {
                 }
             });
     		
-            if (satisfy)
-            {
-                std::ranges::for_each(filtered, [&](const auto& name) { m_WGSLFeatures.emplace_back(name); });
-            }
-            else
+            if (!satisfy)
             {
                 removedExtension.emplace_back(e);
             }
