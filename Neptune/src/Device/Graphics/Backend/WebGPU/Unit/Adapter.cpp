@@ -22,11 +22,9 @@ namespace Neptune::WebGPU::Unit {
         wgpuAdapterRelease(m_Handle);
 	}
 
-	void Adapter::CreateAdapter(WGPUInstance instance)
+	void Adapter::CreateAdapter(WGPUInstance instance, const WGPURequestAdapterOptions& options)
 	{
 		NEPTUNE_PROFILE_ZONE
-
-		WGPURequestAdapterOptions options{};
 
         static auto request = [](
             WGPURequestAdapterStatus status    , 

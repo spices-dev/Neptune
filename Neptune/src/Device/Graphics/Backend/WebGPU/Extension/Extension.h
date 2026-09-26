@@ -102,13 +102,6 @@ namespace Neptune::WebGPU::Extension {
         */
         virtual bool IsInstanceLimitsSatisfied(WGPUInstanceLimits limits) const { return true; }
         
-        /**
-        * @brief Is Adapter Limits satisfied.
-        * 
-        * @return Returns true if satisfied.
-        */
-        virtual bool IsAdapterLimitsSatisfied(WGPULimits limits) const { return true; }
-        
     private:
         
         EExtensionState                                       m_State;                    // @brief EExtensionState.

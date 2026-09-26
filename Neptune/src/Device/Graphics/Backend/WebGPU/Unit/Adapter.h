@@ -39,8 +39,9 @@ namespace Neptune::WebGPU::Unit {
 		* @brief Create Adapter.
 		* 
 		* @param[in] instance WGPUInstance.
+		* @param[in] options WGPURequestAdapterOptions.
 		*/
-		void CreateAdapter(WGPUInstance instance);
+		void CreateAdapter(WGPUInstance instance, const WGPURequestAdapterOptions& options);
 
 	};
 }

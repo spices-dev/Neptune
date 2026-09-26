@@ -190,14 +190,14 @@ namespace Neptune::WebGPU {
 		* @param[in] renderTarget RenderTarget.
 		* @param[in] desc MemoryBarrierDesc.
 		*/
-		void CmdInsertBarrier(const SP<RHI::RenderTarget>& renderTarget, const Graphic::ImageBarrierDesc& desc) const override;
+		void CmdInsertBarrier(const SP<RHI::RenderTarget>& renderTarget, const Graphic::ImageBarrierDesc& desc) const override {}
 		
 		/**
 		* @brief Interface of Insert Barrier.
 		* 
 		* @param[in] desc MemoryBarrierDesc.
 		*/
-		void CmdInsertBarrier(const Graphic::MemoryBarrierDesc& desc) const override;
+		void CmdInsertBarrier(const Graphic::MemoryBarrierDesc& desc) const override {}
 		
 		/**
 		* @brief Interface of SetViewport.
@@ -207,9 +207,6 @@ namespace Neptune::WebGPU {
 		void CmdSetViewport(const glm::uvec2& viewPortSize) const override;
 
 	protected:
-
-		uint32_t                      m_FrameIndex     = 0;                                     // @brief Frame index.
-		uint32_t                      m_ImageIndex     = 0;                                     // @brief Image index.
 
 		SP<Unit::CommandEncoder>      m_CommandEncoder = nullptr;                               // @brief CommandEncoder reference.
 		RenderPass*                   m_RenderPass     = nullptr;                               // @brief RenderPass reference.

@@ -13,7 +13,6 @@
 #include "Device.h"
 #include "Adapter.h"
 #include "DebugUtilsObject.h"
-#include "IconsFontAwesome5Pro.h"
 
 namespace Neptune::WebGPU {
 

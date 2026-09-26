@@ -44,6 +44,20 @@ namespace Neptune::WebGPU {
         */
         const Unit::Adapter::Handle& Handle() const { return m_Adapter.GetHandle(); }
 
+        /**
+        * @brief Get WGPUFeatureName.
+        *
+        * @return Returns WGPUFeatureName.
+        */
+        const std::vector<WGPUFeatureName>& GetFeatures() const { return m_Features; }
+        
+        /**
+        * @brief Get WGPULimits.
+        *
+        * @return Returns WGPULimits.
+        */
+        const WGPULimits& GetLimits() const { return m_Limits; }
+        
     private:
 
         /**
@@ -67,7 +81,9 @@ namespace Neptune::WebGPU {
 
     private:
 
-        Unit::Adapter m_Adapter;  // @brief This Adapter.
+        Unit::Adapter                m_Adapter;     // @brief This Adapter.
+        std::vector<WGPUFeatureName> m_Features;    // @brief WGPUInstanceFeatureName.
+        WGPULimits                   m_Limits;      // @brief WGPULimits.
     };
     
 }

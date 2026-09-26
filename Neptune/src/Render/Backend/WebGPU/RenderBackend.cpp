@@ -63,7 +63,9 @@ namespace Neptune::WebGPU {
         {
             if (!context.Get<ISurface>()->GetNextImage())
             {
-                RecreateSwapChain();
+                NEPTUNE_LOG_CORE(E) << "GetNextImage Failed.";
+                
+                NEPTUNE_BREAK
             }
         }
 
@@ -96,6 +98,19 @@ namespace Neptune::WebGPU {
             context.Get<IGraphicTimeLine>()->SetHandle(clock.m_FrameId, context.Get<IQueue>()->Submit(context.Get<IGraphicCommandEncoder>()->End()));
 
             DEBUGUTILS_ENDLABEL(context.Get<IQueue>()->Handle())
+        }
+        
+        {
+#if WEBGPU_USE_NATIVE
+            
+            if (!context.Get<ISurface>()->Present())
+            {
+                NEPTUNE_LOG_CORE(E) << "Present Failed.";
+                
+                NEPTUNE_BREAK
+            }
+            
+#endif
         }
     }
 

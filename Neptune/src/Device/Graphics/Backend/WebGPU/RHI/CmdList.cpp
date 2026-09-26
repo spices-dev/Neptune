@@ -19,9 +19,6 @@ namespace Neptune::WebGPU {
 	void CmdList::SetGraphicCmdList(const Data::Clock& clock)
 	{
 		NEPTUNE_PROFILE_ZONE
-
-		m_FrameIndex = clock.m_FrameIndex;
-		m_ImageIndex = clock.m_ImageIndex;
 		
 		m_CommandEncoder = GetContext().Get<IGraphicCommandEncoder>()->IHandle();
 	}
@@ -29,9 +26,6 @@ namespace Neptune::WebGPU {
 	void CmdList::SetComputeCmdList(const Data::Clock& clock)
 	{
 		NEPTUNE_PROFILE_ZONE
-		
-		m_FrameIndex = clock.m_FrameIndex;
-		m_ImageIndex = clock.m_ImageIndex;
 		
 		m_CommandEncoder = GetContext().Get<IComputeCommandEncoder>()->IHandle();
 	}
@@ -109,17 +103,6 @@ namespace Neptune::WebGPU {
 	}
 	
 	void CmdList::CmdDispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const
-	{
-		NEPTUNE_PROFILE_ZONE
-		
-	}
-
-	void CmdList::CmdInsertBarrier(const SP<RHI::RenderTarget>& renderTarget, const Graphic::ImageBarrierDesc& desc) const
-	{
-		NEPTUNE_PROFILE_ZONE
-	}
-	
-	void CmdList::CmdInsertBarrier(const Graphic::MemoryBarrierDesc& barrier) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		

@@ -50,6 +50,27 @@ namespace Neptune::WebGPU::Unit {
         */
         void SetName(const std::string& name) const;
         
+        /**
+        * @brief Get Buffer size.
+        * 
+        * @return Returns Buffer size.
+        */
+        uint64_t Size() const { return m_Size; }
+        
+        /**
+        * @brief Write data to Buffer.
+        *
+        * @param[in] data .
+        * @param[in] size .
+        * @param[in] offset .
+        */
+        void WriteToBuffer(const void* data, uint64_t size = UINT64_MAX, uint64_t offset = 0) const;
+        
+    private:
+        
+        uint64_t m_Size = 0;              // @brief Size.
+        void*    m_HostMemory = nullptr;  // @brief HostMemory.
+        
     };
 }
 

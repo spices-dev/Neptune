@@ -203,7 +203,7 @@ namespace Neptune::Vulkan::Unit {
 
 			char* memOffset = static_cast<char*>(p->hostMemory);
 			memOffset += offset;
-			memcpy(memOffset, data, size);
+			std::memcpy(memOffset, data, size);
 		}
 		else if (auto* p = std::get_if<vmaAlloc>(&m_Alloc))
 		{

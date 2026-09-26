@@ -28,19 +28,10 @@ namespace Neptune::WebGPU {
     {
         NEPTUNE_PROFILE_ZONE
 
-        if (!CheckFeatureRequirementsSatisfied())
-        {
-            NEPTUNE_LOG_CORE(E) << "Adapter Feature not Satisfied";
-            return;
-        }
+        WGPURequestAdapterOptions              options{};
+        options.powerPreference              = WGPUPowerPreference_HighPerformance;
         
-        if (!CheckLimitRequirementsSatisfied())
-        {
-            NEPTUNE_LOG_CORE(E) << "Adapter Limit not Satisfied";
-            return;
-        }
-        
-        m_Adapter.CreateAdapter(GetContext().Get<IInstance>()->Handle());
+        m_Adapter.CreateAdapter(GetContext().Get<IInstance>()->Handle(), options);
         
         DEBUGUTILS_SETOBJECTNAME(m_Adapter, ToString())
         
@@ -60,9 +51,21 @@ namespace Neptune::WebGPU {
             << "    Type:            " << WebGPU::ToString(info.adapterType) << "\n"
             << "    Backend:         " << WebGPU::ToString(info.backendType) << "\n"
             << "    VendorID:        " << info.vendorID << "\n"
-            << "    DeviceID:        " << info.deviceID << "\n";
+            << "    DeviceID:        " << info.deviceID;
         
         NEPTUNE_LOG_CORE(I) << ss.str();
+        
+        if (!CheckFeatureRequirementsSatisfied())
+        {
+            NEPTUNE_LOG_CORE(E) << "Adapter Feature not Satisfied";
+            return;
+        }
+        
+        if (!CheckLimitRequirementsSatisfied())
+        {
+            NEPTUNE_LOG_CORE(E) << "Adapter Limit not Satisfied";
+            return;
+        }
     }
 
     bool Adapter::CheckFeatureRequirementsSatisfied()
@@ -109,7 +112,11 @@ namespace Neptune::WebGPU {
                 }
             });
     		
-            if (!satisfy)
+            if (satisfy)
+            {
+                std::ranges::for_each(filtered, [&](const auto& name) { m_Features.emplace_back(name); });
+            }
+            else
             {
                 removedExtension.emplace_back(e);
             }
@@ -127,38 +134,47 @@ namespace Neptune::WebGPU {
     {
         NEPTUNE_PROFILE_ZONE
 
-        WGPULimits limit{};
-
-        WEBGPU_CHECK(wgpuAdapterGetLimits(m_Adapter.GetHandle(), &limit))
+        WEBGPU_CHECK(wgpuAdapterGetLimits(m_Adapter.GetHandle(), &m_Limits))
         
-        bool coreSatisfied = true;
-    	
-        std::vector<EExtension> removedExtension;
-    	
-        GetContext().Get<IExtensions>()->GetContext()->View([&](const auto e, const auto& extension) {
-    		
-            if (extension->IsAdapterLimitsSatisfied(limit)) return;
-            
-            if (extension->GetState() == Extension::EExtensionState::Core)
-            {
-                coreSatisfied = false;
+        std::stringstream ss;
 
-                NEPTUNE_LOG_CORE(E) << "Adapter Limit Required: [ " << WebGPU::ToString(e) << " ], Which is not satisfied";
-            }
-            else
-            {
-                NEPTUNE_LOG_CORE(W) << "Adapter Limit Required: [ " << WebGPU::ToString(e) << " ], Which is not satisfied";
-            }
-            
-            removedExtension.emplace_back(e);
-        });
-    	
-        std::ranges::for_each(removedExtension, [&](const auto& e) {
-    		
-            GetContext().Get<IExtensions>()->GetContext()->UnRegistry(e);
-        });
-    	
-        return coreSatisfied;
+        ss << "Adapter Limit List: ";
+
+        ss  << "    maxTextureDimension1D:                            " << m_Limits.maxTextureDimension1D << "\n"
+            << "    maxTextureDimension2D:                            " << m_Limits.maxTextureDimension2D << "\n"
+            << "    maxTextureDimension3D:                            " << m_Limits.maxTextureDimension3D << "\n"
+            << "    maxTextureArrayLayers:                            " << m_Limits.maxTextureArrayLayers << "\n"
+            << "    maxBindGroups:                                    " << m_Limits.maxBindGroups << "\n"
+            << "    maxBindGroupsPlusVertexBuffers:                   " << m_Limits.maxBindGroupsPlusVertexBuffers << "\n"
+            << "    maxBindingsPerBindGroup:                          " << m_Limits.maxBindingsPerBindGroup << "\n"
+            << "    maxDynamicUniformBuffersPerPipelineLayout:        " << m_Limits.maxDynamicUniformBuffersPerPipelineLayout << "\n"
+            << "    maxDynamicStorageBuffersPerPipelineLayout:        " << m_Limits.maxDynamicStorageBuffersPerPipelineLayout << "\n"
+            << "    maxSampledTexturesPerShaderStage:                 " << m_Limits.maxSampledTexturesPerShaderStage << "\n"
+            << "    maxSamplersPerShaderStage:                        " << m_Limits.maxSamplersPerShaderStage << "\n"
+            << "    maxStorageBuffersPerShaderStage:                  " << m_Limits.maxStorageBuffersPerShaderStage << "\n"
+            << "    maxUniformBuffersPerShaderStage:                  " << m_Limits.maxUniformBuffersPerShaderStage << "\n"
+            << "    maxUniformBufferBindingSize:                      " << m_Limits.maxUniformBufferBindingSize << "\n"
+            << "    maxStorageBufferBindingSize:                      " << m_Limits.maxStorageBufferBindingSize << "\n"
+            << "    minUniformBufferOffsetAlignment:                  " << m_Limits.minUniformBufferOffsetAlignment << "\n"
+            << "    minStorageBufferOffsetAlignment:                  " << m_Limits.minStorageBufferOffsetAlignment << "\n"
+            << "    maxVertexBuffers:                                 " << m_Limits.maxVertexBuffers << "\n"
+            << "    maxBufferSize:                                    " << m_Limits.maxBufferSize << "\n"
+            << "    maxVertexAttributes:                              " << m_Limits.maxVertexAttributes << "\n"
+            << "    maxVertexBufferArrayStride:                       " << m_Limits.maxVertexBufferArrayStride << "\n"
+            << "    maxInterStageShaderVariables:                     " << m_Limits.maxInterStageShaderVariables << "\n"
+            << "    maxColorAttachments:                              " << m_Limits.maxColorAttachments << "\n"
+            << "    maxColorAttachmentBytesPerSample:                 " << m_Limits.maxColorAttachmentBytesPerSample << "\n"
+            << "    maxComputeWorkgroupStorageSize:                   " << m_Limits.maxComputeWorkgroupStorageSize << "\n"
+            << "    maxComputeInvocationsPerWorkgroup:                " << m_Limits.maxComputeInvocationsPerWorkgroup << "\n"
+            << "    maxComputeWorkgroupSizeX:                         " << m_Limits.maxComputeWorkgroupSizeX << "\n"
+            << "    maxComputeWorkgroupSizeY:                         " << m_Limits.maxComputeWorkgroupSizeY << "\n"
+            << "    maxComputeWorkgroupSizeZ:                         " << m_Limits.maxComputeWorkgroupSizeZ << "\n"
+            << "    maxComputeWorkgroupsPerDimension:                 " << m_Limits.maxComputeWorkgroupsPerDimension << "\n"
+            << "    maxImmediateSize:                                 " << m_Limits.maxImmediateSize;
+
+        NEPTUNE_LOG_CORE(I) << ss.str();
+
+        return true;
     }
 
 }

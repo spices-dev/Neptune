@@ -47,6 +47,7 @@ namespace Neptune::WebGPU {
         WGPUInstanceDescriptor                 descriptor{};
         descriptor.requiredFeatureCount      = m_Features.size();
         descriptor.requiredFeatures          = m_Features.data();
+        descriptor.requiredLimits            = &m_Limits;
 
         m_Instance.CreateInstance(descriptor);
         
@@ -125,10 +126,8 @@ namespace Neptune::WebGPU {
     bool Instance::CheckLimitRequirementsSatisfied()
     {
         NEPTUNE_PROFILE_ZONE
-        
-        WGPUInstanceLimits limit;
 
-        WEBGPU_CHECK(wgpuGetInstanceLimits(&limit))
+        WEBGPU_CHECK(wgpuGetInstanceLimits(&m_Limits))
         
         bool coreSatisfied = true;
     	
@@ -136,7 +135,7 @@ namespace Neptune::WebGPU {
     	
         GetContext().Get<IExtensions>()->GetContext()->View([&](const auto e, const auto& extension) {
     		
-            if (extension->IsInstanceLimitsSatisfied(limit)) return;
+            if (extension->IsInstanceLimitsSatisfied(m_Limits)) return;
             
             if (extension->GetState() == Extension::EExtensionState::Core)
             {

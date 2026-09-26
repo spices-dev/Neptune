@@ -8,6 +8,8 @@
 
 #ifdef NP_GRAPHICS_WEBGPU
 
+#include "Buffer.h"
+#include "Capability.h"
 #include "RenderPass.h"
 #include "CmdList.h"
 
