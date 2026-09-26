@@ -12,5 +12,10 @@
 #include "Capability.h"
 #include "RenderPass.h"
 #include "CmdList.h"
+#include "CmdList2.h"
+#include "DescriptorList.h"
+#include "Pipeline.h"
+#include "RenderTarget.h"
+#include "Shader.h"
 
 #endif

@@ -12,7 +12,6 @@
 #include "Device/Graphics/Backend/WebGPU/RHI/RenderPass.h"
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/CommandEncoder.h"
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/Surface.h"
-#include "Data/Clock.h"
 
 namespace Neptune::WebGPU {
 
@@ -124,7 +123,10 @@ namespace Neptune::WebGPU {
 		m_RenderPass = renderPass->GetRHIImpl<RenderPass>();
 	}
 
-
+	void CmdList::CmdCopyBuffer(WGPUBuffer source, uint64_t sourceOffset, WGPUBuffer destination, uint64_t destinationOffset, uint64_t size) const
+	{
+		m_CommandEncoder->CopyBufferToBuffer(source, sourceOffset, destination, destinationOffset, size);
+	}
 
 }
 

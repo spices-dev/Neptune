@@ -28,9 +28,7 @@ namespace Neptune::WebGPU {
         desc.size                           = size;
         desc.mappedAtCreation               = false;
         
-        m_Buffer.CreateBuffer(GetContext().Get<IDevice>()->Handle(), desc);
-        
-        DEBUGUTILS_SETOBJECTNAME(m_Buffer, "Buffer")
+        m_Buffer.CreateBuffer(desc);
     }
 
     void Buffer::WriteToBuffer(const void* data, uint64_t size)
@@ -39,23 +37,25 @@ namespace Neptune::WebGPU {
         
         size = AlignUp(size, static_cast<uint64_t>(4));
         
-        m_StagingBuffer = CreateUP<Unit::Buffer>();
+        m_StagingBuffer = CreateUP<Resource::Buffer>();
         
         WGPUBufferDescriptor                  desc{};
-        desc.usage                          = WGPUBufferUsage_CopySrc;
+        desc.usage                          = WGPUBufferUsage_CopySrc | WGPUBufferUsage_MapWrite;
         desc.size                           = size;
         desc.mappedAtCreation               = true;
     
-        m_StagingBuffer->CreateBuffer(GetContext().Get<IDevice>()->Handle(), desc);
-    
+        m_StagingBuffer->CreateBuffer(desc);
+
         m_StagingBuffer->WriteToBuffer(data);
     
-        m_StagingBuffer->Unmap();
+        m_StagingBuffer->UnapHostMemory();
     }
 
     void Buffer::Flush(uint64_t size, uint64_t offset) const
     {
         NEPTUNE_PROFILE_ZONE
+        
+        size = AlignUp(size, static_cast<uint64_t>(4));
         
         CmdList2 cmdList(GetContext());
 
@@ -63,12 +63,7 @@ namespace Neptune::WebGPU {
 
         cmdList.Begin();
 
-        Graphic::BufferCopyRegion region{};
-        region.SrcOffset = 0;
-        region.DstOffset = offset;
-        region.Size      = size;
-
-        cmdList.CmdCopyBuffer(m_StagingBuffer->GetHandle(), m_Buffer.GetHandle(), region);
+        cmdList.CmdCopyBuffer(m_StagingBuffer->Handle(), 0, m_Buffer.Handle(), offset, size);
 
         cmdList.End();
 

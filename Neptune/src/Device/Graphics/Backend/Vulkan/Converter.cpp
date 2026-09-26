@@ -309,12 +309,14 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		using enum Graphic::EBufferUsage;
+		
 		switch (u)
 		{
-			case Graphic::EBufferUsage::None:           return 0;
-			case Graphic::EBufferUsage::Vertex:         return VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
-			case Graphic::EBufferUsage::Index:          return VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
-			case Graphic::EBufferUsage::Indirect:       return VK_BUFFER_USAGE_INDIRECT_BUFFER_BIT;
+			case None:           return 0;
+			case Vertex:         return VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+			case Index:          return VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
+			case Indirect:       return VK_BUFFER_USAGE_INDIRECT_BUFFER_BIT;
 			default:
 			{
 				NEPTUNE_LOG_CORE(E) << "Unsupported EBufferUsage To VkBufferUsageFlags.";

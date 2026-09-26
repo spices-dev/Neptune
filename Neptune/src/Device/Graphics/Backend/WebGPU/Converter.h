@@ -9,8 +9,18 @@
 #ifdef NP_GRAPHICS_WEBGPU
 
 #include "Core.h"
+#include "Device/Graphics/Frontend/Enum.h"
 
 namespace Neptune::WebGPU {
+	
+	/**
+	* @brief Convert Graphic::EBufferUsage to WGPUBufferUsage.
+	*
+	* @param[in] u Graphic::EBufferUsage.
+	*
+	* @return Returns WGPUBufferUsage.
+	*/
+	WGPUBufferUsage ToWGPUBufferUsage(Graphic::EBufferUsage u);
 	
 	/**
 	* @brief Convert WGPUBackendType to std::string.

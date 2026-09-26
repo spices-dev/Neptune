@@ -6,7 +6,7 @@
 
 #include "Pchheader.h"
 
-#ifdef NP_GRAPHICS_VULKAN
+#ifdef NP_GRAPHICS_WEBGPU
 
 #include "Texture.h"
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/DebugUtilsObject.h"

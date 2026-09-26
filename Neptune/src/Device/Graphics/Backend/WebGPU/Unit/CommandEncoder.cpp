@@ -41,6 +41,13 @@ namespace Neptune::WebGPU::Unit {
 
 		return wgpuCommandEncoderBeginRenderPass(m_Handle, &desc);
 	}
+
+	void CommandEncoder::CopyBufferToBuffer(WGPUBuffer source, uint64_t sourceOffset, WGPUBuffer destination, uint64_t destinationOffset, uint64_t size) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		wgpuCommandEncoderCopyBufferToBuffer(m_Handle, source, sourceOffset, destination, destinationOffset, size);
+	}
 }
 
 #endif

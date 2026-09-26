@@ -58,6 +58,17 @@ namespace Neptune::WebGPU::Unit {
 		* @return Returns WGPURenderPassEncoder.
 		*/
 		WGPURenderPassEncoder BeginRenderPass(const WGPURenderPassDescriptor& desc) const;
+		
+		/**
+		* @brief Copy Buffer To Buffer.
+		* 
+		* @param[in] source WGPUBuffer.
+		* @param[in] sourceOffset .
+		* @param[in] destination WGPUBuffer.
+		* @param[in] destination .
+		* @param[in] size .
+		*/
+		void CopyBufferToBuffer(WGPUBuffer source, uint64_t sourceOffset, WGPUBuffer destination, uint64_t destinationOffset, uint64_t size) const;
 	};
 }
 

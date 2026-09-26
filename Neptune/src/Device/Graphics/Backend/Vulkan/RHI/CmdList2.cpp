@@ -31,7 +31,7 @@ namespace Neptune::Vulkan {
 		m_CommandBuffer->Begin(beginInfo);
 	}
 
-	void CmdList2::End() const
+	void CmdList2::End()
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -71,6 +71,8 @@ namespace Neptune::Vulkan {
 
 		m_CommandBuffer->CreateCommandBuffer(GetContext().Get<IDevice>()->Handle(), allocInfo);
 
+		DEBUGUTILS_SETOBJECTNAME(*m_CommandBuffer, "CmdList2CommandBuffer")
+		
 		m_ThreadQueue = GetContext().Get<IGraphicThreadQueue>();
 
 		m_BindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
@@ -90,6 +92,8 @@ namespace Neptune::Vulkan {
 
 		m_CommandBuffer->CreateCommandBuffer(GetContext().Get<IDevice>()->Handle(), allocInfo);
 
+		DEBUGUTILS_SETOBJECTNAME(*m_CommandBuffer, "CmdList2CommandBuffer")
+		
 		m_ThreadQueue = GetContext().Get<IVideoDecodeThreadQueue>();
 	}
 
@@ -107,6 +111,8 @@ namespace Neptune::Vulkan {
 
 		m_CommandBuffer->CreateCommandBuffer(GetContext().Get<IDevice>()->Handle(), allocInfo);
 
+		DEBUGUTILS_SETOBJECTNAME(*m_CommandBuffer, "CmdList2CommandBuffer")
+		
 		m_ThreadQueue = GetContext().Get<IOpticalFlowThreadQueue>();
 	}
 
@@ -122,13 +128,6 @@ namespace Neptune::Vulkan {
 		NEPTUNE_PROFILE_ZONE
 
 		m_OpticalFlowSession = opticalFlowSession;
-	}
-
-	void* CmdList2::GetCommandList() const
-	{
-		NEPTUNE_PROFILE_ZONE
-		
-		return m_CommandBuffer->GetHandle();
 	}
 	
 	void CmdList2::CmdBeginVideoCoding(const VkVideoBeginCodingInfoKHR& info) const

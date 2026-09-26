@@ -8,7 +8,6 @@
 
 #ifdef NP_GRAPHICS_WEBGPU
 
-#include "Adapter.h"
 #include "Buffer.h"
 
 namespace Neptune::WebGPU::Unit {
@@ -56,8 +55,42 @@ namespace Neptune::WebGPU::Unit {
         }
 
         char* memOffset = static_cast<char*>(m_HostMemory);
+        
         memOffset += offset;
+        
         std::memcpy(memOffset, data, size);
+    }
+
+    WGPUFuture Buffer::MapHostMemory()
+    {
+        NEPTUNE_PROFILE_ZONE
+
+        struct Payload
+        {
+            void** hostMemoty = &m_HostMemory;
+            Handle handle     = GetHandle();
+            uint64_t size     = m_Size;
+        } payload;
+        
+        WGPUBufferMapCallbackInfo        callbackInfo{};
+        callbackInfo.mode               = WGPUCallbackMode_WaitAnyOnly;
+        callbackInfo.userdata1          = &payload;
+        callbackInfo.callback        = [](WGPUMapAsyncStatus status, WGPUStringView message, void* userdata1, void*)
+        {
+            if (auto p = static_cast<Payload*>(userdata1))
+            {
+                *(p->hostMemoty) = wgpuBufferGetMappedRange(p->handle, 0, p->size);
+            }
+        };
+        
+        return wgpuBufferMapAsync(m_Handle, WGPUMapMode_Write, 0, m_Size, callbackInfo);
+    }
+
+    void Buffer::UnapHostMemory() const
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        wgpuBufferUnmap(m_Handle);
     }
 }
 

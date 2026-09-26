@@ -6,7 +6,7 @@
 
 #pragma once
 
-#ifdef NP_GRAPHICS_VULKAN
+#ifdef NP_GRAPHICS_WEBGPU
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/Infrastructure.h"

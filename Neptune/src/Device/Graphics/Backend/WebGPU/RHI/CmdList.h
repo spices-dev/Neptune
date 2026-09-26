@@ -9,6 +9,7 @@
 #ifdef NP_GRAPHICS_WEBGPU
 
 #include "Core/Core.h"
+#include "Device/Graphics/Backend/WebGPU/Core.h"
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Frontend/RHI/CmdList.h"
 
@@ -206,6 +207,19 @@ namespace Neptune::WebGPU {
 		*/
 		void CmdSetViewport(const glm::uvec2& viewPortSize) const override;
 
+	public:
+		
+		/**
+		* @brief Copy Buffer To Buffer.
+		* 
+		* @param[in] source WGPUBuffer.
+		* @param[in] sourceOffset .
+		* @param[in] destination WGPUBuffer.
+		* @param[in] destination .
+		* @param[in] size .
+		*/
+		void CmdCopyBuffer(WGPUBuffer source, uint64_t sourceOffset, WGPUBuffer destination, uint64_t destinationOffset, uint64_t size) const;
+		
 	protected:
 
 		SP<Unit::CommandEncoder>      m_CommandEncoder = nullptr;                               // @brief CommandEncoder reference.

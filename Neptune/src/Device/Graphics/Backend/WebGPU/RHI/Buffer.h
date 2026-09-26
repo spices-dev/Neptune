@@ -10,7 +10,7 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/Infrastructure.h"
-#include "Device/Graphics/Backend/WebGPU/Unit/Buffer.h"
+#include "Device/Graphics/Backend/WebGPU/Resource/Buffer.h"
 #include "Device/Graphics/Frontend/RHI/Buffer.h"
 
 namespace Neptune::WebGPU {
@@ -87,12 +87,12 @@ namespace Neptune::WebGPU {
         *
         * @return Returns Unit Handle.
         */
-        const Unit::Buffer::Handle& Handle() const { return m_Buffer.GetHandle(); }
+        const Unit::Buffer::Handle& Handle() const { return m_Buffer.Handle(); }
         
     private:
 
-        Unit::Buffer m_Buffer;                  // @brief This Buffer.
-        UP<Unit::Buffer> m_StagingBuffer;       // @brief This Staging Buffer.
+        Resource::Buffer m_Buffer;                  // @brief This Buffer.
+        UP<Resource::Buffer> m_StagingBuffer;       // @brief This Staging Buffer.
     };
 }
 

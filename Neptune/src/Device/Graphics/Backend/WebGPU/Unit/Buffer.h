@@ -66,6 +66,25 @@ namespace Neptune::WebGPU::Unit {
         */
         void WriteToBuffer(const void* data, uint64_t size = UINT64_MAX, uint64_t offset = 0) const;
         
+        /**
+        * @brief Map to HostMemory.
+        * 
+        * @return Returns WGPUFuture.
+        */
+        WGPUFuture MapHostMemory();
+        
+        /**
+        * @brief Unmap from HostMemory.
+        */
+        void UnapHostMemory() const;
+        
+        /**
+        * @brief Get Host Memory.
+        * 
+        * @return Returns Host Memory.
+        */
+        void* HostMemory() const { return m_HostMemory; }
+        
     private:
         
         uint64_t m_Size = 0;              // @brief Size.

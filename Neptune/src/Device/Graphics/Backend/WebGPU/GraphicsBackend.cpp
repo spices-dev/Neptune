@@ -72,8 +72,15 @@ namespace Neptune::WebGPU {
 
         switch(e)
 		{
+            case RHI::ERHI::Capability:       return CreateUP<Capability>           (*m_Context);
             case RHI::ERHI::RenderPass:       return CreateUP<RenderPass>           (*m_Context);
+            case RHI::ERHI::DescriptorList:   return CreateUP<DescriptorList>       (*m_Context);
+            case RHI::ERHI::Pipeline:         return CreateUP<Pipeline>             (*m_Context);
+            case RHI::ERHI::Shader:           return CreateUP<Shader>               (*m_Context);
+            case RHI::ERHI::RenderTarget:     return CreateUP<RenderTarget>         (*m_Context);
+            case RHI::ERHI::Buffer:           return CreateUP<Buffer>               (*m_Context);
             case RHI::ERHI::CmdList:          return CreateUP<CmdList>              (*m_Context);
+            case RHI::ERHI::CmdList2:         return CreateUP<CmdList2>             (*m_Context);
 			default:                          NEPTUNE_LOG_CORE(E) << "WebGPU do not support RHI: [ " << ToString(e) << " ].";          return nullptr;
 		}
 	}

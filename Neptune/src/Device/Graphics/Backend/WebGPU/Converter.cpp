@@ -12,6 +12,26 @@
 
 namespace Neptune::WebGPU {
 	
+	WGPUBufferUsage ToWGPUBufferUsage(Graphic::EBufferUsage u)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		using enum Graphic::EBufferUsage;
+		
+		switch (u)
+		{
+			case None:                   return WGPUBufferUsage_None;
+			case Vertex:                 return WGPUBufferUsage_Vertex;
+			case Index:                  return WGPUBufferUsage_Index;
+			case Indirect:               return WGPUBufferUsage_Indirect;
+			default:
+			{
+				NEPTUNE_LOG_CORE(E) << "Unsupported EBufferUsage To WGPUBufferUsage.";
+				return 0;
+			}
+		}
+	}
+	
 	std::string ToString(WGPUBackendType t)
 	{
 		NEPTUNE_PROFILE_ZONE
