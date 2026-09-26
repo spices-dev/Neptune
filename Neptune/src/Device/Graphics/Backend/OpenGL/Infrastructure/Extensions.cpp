@@ -149,7 +149,7 @@ namespace Neptune::OpenGL {
     		
 			if (satisfy)
 			{
-				m_Extensions.insert(m_Extensions.end(), filtered.begin(), filtered.end());
+				std::ranges::for_each(filtered, [&](const auto& name) { m_Extensions.emplace_back(name.c_str()); });
 			}
 			else
 			{

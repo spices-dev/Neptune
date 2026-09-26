@@ -45,7 +45,7 @@ namespace Neptune::OpenGL {
 		/**
 		* @brief Interface of End CommandList.
 		*/
-		void End() const override;
+		void End() override;
 
 		/**
 		* @brief Interface of Submit CommandList and Wait.

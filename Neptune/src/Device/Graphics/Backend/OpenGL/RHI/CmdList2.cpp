@@ -19,7 +19,7 @@ namespace Neptune::OpenGL {
 
 	}
 
-	void CmdList2::End() const
+	void CmdList2::End()
 	{
 		NEPTUNE_PROFILE_ZONE
 		

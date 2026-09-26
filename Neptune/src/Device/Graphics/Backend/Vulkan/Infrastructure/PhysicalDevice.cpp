@@ -109,9 +109,12 @@ namespace Neptune::Vulkan {
 			vkGetPhysicalDeviceProperties(devices[i], &props);
 			
 			ss <<"\n" << "Device [ " << i << " ]: " << "\n"
-				<< "    Name:        " << props.deviceName << "\n"
-				<< "    Type:        " << Vulkan::ToString(props.deviceType) << "\n"
-				<< "    API Version: " << VK_VERSION_MAJOR(props.apiVersion) << "." << VK_VERSION_MINOR(props.apiVersion) << "." << VK_VERSION_PATCH(props.apiVersion);
+				<< "    Name:            " << props.deviceName << "\n"
+				<< "    Type:            " << Vulkan::ToString(props.deviceType) << "\n"
+				<< "    DeviceID:        " << props.deviceID << "\n"
+				<< "    VendorID:        " << props.vendorID << "\n"
+				<< "    DriverVersion:   " << props.driverVersion << "\n"
+				<< "    API Version:     " << VK_VERSION_MAJOR(props.apiVersion) << "." << VK_VERSION_MINOR(props.apiVersion) << "." << VK_VERSION_PATCH(props.apiVersion);
 		}
 		
 		ss << "\n" << "Device Selected first.";
