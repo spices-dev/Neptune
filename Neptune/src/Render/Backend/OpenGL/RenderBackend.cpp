@@ -50,18 +50,13 @@ namespace Neptune::OpenGL {
 
         auto& context = m_GraphicsBackend->GetContext();
         
+        if (clock.m_FrameId > MaxFrameInFlight)
         {
-            context.Get<IGraphicFence>()->Wait(clock.m_FrameIndex);
+            context.Get<ITimeLine>()->Wait(clock.m_FrameId - MaxFrameInFlight);
         }
 
         {
-            DEBUGUTILS_BEGINLABEL(0, "MainGraphicQueue")
-            
-            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-            
-            glClearDepthf(1.0f);
-            
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            DEBUGUTILS_BEGINLABEL(0, "MainQueue")
         }
     }
 
@@ -86,7 +81,7 @@ namespace Neptune::OpenGL {
         }
         
         {
-            context.Get<IGraphicFence>()->Signal(clock.m_FrameIndex);
+            context.Get<ITimeLine>()->Signal(clock.m_FrameId);
         }
     }
 

@@ -25,7 +25,7 @@ namespace Neptune::OpenGL::Unit {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		glGenTextures(1, &m_Handle);
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_Handle);
 	}
 }
 

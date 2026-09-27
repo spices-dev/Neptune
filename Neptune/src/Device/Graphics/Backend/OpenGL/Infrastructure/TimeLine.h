@@ -1,6 +1,6 @@
 /**
-* @file Fence.h.
-* @brief The Fence Class Definitions.
+* @file TimeLine.h.
+* @brief The TimeLine Class Definitions.
 * @author Spices.
 */
 
@@ -14,13 +14,13 @@
 
 namespace Neptune::OpenGL {
 
-	using IGraphicFence     = IInfrastructure<class Fence, EInfrastructure::GraphicFence>;
+	using ITimeLine = IInfrastructure<class TimeLine, EInfrastructure::TimeLine>;
 
 	/**
-	* @brief OpenGL::Fence Class.
-	* This class defines the OpenGL::Fence behaves.
+	* @brief OpenGL::TimeLine Class.
+	* This class defines the OpenGL::TimeLine behaves.
 	*/
-	class Fence : public Infrastructure
+	class TimeLine : public Infrastructure
 	{
 	public:
 
@@ -31,12 +31,12 @@ namespace Neptune::OpenGL {
 		* @param[in] e EInfrastructure.
 		* @param[in] count Fence count.
 		*/
-		Fence(Context& context, EInfrastructure e, uint32_t count = 1);
+		TimeLine(Context& context, EInfrastructure e, uint32_t count = 1);
 
 		/**
 		* @brief Destructor Function.
 		*/
-		~Fence() override = default;
+		~TimeLine() override = default;
 
 		/**
 		* @brief Get Unit Handle.
@@ -50,28 +50,16 @@ namespace Neptune::OpenGL {
 		/**
 		* @brief Fence wait idle.
 		* 
-		* @param[in] index Fence index.
+		* @param[in] frameId FrameId.
 		*/
-		void Wait(uint32_t index);
+		void Wait(uint32_t frameId) const;
 
 		/**
 		* @brief Fence Signal.
 		* 
-		* @param[in] index Fence index.
+		* @param[in] frameId FrameId.
 		*/
-		void Signal(uint32_t index);
-		
-		/**
-		* @brief Fence wait barrier.
-		*
-		* @param[in] index Fence index.
-		*/
-		void Barrier(uint32_t index);
-
-		/**
-		* @brief All Fence wait idle.
-		*/
-		void WaitAll();
+		void Signal(uint32_t frameId);
 
 	private:
 
@@ -84,7 +72,7 @@ namespace Neptune::OpenGL {
 
 	private:
 
-		std::vector<SP<Unit::Sync>> m_Fences; // @brief Container of this Fence.
+		std::vector<UP<Unit::Sync>> m_Fences; // @brief Container of this Fence.
 
 	};
 	

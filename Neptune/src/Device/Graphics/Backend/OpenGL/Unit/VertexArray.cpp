@@ -25,7 +25,7 @@ namespace Neptune::OpenGL::Unit {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		glGenVertexArrays(1, &m_Handle);
+		glCreateVertexArrays(1, &m_Handle);
 	}
 }
 

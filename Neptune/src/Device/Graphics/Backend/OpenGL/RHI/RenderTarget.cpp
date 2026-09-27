@@ -9,12 +9,15 @@
 #ifdef NP_GRAPHICS_OPENGL
 
 #include "RenderTarget.h"
+#include "Resource/Texture/RenderTarget.h"
 
 namespace Neptune::OpenGL {
 
 	void RenderTarget::CreateRenderTarget(const RenderTargetCreateInfo& info)
 	{
 		NEPTUNE_PROFILE_ZONE
+		
+		CreateColorRenderTarget(info);
 	}
 
 	void* RenderTarget::CreateBindingID()
@@ -38,6 +41,27 @@ namespace Neptune::OpenGL {
 		return TextureFormat::RGBA8_UNORM;
 	}
 
+	void RenderTarget::CreateColorRenderTarget(const RenderTargetCreateInfo& info)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_Texture = CreateUP<Resource::Texture>(GetContext());
+
+		{
+			m_Texture->CreateTexture(info);
+		}
+
+		{
+			m_Texture->CreateSampler();
+		}
+
+		m_Texture->SetName("RenderTarget");
+	}
+
+	void RenderTarget::CreateDepthRenderTarget(const RenderTargetCreateInfo& info)
+	{
+		NEPTUNE_PROFILE_ZONE
+	}
 }
 
 #endif

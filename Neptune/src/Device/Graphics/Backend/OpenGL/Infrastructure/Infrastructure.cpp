@@ -26,7 +26,7 @@ namespace Neptune::OpenGL {
         {
             case WindowContext:                      return "WindowContext";
             case DebugUtilsObject:                   return "DebugUtilsObject";
-            case GraphicFence:                       return "GraphicFence";
+            case TimeLine:                           return "TimeLine";
 
             default:                                 return "NonNamed";
         }

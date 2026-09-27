@@ -25,7 +25,7 @@ namespace Neptune::OpenGL::Unit {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		glGenSamplers(1, &m_Handle);
+		glCreateSamplers(1, &m_Handle);
 	}
 }
 

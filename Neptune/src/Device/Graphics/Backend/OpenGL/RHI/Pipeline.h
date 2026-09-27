@@ -10,6 +10,7 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/OpenGL/Infrastructure/Infrastructure.h"
+#include "Device/Graphics/Backend/OpenGL/Unit/Program.h"
 #include "Device/Graphics/Frontend/RHI/Pipeline.h"
 
 namespace Neptune::RHI {
@@ -99,6 +100,21 @@ namespace Neptune::OpenGL {
 		*/
 		void BuildComputePipeline() override;
 		
+	public:
+		
+		/**
+		* @brief Bind Pipeline.
+		*/
+		void BindPipeline() const;
+		
+	private:
+		
+		Unit::Program           m_Pipeline;
+		GLuint                  m_VAO         = 0;
+		GLenum                  m_Topology    = GL_TRIANGLES;
+		GLenum                  m_CullMode    = GL_BACK;
+		std::vector<GLuint>     m_Shaders;
+		class RenderPass*       m_RenderPass;					  // @brief RenderPass.
 	};
 }
 

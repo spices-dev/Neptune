@@ -25,7 +25,7 @@ namespace Neptune::OpenGL::Unit {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		glGenFramebuffers(1, &m_Handle);
+		glCreateFramebuffers(1, &m_Handle);
 	}
 }
 

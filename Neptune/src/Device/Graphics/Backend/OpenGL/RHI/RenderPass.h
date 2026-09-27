@@ -63,10 +63,26 @@ namespace Neptune::OpenGL {
 		*/
 		void Build(uint32_t count = MaxFrameInFlight) override;
 
+	public:
+		
+		/**
+		* @brief Begin RenderPass.
+		* 
+		* @param[in] frameBufferIndex .
+		* 
+		*/
+		void BeginRenderPass(uint32_t frameBufferIndex) const;
+		
+		/**
+		* @brief End RenderPass.
+		*/
+		void EndRenderPass() const;
+		
 	private:
 
-		std::vector<SP<Unit::FrameBuffer>>                m_FrameBuffers;                    // @brief Container of FrameBuffer.
-		std::vector<SP<Unit::RenderBuffer>>               m_RenderBuffers;                   // @brief Container of RenderBuffer.
+		std::vector<UP<Unit::FrameBuffer>>       m_FrameBuffers;                    // @brief FrameBuffer.
+		std::vector<GLuint>                      m_Attachments;                     // @brief Container of Attachment.
+		bool                                     m_UseSwapChain = false;            // @brief Container of Attachment.
 
 	};
 }

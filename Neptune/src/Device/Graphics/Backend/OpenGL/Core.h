@@ -18,8 +18,10 @@
 
 namespace Neptune::OpenGL {
 
-	constexpr uint32_t MaxFrameInFlight = Neptune::MaxFrameInFlight;       // @brief Frames In Flight.
+	constexpr uint32_t MaxFrameInFlight = Neptune::MaxFrameInFlight;           // @brief Frames In Flight.
 
+	constexpr uint64_t WaitTimeoutNS = 2E9;                                    // @brief glClientWaitSync timeoutNS.
+	
 	#define OPENGL_DEV_VERSION       uint32_t(46)                              // @brief Use OpenGL 4.6.
 	#define OPENGL_DEV_VERSION_NAME  "#version 460"                            // @brief Use OpenGL 4.6.
 

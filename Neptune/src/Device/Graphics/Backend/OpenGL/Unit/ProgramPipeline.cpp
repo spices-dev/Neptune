@@ -25,7 +25,7 @@ namespace Neptune::OpenGL::Unit {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		glGenProgramPipelines(1, &m_Handle);
+		glCreateProgramPipelines(1, &m_Handle);
 	}
 }
 

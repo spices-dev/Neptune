@@ -54,7 +54,7 @@ namespace Neptune::OpenGL {
     {
     	NEPTUNE_PROFILE_ZONE
     	
-    	m_Context.Registry<Extension::IDirectStateAccess>                   (Extension::EExtensionState::Extent);
+    	m_Context.Registry<Extension::IDirectStateAccess>                   (Extension::EExtensionState::Core);
 		m_Context.Registry<Extension::IBufferStorage>                       (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IComputeShader>                       (Extension::EExtensionState::Extent);
 		m_Context.Registry<Extension::IMultiDrawIndirect>                   (Extension::EExtensionState::Extent);

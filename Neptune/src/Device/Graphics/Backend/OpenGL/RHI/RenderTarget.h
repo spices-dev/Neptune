@@ -10,6 +10,7 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/OpenGL/Infrastructure/Infrastructure.h"
+#include "Device/Graphics/Backend/OpenGL/Resource/Texture.h"
 #include "Device/Graphics/Frontend/RHI/RenderTarget.h"
 
 namespace Neptune::OpenGL {
@@ -71,15 +72,43 @@ namespace Neptune::OpenGL {
 		*
 		* @return Returns width.
 		*/
-		uint32_t GetWidth() const override { return 0; }
+		uint32_t GetWidth() const override { return m_Texture->Width(); }
 
 		/**
 		* @brief Interface of Get Height.
 		*
 		* @return Returns height.
 		*/
-		uint32_t GetHeight() const override { return 0; }
+		uint32_t GetHeight() const override { return m_Texture->Height(); }
 
+	public:
+		
+		/**
+		* @brief Get Unit Handle.
+		*
+		* @return Returns Unit Handle.
+		*/
+		const Unit::Texture::Handle& Handle() const { return m_Texture->Handle(); }
+		
+	private:
+		
+		/**
+		* @brief Create Color RenderTarget.
+		*
+		* @param[in] info RenderTargetCreateInfo.
+		*/
+		void CreateColorRenderTarget(const RenderTargetCreateInfo& info);
+
+		/**
+		* @brief Create Depth RenderTarget.
+		*
+		* @param[in] info RenderTargetCreateInfo.
+		*/
+		void CreateDepthRenderTarget(const RenderTargetCreateInfo& info);
+
+	private:
+		
+		UP<Resource::Texture> m_Texture;   // @brief Texture.
 	};
 }
 

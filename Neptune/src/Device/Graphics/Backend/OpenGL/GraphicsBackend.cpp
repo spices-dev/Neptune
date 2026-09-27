@@ -36,7 +36,7 @@ namespace Neptune::OpenGL {
         m_Context->Registry<IExtensions>();
         m_Context->Registry<IDebugUtilsObject>();
 
-        m_Context->Registry<IGraphicFence>(MaxFrameInFlight);
+        m_Context->Registry<ITimeLine>(MaxFrameInFlight);
     }
 
     void GraphicsBackend::OnShutDown()

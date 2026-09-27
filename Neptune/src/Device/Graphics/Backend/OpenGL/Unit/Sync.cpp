@@ -65,7 +65,7 @@ namespace Neptune::OpenGL::Unit {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		HandleResult(glClientWaitSync(m_Handle, GL_SYNC_FLUSH_COMMANDS_BIT, 1000000000));  // ns
+		HandleResult(glClientWaitSync(m_Handle, GL_SYNC_FLUSH_COMMANDS_BIT, WaitTimeoutNS));  // ns
 	}
 
 	void Sync::Wait() const

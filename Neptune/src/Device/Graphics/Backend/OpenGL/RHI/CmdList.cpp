@@ -9,6 +9,8 @@
 #ifdef NP_GRAPHICS_OPENGL
 
 #include "CmdList.h"
+#include "Device/Graphics/Backend/OpenGL/RHI/RenderPass.h"
+#include "Device/Graphics/Backend/OpenGL/RHI/Pipeline.h"
 #include "Data/Clock.h"
 
 namespace Neptune::OpenGL {
@@ -18,7 +20,6 @@ namespace Neptune::OpenGL {
 		NEPTUNE_PROFILE_ZONE
 
 		m_FrameIndex = clock.m_FrameIndex;
-		m_ImageIndex = clock.m_ImageIndex;
 	}
 
 	void CmdList::SetComputeCmdList(const Data::Clock& clock)
@@ -26,26 +27,20 @@ namespace Neptune::OpenGL {
 		NEPTUNE_PROFILE_ZONE
 		
 		m_FrameIndex = clock.m_FrameIndex;
-		m_ImageIndex = clock.m_ImageIndex;
-	}
-	
-	void* CmdList::GetCommandList() const
-	{
-		NEPTUNE_PROFILE_ZONE
-		
-		return nullptr;
 	}
 
 	void CmdList::CmdBeginRenderPass() const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		m_RenderPass->BeginRenderPass(m_FrameIndex);
 	}
 
 	void CmdList::CmdEndRenderPass() const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		m_RenderPass->EndRenderPass();
 	}
 
 	void CmdList::CmdBindDescriptor(const SP<RHI::DescriptorList>& descriptorList) const
@@ -58,6 +53,7 @@ namespace Neptune::OpenGL {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		pipeline->GetRHIImpl<Pipeline>()->BindPipeline();
 	}
 
 	void CmdList::CmdBindIndexBuffer(const SP<RHI::IndexBuffer>& buffer) const
@@ -103,31 +99,42 @@ namespace Neptune::OpenGL {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		glDispatchCompute(groupCountX, groupCountY, groupCountZ);
 	}
 
 	void CmdList::CmdInsertBarrier(const SP<RHI::RenderTarget>& renderTarget, const Graphic::ImageBarrierDesc& desc) const
 	{
 		NEPTUNE_PROFILE_ZONE
+		
+		GLbitfield barrierBits = 0;
+
+		glMemoryBarrier(barrierBits);
 	}
 
 	void CmdList::CmdInsertBarrier(const Graphic::MemoryBarrierDesc& desc) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		GLbitfield barrierBits = 0;
+
+		glMemoryBarrier(barrierBits);
 	}
 	
 	void CmdList::CmdSetViewport(const glm::uvec2& viewPortSize) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		glViewport(0, 0, static_cast<GLsizei>(viewPortSize.x), static_cast<GLsizei>(viewPortSize.y));
+		
+		glScissor(0, 0, static_cast<GLsizei>(viewPortSize.x), static_cast<GLsizei>(viewPortSize.y));
 	}
 
 	void CmdList::SetRenderPass(const SP<RHI::RenderPass>& renderPass)
 	{
 		NEPTUNE_PROFILE_ZONE
+		
+		m_RenderPass = renderPass->GetRHIImpl<RenderPass>();
 	}
-
-
 
 }
 

@@ -79,7 +79,7 @@ namespace Neptune::WebGPU {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		m_Texture = CreateSP<Resource::Texture>(GetContext());
+		m_Texture = CreateUP<Resource::Texture>(GetContext());
 
 		{
 			WGPUTextureFormat format                         = ToWGPUTextureFormat(info.format);

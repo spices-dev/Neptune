@@ -25,7 +25,7 @@ namespace Neptune::OpenGL::Unit {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		glGenTransformFeedbacks(1, &m_Handle);
+		glCreateTransformFeedbacks(1, &m_Handle);
 	}
 }
 

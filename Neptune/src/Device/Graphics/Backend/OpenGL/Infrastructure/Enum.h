@@ -19,7 +19,7 @@ namespace Neptune::OpenGL {
         Extensions,                          // @brief Extensions.
         DebugUtilsObject,                    // @brief Label/Name Functors.
 
-        GraphicFence,                        // @brief Main Thread Graphic Fence.
+        TimeLine,                            // @brief Main Thread TimeLine.
 
         Count
     };

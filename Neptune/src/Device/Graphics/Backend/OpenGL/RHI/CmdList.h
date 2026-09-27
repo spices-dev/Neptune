@@ -70,7 +70,7 @@ namespace Neptune::OpenGL {
 		* 
 		* @return Returns Current CommandList.
 		*/
-		void* GetCommandList() const override;
+		void* GetCommandList() const override { return nullptr; }
 		
 		/**
 		* @brief Interface of Set RenderPass Reference.
