@@ -18,6 +18,8 @@ namespace Neptune::WebGPU::Extension {
         NEPTUNE_PROFILE_ZONE
 
         AddAdapterFeatures(WGPUFeatureName_TextureFormatsTier1);
+        
+        AddWGSLFeatures(WGPUWGSLLanguageFeatureName_TextureFormatsTier1);
     }
 }
 

@@ -25,7 +25,7 @@ namespace Neptune::WebGPU {
 
 	constexpr std::string_view HTMLCanvas = Neptune::HTMLCanvas;           // @brief Surface HTML Canvas.
 
-	#define WEBGPU_DEV_VERSION                                             // @brief Use WEBGPU .
+	#define WEBGPU_DEV_VERSION "v20260925.185434"                          // @brief Use WEBGPU .
 
 	#define WEBGPU_USE_NATIVE 0                                            // @brief Use Native.
 

@@ -56,8 +56,20 @@ namespace Neptune::WebGPU {
 		m_Context->Registry<Extension::ITextureFormatsTier2>                          (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IPrimitiveIndex>                               (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IUnorm16TextureFormats>                        (Extension::EExtensionState::Extent);
-		m_Context->Registry<Extension::ISnorm16TextureFormats>                        (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IMultiDrawIndirect>                            (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::ITextureComponentSwizzle>                      (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::ISubgroupSizeControl>                          (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::ITextureCompressionUnaligned>                  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IChromiumExperimentalSubgroupMatrix>           (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IUniformBufferStandardLayout>                  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::ISubgroupId>                                   (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::ITextureAndSamplerLet>                         (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::ISubgroupUniformity>                           (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::ILinearIndexing>                               (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IImmediateAddressSpace>                        (Extension::EExtensionState::Core);
+		m_Context->Registry<Extension::IBufferView>                                   (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::ISwizzleAssignment>                            (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IFragmentDepth>                                (Extension::EExtensionState::Extent);
 	}
 }
 

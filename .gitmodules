@@ -61,3 +61,6 @@
 [submodule "Neptune/vendor/volk"]
 	path = Neptune/vendor/volk
 	url = https://github.com/zeux/volk.git
+[submodule "Neptune/vendor/emdawnwebgpu"]
+	path = Neptune/vendor/emdawnwebgpu
+	url = https://github.com/spices-lib/emdawnwebgpu.git

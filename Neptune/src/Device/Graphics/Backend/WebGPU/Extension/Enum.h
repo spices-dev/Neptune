@@ -44,8 +44,21 @@ namespace Neptune::WebGPU {
         TextureFormatsTier2,                         // @brief TextureFormatsTier2.
         PrimitiveIndex,                              // @brief PrimitiveIndex.
         Unorm16TextureFormats,                       // @brief Unorm16TextureFormats.
-        Snorm16TextureFormats,                       // @brief Snorm16TextureFormats.
+        Snorm16TextureFormats,                       // @brief Snorm16TextureFormats.               Removed since 2026.09.25
         MultiDrawIndirect,                           // @brief MultiDrawIndirect.
+        TextureComponentSwizzle,                     // @brief TextureComponentSwizzle.
+        SubgroupSizeControl,                         // @brief SubgroupSizeControl.
+        TextureCompressionUnaligned,                 // @brief TextureCompressionUnaligned.
+        ChromiumExperimentalSubgroupMatrix,          // @brief ChromiumExperimentalSubgroupMatrix.
+        UniformBufferStandardLayout,                 // @brief UniformBufferStandardLayout.
+        SubgroupId,                                  // @brief SubgroupId.
+        TextureAndSamplerLet,                        // @brief TextureAndSamplerLet.
+        SubgroupUniformity,                          // @brief SubgroupUniformity.
+        LinearIndexing,                              // @brief LinearIndexing.
+        ImmediateAddressSpace,                       // @brief ImmediateAddressSpace.
+        BufferView,                                  // @brief BufferView.
+        SwizzleAssignment,                           // @brief SwizzleAssignment.
+        FragmentDepth,                               // @brief FragmentDepth.
         
         Count
     };
@@ -89,6 +102,19 @@ namespace Neptune::WebGPU {
             case Unorm16TextureFormats:                     return "Unorm16TextureFormats";
             case Snorm16TextureFormats:                     return "Snorm16TextureFormats";
             case MultiDrawIndirect:                         return "MultiDrawIndirect";
+            case TextureComponentSwizzle:                   return "TextureComponentSwizzle";
+            case SubgroupSizeControl:                       return "SubgroupSizeControl";
+            case TextureCompressionUnaligned:               return "TextureCompressionUnaligned";
+            case ChromiumExperimentalSubgroupMatrix:        return "ChromiumExperimentalSubgroupMatrix";
+            case UniformBufferStandardLayout:               return "UniformBufferStandardLayout";
+            case SubgroupId:                                return "SubgroupId";
+            case TextureAndSamplerLet:                      return "TextureAndSamplerLet";
+            case SubgroupUniformity:                        return "SubgroupUniformity";
+            case LinearIndexing:                            return "LinearIndexing";
+            case ImmediateAddressSpace:                     return "ImmediateAddressSpace";
+            case BufferView:                                return "BufferView";
+            case SwizzleAssignment:                         return "SwizzleAssignment";
+            case FragmentDepth:                             return "FragmentDepth";
             
             default:                                        return "NonNamed";
         }
