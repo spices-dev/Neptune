@@ -83,7 +83,7 @@ namespace Neptune::WebGPU {
 
         Unit::Adapter                m_Adapter;     // @brief This Adapter.
         std::vector<WGPUFeatureName> m_Features;    // @brief WGPUInstanceFeatureName.
-        WGPULimits                   m_Limits;      // @brief WGPULimits.
+        WGPULimits                   m_Limits{};    // @brief WGPULimits.
     };
     
 }

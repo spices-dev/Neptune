@@ -12,6 +12,8 @@
 #include "Core/Container/KVTuple.h"
 #include "Device/Graphics/Backend/WebGPU/Core.h"
 
+#include <unordered_map>
+
 namespace Neptune::WebGPU::Extension {
     
     /**

@@ -8,6 +8,7 @@
 
 #ifdef NP_GRAPHICS_WEBGPU
 
+#include "Extensions.h"
 #include "Instance.h"
 #include "DebugUtilsObject.h"
 #include "Surface.h"

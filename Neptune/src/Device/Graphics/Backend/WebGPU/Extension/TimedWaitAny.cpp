@@ -25,7 +25,7 @@ namespace Neptune::WebGPU::Extension {
         NEPTUNE_PROFILE_ZONE
         
         NEPTUNE_LOG_CORE(I) << "TimedWaitAny [ timedWaitAnyMaxCount ] : " << limits.timedWaitAnyMaxCount;
-        
+
         if (limits.timedWaitAnyMaxCount < WaitTimeoutNS)
         {
             return false;

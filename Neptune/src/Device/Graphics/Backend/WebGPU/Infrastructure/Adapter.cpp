@@ -138,7 +138,7 @@ namespace Neptune::WebGPU {
         
         std::stringstream ss;
 
-        ss << "Adapter Limit List: ";
+        ss << "Adapter Limit List: \n";
 
         ss  << "    maxTextureDimension1D:                            " << m_Limits.maxTextureDimension1D << "\n"
             << "    maxTextureDimension2D:                            " << m_Limits.maxTextureDimension2D << "\n"

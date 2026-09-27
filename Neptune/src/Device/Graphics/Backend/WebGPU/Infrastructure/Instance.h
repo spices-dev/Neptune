@@ -81,7 +81,7 @@ namespace Neptune::WebGPU {
 
         Unit::Instance                       m_Instance;    // @brief This Instance.
         std::vector<WGPUInstanceFeatureName> m_Features;    // @brief WGPUInstanceFeatureName.
-        WGPUInstanceLimits                   m_Limits;      // @brief WGPUInstanceLimits.
+        WGPUInstanceLimits                   m_Limits{};    // @brief WGPUInstanceLimits.
         
     };
     

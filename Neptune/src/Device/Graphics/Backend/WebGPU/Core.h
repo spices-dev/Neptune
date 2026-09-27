@@ -21,7 +21,7 @@ namespace Neptune::WebGPU {
 
 	constexpr uint32_t MaxFrameInFlight = Neptune::MaxFrameInFlight;       // @brief Frames In Flight.
 
-	constexpr uint64_t WaitTimeoutNS = 5E9;                                // @brief wgpuInstanceWaitAny timeoutNS.
+	constexpr uint64_t WaitTimeoutNS = 2E9;                                // @brief wgpuInstanceWaitAny timeoutNS.
 
 	constexpr std::string_view HTMLCanvas = Neptune::HTMLCanvas;           // @brief Surface HTML Canvas.
 
