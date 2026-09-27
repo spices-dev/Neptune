@@ -93,6 +93,15 @@ namespace Neptune::WebGPU::Resource {
         */
         void BindBindGroup(const DescriptorList* descriptorList) const;
         
+        /**
+        * @brief UpdateImmediates.
+        * 
+        * @param[in] offset .
+        * @param[in] data .
+        * @param[in] size .
+        */
+        void UpdateImmediates(uint32_t offset, const void* data, size_t size) const;
+        
     private:
 
         std::variant<UP<Unit::RenderPassEncoder>, UP<Unit::ComputePassEncoder>> m_PassEncoder;                    // @brief PassEncoder.

@@ -68,7 +68,7 @@ jobs:
       - name: Install Emscripten
         uses: mymindstorm/setup-emsdk@v16
         with:
-          version: 5.0.1
+          version: latest
           actions-cache-folder: 'emsdk-cache'
 
       # Verify emsdk

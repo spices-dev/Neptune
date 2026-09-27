@@ -162,6 +162,15 @@ namespace Neptune::WebGPU::Unit {
 		void SetBlendConstant(WGPUColor color) const;
 		
 		/**
+		* @brief SetImmediates.
+		* 
+		* @param[in] offset .
+		* @param[in] data .
+		* @param[in] size .
+		*/
+		void SetImmediates(uint32_t offset, const void* data, size_t size) const;
+		
+		/**
 		* @brief SetIndexBuffer.
 		* 
 		* @param[in] buffer WGPUBuffer.

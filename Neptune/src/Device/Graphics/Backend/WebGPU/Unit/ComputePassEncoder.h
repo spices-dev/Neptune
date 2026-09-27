@@ -101,6 +101,15 @@ namespace Neptune::WebGPU::Unit {
         void SetBindGroup(uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsets = 0) const;
         
         /**
+        * @brief SetImmediates.
+        * 
+        * @param[in] offset .
+        * @param[in] data .
+        * @param[in] size .
+        */
+        void SetImmediates(uint32_t offset, const void* data, size_t size) const;
+        
+        /**
         * @brief WriteTimestamp.
         * 
         * @param[in] querySet WGPUQuerySet.

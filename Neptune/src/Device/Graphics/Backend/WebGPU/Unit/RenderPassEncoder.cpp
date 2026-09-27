@@ -140,6 +140,13 @@ namespace Neptune::WebGPU::Unit {
 		wgpuRenderPassEncoderSetBlendConstant(m_Handle, &color);
 	}
 
+	void RenderPassEncoder::SetImmediates(uint32_t offset, const void* data, size_t size) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		wgpuRenderPassEncoderSetImmediates(m_Handle, offset, data, size);
+	}
+	
 	void RenderPassEncoder::SetIndexBuffer(WGPUBuffer buffer, WGPUIndexFormat format, uint64_t offset, uint64_t size) const
 	{
 		NEPTUNE_PROFILE_ZONE

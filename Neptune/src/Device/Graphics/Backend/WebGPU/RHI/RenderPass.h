@@ -116,7 +116,7 @@ namespace Neptune::WebGPU {
 		* 
 		* @param[in] pipeline RHI::Pipeline
 		*/
-		void BindPipeline(const SP<RHI::Pipeline>& pipeline);
+		void BindPipeline(const SP<RHI::Pipeline>& pipeline) const;
 		
 		/**
 		* @brief Bind DescriptorList.
@@ -124,6 +124,15 @@ namespace Neptune::WebGPU {
 		* @param[in] descriptorList DescriptorList
 		*/
 		void BindDescriptorList(const DescriptorList* descriptorList) const;
+		
+		/**
+		* @brief Update ShaderConstant.
+		*
+		* @param[in] data ShaderConstant data.
+		* @param[in] size ShaderConstant size.
+		* @param[in] offset ShaderConstant offset.
+		*/
+		void UpdateShaderConstant(const void* data, uint32_t size, uint32_t offset = 0) const;
 		
 	private:
 		

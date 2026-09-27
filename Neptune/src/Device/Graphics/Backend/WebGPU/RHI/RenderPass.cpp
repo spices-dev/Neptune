@@ -92,7 +92,7 @@ namespace Neptune::WebGPU {
 		m_RenderPass->EndPass();
 	}
 
-	void RenderPass::BindPipeline(const SP<RHI::Pipeline>& pipeline)
+	void RenderPass::BindPipeline(const SP<RHI::Pipeline>& pipeline) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
@@ -106,6 +106,13 @@ namespace Neptune::WebGPU {
 		NEPTUNE_PROFILE_ZONE
 		
 		m_RenderPass->BindBindGroup(descriptorList);
+	}
+
+	void RenderPass::UpdateShaderConstant(const void* data, uint32_t size, uint32_t offset) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_RenderPass->UpdateImmediates(offset, data, size);
 	}
 }
 

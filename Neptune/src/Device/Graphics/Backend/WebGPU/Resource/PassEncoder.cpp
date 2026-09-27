@@ -59,6 +59,20 @@ namespace Neptune::WebGPU::Resource {
         }
     }
     
+    void PassEncoder::UpdateImmediates(uint32_t offset, const void* data, size_t size) const
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        if (m_RenderBindPoint)
+        {
+            IHandle<Unit::RenderPassEncoder>()->SetImmediates(offset, data, size);
+        }
+        else
+        {
+            IHandle<Unit::ComputePassEncoder>()->SetImmediates(offset, data, size);
+        }
+    }
+    
 }
 
 #endif

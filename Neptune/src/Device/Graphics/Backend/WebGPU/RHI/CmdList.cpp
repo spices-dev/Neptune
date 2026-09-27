@@ -93,6 +93,7 @@ namespace Neptune::WebGPU {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		m_RenderPass->UpdateShaderConstant(data, size, offset);
 	}
 	
 	void CmdList::CmdFillBuffer(const SP<RHI::Buffer>& buffer, uint64_t dstOffset, uint64_t size, uint32_t data) const

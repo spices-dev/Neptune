@@ -91,6 +91,13 @@ namespace Neptune::WebGPU::Unit {
             wgpuComputePassEncoderSetBindGroup(m_Handle, groupIndex, group, 1, &dynamicOffsets);
         }
     }
+    
+    void ComputePassEncoder::SetImmediates(uint32_t offset, const void* data, size_t size) const
+    {
+        NEPTUNE_PROFILE_ZONE
+		
+        wgpuComputePassEncoderSetImmediates(m_Handle, offset, data, size);
+    }
 
     void ComputePassEncoder::WriteTimestamp(WGPUQuerySet querySet, uint32_t queryIndex) const
     {
