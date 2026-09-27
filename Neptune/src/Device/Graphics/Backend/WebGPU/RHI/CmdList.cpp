@@ -12,6 +12,7 @@
 #include "Device/Graphics/Backend/WebGPU/RHI/RenderPass.h"
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/CommandEncoder.h"
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/Surface.h"
+#include "Device/Graphics/Backend/WebGPU/RHI/Buffer.h"
 
 namespace Neptune::WebGPU {
 
@@ -20,6 +21,8 @@ namespace Neptune::WebGPU {
 		NEPTUNE_PROFILE_ZONE
 		
 		m_CommandEncoder = GetContext().Get<IGraphicCommandEncoder>()->IHandle();
+		
+		m_RenderBindPoint = true;
 	}
 
 	void CmdList::SetComputeCmdList(const Data::Clock& clock)
@@ -27,20 +30,29 @@ namespace Neptune::WebGPU {
 		NEPTUNE_PROFILE_ZONE
 		
 		m_CommandEncoder = GetContext().Get<IComputeCommandEncoder>()->IHandle();
+		
+		m_RenderBindPoint = false;
 	}
 	
 	void* CmdList::GetCommandList() const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		return m_RenderPass->Handle();
+		return m_RenderPass->Handle<Unit::RenderPassEncoder>();
 	}
 
 	void CmdList::CmdBeginRenderPass() const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		m_RenderPass->BeginRenderPass(m_CommandEncoder.get());
+		if (m_RenderBindPoint)
+		{
+			m_RenderPass->BeginRenderPass(m_CommandEncoder.get());
+		}
+		else
+		{
+			m_RenderPass->BeginComputePass(m_CommandEncoder.get());
+		}
 	}
 
 	void CmdList::CmdEndRenderPass() const
@@ -60,6 +72,7 @@ namespace Neptune::WebGPU {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		m_RenderPass->BindPipeline(pipeline);
 	}
 
 	void CmdList::CmdBindIndexBuffer(const SP<RHI::IndexBuffer>& buffer) const
@@ -83,37 +96,44 @@ namespace Neptune::WebGPU {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		m_RenderPass->IHandle<Unit::RenderPassEncoder>()->Draw(vertexCount, instanceCount, firstVertex, firstInstance);
 	}
 	
 	void CmdList::CmdDrawIndexed(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		m_RenderPass->IHandle<Unit::RenderPassEncoder>()->DrawIndexed(indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
 	}
 	
 	void CmdList::CmdDrawIndexedIndirect(const SP<RHI::Buffer>& buffer, uint64_t offset, uint32_t drawCount, uint32_t stride) const
 	{
 		NEPTUNE_PROFILE_ZONE
+		
+		m_RenderPass->IHandle<Unit::RenderPassEncoder>()->DrawIndexedIndirect(buffer->GetRHIImpl<Buffer>()->Handle(), offset);
 	}
 	
 	void CmdList::CmdDrawIndirect(const SP<RHI::Buffer>& buffer, uint64_t offset, uint32_t drawCount, uint32_t stride) const
 	{
 		NEPTUNE_PROFILE_ZONE
+		
+		m_RenderPass->IHandle<Unit::RenderPassEncoder>()->DrawIndirect(buffer->GetRHIImpl<Buffer>()->Handle(), offset);
 	}
 	
 	void CmdList::CmdDispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		m_RenderPass->IHandle<Unit::ComputePassEncoder>()->DispatchWorkgroups(groupCountX, groupCountY, groupCountZ);
 	}
 	
 	void CmdList::CmdSetViewport(const glm::uvec2& viewPortSize) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		m_RenderPass->IHandle()->SetViewport(0, 0, viewPortSize.x, viewPortSize.y, 0.0f, 1.0f);
+		m_RenderPass->IHandle<Unit::RenderPassEncoder>()->SetViewport(0, 0, viewPortSize.x, viewPortSize.y, 0.0f, 1.0f);
 		
-		m_RenderPass->IHandle()->SetScissor(0, 0, viewPortSize.x, viewPortSize.y);
+		m_RenderPass->IHandle<Unit::RenderPassEncoder>()->SetScissor(0, 0, viewPortSize.x, viewPortSize.y);
 	}
 
 	void CmdList::SetRenderPass(const SP<RHI::RenderPass>& renderPass)

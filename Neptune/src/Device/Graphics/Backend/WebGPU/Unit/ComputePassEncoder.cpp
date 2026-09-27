@@ -36,6 +36,68 @@ namespace Neptune::WebGPU::Unit {
         wgpuComputePassEncoderSetLabel(m_Handle, { name.c_str(), name.size() });
     }
     
+    void ComputePassEncoder::EndComputePass() const
+    {
+        NEPTUNE_PROFILE_ZONE
+		
+        wgpuComputePassEncoderEnd(m_Handle);
+    }
+
+    void ComputePassEncoder::DispatchWorkgroups(uint32_t workgroupCountX, uint32_t workgroupCountY, uint32_t workgroupCountZ) const
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        wgpuComputePassEncoderDispatchWorkgroups(m_Handle, workgroupCountX, workgroupCountY, workgroupCountZ);
+    }
+
+    void ComputePassEncoder::DispatchWorkgroupsIndirect(WGPUBuffer indirectBuffer, uint64_t indirectOffset) const
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        wgpuComputePassEncoderDispatchWorkgroupsIndirect(m_Handle, indirectBuffer, indirectOffset);
+    }
+
+    void ComputePassEncoder::InsertDebugMarker(const std::string& markerLabel) const
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        wgpuComputePassEncoderInsertDebugMarker(m_Handle, { markerLabel.c_str(), WGPU_STRLEN });
+    }
+
+    void ComputePassEncoder::PushDebugGroup(const std::string& groupLabel) const
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        wgpuComputePassEncoderPushDebugGroup(m_Handle, { groupLabel.c_str(), WGPU_STRLEN });
+    }
+
+    void ComputePassEncoder::PopDebugGroup() const
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        wgpuComputePassEncoderPopDebugGroup(m_Handle);
+    }
+
+    void ComputePassEncoder::SetBindGroup(uint32_t groupIndex, WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t dynamicOffsets) const
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        wgpuComputePassEncoderSetBindGroup(m_Handle, groupIndex, group, dynamicOffsetCount, &dynamicOffsets);
+    }
+
+    void ComputePassEncoder::WriteTimestamp(WGPUQuerySet querySet, uint32_t queryIndex) const
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        wgpuComputePassEncoderWriteTimestamp(m_Handle, querySet, queryIndex);
+    }
+
+    void ComputePassEncoder::SetPipeline(WGPUComputePipeline pipeline) const
+    {
+        NEPTUNE_PROFILE_ZONE
+		
+        wgpuComputePassEncoderSetPipeline(m_Handle, pipeline);
+    }
 }
 
 #endif

@@ -231,9 +231,10 @@ namespace Neptune::WebGPU {
 		
 	protected:
 
-		SP<Unit::CommandEncoder>      m_CommandEncoder = nullptr;                               // @brief CommandEncoder reference.
-		RenderPass*                   m_RenderPass     = nullptr;                               // @brief RenderPass reference.
-		const QueryPool*              m_QueryPool      = nullptr;                               // @brief QueryPool reference.
+		SP<Unit::CommandEncoder>      m_CommandEncoder   = nullptr;         // @brief CommandEncoder reference.
+		bool                          m_RenderBindPoint  = true;            // @brief Bind Point.
+		RenderPass*                   m_RenderPass       = nullptr;         // @brief RenderPass reference.
+		const QueryPool*              m_QueryPool        = nullptr;         // @brief QueryPool reference.
 	};
 }
 

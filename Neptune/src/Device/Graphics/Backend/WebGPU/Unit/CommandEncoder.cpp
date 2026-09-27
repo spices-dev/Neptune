@@ -42,6 +42,13 @@ namespace Neptune::WebGPU::Unit {
 		return wgpuCommandEncoderBeginRenderPass(m_Handle, &desc);
 	}
 
+	WGPUComputePassEncoder CommandEncoder::BeginComputePass(const WGPUComputePassDescriptor& desc) const
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		return wgpuCommandEncoderBeginComputePass(m_Handle, &desc);
+	}
+	
 	void CommandEncoder::CopyTextureToTexture(const WGPUTexelCopyTextureInfo& source, const WGPUTexelCopyTextureInfo& destination, const WGPUExtent3D& copySize) const
 	{
 		NEPTUNE_PROFILE_ZONE

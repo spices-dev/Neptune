@@ -51,6 +51,16 @@ namespace Neptune::WebGPU::Resource {
 		*/
 		void CreateComputePipeline(const WGPUComputePipelineDescriptor& desc);
 		
+		/**
+		* @brief Get Pipeline Unit Handle.
+		*
+		* @tparam T Pipeline Unit
+		* 
+		* @return Returns Pipeline Unit Handle.
+		*/
+		template<IsUnit T>
+		T::Handle Handle() const { return std::get<UP<T>>(m_Pipeline)->GetHandle(); }
+		
 	private:
 
 		std::variant<

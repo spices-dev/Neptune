@@ -110,6 +110,16 @@ namespace Neptune::WebGPU {
 		*/
 		const Unit::PipelineLayout::Handle& GetPipelineLayout() const { return m_PipelineLayout.GetHandle(); }
 
+		/**
+		* @brief Get Pipeline Unit Handle.
+		*
+		* @tparam T Pipeline Unit
+		* 
+		* @return Returns Pipeline Unit Handle.
+		*/
+		template<IsUnit T>
+		T::Handle Handle() const { return m_Pipeline.Handle<T>(); }
+		
 	private:
 		
 		Resource::Pipeline                m_Pipeline;               // @brief Pipeline.

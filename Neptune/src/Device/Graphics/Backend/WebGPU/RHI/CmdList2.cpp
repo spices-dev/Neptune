@@ -65,6 +65,8 @@ namespace Neptune::WebGPU {
 		m_CommandEncoder->CreateCommandEncoder(GetContext().Get<IDevice>()->Handle(), desc);
         
 		DEBUGUTILS_SETOBJECTNAME(*m_CommandEncoder, "CmdList2CommandEncoder")
+		
+		m_RenderBindPoint = true;
 	}
 	
 }

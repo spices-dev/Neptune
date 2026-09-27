@@ -12,6 +12,24 @@
 
 namespace Neptune::WebGPU {
 	
+	WGPULoadOp ToWGPULoadOp(AttachmentOP op)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		using enum AttachmentOP;
+		
+		switch (op)
+		{
+			case Clear:                      return WGPULoadOp_Clear;
+			case Load:                       return WGPULoadOp_Load;
+			default:
+			{
+				NEPTUNE_LOG_CORE(E) << "Unsupported AttachmentOP To WGPULoadOp.";
+				return WGPULoadOp_Undefined;
+			}
+		}
+	}
+	
 	WGPUTextureFormat ToWGPUTextureFormat(TextureFormat f)
 	{
 		NEPTUNE_PROFILE_ZONE
@@ -36,12 +54,12 @@ namespace Neptune::WebGPU {
 		
 		switch (d)
 		{
-		case Texture1D:                      return WGPUTextureDimension_1D;
-		case Texture2D:                      return WGPUTextureDimension_2D;
-		case Texture3D:                      return WGPUTextureDimension_3D;
-		case Texture1DArray:                 return WGPUTextureDimension_1D;
-		case Texture2DArray:                 return WGPUTextureDimension_2D;
-		default:
+			case Texture1D:                      return WGPUTextureDimension_1D;
+			case Texture2D:                      return WGPUTextureDimension_2D;
+			case Texture3D:                      return WGPUTextureDimension_3D;
+			case Texture1DArray:                 return WGPUTextureDimension_1D;
+			case Texture2DArray:                 return WGPUTextureDimension_2D;
+			default:
 			{
 				NEPTUNE_LOG_CORE(E) << "Unsupported TextureDomain To WGPUTextureDimension.";
 				return WGPUTextureDimension_Undefined;

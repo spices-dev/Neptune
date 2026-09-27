@@ -11,7 +11,7 @@
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Frontend/RHI/RenderPass.h"
-#include "Device/Graphics/Backend/WebGPU/Unit/RenderPassEncoder.h"
+#include "Device/Graphics/Backend/WebGPU/Resource/PassEncoder.h"
 #include "Device/Graphics/Backend/WebGPU/Unit/TextureView.h"
 
 namespace Neptune::WebGPU::Unit {
@@ -22,6 +22,7 @@ namespace Neptune::WebGPU::Unit {
 namespace Neptune::RHI {
 
 	class RenderTarget;
+	class Pipeline;
 }
 
 namespace Neptune::WebGPU {
@@ -78,27 +79,47 @@ namespace Neptune::WebGPU {
 		void BeginRenderPass(const Unit::CommandEncoder* commandEncoder);
 		
 		/**
+		* @brief Begin Compute.
+		* 
+		* @param[in] commandEncoder CommandEncoder.
+		*/
+		void BeginComputePass(const Unit::CommandEncoder* commandEncoder);
+		
+		/**
 		* @brief End RenderPass.
 		*/
 		void EndRenderPass() const;
 		
 		/**
-		* @brief Interface Get RenderPassEncoder Handle.
+		* @brief Get PassEncoder Unit Handle.
+		*
+		* @tparam T PassEncoder Unit
 		* 
-		* @return Returns RenderPassEncoder Handle.
+		* @return Returns PassEncoder Unit Handle.
 		*/
-		Unit::RenderPassEncoder::Handle Handle() const { return m_RenderPass->GetHandle(); }
+		template<IsUnit T>
+		T::Handle Handle() const { return m_RenderPass->Handle<T>(); }
 		
 		/**
-		* @brief Interface Get RenderPassEncoder.
+		* @brief Get PassEncoder Unit.
+		*
+		* @tparam T PassEncoder Unit
 		* 
-		* @return Returns RenderPassEncoder.
+		* @return Returns PassEncoder Unit.
 		*/
-		const UP<Unit::RenderPassEncoder>& IHandle() const { return m_RenderPass; }
+		template<IsUnit T>
+		const UP<T>& IHandle() const { return m_RenderPass->IHandle<T>(); }
+		
+		/**
+		* @brief Bind Pipeline.
+		* 
+		* @param[in] pipeline RHI::Pipeline
+		*/
+		void BindPipeline(const SP<RHI::Pipeline>& pipeline);
 		
 	private:
 		
-		UP<Unit::RenderPassEncoder>                m_RenderPass;             // @brief This RenderPass.
+		UP<Resource::PassEncoder>                  m_RenderPass;             // @brief This RenderPass.
 		std::vector<WGPURenderPassColorAttachment> m_Attachments;            // @brief WGPURenderPassColorAttachment.
 		std::optional<uint32_t>                    m_SurfaceIndex;           // @brief Surface Index.
 		

@@ -16,6 +16,15 @@
 namespace Neptune::WebGPU {
 	
 	/**
+	* @brief Convert AttachmentOP to WGPULoadOp.
+	*
+	* @param[in] op AttachmentOP.
+	*
+	* @return Returns WGPULoadOp.
+	*/
+	WGPULoadOp ToWGPULoadOp(AttachmentOP op);
+	
+	/**
 	* @brief Convert TextureFormat to WGPUTextureFormat.
 	*
 	* @param[in] f TextureFormat.
