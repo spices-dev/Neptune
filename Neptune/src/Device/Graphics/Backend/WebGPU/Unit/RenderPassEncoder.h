@@ -150,10 +150,9 @@ namespace Neptune::WebGPU::Unit {
 		* 
 		* @param[in] groupIndex .
 		* @param[in] group WGPUBindGroup.
-		* @param[in] dynamicOffsetCount .
 		* @param[in] dynamicOffsets .
 		*/
-		void SetBindGroup(uint32_t groupIndex, WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t dynamicOffsets) const;
+		void SetBindGroup(uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsets = 0) const;
 		
 		/**
 		* @brief SetBlendConstant.

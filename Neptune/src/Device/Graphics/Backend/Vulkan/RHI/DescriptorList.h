@@ -152,9 +152,9 @@ namespace Neptune::Vulkan {
 
 	private:
 
-		std::map<uint32_t, SP<Resource::DescriptorSet>> m_DescriptorSets;         // @brief Container of DescriptorSet.
-		std::vector<VkDescriptorSetLayout> m_DescriptorSetLayouts;                // @brief Container of VkDescriptorSetLayout.
-		std::optional<VkPushConstantRange> m_PushConstantRange;                   // @brief VkPushConstantRange.
+		std::map<uint32_t, SP<Resource::DescriptorSet>> m_DescriptorSets;            // @brief Container of DescriptorSet.
+		std::vector<VkDescriptorSetLayout>              m_DescriptorSetLayouts;      // @brief Container of VkDescriptorSetLayout.
+		std::optional<VkPushConstantRange>              m_PushConstantRange;         // @brief VkPushConstantRange.
 	};
 }
 

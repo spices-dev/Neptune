@@ -125,14 +125,14 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		std::ranges::for_each(m_DescriptorSets.begin(), m_DescriptorSets.end(), [](const auto& pair) {
+		std::ranges::for_each(m_DescriptorSets, [](const auto& pair) {
 			
 			pair.second->BuildDescriptorSet();
 
 			pair.second->UpdateDescriptorSet();
 		});
 
-		std::ranges::for_each(m_DescriptorSets.begin(), m_DescriptorSets.end(), [&](const auto& pair) {
+		std::ranges::for_each(m_DescriptorSets, [&](const auto& pair) {
 
 			m_DescriptorSetLayouts.emplace_back(pair.second->GetDescriptorSetLayout());
 		});

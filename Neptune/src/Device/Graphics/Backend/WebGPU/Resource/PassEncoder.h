@@ -19,6 +19,7 @@
 namespace Neptune::WebGPU {
     
     class Pipeline;
+    class DescriptorList;
 }
 
 namespace Neptune::WebGPU::Resource {
@@ -84,6 +85,13 @@ namespace Neptune::WebGPU::Resource {
         * @param[in] pipeline Pipeline.
         */
         void BindPipeline(const Pipeline* pipeline) const;
+        
+        /**
+        * @brief Bind BindGroup.
+        *
+        * @param[in] descriptorList DescriptorList.
+        */
+        void BindBindGroup(const DescriptorList* descriptorList) const;
         
     private:
 

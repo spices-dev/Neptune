@@ -78,11 +78,18 @@ namespace Neptune::WebGPU::Unit {
         wgpuComputePassEncoderPopDebugGroup(m_Handle);
     }
 
-    void ComputePassEncoder::SetBindGroup(uint32_t groupIndex, WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t dynamicOffsets) const
+    void ComputePassEncoder::SetBindGroup(uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsets) const
     {
         NEPTUNE_PROFILE_ZONE
         
-        wgpuComputePassEncoderSetBindGroup(m_Handle, groupIndex, group, dynamicOffsetCount, &dynamicOffsets);
+        if (dynamicOffsets == 0)
+        {
+            wgpuComputePassEncoderSetBindGroup(m_Handle, groupIndex, group, 0, nullptr);
+        }
+        else
+        {
+            wgpuComputePassEncoderSetBindGroup(m_Handle, groupIndex, group, 1, &dynamicOffsets);
+        }
     }
 
     void ComputePassEncoder::WriteTimestamp(WGPUQuerySet querySet, uint32_t queryIndex) const

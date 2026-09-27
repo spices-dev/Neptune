@@ -85,7 +85,7 @@ namespace Neptune::WebGPU {
 		DEBUGUTILS_SETOBJECTNAME(*m_RenderPass, "ComputePassEncoder")
 	}
 
-	void RenderPass::EndRenderPass() const
+	void RenderPass::EndPass() const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
@@ -99,6 +99,13 @@ namespace Neptune::WebGPU {
 		auto rhi = pipeline->GetRHIImpl<Pipeline>();
 		
 		m_RenderPass->BindPipeline(rhi);
+	}
+	
+	void RenderPass::BindDescriptorList(const DescriptorList* descriptorList) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_RenderPass->BindBindGroup(descriptorList);
 	}
 }
 

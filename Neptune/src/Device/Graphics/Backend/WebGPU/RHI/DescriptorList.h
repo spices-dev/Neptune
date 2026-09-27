@@ -10,6 +10,7 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/Infrastructure.h"
+#include "Device/Graphics/Backend/WebGPU/Resource/BindGroup.h"
 #include "Device/Graphics/Frontend/RHI/DescriptorList.h"
 
 #include <map>
@@ -115,8 +116,45 @@ namespace Neptune::WebGPU {
 		*/
 		void Build() override;
 
+	public:
+		
+		/**
+		* @brief Get WGPUBindGroupLayout.
+		* 
+		* @return Returns WGPUBindGroupLayout.
+		*/
+		const std::vector<WGPUBindGroupLayout>& GetLayouts() const { return m_BindGrouLayouts; }
+
+		/**
+		* @brief Get BindGroup.
+		*
+		* @return Returns BindGroup.
+		*/
+		const std::map<uint32_t, SP<Resource::BindGroup>>& GetGroups() const { return m_BindGroup; }
+		
+		/**
+		* @brief Get ImmediateSize.
+		*
+		* @return Returns ImmediateSize.
+		*/
+		uint32_t GetImmediateSize() const { return m_ImmediateSize; }
+		
 	private:
 		
+		/**
+		* @brief Access BindGroup, if not exist than create one.
+		*
+		* @param[in] set .
+		* 
+		* @return Returns BindGroup.
+		*/
+		SP<Resource::BindGroup> AccessSet(uint32_t set);
+		
+	private:
+		
+		std::map<uint32_t, SP<Resource::BindGroup>> m_BindGroup;             // @brief Container of BindGroup.
+		std::vector<WGPUBindGroupLayout>            m_BindGrouLayouts;       // @brief Container of WGPUBindGroupLayout.
+		uint32_t                                    m_ImmediateSize = 0;     // @brief ImmediateSize.
 	};
 }
 

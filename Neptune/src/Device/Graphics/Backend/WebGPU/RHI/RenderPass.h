@@ -12,7 +12,6 @@
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Frontend/RHI/RenderPass.h"
 #include "Device/Graphics/Backend/WebGPU/Resource/PassEncoder.h"
-#include "Device/Graphics/Backend/WebGPU/Unit/TextureView.h"
 
 namespace Neptune::WebGPU::Unit {
 	
@@ -27,6 +26,8 @@ namespace Neptune::RHI {
 
 namespace Neptune::WebGPU {
 
+	class DescriptorList;
+	
 	/**
 	* @brief WebGPU::RenderPass Class.
 	* This class defines the WebGPU::RenderPass behaves.
@@ -86,9 +87,9 @@ namespace Neptune::WebGPU {
 		void BeginComputePass(const Unit::CommandEncoder* commandEncoder);
 		
 		/**
-		* @brief End RenderPass.
+		* @brief End Pass.
 		*/
-		void EndRenderPass() const;
+		void EndPass() const;
 		
 		/**
 		* @brief Get PassEncoder Unit Handle.
@@ -116,6 +117,13 @@ namespace Neptune::WebGPU {
 		* @param[in] pipeline RHI::Pipeline
 		*/
 		void BindPipeline(const SP<RHI::Pipeline>& pipeline);
+		
+		/**
+		* @brief Bind DescriptorList.
+		* 
+		* @param[in] descriptorList DescriptorList
+		*/
+		void BindDescriptorList(const DescriptorList* descriptorList) const;
 		
 	private:
 		

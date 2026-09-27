@@ -68,10 +68,12 @@ namespace Neptune::WebGPU {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		auto& layouts = descriptorList->GetRHIImpl<DescriptorList>()->GetLayouts();
+		
 		WGPUPipelineLayoutDescriptor          desc{};
-		desc.bindGroupLayoutCount           = 0;
-		desc.bindGroupLayouts               = nullptr;
-		desc.immediateSize                  = 0;
+		desc.bindGroupLayoutCount           = layouts.size();
+		desc.bindGroupLayouts               = layouts.data();
+		desc.immediateSize                  = descriptorList->GetRHIImpl<DescriptorList>()->GetImmediateSize();
 		
 		m_PipelineLayout.CreatePipelineLayout(GetContext().Get<IDevice>()->Handle(), desc);
 

@@ -10,6 +10,7 @@
 
 #include "PassEncoder.h"
 #include "Device/Graphics/Backend/WebGPU/RHI/Pipeline.h"
+#include "Device/Graphics/Backend/WebGPU/RHI/DescriptorList.h"
 
 namespace Neptune::WebGPU::Resource {
 
@@ -38,6 +39,23 @@ namespace Neptune::WebGPU::Resource {
         else
         {
             IHandle<Unit::ComputePassEncoder>()->SetPipeline(pipeline->Handle<Unit::ComputePipeline>());
+        }
+    }
+    
+    void PassEncoder::BindBindGroup(const WebGPU::DescriptorList* bindGroup) const
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        for (const auto& [fst, snd] : bindGroup->GetGroups())
+        {
+            if (m_RenderBindPoint)
+            {
+                IHandle<Unit::RenderPassEncoder>()->SetBindGroup(fst, snd->Handle(), snd->GetOffset());
+            }
+            else
+            {
+                IHandle<Unit::ComputePassEncoder>()->SetBindGroup(fst, snd->Handle(), snd->GetOffset());
+            }
         }
     }
     

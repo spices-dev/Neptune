@@ -13,6 +13,7 @@
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/CommandEncoder.h"
 #include "Device/Graphics/Backend/WebGPU/Infrastructure/Surface.h"
 #include "Device/Graphics/Backend/WebGPU/RHI/Buffer.h"
+#include "Device/Graphics/Backend/WebGPU/RHI/DescriptorList.h"
 
 namespace Neptune::WebGPU {
 
@@ -59,13 +60,20 @@ namespace Neptune::WebGPU {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		m_RenderPass->EndRenderPass();
+		m_RenderPass->EndPass();
 	}
 
 	void CmdList::CmdBindDescriptor(const SP<RHI::DescriptorList>& descriptorList) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		auto sharedRhi = dynamic_cast<const DescriptorList*>(descriptorList->GetSharedImpl());
+
+		auto rhi = descriptorList->GetRHIImpl<DescriptorList>();
+
+		m_RenderPass->BindDescriptorList(sharedRhi);
+		
+		m_RenderPass->BindDescriptorList(rhi);
 	}
 
 	void CmdList::CmdBindPipeline(const SP<RHI::Pipeline>& pipeline)

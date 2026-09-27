@@ -119,11 +119,18 @@ namespace Neptune::WebGPU::Unit {
 		wgpuRenderPassEncoderPopDebugGroup(m_Handle);
 	}
 
-	void RenderPassEncoder::SetBindGroup(uint32_t groupIndex, WGPUBindGroup group, size_t dynamicOffsetCount, uint32_t dynamicOffsets) const
+	void RenderPassEncoder::SetBindGroup(uint32_t groupIndex, WGPUBindGroup group, uint32_t dynamicOffsets) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		wgpuRenderPassEncoderSetBindGroup(m_Handle, groupIndex, group, dynamicOffsetCount, &dynamicOffsets);
+		if (dynamicOffsets == 0)
+		{
+			wgpuRenderPassEncoderSetBindGroup(m_Handle, groupIndex, group, 0, nullptr);
+		}
+		else
+		{
+			wgpuRenderPassEncoderSetBindGroup(m_Handle, groupIndex, group, 1, &dynamicOffsets);
+		}
 	}
 
 	void RenderPassEncoder::SetBlendConstant(WGPUColor color) const
