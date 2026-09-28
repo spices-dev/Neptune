@@ -1,0 +1,67 @@
+/**
+* @file TransparentSortPassRadixHistogram.comp.
+* @brief This Shader Defines TransparentSorPasstRadixHistogram Compute Shader Behaver.
+* @author Spices.
+*/
+
+/************************************Pre Compile*******************************************/
+
+#version 460
+
+#extension GL_GOOGLE_include_directive : enable          /* @brief Enable include Macro. */
+
+#include "Header/PreRendererLayout.glsl"
+
+/*****************************************************************************************/
+
+/*************************************Comp Input******************************************/
+        
+layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+
+/*****************************************************************************************/
+
+/********************************Descriptor List******************************************/
+
+/**
+* @brief push constant.
+*/
+layout(push_constant) uniform Push
+{
+    uint64_t srcAddress;      // @brief Sorts Buffer src.
+    uint64_t dstAddress;      // @brief Sorts Buffer dst.
+    uint64_t histAddress;     // @brief uint[256 * numWG + 256].
+    uint     numElements;     // @brief gsCount
+    uint     shift;           // @brief 32, 40, 48, 56.
+    uint     numWG;           // @brief ceil(numElements / 256).
+};
+
+layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Entries { uint64_t i[]; };
+        
+layout(buffer_reference, scalar, buffer_reference_align = 4) buffer Uints   { uint     i[]; };
+
+shared uint sHist[256];
+
+/*****************************************************************************************/
+
+/**********************************Shader Entry*******************************************/
+        
+void main()
+{
+    uint tid = gl_LocalInvocationID.x;
+    uint idx = gl_GlobalInvocationID.x;
+
+    sHist[tid] = 0u;
+    barrier();
+
+    if (idx < numElements)
+    {
+        uint64_t e = Entries(srcAddress).i[idx];
+        uint digit = uint(e >> shift) & 0xFFu;
+        atomicAdd(sHist[digit], 1u);
+    }
+    barrier();
+            
+    Uints(histAddress).i[tid * numWG + gl_WorkGroupID.x] = sHist[tid];
+}
+
+/*****************************************************************************************/

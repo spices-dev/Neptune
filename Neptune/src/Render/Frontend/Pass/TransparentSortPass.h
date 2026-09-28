@@ -49,16 +49,25 @@ namespace Neptune::Render {
     private:
         
         // KeyGen
-        InFlightResource<RHI::DescriptorList> m_KDescriptorList;     // @brief KeyGen DescriptorList
-        SP<RHI::Pipeline> m_KPipeline;                               // @brief KeyGen Pipeline
-        
-        // Sort
-        InFlightResource<RHI::DescriptorList> m_SDescriptorList;     // @brief Sort DescriptorList
-        SP<RHI::Pipeline> m_SPipeline;                               // @brief Sort Pipeline
+        InFlightResource<RHI::DescriptorList> m_KGenDescriptorList;          // @brief KeyGen DescriptorList
+        SP<RHI::Pipeline> m_KGenPipeline;                                    // @brief KeyGen Pipeline
 
-        InFlightResource<RHI::Buffer> m_SortBuffer;                  // @brief Sort Buffer
-        InFlightResource<RHI::Buffer> m_IndirectBuffer;              // @brief Indirect Buffer
+        // Histogram
+        InFlightResource<RHI::DescriptorList> m_HistogramDescriptorList;     // @brief Histogram DescriptorList
+        SP<RHI::Pipeline> m_HistogramPipeline;                               // @brief Histogram Pipeline
+
+        // Scan
+        InFlightResource<RHI::DescriptorList> m_ScanDescriptorList;          // @brief Scan DescriptorList
+        SP<RHI::Pipeline> m_ScanPipeline;                                    // @brief Scan Pipeline
+
+        // Scan
+        InFlightResource<RHI::DescriptorList> m_ScatterDescriptorList;       // @brief Scatter DescriptorList
+        SP<RHI::Pipeline> m_ScatterPipeline;                                 // @brief Scatter Pipeline
+
+        InFlightResource<RHI::Buffer> m_SortBufferA;                         // @brief Sort BufferA
+        InFlightResource<RHI::Buffer> m_SortBufferB;                         // @brief Sort BufferB
+        InFlightResource<RHI::Buffer> m_HistBuffer;                          // @brief Hist Buffer
         
-        SP<RHI::Buffer> m_SortParam;                                 // @brief Sort Param Buffer
+        InFlightResource<RHI::Buffer> m_IndirectBuffer;                      // @brief Indirect Buffer
     };
 }

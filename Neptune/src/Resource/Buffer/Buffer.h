@@ -12,7 +12,7 @@ namespace Neptune {
 
     struct BufferCreateInfo
     {
-        uint32_t                 size  = 100;
+        uint64_t                 size  = 100;
         Graphic::EBufferUsage    usage = Graphic::EBufferUsage::None;
     };
     

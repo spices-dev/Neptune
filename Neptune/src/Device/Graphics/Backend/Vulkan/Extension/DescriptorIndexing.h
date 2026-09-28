@@ -17,7 +17,7 @@ namespace Neptune::Vulkan::Extension {
 
     /**
     * @brief Used In:
-    * Descriptor Binding
+    * Descriptor Binding After Update
     */
     class DescriptorIndexing : public Extension
     {

@@ -1,0 +1,83 @@
+/**
+* @file TransparentSortPassRadixScan.comp.
+* @brief This Shader Defines TransparentSortPassRadixScan Compute Shader Behaver.
+* @author Spices.
+*/
+
+/************************************Pre Compile*******************************************/
+
+#version 460
+
+#extension GL_GOOGLE_include_directive : enable    /* @brief Enable include Macro. */
+
+#include "Header/PreRendererLayout.glsl"
+
+/*****************************************************************************************/
+
+/*************************************Comp Input******************************************/
+
+layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+
+/*****************************************************************************************/
+
+/********************************Descriptor List******************************************/
+
+/**
+* @brief push constant.
+*/
+layout(push_constant) uniform Push
+{
+    uint64_t srcAddress;
+    uint64_t dstAddress;
+    uint64_t histAddress;
+    uint     numElements;
+    uint     shift;
+    uint     numWG;
+};
+
+layout(buffer_reference, scalar, buffer_reference_align = 4) buffer Uints { uint i[]; };
+
+shared uint sSum[256];
+
+/*****************************************************************************************/
+
+/**********************************Shader Entry*******************************************/
+        
+void main()
+{
+    uint tid   = gl_LocalInvocationID.x;
+    uint digit = gl_WorkGroupID.x;
+
+    Uints h    = Uints(histAddress);
+    uint base  = digit * numWG;
+        
+    uint perThread = (numWG + 255u) / 256u;
+    uint begin     = min(tid * perThread, numWG);
+    uint end       = min(begin + perThread, numWG);
+
+    uint local = 0u;
+    for (uint i = begin; i < end; ++i) local += h.i[base + i];
+
+    sSum[tid] = local;
+    barrier();
+        
+    for (uint off = 1u; off < 256u; off <<= 1u)
+    {
+        uint v = (tid >= off) ? sSum[tid - off] : 0u;
+        barrier();
+        sSum[tid] += v;
+        barrier();
+    }
+        
+    uint running = sSum[tid] - local;
+    for (uint i = begin; i < end; ++i)
+    {
+        uint v = h.i[base + i];
+        h.i[base + i] = running;
+        running += v;
+    }
+        
+    if (tid == 255u) h.i[256u * numWG + digit] = sSum[255];
+}
+
+/*****************************************************************************************/

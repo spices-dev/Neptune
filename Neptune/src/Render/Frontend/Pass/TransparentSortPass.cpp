@@ -25,55 +25,12 @@ namespace Neptune::Render {
 	namespace {
 		
 		constexpr uint32_t kMaxTransparent = 18000000;
+		constexpr uint32_t kMaxNumWG       = (kMaxTransparent + 255u) / 256u;
 		
-		struct UBO {
-			uint64_t sortAddress;
+		struct Push {
+			uint64_t src, dst, hist;
+			uint32_t numElements, shift, numWG;
 		};
-		
-		struct SortParam
-		{
-			uint32_t stage       = 0;
-			uint32_t passOfStage = 0;
-			uint32_t numElements = 0;
-		};
-		
-		SP<std::array<SortParam, 30000>> sortParams{};
-		
-		uint32_t NextPowerOfTwo(uint32_t n)
-		{
-			if (n == 0) return 1;
-
-			n -= 1;
-			n |= n >> 1;
-			n |= n >> 2;
-			n |= n >> 4;
-			n |= n >> 8;
-			n |= n >> 16;
-			return n + 1;
-		}
-		
-		decltype(sortParams) BuildBitonicSortParams(uint32_t paddedN)
-		{
-			decltype(sortParams) allParams = CreateSP<std::array<SortParam, 30000>>();
-			
-			uint32_t numStages = 0;
-			for (uint32_t v = paddedN; v > 1; v >>= 1)
-			{
-				++numStages;
-			}
-
-			uint32_t iter = 0;
-			
-			for (uint32_t stage = 0; stage < numStages; ++stage)
-			{
-				for (uint32_t passOfStage = 0; passOfStage <= stage; ++passOfStage)
-				{
-					(*allParams)[iter++] = SortParam{ stage, passOfStage, paddedN };
-				}
-			}
-
-			return allParams;
-		}
 	}
 	
 	void TransparentSortPass::OnConstruct()
@@ -86,16 +43,46 @@ namespace Neptune::Render {
 			for (int i = 0; i < MaxFrameInFlight; ++i)
 			{
 				std::stringstream ss;
-				ss << "TransparentSortBuffer_" << i;
+				ss << "TransparentSortBufferA_" << i;
 				
 				if (!resourcePool.Has(ss.str()))
 				{
-					auto s = resourcePool.Load<Buffer>(ss.str(), BufferCreateInfo{ kMaxTransparent * sizeof(uint64_t) } );
+					auto s = resourcePool.Load<Buffer>(ss.str(), BufferCreateInfo{ uint64_t(kMaxTransparent) * sizeof(uint64_t) } );
 				
 					s->GetRHIResource()->SetName(ss.str());
 				}
 				
-				m_SortBuffer.Get(i) = resourcePool.Access(ss.str())->GetRHIResource();
+				m_SortBufferA.Get(i) = resourcePool.Access(ss.str())->GetRHIResource();
+			}
+			
+			for (int i = 0; i < MaxFrameInFlight; ++i)
+			{
+				std::stringstream ss;
+				ss << "TransparentSortBufferB_" << i;
+				
+				if (!resourcePool.Has(ss.str()))
+				{
+					auto s = resourcePool.Load<Buffer>(ss.str(), BufferCreateInfo{ uint64_t(kMaxTransparent) * sizeof(uint64_t) } );
+				
+					s->GetRHIResource()->SetName(ss.str());
+				}
+				
+				m_SortBufferB.Get(i) = resourcePool.Access(ss.str())->GetRHIResource();
+			}
+			
+			for (int i = 0; i < MaxFrameInFlight; ++i)
+			{
+				std::stringstream ss;
+				ss << "TransparentHistBuffer_" << i;
+				
+				if (!resourcePool.Has(ss.str()))
+				{
+					auto s = resourcePool.Load<Buffer>(ss.str(), BufferCreateInfo{ (256ull * kMaxNumWG + 256ull) * sizeof(uint32_t) } );
+				
+					s->GetRHIResource()->SetName(ss.str());
+				}
+				
+				m_HistBuffer.Get(i) = resourcePool.Access(ss.str())->GetRHIResource();
 			}
 			
 			for (int i = 0; i < MaxFrameInFlight; ++i)
@@ -123,18 +110,18 @@ namespace Neptune::Render {
 		{
 			for (int i = 0; i < MaxFrameInFlight; ++i)
 			{
-				m_KDescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
-				m_KDescriptorList.Get(i)->AddShaderConstant(2 * sizeof(uint32_t));
-				m_KDescriptorList.Get(i)->AddUniformBuffer(1, 0, sizeof(uint64_t));
-				m_KDescriptorList.Get(i)->AddUniformBuffer(1, 1, sizeof(uint64_t));
-				m_KDescriptorList.Get(i)->AddUniformBuffer(1, 2, sizeof(uint64_t));
-				m_KDescriptorList.Get(i)->CombineSharedLayout();
-				m_KDescriptorList.Get(i)->Build();
+				m_KGenDescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
+				m_KGenDescriptorList.Get(i)->AddShaderConstant(sizeof(uint32_t));
+				m_KGenDescriptorList.Get(i)->AddUniformBuffer(1, 0, sizeof(uint64_t));
+				m_KGenDescriptorList.Get(i)->AddUniformBuffer(1, 1, sizeof(uint64_t));
+				m_KGenDescriptorList.Get(i)->AddUniformBuffer(1, 2, sizeof(uint64_t));
+				m_KGenDescriptorList.Get(i)->CombineSharedLayout();
+				m_KGenDescriptorList.Get(i)->Build();
 			}
 			
-			m_KPipeline = CreateSP<RHI::Pipeline>();
-			m_KPipeline->SetDefault();
-			m_KPipeline->SetDescriptorList(m_KDescriptorList.Get(0));
+			m_KGenPipeline = CreateSP<RHI::Pipeline>();
+			m_KGenPipeline->SetDefault();
+			m_KGenPipeline->SetDescriptorList(m_KGenDescriptorList.Get(0));
 			
 			auto& resourcePool = ResourcePool<Shader>::Instance();
 
@@ -148,41 +135,99 @@ namespace Neptune::Render {
 
 			auto shader = resourcePool.Access("TransparentSortPassKeyGenComp");
 
-			m_KPipeline->AddShader(shader->GetStage(), shader->GetRHIResource());
+			m_KGenPipeline->AddShader(shader->GetStage(), shader->GetRHIResource());
 			
-			m_KPipeline->BuildComputePipeline();
+			m_KGenPipeline->BuildComputePipeline();
+		}
+		
+		{
+			for (int i = 0; i < MaxFrameInFlight; ++i)
+			{
+				m_HistogramDescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
+				m_HistogramDescriptorList.Get(i)->AddShaderConstant(sizeof(Push));
+				m_HistogramDescriptorList.Get(i)->CombineSharedLayout();
+				m_HistogramDescriptorList.Get(i)->Build();
+			}
+			
+			m_HistogramPipeline = CreateSP<RHI::Pipeline>();
+			m_HistogramPipeline->SetDefault();
+			m_HistogramPipeline->SetDescriptorList(m_HistogramDescriptorList.Get(0));
+			
+			auto& resourcePool = ResourcePool<Shader>::Instance();
+
+			if (!resourcePool.Has("TransparentSortPassRadixHistogram"))
+			{
+				auto s = resourcePool.Load<Shader>("TransparentSortPassRadixHistogram");
+
+				s->SetStage(ShaderStage::Compute);
+				s->SetSource("Shaders/src/TransparentSortPassRadixHistogram.comp.spv");
+			}
+
+			auto shader = resourcePool.Access("TransparentSortPassRadixHistogram");
+
+			m_HistogramPipeline->AddShader(shader->GetStage(), shader->GetRHIResource());
+			
+			m_HistogramPipeline->BuildComputePipeline();
 		}
 
 		{
 			for (int i = 0; i < MaxFrameInFlight; ++i)
 			{
-				m_SDescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
-				m_SDescriptorList.Get(i)->AddShaderConstant(sizeof(uint32_t));
-				m_SDescriptorList.Get(i)->AddUniformBuffer(1, 0, sizeof(uint64_t));
-				m_SDescriptorList.Get(i)->AddUniformBuffer(1, 1, sizeof(uint64_t));
-				m_SDescriptorList.Get(i)->CombineSharedLayout();
-				m_SDescriptorList.Get(i)->Build();
+				m_ScanDescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
+				m_ScanDescriptorList.Get(i)->AddShaderConstant(sizeof(Push));
+				m_ScanDescriptorList.Get(i)->CombineSharedLayout();
+				m_ScanDescriptorList.Get(i)->Build();
 			}
 			
-			m_SPipeline = CreateSP<RHI::Pipeline>();
-			m_SPipeline->SetDefault();
-			m_SPipeline->SetDescriptorList(m_SDescriptorList.Get(0));
+			m_ScanPipeline = CreateSP<RHI::Pipeline>();
+			m_ScanPipeline->SetDefault();
+			m_ScanPipeline->SetDescriptorList(m_ScanDescriptorList.Get(0));
 			
 			auto& resourcePool = ResourcePool<Shader>::Instance();
 
-			if (!resourcePool.Has("TransparentSortPassComp"))
+			if (!resourcePool.Has("TransparentSortPassRadixScan"))
 			{
-				auto s = resourcePool.Load<Shader>("TransparentSortPassComp");
+				auto s = resourcePool.Load<Shader>("TransparentSortPassRadixScan");
 
 				s->SetStage(ShaderStage::Compute);
-				s->SetSource("Shaders/src/TransparentSortPass.comp.spv");
+				s->SetSource("Shaders/src/TransparentSortPassRadixScan.comp.spv");
 			}
 
-            auto shader = resourcePool.Access("TransparentSortPassComp");
+            auto shader = resourcePool.Access("TransparentSortPassRadixScan");
 
-			m_SPipeline->AddShader(shader->GetStage(), shader->GetRHIResource());
+			m_ScanPipeline->AddShader(shader->GetStage(), shader->GetRHIResource());
 			
-			m_SPipeline->BuildComputePipeline();
+			m_ScanPipeline->BuildComputePipeline();
+		}
+		
+		{
+			for (int i = 0; i < MaxFrameInFlight; ++i)
+			{
+				m_ScatterDescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
+				m_ScatterDescriptorList.Get(i)->AddShaderConstant(sizeof(Push));
+				m_ScatterDescriptorList.Get(i)->CombineSharedLayout();
+				m_ScatterDescriptorList.Get(i)->Build();
+			}
+
+			m_ScatterPipeline = CreateSP<RHI::Pipeline>();
+			m_ScatterPipeline->SetDefault();
+			m_ScatterPipeline->SetDescriptorList(m_ScatterDescriptorList.Get(0));
+					
+			auto& resourcePool = ResourcePool<Shader>::Instance();
+
+			if (!resourcePool.Has("TransparentSortPassRadixScatter"))
+			{
+				auto s = resourcePool.Load<Shader>("TransparentSortPassRadixScatter");
+
+				s->SetStage(ShaderStage::Compute);
+				s->SetSource("Shaders/src/TransparentSortPassRadixScatter.comp.spv");
+			}
+
+			auto shader = resourcePool.Access("TransparentSortPassRadixScatter");
+
+			m_ScatterPipeline->AddShader(shader->GetStage(), shader->GetRHIResource());
+					
+			m_ScatterPipeline->BuildComputePipeline();
 		}
 	}
 
@@ -205,37 +250,24 @@ namespace Neptune::Render {
 
 		if (!item) return;
 
-		uint32_t gsCount = item->GetPointCount();
-		
-		uint32_t paddedN = NextPowerOfTwo(gsCount);
-		
-		{
-			if (!m_SortParam)
-			{
-				sortParams = BuildBitonicSortParams(paddedN);
-				
-				m_SortParam = CreateSP<RHI::Buffer>();
-				
-				m_SortParam->CreateBuffer(sizeof(*sortParams));
-				
-				m_SortParam->WriteToBuffer(sortParams->data());
-				
-				m_SortParam->Flush();
-			}
-		}
-		
 		const auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
 		
+		uint32_t gsCount = item->GetPointCount();
+		
+		assert(gsCount <= kMaxTransparent);
+		
+		uint32_t numWG = (gsCount + 255) / 256;
+		
 		{
-			auto sortBufferAddress = m_SortBuffer.Get(clock.m_FrameIndex)->GetDeviceAddress();
+			auto sortBufferAddress = m_SortBufferA.Get(clock.m_FrameIndex)->GetDeviceAddress();
 			
 			auto indirectBufferAddress = m_IndirectBuffer.Get(clock.m_FrameIndex)->GetDeviceAddress();
 		
-			m_KDescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 0, &item->GetDescDeviceAddress());
+			m_KGenDescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 0, &item->GetDescDeviceAddress());
 			
-			m_KDescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 1, &sortBufferAddress);
+			m_KGenDescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 1, &sortBufferAddress);
 			
-			m_KDescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 2, &indirectBufferAddress);
+			m_KGenDescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 2, &indirectBufferAddress);
 			
 			RHI::CmdList cmdList;
 
@@ -243,15 +275,13 @@ namespace Neptune::Render {
 
 			cmdList.CmdFillBuffer(m_IndirectBuffer.Get(clock.m_FrameIndex), 4, 4, 0);
 			
-			cmdList.CmdBindPipeline(m_KPipeline);
+			cmdList.CmdBindPipeline(m_KGenPipeline);
 
-			cmdList.CmdBindDescriptor(m_KDescriptorList.Get(clock.m_FrameIndex));
+			cmdList.CmdBindDescriptor(m_KGenDescriptorList.Get(clock.m_FrameIndex));
 			
-			cmdList.CmdUpdateShaderConstant(&paddedN, sizeof(uint32_t));
+			cmdList.CmdUpdateShaderConstant(&gsCount, sizeof(uint32_t));
 			
-			cmdList.CmdUpdateShaderConstant(&gsCount, sizeof(uint32_t), sizeof(uint32_t));
-			
-			cmdList.CmdDispatch((paddedN + 255) / 256, 1, 1);
+			cmdList.CmdDispatch(numWG, 1, 1);
 			
 			MemoryBarrierDesc       barrier{};
 			barrier.srcAccess     = EPipelineAccess::ShaderWrite;
@@ -261,53 +291,60 @@ namespace Neptune::Render {
 
 			cmdList.CmdInsertBarrier(barrier);
 		}
+
+		Push push;
 		
+		push.src         = m_SortBufferA.Get(clock.m_FrameIndex)->GetDeviceAddress();
+		push.dst         = m_SortBufferB.Get(clock.m_FrameIndex)->GetDeviceAddress(); 
+		push.hist        = m_HistBuffer.Get(clock.m_FrameIndex)->GetDeviceAddress();
+		push.numElements = gsCount; 
+		push.numWG       = numWG;
+		
+		RHI::CmdList cmdList;
+		
+		cmdList.SetComputeCmdList(clock);
+		
+		MemoryBarrierDesc       barrier{};
+		barrier.srcAccess     = EPipelineAccess::ShaderWrite;
+		barrier.dstAccess     = EPipelineAccess::ShaderRead;
+		barrier.srcStage      = EPipelineStage::ComputeShader;
+		barrier.dstStage      = EPipelineStage::ComputeShader;
+		
+		for (int pass = 0; pass < 4; ++pass) 
 		{
-			auto sortBufferAddress = m_SortBuffer.Get(clock.m_FrameIndex)->GetDeviceAddress();
-		
-			m_SDescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 0, &sortBufferAddress);
-		
-			auto sortParamAddress = m_SortParam->GetDeviceAddress();
+			push.shift = 32 + 8 * pass;
+
+			cmdList.CmdBindPipeline(m_HistogramPipeline);
+
+			cmdList.CmdUpdateShaderConstant(&push, sizeof(Push));
 			
-			m_SDescriptorList.Get(clock.m_FrameIndex)->UpdateUniformBuffer(1, 1, &sortParamAddress);
-		
-			RHI::CmdList cmdList;
+			cmdList.CmdBindDescriptor(m_HistogramDescriptorList.Get(clock.m_FrameIndex));
+			
+			cmdList.CmdDispatch(numWG, 1, 1);
+			
+			cmdList.CmdInsertBarrier(barrier);
+			
+			cmdList.CmdBindPipeline(m_ScanPipeline);
 
-			cmdList.SetComputeCmdList(clock);
+			cmdList.CmdUpdateShaderConstant(&push, sizeof(Push));
+			
+			cmdList.CmdBindDescriptor(m_ScanDescriptorList.Get(clock.m_FrameIndex));
+			
+			cmdList.CmdDispatch(256, 1, 1);
+			
+			cmdList.CmdInsertBarrier(barrier);
 
-			cmdList.CmdBindPipeline(m_SPipeline);
+			cmdList.CmdBindPipeline(m_ScatterPipeline);
 
-			cmdList.CmdBindDescriptor(m_SDescriptorList.Get(clock.m_FrameIndex));
-		
-			uint32_t iter = 0;
-		
-			uint32_t numStages = 0;
-			for (uint32_t v = paddedN; v > 1; v >>= 1)
-			{
-				++numStages;
-			}
+			cmdList.CmdUpdateShaderConstant(&push, sizeof(Push));
 
-			for (uint32_t stage = 0; stage < numStages; ++stage)
-			{
-				for (uint32_t passOfStage = 0; passOfStage <= stage; ++passOfStage)
-				{
-					cmdList.CmdUpdateShaderConstant(&iter, sizeof(iter));
-				
-					uint32_t groupCount = (paddedN / 2 + 255) / 256;
-					
-					cmdList.CmdDispatch(groupCount, 1, 1);
-				
-					MemoryBarrierDesc           barrier{};
-					barrier.srcAccess         = EPipelineAccess::ShaderWrite;
-					barrier.dstAccess         = EPipelineAccess::ShaderRead;
-					barrier.srcStage          = EPipelineStage::ComputeShader;
-					barrier.dstStage          = EPipelineStage::ComputeShader;
-				
-					cmdList.CmdInsertBarrier(barrier);
-				
-					++iter;
-				}
-			}
+			cmdList.CmdBindDescriptor(m_ScatterDescriptorList.Get(clock.m_FrameIndex));
+
+			cmdList.CmdDispatch(numWG, 1, 1);
+			
+			cmdList.CmdInsertBarrier(barrier);
+
+			std::swap(push.src, push.dst);
 		}
 	}
 

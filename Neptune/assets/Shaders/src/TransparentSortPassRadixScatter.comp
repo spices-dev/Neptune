@@ -1,0 +1,87 @@
+/**
+* @file TransparentSortPassRadixScatter.comp.
+* @brief This Shader Defines TransparentSortPassRadixScatter Compute Shader Behaver.
+* @author Spices.
+*/
+
+/************************************Pre Compile*******************************************/
+
+#version 460
+
+#extension GL_GOOGLE_include_directive : enable    /* @brief Enable include Macro. */
+
+#include "Header/PreRendererLayout.glsl"
+
+/*****************************************************************************************/
+
+/*************************************Comp Input******************************************/
+        
+layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+
+/*****************************************************************************************/
+
+/********************************Descriptor List******************************************/
+
+/**
+* @brief push constant.
+*/
+layout(push_constant) uniform Push
+{
+    uint64_t srcAddress;
+    uint64_t dstAddress;
+    uint64_t histAddress;
+    uint     numElements;
+    uint     shift;
+    uint     numWG;
+};
+
+layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Entries { uint64_t i[]; };
+        
+layout(buffer_reference, scalar, buffer_reference_align = 4) buffer Uints   { uint     i[]; };
+
+shared uint sTmp[256];
+shared uint sBase[256];
+shared uint sDigit[256];
+
+/*****************************************************************************************/
+
+/**********************************Shader Entry*******************************************/
+        
+void main()
+{
+    uint tid = gl_LocalInvocationID.x;
+    uint wg  = gl_WorkGroupID.x;
+    uint idx = gl_GlobalInvocationID.x;
+
+    Uints h = Uints(histAddress);
+        
+    uint total = h.i[256u * numWG + tid];
+    sTmp[tid]  = total;
+    barrier();
+    for (uint off = 1u; off < 256u; off <<= 1u)
+    {
+        uint v = (tid >= off) ? sTmp[tid - off] : 0u;
+        barrier();
+        sTmp[tid] += v;
+        barrier();
+    }
+    sBase[tid] = sTmp[tid] - total;
+        
+    bool     valid = idx < numElements;
+    uint64_t e     = valid ? Entries(srcAddress).i[idx] : uint64_t(0);
+    uint     d     = valid ? (uint(e >> shift) & 0xFFu) : 256u;
+
+    sDigit[tid] = d;
+    barrier();
+
+    if (!valid) return;
+        
+    uint rank = 0u;
+    for (uint j = 0u; j < tid; ++j)
+        rank += (sDigit[j] == d) ? 1u : 0u;
+        
+    uint pos = sBase[d] + h.i[d * numWG + wg] + rank;
+    Entries(dstAddress).i[pos] = e;
+}
+
+/*****************************************************************************************/

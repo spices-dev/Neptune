@@ -185,9 +185,9 @@ namespace Neptune::Vulkan::Middleware {
 
 			frameBuffer->CreateFrameBuffer(GetContext().Get<IDevice>()->Handle(), info);
 
-			m_FrameBuffers.emplace_back(std::move(frameBuffer));
-
 			DEBUGUTILS_SETOBJECTNAME(*frameBuffer, "FrameBuffer")
+			
+			m_FrameBuffers.emplace_back(std::move(frameBuffer));
 		}
 	}
 

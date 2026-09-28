@@ -34,7 +34,7 @@ namespace Neptune::Render {
 			for (int i = 0; i < MaxFrameInFlight; ++i)
 			{
 				std::stringstream ss;
-				ss << "TransparentSortBuffer_" << i;
+				ss << "TransparentSortBufferA_" << i;
 				
 				auto s = resourcePool.Access(ss.str());
 			

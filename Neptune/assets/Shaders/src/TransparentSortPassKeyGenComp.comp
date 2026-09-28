@@ -28,11 +28,9 @@ layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
 * @brief push constant.
 */
 layout(push_constant) uniform Push 
-{ 
-    uint paddedN;
+{
     uint gsCount;
 };
-        
 
 layout(set = 1, binding = 0) uniform UBO1 { uint64_t descAddress; };                 // @brief GS3DDesc Address.
 layout(set = 1, binding = 1) uniform UBO2 { uint64_t sortAddress; };                 // @brief Sort Address.
@@ -76,15 +74,9 @@ void main()
     sorts               = Sorts(sortAddress);
     drawIndirectCommand = DrawIndirectCommand(indirectAddress);
 
-    uint idx     = gl_GlobalInvocationID.x;
-    if (idx >= paddedN) return;
+    uint idx            = gl_GlobalInvocationID.x;
 
-    if (idx >= gsCount)
-    {
-        sorts.i[idx] = (uint64_t(0xFFFFFFFFu) << 32) | uint64_t(0xFFFFFFFFu);
-
-        return;
-    }
+    if (idx >= gsCount) return;
 
     model = mat4(1.0,0,0,0, 0,1.0,0,0, 0,0,1.0,0, 0,0,0,1.0);
         
@@ -99,7 +91,7 @@ void main()
                         minorAxis, r2, 
                         radius))
     {
-        sorts.i[idx] = (uint64_t(0xFFFFFFFFu) << 32) | uint64_t(0xFFFFFFFFu);
+        sorts.i[idx] = ~uint64_t(0);
     
         return;
     }
