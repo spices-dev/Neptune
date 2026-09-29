@@ -138,24 +138,37 @@ namespace Neptune::WebGPU {
 		}
 	}
 	
-	WGPUBufferUsage ToWGPUBufferUsage(Graphic::EBufferUsage u)
+	WGPUBufferUsage ToWGPUBufferUsage(const Container::BitSet<Graphic::EBufferUsage>& set)
 	{
 		NEPTUNE_PROFILE_ZONE
 		
 		using enum Graphic::EBufferUsage;
 		
-		switch (u)
-		{
-			case None:                   return WGPUBufferUsage_None;
-			case Vertex:                 return WGPUBufferUsage_Vertex;
-			case Index:                  return WGPUBufferUsage_Index;
-			case Indirect:               return WGPUBufferUsage_Indirect;
-			default:
-			{
-				NEPTUNE_LOG_CORE(E) << "Unsupported EBufferUsage To WGPUBufferUsage.";
-				return 0;
-			}
-		}
+		WGPUBufferUsage flag = 0;
+		
+		if (set.Test(None))              flag |= WGPUBufferUsage_None;
+		if (set.Test(Vertex))            flag |= WGPUBufferUsage_Vertex;
+		if (set.Test(Index))             flag |= WGPUBufferUsage_Index;
+		if (set.Test(Indirect))          flag |= WGPUBufferUsage_Indirect;
+		if (set.Test(TransferSrc))       flag |= WGPUBufferUsage_CopySrc;
+		if (set.Test(TransferDst))       flag |= WGPUBufferUsage_CopyDst;
+		
+		return flag;
+	}
+	
+	WGPUTextureUsage ToWGPUTextureUsage(const Container::BitSet<Graphic::EImageUsage>& set)
+	{
+		using enum Graphic::EImageUsage;
+		
+		WGPUTextureUsage flag = 0;
+		
+		if (set.Test(ColorAttachment)) flag |= WGPUTextureUsage_RenderAttachment;
+		if (set.Test(Sampler))         flag |= WGPUTextureUsage_TextureBinding;
+		if (set.Test(Storage))         flag |= WGPUTextureUsage_StorageBinding;
+		if (set.Test(TransferSrc))     flag |= WGPUTextureUsage_CopySrc;
+		if (set.Test(TransferDst))     flag |= WGPUTextureUsage_CopyDst;
+		
+		return flag;
 	}
 	
 	std::string ToString(WGPUBackendType t)

@@ -1,0 +1,53 @@
+/**
+* @file TileRenderRanges.comp.
+* @brief This Shader Defines TileRenderRanges Compute Shader Behaver.
+* @author Spices.
+*/
+
+/************************************Pre Compile*******************************************/
+
+#version 460
+
+#extension GL_GOOGLE_include_directive : enable    /* @brief Enable include Macro. */
+
+#include "Header/PreRendererLayout.glsl"
+#include "Header/GS3DTileRenderCommon.glsl"
+
+/*****************************************************************************************/
+
+/*************************************Comp Input******************************************/
+        
+layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+
+/*****************************************************************************************/
+
+/********************************Descriptor List******************************************/
+
+/**
+* @brief push constant.
+*/
+layout(push_constant) uniform Push
+{
+    uint64_t sortedAddress;
+    uint64_t rangeAddress;
+    uint64_t infoAddress;
+};
+
+/**********************************Shader Entry*******************************************/
+
+void main()
+{
+    uint n   = TileSortInfo(infoAddress).numElements;
+    uint idx = gl_GlobalInvocationID.x;
+    if (idx >= n) return;
+
+    TileEntries e  = TileEntries(sortedAddress);
+    TileRanges  r  = TileRanges(rangeAddress);
+
+    uint tile = uint(e.i[idx] >> ENTRY_TILE_SHIFT);
+
+    if (idx == 0u      || uint(e.i[idx - 1u] >> ENTRY_TILE_SHIFT) != tile) r.i[tile].x = idx;
+    if (idx == n - 1u  || uint(e.i[idx + 1u] >> ENTRY_TILE_SHIFT) != tile) r.i[tile].y = idx + 1u;
+}
+
+/*****************************************************************************************/

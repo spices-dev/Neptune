@@ -90,6 +90,25 @@ namespace Neptune::Vulkan {
 
 		descriptorSet->AddBinding(info, layoutBinding);
 	}
+	
+	void DescriptorList::AddStorageTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget)
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		auto descriptorSet = AccessSet(set);
+
+		VkDescriptorImageInfo                 info{};
+		info.imageLayout                    = VK_IMAGE_LAYOUT_GENERAL;
+		info.imageView                      = renderTarget->GetRHIImpl<RenderTarget>()->GetView();
+
+		VkDescriptorSetLayoutBinding          layoutBinding{};
+		layoutBinding.binding               = binding;
+		layoutBinding.descriptorType        = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
+		layoutBinding.descriptorCount       = 1;
+		layoutBinding.stageFlags            = VK_SHADER_STAGE_ALL;
+
+		descriptorSet->AddBinding(info, layoutBinding);
+	}
 
 	void DescriptorList::UpdateUniformBuffer(uint32_t set, uint32_t binding, const void* data)
 	{
@@ -102,7 +121,14 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		m_DescriptorSets[set]->UpdateTexture(binding, renderTarget->GetRHIImpl<RenderTarget>());
+		m_DescriptorSets[set]->UpdateUniformTexture(binding, renderTarget->GetRHIImpl<RenderTarget>());
+	}
+	
+	void DescriptorList::UpdateStorageTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_DescriptorSets[set]->UpdateStorageTexture(binding, renderTarget->GetRHIImpl<RenderTarget>());
 	}
 	
 	void DescriptorList::UpdateDynamicUniformBufferOffset(uint32_t set, uint32_t offset)

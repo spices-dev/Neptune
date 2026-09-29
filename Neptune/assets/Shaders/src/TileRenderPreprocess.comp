@@ -1,0 +1,189 @@
+/**
+* @file TileRenderPreprocess.frag.
+* @brief This Shader Defines TileRenderPreprocess Compute Shader Behaver.
+* @author Spices.
+*/
+
+/************************************Pre Compile*******************************************/
+
+#version 460
+
+#extension GL_GOOGLE_include_directive : enable    /* @brief Enable include Macro. */
+
+#include "Header/PreRendererLayout.glsl"
+#include "Header/GS3DDescLayout.glsl"
+#include "Header/GSProjection.glsl"
+#include "Header/GS3DTileRenderCommon.glsl"
+
+/*****************************************************************************************/
+
+/*************************************Comp Input******************************************/
+        
+layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+
+/*****************************************************************************************/
+
+/********************************Descriptor List******************************************/
+
+/**
+* @brief push constant.
+*/
+layout(push_constant) uniform Push
+{
+    uint64_t splatAddress;
+    uint64_t entryAddress;
+    uint64_t infoAddress;
+    uint     gsCount;
+    uint     tilesX;
+    uint     tilesY;
+    uint     maxInstances;
+};
+
+layout(set = 1, binding = 0) uniform UBO1 { uint64_t descAddress; };
+
+/*****************************************************************************************/
+
+/******************************************Functions**************************************/
+        
+void EvalSHBasis(vec3 dir, out float basis[16])
+{
+    float x = dir.x, y = dir.y, z = dir.z;
+    
+    basis[0] = 0.28209479177387814;
+    
+    basis[1] = -0.4886025119029199 * y;
+    basis[2] =  0.4886025119029199 * z;
+    basis[3] = -0.4886025119029199 * x;
+    
+    float xx = x*x, yy = y*y, zz = z*z;
+    float xy = x*y, yz = y*z, xz = x*z;
+    
+    basis[4] = 1.0925484305920792 * xy;
+    basis[5] = -1.0925484305920792 * yz;
+    basis[6] = 0.31539156525252005 * (2.0*zz - xx - yy);
+    basis[7] = -1.0925484305920792 * xz;
+    basis[8] = 0.5462742152960396 * (xx - yy);
+    
+    basis[9]  = -0.5900435899266435 * y * (3.0*xx - yy);
+    basis[10] = 2.890611442640554 * xy * z;
+    basis[11] = -0.4570457994644658 * y * (4.0*zz - xx - yy);
+    basis[12] = 0.3731763325901154 * z * (2.0*zz - 3.0*xx - 3.0*yy);
+    basis[13] = -0.4570457994644658 * x * (4.0*zz - xx - yy);
+    basis[14] = 1.445305721320277 * z * (xx - yy);
+    basis[15] = -0.5900435899266435 * x * (xx - 3.0*yy);
+}
+
+float GetSHCoeff(mat4 m, int idx)
+{
+    return m[idx / 4][idx % 4];
+}
+
+vec3 EvalSH(vec3 dir, mat4 shR, mat4 shG, mat4 shB)
+{
+    float basis[16];
+    EvalSHBasis(dir, basis);
+    
+    vec3 color = vec3(0.0);
+    for (int i = 0; i < 16; ++i)
+    {
+        color += vec3(GetSHCoeff(shR, i), GetSHCoeff(shG, i), GetSHCoeff(shB, i)) * basis[i];
+    }
+    
+    color += 0.5;
+    return max(color, vec3(0.0));
+}
+
+bool TileOverlaps(ivec2 t, vec2 c, vec2 a1, float r1, vec2 a2, float r2)
+{
+    vec2  d  = (vec2(t) + 0.5) * float(TILE_SIZE) - c;
+    float h  = 0.5 * float(TILE_SIZE);
+    if (abs(dot(d, a1)) > r1 + h * (abs(a1.x) + abs(a1.y))) return false;
+    if (abs(dot(d, a2)) > r2 + h * (abs(a2.x) + abs(a2.y))) return false;
+    return true;
+}
+
+/*****************************************************************************************/
+
+/**********************************Shader Entry*******************************************/
+        
+void main()
+{
+    ExplainGS3DDesciption(descAddress);
+
+    uint gid = gl_GlobalInvocationID.x;
+    
+    if (gid >= gsCount) return;
+
+    model = mat4(1.0,0,0,0, 0,1.0,0,0, 0,0,1.0,0, 0,0,0,1.0);
+
+    float opacity = alphas.i[gid];
+    
+    if (opacity < 1.0 / 255.0) return;
+
+    vec3 worldPos = (model * vec4(positions.i[gid], 1.0)).xyz;
+    vec3 scale    = scales.i[gid];
+    vec4 quat     = orientations.i[gid];
+
+    vec4 clipPos, viewPos; vec3 conic; vec2 majorAxis, minorAxis; float r1, r2, radius;
+    if (!ProjectGaussian(worldPos, scale, quat,
+                         clipPos, viewPos, conic,
+                         majorAxis, r1,
+                         minorAxis, r2,
+                         radius))
+    {
+        return;
+    }
+
+    vec2 size   = vec2(view.sceneTextureSize.x, view.sceneTextureSize.y);
+    vec2 center = (clipPos.xy / clipPos.w * 0.5 + 0.5) * size;
+/**#if VIEWPORT_FLIP_Y
+    center.y     = size.y - center.y;
+    majorAxis.y  = -majorAxis.y;
+    minorAxis.y  = -minorAxis.y;
+    conic.y      = -conic.y;
+#endif*/
+        
+    float k = min(1.0, sqrt(2.0 * log(255.0 * opacity)) / RADIUS_SIGMA);
+    r1 *= k;  r2 *= k;
+
+    vec2  halfExt = abs(r1 * majorAxis) + abs(r2 * minorAxis);
+    ivec2 tMin    = ivec2(floor((center - halfExt) / float(TILE_SIZE)));
+    ivec2 tMax    = ivec2(floor((center + halfExt) / float(TILE_SIZE)));
+    if (tMax.x < 0 || tMax.y < 0 || tMin.x >= int(tilesX) || tMin.y >= int(tilesY)) return;
+    tMin = max(tMin, ivec2(0));
+    tMax = min(tMax, ivec2(int(tilesX) - 1, int(tilesY) - 1));
+        
+    uint count = 0u;
+    for (int ty = tMin.y; ty <= tMax.y; ++ty)
+        for (int tx = tMin.x; tx <= tMax.x; ++tx)
+            if (TileOverlaps(ivec2(tx, ty), center, majorAxis, r1, minorAxis, r2)) ++count;
+    if (count == 0u) return;
+            
+    TileSortInfo info = TileSortInfo(infoAddress);
+    uint base = atomicAdd(info.instanceCounter, count);
+    if (base >= maxInstances) return;
+    uint limit = min(count, maxInstances - base);
+        
+    vec3 camPos  = view.inView[3].xyz;
+    vec3 dir     = normalize(worldPos - camPos);
+    vec3 shColor = EvalSH(dir, sphrs.i[gid], sphgs.i[gid], sphbs.i[gid]);
+
+    Splat s;
+    s.center  = center;
+    s.conic   = conic;
+    s.opacity = opacity;
+    s.color   = uvec2(packHalf2x16(shColor.rg), packHalf2x16(vec2(shColor.b, 0.0)));
+    TileSplats(splatAddress).i[gid] = s;
+        
+    TileEntries entries = TileEntries(entryAddress);
+    uint n = 0u;
+    for (int ty = tMin.y; ty <= tMax.y; ++ty)
+        for (int tx = tMin.x; tx <= tMax.x; ++tx)
+            if (TileOverlaps(ivec2(tx, ty), center, majorAxis, r1, minorAxis, r2))
+            {
+                entries.i[base + n] = PackEntry(uint(ty) * tilesX + uint(tx), viewPos.z, gid);
+                if (++n >= limit) return;
+            }
+}
+
+/*****************************************************************************************/

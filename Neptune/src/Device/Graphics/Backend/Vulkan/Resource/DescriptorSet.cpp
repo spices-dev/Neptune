@@ -57,7 +57,7 @@ namespace Neptune::Vulkan::Resource {
 		buffer->Flush();
 	}
 
-	void DescriptorSet::UpdateTexture(uint32_t binding, const Vulkan::RenderTarget* renderTarget)
+	void DescriptorSet::UpdateUniformTexture(uint32_t binding, const Vulkan::RenderTarget* renderTarget)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -71,7 +71,26 @@ namespace Neptune::Vulkan::Resource {
 		write.sType                     = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
 		write.dstBinding                = binding;
 		write.dstSet                    = m_DescriptorSet.GetHandle();
-		write.descriptorType            = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+		write.descriptorType            = m_Bindings.at(binding).binding.descriptorType;
+		write.pImageInfo                = imageInfos.data();
+		write.descriptorCount           = static_cast<uint32_t>(imageInfos.size());
+
+		m_DescriptorSet.UpdateDescriptorSet(write);
+	}
+	
+	void DescriptorSet::UpdateStorageTexture(uint32_t binding, const RenderTarget* renderTarget)
+	{
+		auto& imageInfos = std::get<ImageBindingData>(m_Bindings[binding].data).imageInfos;
+
+		imageInfos[0].imageLayout       = VK_IMAGE_LAYOUT_GENERAL;
+		imageInfos[0].imageView         = renderTarget->GetView();
+		imageInfos[0].sampler           = renderTarget->GetSampler();
+
+		VkWriteDescriptorSet              write{};
+		write.sType                     = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		write.dstBinding                = binding;
+		write.dstSet                    = m_DescriptorSet.GetHandle();
+		write.descriptorType            = m_Bindings.at(binding).binding.descriptorType;
 		write.pImageInfo                = imageInfos.data();
 		write.descriptorCount           = static_cast<uint32_t>(imageInfos.size());
 

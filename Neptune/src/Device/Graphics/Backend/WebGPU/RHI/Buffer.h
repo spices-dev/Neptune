@@ -45,10 +45,9 @@ namespace Neptune::WebGPU {
         /**
         * @brief Create Buffer.
         *
-        * @param[in] size Buffer Size.
-        * @param[in] usage Graphic::EBufferUsage.
+        * @param[in] info BufferCreateInfo.
         */
-        void CreateBuffer(uint64_t size, Graphic::EBufferUsage usage = Graphic::EBufferUsage::None) override;
+        void CreateBuffer(const BufferCreateInfo& info) override;
 
         /**
         * @brief Write host data to Buffer.

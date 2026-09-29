@@ -186,6 +186,14 @@ namespace Neptune::WebGPU {
 		void CmdDispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const override;
 		
 		/**
+		* @brief Interface of CmdDispatchIndirect.
+		* 
+		* @param[in] buffer  Buffer.
+		* @param[in] offset .
+		*/
+		void CmdDispatchIndirect(const SP<RHI::Buffer>& buffer, uint64_t offset) const override;
+		
+		/**
 		* @brief Interface of Insert Barrier.
 		* 
 		* @param[in] renderTarget RenderTarget.

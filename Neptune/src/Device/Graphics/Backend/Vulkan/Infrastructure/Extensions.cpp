@@ -86,6 +86,7 @@ namespace Neptune::Vulkan {
 		m_Context->Registry<Extension::IPresentTiming>                    (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IUnifiedImageLayouts>              (Extension::EExtensionState::Extent);          // @brief Done.
 		m_Context->Registry<Extension::IMeshShader>                       (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IDeviceAddressCommands>            (Extension::EExtensionState::Extent);
 	}
 	
 	SP<Extensions> Extensions::Copy() const

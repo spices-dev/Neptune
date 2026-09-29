@@ -76,12 +76,20 @@ namespace Neptune::Vulkan::Resource {
 		void UpdateBuffer(uint32_t binding, const void* data);
 
 		/**
-		* @brief Update Texture Binding.
+		* @brief Update Uniform Binding.
 		*
 		* @param[in] binding .
 		* @param[in] renderTarget RenderTarget.
 		*/
-		void UpdateTexture(uint32_t binding, const RenderTarget* renderTarget);
+		void UpdateUniformTexture(uint32_t binding, const RenderTarget* renderTarget);
+
+		/**
+		* @brief Update Storage Binding.
+		*
+		* @param[in] binding .
+		* @param[in] renderTarget RenderTarget.
+		*/
+		void UpdateStorageTexture(uint32_t binding, const RenderTarget* renderTarget);
 
 		/**
 		* @brief Update DynamicUniformBufferOffset.

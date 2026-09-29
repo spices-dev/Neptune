@@ -11,6 +11,7 @@
 #extension GL_GOOGLE_include_directive : enable    /* @brief Enable include Macro. */
 
 #include "Header/PreRendererLayout.glsl"
+#include "Header/GS3DTileRenderCommon.glsl"
 
 /*****************************************************************************************/
 
@@ -30,12 +31,9 @@ layout(push_constant) uniform Push
     uint64_t srcAddress;
     uint64_t dstAddress;
     uint64_t histAddress;
-    uint     numElements;
+    uint64_t infoAddress;
     uint     shift;
-    uint     numWG;
 };
-
-layout(buffer_reference, scalar, buffer_reference_align = 4) buffer Uints { uint i[]; };
 
 shared uint sSum[256];
 
@@ -45,11 +43,13 @@ shared uint sSum[256];
         
 void main()
 {
+    uint numWG = TileSortInfo(infoAddress).numWG;
+        
     uint tid   = gl_LocalInvocationID.x;
     uint digit = gl_WorkGroupID.x;
 
-    Uints h    = Uints(histAddress);
-    uint base  = digit * numWG;
+    TileUints h = TileUints(histAddress);
+    uint base   = digit * numWG;
         
     uint perThread = (numWG + 255u) / 256u;
     uint begin     = min(tid * perThread, numWG);

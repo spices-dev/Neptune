@@ -24,22 +24,31 @@ namespace Neptune::Render {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		auto& resourcePool = ResourcePool<RenderTarget>::Instance();
+		
 		{
-			auto& resourcePool = ResourcePool<RenderTarget>::Instance();
-
 			RenderTargetCreateInfo    info{};
 			info.format             = TextureFormat::RGBA16_SFLOAT;
 			info.domain             = TextureDomain::Texture2D;
 			info.width              = m_RTSize.x;
 			info.height             = m_RTSize.y;
+			info.usage.Set(Graphic::EImageUsage::ColorAttachment);
+			info.usage.Set(Graphic::EImageUsage::Sampler);
+			info.usage.Set(Graphic::EImageUsage::TransferDst);
 
 			auto scene = CreateSP<RenderTarget>(info);
 
 			resourcePool.Registry("Scene", scene);
+		}
+		
+		{
+			RenderTargetCreateInfo    info{};
+			info.usage.Set(Graphic::EImageUsage::Sampler);
+			info.usage.Set(Graphic::EImageUsage::TransferDst);
 
 			if (!resourcePool.Has("CurrDecodeRT"))
 			{
-				resourcePool.Load<RenderTarget>("CurrDecodeRT");
+				resourcePool.Load<RenderTarget>("CurrDecodeRT", info);
 			}
 		}
 

@@ -76,6 +76,15 @@ namespace Neptune::OpenGL {
 		void AddUniformTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget) override;
 
 		/**
+		* @brief Interface of Add StorageTexture.
+		*
+		* @param[in] set .
+		* @param[in] binding .
+		* @param[in] renderTarget RenderTarget.
+		*/
+		void AddStorageTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget) override;
+		
+		/**
 		* @brief Interface of Update UniformBuffer.
 		*
 		* @param[in] set .
@@ -93,6 +102,15 @@ namespace Neptune::OpenGL {
 		*/
 		void UpdateUniformTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget) override;
 
+		/**
+		* @brief Interface of Update StorageTexture.
+		*
+		* @param[in] set .
+		* @param[in] binding .
+		* @param[in] renderTarget RenderTarget.
+		*/
+		void UpdateStorageTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget) override;
+		
 		/**
 		* @brief Interface of Update DynamicUniformBufferOffset.
 		*

@@ -51,6 +51,7 @@ namespace Neptune::Vulkan {
         PresentTiming,                              // @brief PresentTiming.
         UnifiedImageLayouts,                        // @brief UnifiedImageLayouts.
         MeshShader,                                 // @brief MeshShader.
+        DeviceAddressCommands,                      // @brief DeviceAddressCommands.
 
         Count
     };
@@ -98,6 +99,7 @@ namespace Neptune::Vulkan {
             case PresentTiming:                   return "PresentTiming";
             case UnifiedImageLayouts:             return "UnifiedImageLayouts";
             case MeshShader:                      return "MeshShader";
+            case DeviceAddressCommands:           return "DeviceAddressCommands";
             default:                              return "NonNamed";
         }
     }

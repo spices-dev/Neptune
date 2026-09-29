@@ -261,7 +261,7 @@ namespace Neptune::Container {
         * 
         * @return Returns true if succeeded.
         */
-        bool Set(T bit, bool value)
+        bool Set(T bit, bool value = true)
         {
             if (bit > T::Count) return false;
 

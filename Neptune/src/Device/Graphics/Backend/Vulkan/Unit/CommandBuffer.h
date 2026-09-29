@@ -378,6 +378,21 @@ namespace Neptune::Vulkan::Unit {
 		void Dispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const;
 		
 		/**
+		* @brief DispatchIndirect2.
+		* 
+		* @param[in] info VkDispatchIndirect2InfoKHR.
+		*/
+		void DispatchIndirect2(const VkDispatchIndirect2InfoKHR& info) const;
+		
+		/**
+		* @brief DispatchIndirect.
+		* 
+		* @param[in] buffer VkBuffer.
+		* @param[in] offset VkDeviceSize.
+		*/
+		void DispatchIndirect(VkBuffer buffer, VkDeviceSize offset) const;
+		
+		/**
 		* @brief Memory PipelineBarrier.
 		* 
 		* @param[in] srcStage VkPipelineStageFlags.

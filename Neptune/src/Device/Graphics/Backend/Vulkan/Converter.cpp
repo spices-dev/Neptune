@@ -29,6 +29,23 @@ namespace Neptune::Vulkan {
 		}
 	}
 
+	VkImageUsageFlags ToVkImageUsageFlags(const Container::BitSet<Graphic::EImageUsage>& set)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		using enum Graphic::EImageUsage;
+		
+		VkImageUsageFlags flag = 0;
+		
+		if (set.Test(ColorAttachment)) flag |= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+		if (set.Test(Sampler))         flag |= VK_IMAGE_USAGE_SAMPLED_BIT;
+		if (set.Test(Storage))         flag |= VK_IMAGE_USAGE_STORAGE_BIT;
+		if (set.Test(TransferSrc))     flag |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
+		if (set.Test(TransferDst))     flag |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+		
+		return flag;
+	}
+	
 	VkImageType ToVkImageType(TextureDomain d)
 	{
 		NEPTUNE_PROFILE_ZONE
@@ -306,24 +323,22 @@ namespace Neptune::Vulkan {
 		}
 	}
 	
-	VkBufferUsageFlags ToVkBufferUsageFlags(Graphic::EBufferUsage u)
+	VkBufferUsageFlags ToVkBufferUsageFlags(const Container::BitSet<Graphic::EBufferUsage>& set)
 	{
 		NEPTUNE_PROFILE_ZONE
 		
 		using enum Graphic::EBufferUsage;
 		
-		switch (u)
-		{
-			case None:           return 0;
-			case Vertex:         return VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
-			case Index:          return VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
-			case Indirect:       return VK_BUFFER_USAGE_INDIRECT_BUFFER_BIT;
-			default:
-			{
-				NEPTUNE_LOG_CORE(E) << "Unsupported EBufferUsage To VkBufferUsageFlags.";
-				return 0;
-			}
-		}
+		VkBufferUsageFlags flag = 0;
+		
+		if (set.Test(None))              flag |= 0;
+		if (set.Test(Vertex))            flag |= VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+		if (set.Test(Index))             flag |= VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
+		if (set.Test(Indirect))          flag |= VK_BUFFER_USAGE_INDIRECT_BUFFER_BIT;
+		if (set.Test(TransferSrc))       flag |= VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
+		if (set.Test(TransferDst))       flag |= VK_BUFFER_USAGE_TRANSFER_DST_BIT;
+		
+		return flag;
 	}
 
 	std::string ToString(VkMemoryHeapFlags flag)

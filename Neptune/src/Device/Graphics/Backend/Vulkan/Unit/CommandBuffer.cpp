@@ -287,6 +287,20 @@ namespace Neptune::Vulkan::Unit {
 		vkCmdDispatch(m_Handle, groupCountX, groupCountY, groupCountZ);
 	}
 	
+	void CommandBuffer::DispatchIndirect2(const VkDispatchIndirect2InfoKHR& info) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDispatchIndirect2KHR(m_Handle, &info);
+	}
+	
+	void CommandBuffer::DispatchIndirect(VkBuffer buffer, VkDeviceSize offset) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdDispatchIndirect(m_Handle, buffer, offset);
+	}
+	
 	void CommandBuffer::CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const VkMemoryBarrier& barrier) const
 	{
 		NEPTUNE_PROFILE_ZONE

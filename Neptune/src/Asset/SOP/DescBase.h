@@ -15,10 +15,12 @@ namespace Neptune::SOP {
 #define Update_Attribute(item)                                                   \
 	{                                                                            \
 		using Item = Decay<decltype(item)>;                                      \
-		uint64_t size = item.host->size() * sizeof(typename Item::T_);           \
-		item.device->CreateBuffer(size);                                         \
-		item.device->WriteToBuffer(item.host->data(), size);                     \
-		item.device->Flush(size);                                                \
+		BufferCreateInfo info{};                                                 \
+		info.size = item.host->size() * sizeof(typename Item::T_);               \
+		info.usage.Set(Graphic::EBufferUsage::TransferDst);                      \
+		item.device->CreateBuffer(info);                                         \
+		item.device->WriteToBuffer(item.host->data(), info.size);                \
+		item.device->Flush(info.size);                                           \
 		item.device->SetName(#item);                                             \
 		(*desc.host)[0].item##Address = item.device->GetDeviceAddress();         \
 	}
@@ -26,10 +28,12 @@ namespace Neptune::SOP {
 #define Update_Desc(item)                                                        \
 	{                                                                            \
 		using Item = Decay<decltype(item)>;                                      \
-		uint64_t size = item.host->size() * sizeof(typename Item::T_);           \
-		item.device->CreateBuffer(size);                                         \
-		item.device->WriteToBuffer(item.host->data(), size);                     \
-		item.device->Flush(size);                                                \
+		BufferCreateInfo info{};                                                 \
+		info.size = item.host->size() * sizeof(typename Item::T_);               \
+		info.usage.Set(Graphic::EBufferUsage::TransferDst);                      \
+		item.device->CreateBuffer(info);                                         \
+		item.device->WriteToBuffer(item.host->data(), info.size);                \
+		item.device->Flush(info.size);                                           \
 		item.device->SetName(#item);                                             \
 		item##Address = item.device->GetDeviceAddress();                         \
 	}

@@ -65,6 +65,15 @@ namespace Neptune::RHI {
 		virtual void AddUniformTexture(uint32_t set, uint32_t binding, const SP<class RenderTarget>& renderTarget) = 0;
 
 		/**
+		* @brief Interface of Add StorageTexture.
+		*
+		* @param[in] set .
+		* @param[in] binding .
+		* @param[in] renderTarget RenderTarget.
+		*/
+		virtual void AddStorageTexture(uint32_t set, uint32_t binding, const SP<class RenderTarget>& renderTarget) = 0;
+		
+		/**
 		* @brief Interface of Update UniformBuffer.
 		*
 		* @param[in] set .
@@ -81,6 +90,15 @@ namespace Neptune::RHI {
 		* @param[in] renderTarget RenderTarget.
 		*/
 		virtual void UpdateUniformTexture(uint32_t set, uint32_t binding, const SP<class RenderTarget>& renderTarget) = 0;
+		
+		/**
+		* @brief Interface of Update StorageTexture.
+		*
+		* @param[in] set .
+		* @param[in] binding .
+		* @param[in] renderTarget RenderTarget.
+		*/
+		virtual void UpdateStorageTexture(uint32_t set, uint32_t binding, const SP<class RenderTarget>& renderTarget) = 0;
 		
 		/**
 		* @brief Interface of Update DynamicUniformBufferOffset.
@@ -169,6 +187,15 @@ namespace Neptune::RHI {
 		void AddUniformTexture(uint32_t set, uint32_t binding, const SP<class RenderTarget>& renderTarget) const { m_Impl->AddUniformTexture(set, binding, renderTarget); }
 
 		/**
+		* @brief Interface of Add StorageTexture.
+		*
+		* @param[in] set .
+		* @param[in] binding .
+		* @param[in] renderTarget RenderTarget.
+		*/
+		void AddStorageTexture(uint32_t set, uint32_t binding, const SP<class RenderTarget>& renderTarget) const { m_Impl->AddStorageTexture(set, binding, renderTarget); }
+		
+		/**
 		* @brief Interface of Update UniformBuffer.
 		*
 		* @param[in] set .
@@ -194,6 +221,15 @@ namespace Neptune::RHI {
 		*/
 		void UpdateUniformTexture(uint32_t set, uint32_t binding, const SP<class RenderTarget>& renderTarget) const { m_Impl->UpdateUniformTexture(set, binding, renderTarget); }
 
+		/**
+		* @brief Interface of Update StorageTexture.
+		*
+		* @param[in] set .
+		* @param[in] binding .
+		* @param[in] renderTarget RenderTarget.
+		*/
+		void UpdateStorageTexture(uint32_t set, uint32_t binding, const SP<class RenderTarget>& renderTarget) const { m_Impl->UpdateStorageTexture(set, binding, renderTarget); }
+		
 		/**
 		* @brief Interface of Combine Shared DescriptorList.
 		*/

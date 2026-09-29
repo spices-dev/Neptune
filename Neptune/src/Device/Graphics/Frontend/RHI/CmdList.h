@@ -184,6 +184,14 @@ namespace Neptune::RHI {
 		virtual void CmdDispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const = 0;
 		
 		/**
+		* @brief Interface of CmdDispatchIndirect.
+		* 
+		* @param[in] buffer  Buffer.
+		* @param[in] offset .
+		*/
+		virtual void CmdDispatchIndirect(const SP<class Buffer>& buffer, uint64_t offset) const = 0;
+		
+		/**
 		* @brief Interface of Insert Barrier.
 		* 
 		* @param[in] renderTarget RenderTarget.
@@ -352,6 +360,14 @@ namespace Neptune::RHI {
 		* @param[in] groupCountZ .
 		*/
 		void CmdDispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const { RHICmdList::m_Impl->CmdDispatch(groupCountX, groupCountY, groupCountZ); }
+		
+		/**
+		* @brief Interface of CmdDispatchIndirect.
+		* 
+		* @param[in] buffer  Buffer.
+		* @param[in] offset .
+		*/
+		void CmdDispatchIndirect(const SP<class Buffer>& buffer, uint64_t offset) const { RHICmdList::m_Impl->CmdDispatchIndirect(buffer, offset); }
 		
 		/**
 		* @brief Interface of Insert Barrier.

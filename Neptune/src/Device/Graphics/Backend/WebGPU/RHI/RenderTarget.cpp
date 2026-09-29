@@ -79,7 +79,7 @@ namespace Neptune::WebGPU {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		m_Texture = CreateUP<Resource::Texture>(GetContext());
+		m_Texture = CreateSP<Resource::Texture>(GetContext());
 
 		{
 			WGPUTextureFormat format                         = ToWGPUTextureFormat(info.format);
@@ -92,9 +92,7 @@ namespace Neptune::WebGPU {
 			desc.sampleCount                                 = 1;
 			desc.viewFormatCount                             = 1;
 			desc.viewFormats                                 = &format;
-			desc.usage                                       = WGPUTextureUsage_RenderAttachment | 
-				                                               WGPUTextureUsage_CopyDst |
-				                                               WGPUTextureUsage_TextureBinding;
+			desc.usage                                       = ToWGPUTextureUsage(info.usage); 
 
 			m_Texture->CreateTexture(desc);
 		}
@@ -108,9 +106,7 @@ namespace Neptune::WebGPU {
 			desc.baseArrayLayer                              = 0;
 			desc.arrayLayerCount                             = 1;
 			desc.aspect                                      = WGPUTextureAspect_All;
-			desc.usage                                       = WGPUTextureUsage_RenderAttachment | 
-															   WGPUTextureUsage_CopyDst |
-															   WGPUTextureUsage_TextureBinding;
+			desc.usage                                       = ToWGPUTextureUsage(info.usage); 
 
 			m_Texture->CreateTextureView(desc);
 		}

@@ -81,11 +81,20 @@ namespace Neptune::WebGPU {
 	/**
 	* @brief Convert Graphic::EBufferUsage to WGPUBufferUsage.
 	*
-	* @param[in] u Graphic::EBufferUsage.
+	* @param[in] set Container::BitSet<Graphic::EBufferUsage>.
 	*
 	* @return Returns WGPUBufferUsage.
 	*/
-	WGPUBufferUsage ToWGPUBufferUsage(Graphic::EBufferUsage u);
+	WGPUBufferUsage ToWGPUBufferUsage(const Container::BitSet<Graphic::EBufferUsage>& set);
+	
+	/**
+	* @brief Convert Graphic::EImageUsage to WGPUBufferUsage.
+	*
+	* @param[in] set Container::BitSet<Graphic::EImageUsage>.
+	*
+	* @return Returns WGPUBufferUsage.
+	*/
+	WGPUTextureUsage ToWGPUTextureUsage(const Container::BitSet<Graphic::EImageUsage>& set);
 	
 	/**
 	* @brief Convert WGPUBackendType to std::string.

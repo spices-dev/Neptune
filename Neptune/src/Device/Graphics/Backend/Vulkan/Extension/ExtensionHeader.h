@@ -44,6 +44,7 @@
 #include "PresentTiming.h"
 #include "UnifiedImageLayouts.h"
 #include "MeshShader.h"
+#include "DeviceAddressCommands.h"
 
 // Device
 //m_ExtensionProperties.push_back(VK_KHR_SHADER_CLOCK_EXTENSION_NAME);

@@ -13,7 +13,7 @@ namespace Neptune {
     {
         m_RHIResource = CreateSP<RHI::Buffer>();
 
-        m_RHIResource->CreateBuffer(info.size, info.usage);
+        m_RHIResource->CreateBuffer(info);
     }
     
 }

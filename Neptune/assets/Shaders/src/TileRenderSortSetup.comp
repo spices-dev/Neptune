@@ -1,0 +1,51 @@
+/**
+* @file TileRenderSortSetup.comp.
+* @brief This Shader Defines TileRenderSortSetup Compute Shader Behaver.
+* @author Spices.
+*/
+
+/************************************Pre Compile*******************************************/
+
+#version 460
+
+#extension GL_GOOGLE_include_directive : enable    /* @brief Enable include Macro. */
+
+#include "Header/PreRendererLayout.glsl"
+#include "Header/GS3DTileRenderCommon.glsl"
+
+/*****************************************************************************************/
+
+/*************************************Comp Input******************************************/
+        
+layout (local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
+
+/*****************************************************************************************/
+
+/********************************Descriptor List******************************************/
+
+/**
+* @brief push constant.
+*/
+layout(push_constant) uniform Push
+{
+    uint64_t infoAddress;
+    uint     maxInstances;
+};
+
+/*****************************************************************************************/
+
+/**********************************Shader Entry*******************************************/
+        
+void main()
+{
+    TileSortInfo info = TileSortInfo(infoAddress);
+
+    uint n            = min(info.instanceCounter, maxInstances);
+    info.numElements  = n;
+    info.numWG        = (n + 255u) / 256u;
+    info.dispatchX    = info.numWG;
+    info.dispatchY    = 1u;
+    info.dispatchZ    = 1u;
+}
+
+/*****************************************************************************************/

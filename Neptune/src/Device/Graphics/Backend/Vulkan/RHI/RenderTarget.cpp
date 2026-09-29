@@ -211,9 +211,7 @@ namespace Neptune::Vulkan {
 			createInfo.format                                = ToVkFormat(info.format);
 			createInfo.tiling                                = VK_IMAGE_TILING_OPTIMAL;
 			createInfo.initialLayout                         = VK_IMAGE_LAYOUT_UNDEFINED;
-			createInfo.usage                                 = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | 
-															   VK_IMAGE_USAGE_TRANSFER_DST_BIT |
-														       VK_IMAGE_USAGE_SAMPLED_BIT;
+			createInfo.usage                                 = ToVkImageUsageFlags(info.usage); 
 			createInfo.sharingMode                           = VK_SHARING_MODE_EXCLUSIVE;
 			createInfo.samples                               = VK_SAMPLE_COUNT_1_BIT;
 			createInfo.flags                                 = 0;

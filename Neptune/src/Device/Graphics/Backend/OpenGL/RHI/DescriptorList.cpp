@@ -36,6 +36,11 @@ namespace Neptune::OpenGL {
 
 	}
 
+	void DescriptorList::AddStorageTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget)
+	{
+		NEPTUNE_PROFILE_ZONE
+	}
+	
 	void DescriptorList::UpdateUniformBuffer(uint32_t set, uint32_t binding, const void* data)
 	{
 		NEPTUNE_PROFILE_ZONE
@@ -46,6 +51,12 @@ namespace Neptune::OpenGL {
 	{
 		NEPTUNE_PROFILE_ZONE
 
+	}
+	
+	void DescriptorList::UpdateStorageTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
 	}
 	
 	void DescriptorList::UpdateDynamicUniformBufferOffset(uint32_t set, uint32_t offset)

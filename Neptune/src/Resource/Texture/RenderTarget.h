@@ -3,6 +3,7 @@
 #include "Texture.h"
 #include "Core/Memory/Enum.h"
 #include "Device/Graphics/Frontend/Enum.h"
+#include "Core/Container/BitSet.h"
 
 namespace Neptune {
 
@@ -13,11 +14,12 @@ namespace Neptune {
 
 	struct RenderTargetCreateInfo
 	{
-		uint32_t          width        = 100;
-		uint32_t          height       = 100;
-		TextureDomain     domain       = TextureDomain::Texture2D;
-		TextureFormat     format       = TextureFormat::RGBA8_UNORM;
-		EMemory           memoryUsage  = EMemory::Device;
+		uint32_t                                    width        = 100;
+		uint32_t                                    height       = 100;
+		TextureDomain                               domain       = TextureDomain::Texture2D;
+		TextureFormat                               format       = TextureFormat::RGBA8_UNORM;
+		Container::BitSet<Graphic::EImageUsage>     usage;
+		EMemory                                     memoryUsage  = EMemory::Device;
 	};
 
 	enum class AttachmentOP : uint8_t

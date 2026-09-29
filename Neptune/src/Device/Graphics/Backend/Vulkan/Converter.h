@@ -28,6 +28,15 @@ namespace Neptune::Vulkan {
 	VkFormat ToVkFormat(TextureFormat f);
 
 	/**
+	* @brief Convert EImageUsage to VkImageUsageFlags.
+	* 
+	* @param[in] set Container::BitSet<Graphic::EImageUsage>.
+	* 
+	* @return Returns VkImageUsageFlags.
+	*/
+	VkImageUsageFlags ToVkImageUsageFlags(const Container::BitSet<Graphic::EImageUsage>& set);
+	
+	/**
 	* @brief Convert TextureDomain to VkImageType.
 	*
 	* @param[in] d TextureDomain.
@@ -165,11 +174,11 @@ namespace Neptune::Vulkan {
 	/**
 	* @brief Convert EBufferUsage to VkBufferUsageFlags.
 	*
-	* @param[in] u EBufferUsage.
+	* @param[in] set Container::BitSet<Graphic::EBufferUsage>.
 	*
 	* @return Returns VkBufferUsageFlags.
 	*/
-	VkBufferUsageFlags ToVkBufferUsageFlags(Graphic::EBufferUsage u);
+	VkBufferUsageFlags ToVkBufferUsageFlags(const Container::BitSet<Graphic::EBufferUsage>& set);
 	
 	/**
 	* @brief Convert VkMemoryHeapFlags to std::string.

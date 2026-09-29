@@ -18,7 +18,6 @@
 #include "Device/Graphics/Backend/Vulkan/RHI/IndexBuffer.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/Buffer.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderTarget.h"
-#include "Device/Graphics/Backend/Vulkan/Resource/VideoSession.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/QueryPool.h"
 #include "Device/Graphics/Frontend/RHI/RenderPass.h"
 #include "Data/Clock.h"
@@ -30,6 +29,7 @@ namespace Neptune::Vulkan {
 	CmdList::CmdList(Context& context)
 		: ContextAccessor(context)
 		, m_Synchronization(Middleware::ISynchronization::Create(context))
+		, m_Indirect(Middleware::IIndirect::Create(context))
 	{}
 
 	void CmdList::SetGraphicCmdList(const Data::Clock& clock)
@@ -170,6 +170,13 @@ namespace Neptune::Vulkan {
 		NEPTUNE_PROFILE_ZONE
 		
 		m_CommandBuffer->Dispatch(groupCountX, groupCountY, groupCountZ);
+	}
+	
+	void CmdList::CmdDispatchIndirect(const SP<RHI::Buffer>& buffer, uint64_t offset) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_Indirect->CmdDispatchIndirect(m_CommandBuffer, buffer->GetRHIImpl<Buffer>(), offset);
 	}
 	
 	void CmdList::CmdInsertBarrier(const SP<RHI::RenderTarget>& renderTarget, const Graphic::ImageBarrierDesc& desc) const

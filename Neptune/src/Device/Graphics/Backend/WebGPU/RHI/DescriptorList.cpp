@@ -86,6 +86,25 @@ namespace Neptune::WebGPU {
 		bindGroup->AddBinding(imageInfo, entry);
 	}
 
+	void DescriptorList::AddStorageTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		auto bindGroup = AccessSet(set);
+
+		WGPUBindGroupEntry                imageInfo{};
+		imageInfo.binding               = binding;
+		imageInfo.sampler               = renderTarget->GetRHIImpl<RenderTarget>()->GetSampler();
+		imageInfo.textureView           = renderTarget->GetRHIImpl<RenderTarget>()->GetView();
+		
+		WGPUBindGroupLayoutEntry          entry{};
+		entry.binding                   = binding;
+		entry.visibility                = WGPUShaderStage_Compute;
+		entry.sampler.type              = WGPUSamplerBindingType_Filtering;
+		
+		bindGroup->AddBinding(imageInfo, entry);
+	}
+	
 	void DescriptorList::UpdateUniformBuffer(uint32_t set, uint32_t binding, const void* data)
 	{
 		NEPTUNE_PROFILE_ZONE
@@ -94,6 +113,13 @@ namespace Neptune::WebGPU {
 	}
 
 	void DescriptorList::UpdateUniformTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_BindGroup[set]->UpdateTexture(binding, renderTarget->GetRHIImpl<RenderTarget>());
+	}
+	
+	void DescriptorList::UpdateStorageTexture(uint32_t set, uint32_t binding, const SP<RHI::RenderTarget>& renderTarget)
 	{
 		NEPTUNE_PROFILE_ZONE
 		

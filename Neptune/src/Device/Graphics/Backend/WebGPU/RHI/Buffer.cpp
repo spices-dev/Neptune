@@ -17,14 +17,14 @@
 
 namespace Neptune::WebGPU {
     
-    void Buffer::CreateBuffer(uint64_t size, Graphic::EBufferUsage usage)
+    void Buffer::CreateBuffer(const BufferCreateInfo& info)
     {
         NEPTUNE_PROFILE_ZONE
         
-        size = AlignUp(size, static_cast<uint64_t>(4));
+        auto size = AlignUp(info.size, static_cast<uint64_t>(4));
         
         WGPUBufferDescriptor                  desc{};
-        desc.usage                          = WGPUBufferUsage_CopyDst | ToWGPUBufferUsage(usage);
+        desc.usage                          = ToWGPUBufferUsage(info.usage);
         desc.size                           = size;
         desc.mappedAtCreation               = false;
         

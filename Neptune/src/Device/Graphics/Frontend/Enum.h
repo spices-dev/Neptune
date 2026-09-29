@@ -157,6 +157,22 @@ namespace Neptune::Graphic {
         Vertex,                      // @brief VertexBuffer.
         Index,                       // @brief IndexBuffer.
         Indirect,                    // @brief IndirectBuffer.
+        TransferSrc,                 // @brief TransferSrc.
+        TransferDst,                 // @brief TransferDst.
+        
+        Count
+    };
+    
+    /**
+    * @brief Enum of Image Usage.
+    */
+    enum class EImageUsage : uint8_t
+    {
+        ColorAttachment = 0,         // @brief ColorAttachment.
+        Sampler,                     // @brief Sampler.
+        Storage,                     // @brief Storage.
+        TransferSrc,                 // @brief TransferSrc.
+        TransferDst,                 // @brief TransferDst.
         
         Count
     };

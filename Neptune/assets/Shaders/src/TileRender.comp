@@ -1,0 +1,127 @@
+/**
+* @file TileRender.comp.
+* @brief This Shader Defines TileRender Compute Shader Behaver.
+* @author Spices.
+*/
+
+/************************************Pre Compile*******************************************/
+
+#version 460
+
+#extension GL_GOOGLE_include_directive : enable    /* @brief Enable include Macro. */
+
+#include "Header/PreRendererLayout.glsl"
+#include "Header/GS3DTileRenderCommon.glsl"
+
+/*****************************************************************************************/
+
+/*************************************Comp Input******************************************/
+        
+layout (local_size_x = TILE_SIZE, local_size_y = TILE_SIZE, local_size_z = 1) in;
+
+/*****************************************************************************************/
+
+/********************************Descriptor List******************************************/
+
+/**
+* @brief push constant.
+*/
+layout(push_constant) uniform Push
+{
+    uint64_t splatAddress;
+    uint64_t sortedAddress;
+    uint64_t rangeAddress;
+    uint     tilesX;
+    uint     width;
+    uint     height;
+};
+        
+layout(set = 1, binding = 0, rgba16f) uniform image2D GS3DScene;
+
+shared vec2  sCenter[256];
+shared vec4  sConicOpacity[256];
+shared uvec2 sColor[256];
+shared uint  sDone;
+
+/*****************************************************************************************/
+
+/**********************************Shader Entry*******************************************/
+        
+void main()
+{
+    uint  tid  = gl_LocalInvocationIndex;
+    ivec2 pix  = ivec2(gl_GlobalInvocationID.xy);
+    uint  tile = gl_WorkGroupID.y * tilesX + gl_WorkGroupID.x;
+
+    bool inside = pix.x < int(width) && pix.y < int(height);
+    vec2 pf     = vec2(pix) + 0.5;
+
+    if (tid == 0u) sDone = 0u;
+    barrier();
+
+    bool done = !inside;
+    if (done) atomicAdd(sDone, 1u);
+    barrier();
+
+    uvec2 range      = TileRanges(rangeAddress).i[tile];
+    uint  total      = range.y - range.x;
+    uint  numBatches = (total + 255u) / 256u;
+
+    TileEntries entries = TileEntries(sortedAddress);
+    TileSplats  splats  = TileSplats(splatAddress);
+
+    vec3  C = vec3(0.0);
+    float T = 1.0;
+
+    for (uint b = 0u; b < numBatches; ++b)
+    {
+        /* sDone is only modified between the two barriers below, so every thread reads the same value here. */
+        if (sDone >= 256u) break;
+
+        uint i = b * 256u + tid;
+        if (i < total)
+        {
+            Splat s = splats.i[uint(entries.i[range.x + i]) & ENTRY_GID_MASK];
+            sCenter[tid]       = s.center;
+            sConicOpacity[tid] = vec4(s.conic, s.opacity);
+            sColor[tid]        = s.color;
+        }
+        barrier();
+
+        uint cnt = min(256u, total - b * 256u);
+        for (uint j = 0u; j < cnt && !done; ++j)
+        {
+            vec2 d  = pf - sCenter[j];
+            vec4 co = sConicOpacity[j];
+
+            float power = -0.5 * (co.x * d.x * d.x + co.z * d.y * d.y) - co.y * d.x * d.y;
+            if (power > 0.0) continue;
+
+            float alpha = min(0.99, co.w * exp(power));
+            if (alpha < 1.0 / 255.0) continue;
+
+            float nT = T * (1.0 - alpha);
+            if (nT < 1e-4)
+            {
+                done = true;
+                atomicAdd(sDone, 1u);
+                break;
+            }
+
+            uvec2 c   = sColor[j];
+            vec3  col = vec3(unpackHalf2x16(c.x), unpackHalf2x16(c.y).x);
+            C += col * (alpha * T);
+            T  = nT;
+        }
+        barrier();
+    }
+
+    if (inside)
+    {
+        // TODO: Blend With Depth Attachment.
+        vec4 dst = imageLoad(GS3DScene, pix);
+        imageStore(GS3DScene, pix, vec4(C + T * dst.rgb, dst.a));
+    }
+}
+
+/*****************************************************************************************/

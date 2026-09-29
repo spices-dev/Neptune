@@ -108,6 +108,11 @@ namespace Neptune::Metal {
 		
 	}
 
+	void CmdList::CmdDispatchIndirect(const SP<RHI::Buffer>& buffer, uint64_t offset) const
+	{
+		NEPTUNE_PROFILE_ZONE
+	}
+	
 	void CmdList::CmdInsertBarrier(const SP<RHI::RenderTarget>& renderTarget, const Graphic::ImageBarrierDesc& desc) const
 	{
 		NEPTUNE_PROFILE_ZONE

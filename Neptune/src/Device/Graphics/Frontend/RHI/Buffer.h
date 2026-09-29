@@ -8,6 +8,7 @@
 #include "Core/Core.h"
 #include "RHI.h"
 #include "Device/Graphics/Frontend/Enum.h"
+#include "Resource/Buffer/Buffer.h"
 
 namespace Neptune::RHI {
 	
@@ -41,10 +42,9 @@ namespace Neptune::RHI {
         /**
         * @brief Create Buffer.
         * 
-        * @param[in] size Buffer Size.
-        * @param[in] usage Graphic::EBufferUsage.
+        * @param[in] info BufferCreateInfo.
         */
-        virtual void CreateBuffer(uint64_t size, Graphic::EBufferUsage usage = Graphic::EBufferUsage::None) = 0;
+        virtual void CreateBuffer(const BufferCreateInfo& info) = 0;
 
         /**
         * @brief Write host data to Buffer.
@@ -104,10 +104,9 @@ namespace Neptune::RHI {
         /**
         * @brief Create Buffer.
         * 
-        * @param[in] size Buffer Size.
-        * @param[in] usage Graphic::EBufferUsage.
+        * @param[in] info BufferCreateInfo.
         */
-        void CreateBuffer(uint64_t size, Graphic::EBufferUsage usage = Graphic::EBufferUsage::None) const { return m_Impl->CreateBuffer(size, usage); }
+        void CreateBuffer(const BufferCreateInfo& info) const { return m_Impl->CreateBuffer(info); }
 
         /**
         * @brief Write host data to Buffer.

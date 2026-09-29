@@ -40,7 +40,6 @@
 #endif
 
 #include "Render/Frontend/Pass/TransparentSortPass.h"
-#include "Render/Frontend/Pass/TransparentPass.h"
 #include "Render/Frontend/Pass/FPSPass.h"
 #include "Render/Frontend/Pass/BasePass.h"
 #include "Render/Frontend/Pass/SlatePass.h"
@@ -174,12 +173,7 @@ namespace Neptune {
         
         {
             auto pass = CreateSP<Render::TransparentSortPass>();
-
-            AddPass(pass);
-        }
-        
-        {
-            auto pass = CreateSP<Render::TransparentPass>();
+            pass->SetRTSize(rtSize);
 
             AddPass(pass);
         }

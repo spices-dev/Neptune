@@ -1,5 +1,6 @@
 #pragma once
 #include "Core/Core.h"
+#include "Core/Container/BitSet.h"
 #include "Core/Memory/Enum.h"
 #include "Device/Graphics/Frontend/Enum.h"
 
@@ -12,8 +13,8 @@ namespace Neptune {
 
     struct BufferCreateInfo
     {
-        uint64_t                 size  = 100;
-        Graphic::EBufferUsage    usage = Graphic::EBufferUsage::None;
+        uint64_t                                  size  = 100;
+        Container::BitSet<Graphic::EBufferUsage>  usage;
     };
     
     class Buffer

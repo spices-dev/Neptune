@@ -12,6 +12,7 @@
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Frontend/RHI/CmdList.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/ISynchronization.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/IIndirect.h"
 
 namespace Neptune::RHI {
 
@@ -185,6 +186,14 @@ namespace Neptune::Vulkan {
 		void CmdDispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const override;
 		
 		/**
+		* @brief Interface of CmdDispatchIndirect.
+		* 
+		* @param[in] buffer  Buffer.
+		* @param[in] offset .
+		*/
+		void CmdDispatchIndirect(const SP<RHI::Buffer>& buffer, uint64_t offset) const override;
+		
+		/**
 		* @brief Interface of Insert Barrier.
 		* 
 		* @param[in] renderTarget RenderTarget.
@@ -278,6 +287,7 @@ namespace Neptune::Vulkan {
 		VkPipelineBindPoint                  m_BindPoint      = VK_PIPELINE_BIND_POINT_MAX_ENUM;       // @brief VkPipelineBindPoint.
 		VkPipelineLayout                     m_PipelineLayout = VK_NULL_HANDLE;                        // @brief VkPipelineLayout.
 		UP<Middleware::ISynchronization>     m_Synchronization;                                        // @brief ISynchronization.
+		UP<Middleware::IIndirect>            m_Indirect;                                               // @brief IIndirect.
 	};
 }
 

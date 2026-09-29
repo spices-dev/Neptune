@@ -136,6 +136,13 @@ namespace Neptune::WebGPU {
 		m_RenderPass->IHandle<Unit::ComputePassEncoder>()->DispatchWorkgroups(groupCountX, groupCountY, groupCountZ);
 	}
 	
+	void CmdList::CmdDispatchIndirect(const SP<RHI::Buffer>& buffer, uint64_t offset) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_RenderPass->IHandle<Unit::ComputePassEncoder>()->DispatchWorkgroupsIndirect(buffer->GetRHIImpl<Buffer>()->Handle(), offset);
+	}
+	
 	void CmdList::CmdSetViewport(const glm::uvec2& viewPortSize) const
 	{
 		NEPTUNE_PROFILE_ZONE

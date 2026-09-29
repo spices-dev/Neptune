@@ -11,6 +11,7 @@
 #extension GL_GOOGLE_include_directive : enable    /* @brief Enable include Macro. */
 
 #include "Header/PreRendererLayout.glsl"
+#include "Header/GS3DTileRenderCommon.glsl"
 
 /*****************************************************************************************/
 
@@ -30,14 +31,9 @@ layout(push_constant) uniform Push
     uint64_t srcAddress;
     uint64_t dstAddress;
     uint64_t histAddress;
-    uint     numElements;
+    uint64_t infoAddress;
     uint     shift;
-    uint     numWG;
 };
-
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Entries { uint64_t i[]; };
-        
-layout(buffer_reference, scalar, buffer_reference_align = 4) buffer Uints   { uint     i[]; };
 
 shared uint sTmp[256];
 shared uint sBase[256];
@@ -49,11 +45,15 @@ shared uint sDigit[256];
         
 void main()
 {
+    TileSortInfo info = TileSortInfo(infoAddress);
+    uint numElements = info.numElements;
+    uint numWG       = info.numWG;
+        
     uint tid = gl_LocalInvocationID.x;
     uint wg  = gl_WorkGroupID.x;
     uint idx = gl_GlobalInvocationID.x;
 
-    Uints h = Uints(histAddress);
+    TileUints h = TileUints(histAddress);
         
     uint total = h.i[256u * numWG + tid];
     sTmp[tid]  = total;
@@ -68,7 +68,7 @@ void main()
     sBase[tid] = sTmp[tid] - total;
         
     bool     valid = idx < numElements;
-    uint64_t e     = valid ? Entries(srcAddress).i[idx] : uint64_t(0);
+    uint64_t e     = valid ? TileEntries(srcAddress).i[idx] : uint64_t(0);
     uint     d     = valid ? (uint(e >> shift) & 0xFFu) : 256u;
 
     sDigit[tid] = d;
@@ -79,9 +79,9 @@ void main()
     uint rank = 0u;
     for (uint j = 0u; j < tid; ++j)
         rank += (sDigit[j] == d) ? 1u : 0u;
-        
+
     uint pos = sBase[d] + h.i[d * numWG + wg] + rank;
-    Entries(dstAddress).i[pos] = e;
+    TileEntries(dstAddress).i[pos] = e;
 }
 
 /*****************************************************************************************/

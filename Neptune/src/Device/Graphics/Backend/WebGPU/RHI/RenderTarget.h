@@ -143,7 +143,7 @@ namespace Neptune::WebGPU {
 
 	private:
 
-		UP<Resource::Texture> m_Texture; // @brief This Texture.
+		SP<Resource::Texture> m_Texture; // @brief This Texture.
 	};
 }
 
