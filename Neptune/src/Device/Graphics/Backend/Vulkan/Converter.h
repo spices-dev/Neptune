@@ -129,11 +129,11 @@ namespace Neptune::Vulkan {
 	/**
 	* @brief Convert EPipelineAccess to VkAccessFlags2.
 	*
-	* @param[in] a EPipelineAccess.
+	* @param[in] set EPipelineAccess.
 	*
 	* @return Returns VkAccessFlags2.
 	*/
-	VkAccessFlags2 ToVkAccessFlags(Graphic::EPipelineAccess a);
+	VkAccessFlags2 ToVkAccessFlags(const Container::BitSet<Graphic::EPipelineAccess>& set);
 	
 	/**
 	* @brief Convert EPipelineStage to VkPipelineStageFlags2.
@@ -142,7 +142,7 @@ namespace Neptune::Vulkan {
 	*
 	* @return Returns VkPipelineStageFlags2.
 	*/
-	VkPipelineStageFlags2 ToVkPipelineStageFlags(Graphic::EPipelineStage s);
+	VkPipelineStageFlags2 ToVkPipelineStageFlags(const Container::BitSet<Graphic::EPipelineStage>& set);
 	
 	/**
 	* @brief Convert VkAccessFlags2 to VkAccessFlags.

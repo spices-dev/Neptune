@@ -225,46 +225,42 @@ namespace Neptune::Vulkan {
 		}
 	}
 	
-	VkAccessFlags2 ToVkAccessFlags(Graphic::EPipelineAccess a)
+	VkAccessFlags2 ToVkAccessFlags(const Container::BitSet<Graphic::EPipelineAccess>& set)
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		using namespace Graphic;
 
-		switch (a)
-		{
-			case EPipelineAccess::None:                 return VK_ACCESS_2_NONE;
-			case EPipelineAccess::ShaderRead:           return VK_ACCESS_2_SHADER_READ_BIT;
-			case EPipelineAccess::ShaderWrite:          return VK_ACCESS_2_SHADER_WRITE_BIT;
-			case EPipelineAccess::TransferRead:         return VK_ACCESS_2_TRANSFER_READ_BIT;
-			case EPipelineAccess::TransferWrite:        return VK_ACCESS_2_TRANSFER_WRITE_BIT;
-			default:
-			{
-				NEPTUNE_LOG_CORE(E) << "Unsupported EPipelineAccess To VkAccessFlags2.";
-				return VK_ACCESS_NONE;
-			}
-		}
+		using enum EPipelineAccess;
+
+		VkAccessFlags2 flag = 0;
+		
+		if (set.Test(None))                 flag |= VK_ACCESS_2_NONE;
+		if (set.Test(ShaderRead))           flag |= VK_ACCESS_2_SHADER_READ_BIT;
+		if (set.Test(ShaderWrite))          flag |= VK_ACCESS_2_SHADER_WRITE_BIT;
+		if (set.Test(TransferRead))         flag |= VK_ACCESS_2_TRANSFER_READ_BIT;
+		if (set.Test(TransferWrite))        flag |= VK_ACCESS_2_TRANSFER_WRITE_BIT;
+		
+		return flag;
 	}
 	
-	VkPipelineStageFlags2 ToVkPipelineStageFlags(Graphic::EPipelineStage s)
+	VkPipelineStageFlags2 ToVkPipelineStageFlags(const Container::BitSet<Graphic::EPipelineStage>& set)
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		using namespace Graphic;
 
-		switch (s)
-		{
-			case EPipelineStage::VertexShader:           return VK_PIPELINE_STAGE_2_VERTEX_SHADER_BIT;
-			case EPipelineStage::FragmentShader:         return VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT;
-			case EPipelineStage::ComputeShader:          return VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT;
-			case EPipelineStage::TopPipeline:            return VK_PIPELINE_STAGE_2_TOP_OF_PIPE_BIT;
-			case EPipelineStage::Transfer:               return VK_PIPELINE_STAGE_2_TRANSFER_BIT;
-			default:
-			{
-				NEPTUNE_LOG_CORE(E) << "Unsupported EPipelineStage To VkPipelineStageFlags2.";
-				return VK_PIPELINE_STAGE_NONE;
-			}
-		}
+		using enum EPipelineStage;
+
+		VkPipelineStageFlags2 flag = 0;
+		
+		if (set.Test(VertexShader))           flag |= VK_PIPELINE_STAGE_2_VERTEX_SHADER_BIT;
+		if (set.Test(FragmentShader))         flag |= VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT;
+		if (set.Test(ComputeShader))          flag |= VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT;
+		if (set.Test(TopPipeline))            flag |= VK_PIPELINE_STAGE_2_TOP_OF_PIPE_BIT;
+		if (set.Test(Transfer))               flag |= VK_PIPELINE_STAGE_2_TRANSFER_BIT;
+		
+		return flag;
 	}
 	
 	VkAccessFlags ToVkAccessFlags(VkAccessFlags2 f)

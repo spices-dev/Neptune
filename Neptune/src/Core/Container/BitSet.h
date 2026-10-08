@@ -46,7 +46,7 @@ namespace Neptune::Container {
         /**
         * @brief Constructor Function.
         */
-        explicit BitSet(const T& t)
+        BitSet(const T& t)
         {
             Set(t, true);
         }
@@ -58,7 +58,7 @@ namespace Neptune::Container {
         */
         template<typename... Bits>
         requires (sizeof...(Bits) >= 1) && (IsSame<Bits, T> && ...)
-        explicit BitSet(Bits... bits)
+        BitSet(Bits... bits)
         {
             (Set(bits, true), ...);
         }

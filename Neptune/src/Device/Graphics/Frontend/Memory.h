@@ -6,6 +6,7 @@
 
 #pragma once
 #include "Core/Core.h"
+#include "Core/Container/BitSet.h"
 #include "Enum.h"
 
 namespace Neptune::Graphic {
@@ -15,11 +16,11 @@ namespace Neptune::Graphic {
     */
     struct MemoryBarrierDesc
     {
-        EPipelineAccess srcAccess;      // @brief src EPipelineAccess.
-        EPipelineAccess dstAccess;      // @brief dst EPipelineAccess.
+        Container::BitSet<EPipelineAccess> srcAccess;      // @brief src EPipelineAccess.
+        Container::BitSet<EPipelineAccess> dstAccess;      // @brief dst EPipelineAccess.
         
-        EPipelineStage srcStage;        // @brief src EPipelineStage.
-        EPipelineStage dstStage;        // @brief dst EPipelineStage.
+        Container::BitSet<EPipelineStage> srcStage;        // @brief src EPipelineStage.
+        Container::BitSet<EPipelineStage> dstStage;        // @brief dst EPipelineStage.
     };
     
     /**
