@@ -14,6 +14,12 @@
 #include "Device/Graphics/Backend/Vulkan/RHI/CmdList2.h"
 
 namespace Neptune::Vulkan {
+	
+	RenderTarget::RenderTarget(Context& context)
+		: ContextAccessor(context)
+		, m_DescriptorSet(context)
+		, m_ImageLayout(Middleware::IImageLayout::Create(context))
+	{}
 
 	void RenderTarget::CreateRenderTarget(const RenderTargetCreateInfo& info)
 	{
@@ -27,7 +33,7 @@ namespace Neptune::Vulkan {
 		NEPTUNE_PROFILE_ZONE
 
 		VkDescriptorImageInfo                               imageInfo{};
-		imageInfo.imageLayout                             = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+		imageInfo.imageLayout                             = m_ImageLayout->From(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
 		imageInfo.imageView                               = m_Image->GetView();
 		imageInfo.sampler                                 = m_Image->GetSampler();
 
@@ -53,6 +59,13 @@ namespace Neptune::Vulkan {
 		auto rhi = target->GetRHIImpl<RenderTarget>();
 
 		return CopyToRenderTarget(rhi);
+	}
+
+	void RenderTarget::SetName(const std::string& name)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_Image->SetName(name);
 	}
 
 	bool RenderTarget::CopyToRenderTarget(RenderTarget* target) const

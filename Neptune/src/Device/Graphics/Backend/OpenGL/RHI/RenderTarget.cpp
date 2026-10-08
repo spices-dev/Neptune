@@ -34,6 +34,11 @@ namespace Neptune::OpenGL {
 		return false;
 	}
 
+	void RenderTarget::SetName(const std::string& name)
+	{
+		NEPTUNE_PROFILE_ZONE
+	}
+
 	TextureFormat RenderTarget::GetFormat() const
 	{
 		NEPTUNE_PROFILE_ZONE

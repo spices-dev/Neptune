@@ -30,6 +30,7 @@ namespace Neptune::Vulkan {
 		: ContextAccessor(context)
 		, m_Synchronization(Middleware::ISynchronization::Create(context))
 		, m_Indirect(Middleware::IIndirect::Create(context))
+		, m_ImageLayout(Middleware::IImageLayout::Create(context))
 	{}
 
 	void CmdList::SetGraphicCmdList(const Data::Clock& clock)
@@ -263,8 +264,8 @@ namespace Neptune::Vulkan {
 		barrier.dstAccessMask                     = ToVkAccessFlags(desc.memoryDesc.dstAccess);
 		barrier.srcStageMask                      = ToVkPipelineStageFlags(desc.memoryDesc.srcStage);
 		barrier.dstStageMask                      = ToVkPipelineStageFlags(desc.memoryDesc.dstStage);
-		barrier.oldLayout                         = ToVkImageLayout(desc.srcLayout);
-		barrier.newLayout                         = ToVkImageLayout(desc.dstLayout);
+		barrier.oldLayout                         = m_ImageLayout->From(ToVkImageLayout(desc.srcLayout));
+		barrier.newLayout                         = m_ImageLayout->From(ToVkImageLayout(desc.dstLayout));
 		barrier.srcQueueFamilyIndex               = GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
 		barrier.dstQueueFamilyIndex               = GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
 		barrier.image                             = image;

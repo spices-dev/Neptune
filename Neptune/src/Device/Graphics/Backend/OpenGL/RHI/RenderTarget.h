@@ -61,6 +61,13 @@ namespace Neptune::OpenGL {
 		bool CopyToRenderTarget(const SP<RHI::RenderTarget>& target) override;
 
 		/**
+		* @brief Interface of SetName.
+		*
+		* @param[in] name Name.
+		*/
+		void SetName(const std::string& name) override;
+		
+		/**
 		* @brief Interface of Get Format.
 		*
 		* @return Returns format.

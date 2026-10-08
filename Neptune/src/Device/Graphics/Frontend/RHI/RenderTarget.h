@@ -60,6 +60,13 @@ namespace Neptune::RHI {
 		virtual bool CopyToRenderTarget(const SP<class RenderTarget>& target) = 0;
 
 		/**
+		* @brief Interface of SetName.
+		*
+		* @param[in] name Name.
+		*/
+		virtual void SetName(const std::string& name) = 0;
+		
+		/**
 		* @brief Interface of Get Format.
 		*
 		* @return Returns format.
@@ -121,6 +128,13 @@ namespace Neptune::RHI {
 		*/
 		bool CopyToRenderTarget(const SP<class RenderTarget>& target) const { return m_Impl->CopyToRenderTarget(target); }
 
+		/**
+		* @brief Interface of SetName.
+		*
+		* @param[in] name Name.
+		*/
+		void SetName(const std::string& name) const { return m_Impl->SetName(name); }
+		
 		/**
 		* @brief Interface of Get Format.
 		*

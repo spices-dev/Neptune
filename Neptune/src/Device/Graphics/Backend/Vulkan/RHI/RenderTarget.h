@@ -13,6 +13,7 @@
 #include "Device/Graphics/Backend/Vulkan/Resource/Image.h"
 #include "Device/Graphics/Frontend/RHI/RenderTarget.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/DescriptorSet.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/IImageLayout.h"
 
 namespace Neptune::Vulkan {
 
@@ -29,7 +30,7 @@ namespace Neptune::Vulkan {
 		*
 		* @param[in] context Context.
 		*/
-		RenderTarget(Context& context) : ContextAccessor(context), m_DescriptorSet(context) {}
+		RenderTarget(Context& context);
 
 		/**
 		* @brief Destructor Function.
@@ -61,6 +62,13 @@ namespace Neptune::Vulkan {
 		*/
 		bool CopyToRenderTarget(const SP<RHI::RenderTarget>& target) override;
 
+		/**
+		* @brief Interface of SetName.
+		*
+		* @param[in] name Name.
+		*/
+		void SetName(const std::string& name) override;
+		
 		/**
 		* @brief Interface of Get Format.
 		*
@@ -144,8 +152,9 @@ namespace Neptune::Vulkan {
 
 	private:
 
-		SP<Resource::Image> m_Image;                      // @brief This Image.
-		Resource::DescriptorSet m_DescriptorSet;          // @brief This DescriptorSet.
+		SP<Resource::Image>           m_Image;                      // @brief This Image.
+		Resource::DescriptorSet       m_DescriptorSet;              // @brief This DescriptorSet.
+		UP<Middleware::IImageLayout>  m_ImageLayout;		        // @brief IImageLayout.
 	};
 }
 

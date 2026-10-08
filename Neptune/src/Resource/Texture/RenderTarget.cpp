@@ -18,6 +18,13 @@ namespace Neptune {
 		m_RHIResource->CreateRenderTarget(info);
 	}
 
+	void RenderTarget::SetName(const std::string& name)
+	{
+		m_Name = name;
+		
+		m_RHIResource->SetName(name);
+	}
+
 	bool RenderTarget::CopyToRenderTarget(const SP<RenderTarget>& target) const
 	{
 		return m_RHIResource->CopyToRenderTarget(target->GetRHIResource());

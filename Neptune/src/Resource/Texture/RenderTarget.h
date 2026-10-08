@@ -50,7 +50,7 @@ namespace Neptune {
 
 		SP<RHI::RenderTarget> GetRHIResource() { return m_RHIResource; }
 
-		void SetName(const std::string& name) { m_Name = name; }
+		void SetName(const std::string& name);
 
 		bool CopyToRenderTarget(const SP<RenderTarget>& target) const;
 

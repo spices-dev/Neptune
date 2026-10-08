@@ -37,6 +37,13 @@ namespace Neptune::WebGPU {
 		return CopyToRenderTarget(rhi);
 	}
 
+	void RenderTarget::SetName(const std::string& name)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_Texture->SetName(name);
+	}
+	
 	bool RenderTarget::CopyToRenderTarget(RenderTarget* target) const
 	{
 		NEPTUNE_PROFILE_ZONE

@@ -13,6 +13,7 @@
 #include "Device/Graphics/Frontend/RHI/CmdList.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/ISynchronization.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/IIndirect.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/IImageLayout.h"
 
 namespace Neptune::RHI {
 
@@ -288,6 +289,7 @@ namespace Neptune::Vulkan {
 		VkPipelineLayout                     m_PipelineLayout = VK_NULL_HANDLE;                        // @brief VkPipelineLayout.
 		UP<Middleware::ISynchronization>     m_Synchronization;                                        // @brief ISynchronization.
 		UP<Middleware::IIndirect>            m_Indirect;                                               // @brief IIndirect.
+		UP<Middleware::IImageLayout>         m_ImageLayout;		        	                           // @brief IImageLayout.
 	};
 }
 
