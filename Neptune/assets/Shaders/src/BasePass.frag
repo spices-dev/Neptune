@@ -15,7 +15,7 @@
 
 /*****************************************************************************************/
         
-layout(set = 1, binding = 0) uniform sampler2D videoImage;
+layout(set = 1, binding = 0) uniform sampler2D bgImage;
 
 /************************************Fragment Input***************************************/
 
@@ -39,8 +39,6 @@ layout(location = 0) out vec4 outSceneColor;
         
 void main()
 {
-    //outSceneColor = texture(videoImage, texCoord);
-
     vec2 ndcDir  = vec2(2.0 * texCoord.x - 1.0, 2.0 * texCoord.y - 1.0);
         
     vec4 clipDir = vec4(ndcDir, 1.0, 1.0);
@@ -53,14 +51,16 @@ void main()
 
     worldDir.y *= -1;
         
+    vec4 color = vec4(1.0f);
+            
     if(worldDir.y > 0.0f)
     {
-        outSceneColor = mix(vec4(1.0f), vec4(0.25f, 0.5f, 1.0f, 1.0f), worldDir.y);
+        color = mix(vec4(1.0f), vec4(0.25f, 0.5f, 1.0f, 1.0f), worldDir.y);
     }
-    else
-    {
-        outSceneColor   = vec4(1.0f);
-    }
+
+    vec4 image = texture(bgImage, texCoord);
+
+    outSceneColor = mix(color, image, image.a);
 }
 
 /*****************************************************************************************/

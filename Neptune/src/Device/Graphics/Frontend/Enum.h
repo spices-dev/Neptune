@@ -130,6 +130,7 @@ namespace Neptune::Graphic {
         ShaderWrite,                      // @brief ShaderWrite.
         TransferRead,                     // @brief TransferRead.
         TransferWrite,                    // @brief TransferWrite.
+        IndirectCommandRead,              // @brief IndirectCommandRead.
         
         Count
     };
@@ -144,6 +145,7 @@ namespace Neptune::Graphic {
         ComputeShader,                     // @brief ComputeShader.
         TopPipeline,                       // @brief TopPipeline.
         Transfer,                          // @brief Transfer.
+        DrawIndirect,                      // @brief DrawIndirect.
         
         Count
     };

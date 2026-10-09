@@ -119,8 +119,7 @@ void main()
     if (inside)
     {
         // TODO: Blend With Depth Attachment.
-        vec4 dst = imageLoad(GS3DScene, pix);
-        imageStore(GS3DScene, pix, vec4(C + T * dst.rgb, dst.a));
+        imageStore(GS3DScene, pix, vec4(C, 1.0 - T));
     }
 }
 

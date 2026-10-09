@@ -81,6 +81,8 @@ void main()
         rank += (sDigit[j] == d) ? 1u : 0u;
 
     uint pos = sBase[d] + h.i[d * numWG + wg] + rank;
+    if (pos >= numElements) return;
+            
     TileEntries(dstAddress).i[pos] = e;
 }
 

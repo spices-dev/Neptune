@@ -31,6 +31,11 @@ using uint = unsigned int;
 #endif
 
 /**
+* @brief Macros.
+*/
+#define VIEWPORT_FLIP_Y                                                   /* @brief ViewPort Flip Y                                       */
+	
+/**
 * @brief Macros for Variable Constant.
 */
 const uint BINDLESS_TEXTURE_MAXNUM        = 65535                     ;   /* @brief Maximum number of BindLess Texture Array.             */

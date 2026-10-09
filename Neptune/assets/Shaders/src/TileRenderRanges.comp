@@ -31,6 +31,7 @@ layout(push_constant) uniform Push
     uint64_t sortedAddress;
     uint64_t rangeAddress;
     uint64_t infoAddress;
+    uint     numTiles;
 };
 
 /**********************************Shader Entry*******************************************/
@@ -45,9 +46,21 @@ void main()
     TileRanges  r  = TileRanges(rangeAddress);
 
     uint tile = uint(e.i[idx] >> ENTRY_TILE_SHIFT);
+    if (tile >= numTiles) return;
 
-    if (idx == 0u      || uint(e.i[idx - 1u] >> ENTRY_TILE_SHIFT) != tile) r.i[tile].x = idx;
-    if (idx == n - 1u  || uint(e.i[idx + 1u] >> ENTRY_TILE_SHIFT) != tile) r.i[tile].y = idx + 1u;
+    bool isRunStart = (idx == 0u);
+    if (!isRunStart)
+    {
+        isRunStart = uint(e.i[idx - 1u] >> ENTRY_TILE_SHIFT) != tile;
+    }
+    if (isRunStart) r.i[tile].x = idx;
+
+    bool isRunEnd = (idx == n - 1u);
+    if (!isRunEnd)
+    {
+        isRunEnd = uint(e.i[idx + 1u] >> ENTRY_TILE_SHIFT) != tile;
+    }
+    if (isRunEnd) r.i[tile].y = idx + 1u;
 }
 
 /*****************************************************************************************/

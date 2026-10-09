@@ -235,11 +235,12 @@ namespace Neptune::Vulkan {
 
 		VkAccessFlags2 flag = 0;
 		
-		if (set.Test(None))                 flag |= VK_ACCESS_2_NONE;
-		if (set.Test(ShaderRead))           flag |= VK_ACCESS_2_SHADER_READ_BIT;
-		if (set.Test(ShaderWrite))          flag |= VK_ACCESS_2_SHADER_WRITE_BIT;
-		if (set.Test(TransferRead))         flag |= VK_ACCESS_2_TRANSFER_READ_BIT;
-		if (set.Test(TransferWrite))        flag |= VK_ACCESS_2_TRANSFER_WRITE_BIT;
+		if (set.Test(None))                    flag |= VK_ACCESS_2_NONE;
+		if (set.Test(ShaderRead))              flag |= VK_ACCESS_2_SHADER_READ_BIT;
+		if (set.Test(ShaderWrite))             flag |= VK_ACCESS_2_SHADER_WRITE_BIT;
+		if (set.Test(TransferRead))            flag |= VK_ACCESS_2_TRANSFER_READ_BIT;
+		if (set.Test(TransferWrite))           flag |= VK_ACCESS_2_TRANSFER_WRITE_BIT;
+		if (set.Test(IndirectCommandRead))     flag |= VK_ACCESS_2_INDIRECT_COMMAND_READ_BIT;
 		
 		return flag;
 	}
@@ -259,6 +260,7 @@ namespace Neptune::Vulkan {
 		if (set.Test(ComputeShader))          flag |= VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT;
 		if (set.Test(TopPipeline))            flag |= VK_PIPELINE_STAGE_2_TOP_OF_PIPE_BIT;
 		if (set.Test(Transfer))               flag |= VK_PIPELINE_STAGE_2_TRANSFER_BIT;
+		if (set.Test(DrawIndirect))           flag |= VK_PIPELINE_STAGE_2_DRAW_INDIRECT_BIT;
 		
 		return flag;
 	}
