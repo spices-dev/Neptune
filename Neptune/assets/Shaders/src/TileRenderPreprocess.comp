@@ -114,12 +114,12 @@ void main()
     
     if (gid >= gsCount) return;
 
-    model = mat4(1.0,0,0,0, 0,1.0,0,0, 0,0,1.0,0, 0,0,0,1.0);
-
     float opacity = alphas.i[gid];
     
     if (opacity < 1.0 / 255.0) return;
 
+    model = mat4(1.0,0,0,0, 0,1.0,0,0, 0,0,1.0,0, 0,0,0,1.0);
+        
     vec3 worldPos = (model * vec4(positions.i[gid], 1.0)).xyz;
     vec3 scale    = scales.i[gid];
     vec4 quat     = orientations.i[gid];
@@ -137,7 +137,7 @@ void main()
     vec2 size   = vec2(view.sceneTextureSize.x, view.sceneTextureSize.y);
     vec2 center = (clipPos.xy / clipPos.w * 0.5 + 0.5) * size;
         
-#if VIEWPORT_FLIP_Y
+#ifdef VIEWPORT_FLIP_Y
     center.y     = size.y - center.y;
     majorAxis.y  = -majorAxis.y;
     minorAxis.y  = -minorAxis.y;
@@ -151,8 +151,6 @@ void main()
     ivec2 tMin    = ivec2(floor((center - halfExt) / float(TILE_SIZE)));
     ivec2 tMax    = ivec2(floor((center + halfExt) / float(TILE_SIZE)));
     if (tMax.x < 0 || tMax.y < 0 || tMin.x >= int(tilesX) || tMin.y >= int(tilesY)) return;
-    tMin = max(tMin, ivec2(0));
-    tMax = min(tMax, ivec2(int(tilesX) - 1, int(tilesY) - 1));
         
     uint count = 0u;
     for (int ty = tMin.y; ty <= tMax.y; ++ty)
@@ -163,7 +161,6 @@ void main()
     TileSortInfo info = TileSortInfo(infoAddress);
     uint base = atomicAdd(info.instanceCounter, count);
     if (base >= maxInstances) return;
-    uint limit = min(count, maxInstances - base);
         
     vec3 camPos  = view.inView[3].xyz;
     vec3 dir     = normalize(worldPos - camPos);
@@ -180,15 +177,11 @@ void main()
     uint n = 0u;
     for (int ty = tMin.y; ty <= tMax.y; ++ty)
         for (int tx = tMin.x; tx <= tMax.x; ++tx)
-            if (n < limit)
-                if (TileOverlaps(ivec2(tx, ty), center, majorAxis, r1, minorAxis, r2))
-                {
-                    entries.i[base + n] = PackEntry(uint(ty) * tilesX + uint(tx), viewPos.z, gid);
-                    ++n;
-                }
-
-    for (; n < limit; ++n)
-        entries.i[base + n] = ~uint64_t(0);
+            if (TileOverlaps(ivec2(tx, ty), center, majorAxis, r1, minorAxis, r2))
+            {
+                entries.i[base + n] = PackEntry(uint(ty) * tilesX + uint(tx), viewPos.z, gid);
+                ++n;
+            }
 }
 
 /*****************************************************************************************/

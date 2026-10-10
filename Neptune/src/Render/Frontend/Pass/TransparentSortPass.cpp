@@ -108,7 +108,7 @@ namespace Neptune::Render {
 		{
 			auto MakeBuffer = [&](InFlightResource<RHI::Buffer>& slot, const std::string& base, uint64_t bytes, const Container::BitSet<EBufferUsage>& usage = {})
 			{
-				for (int i = 0; i < MaxFrameInFlight; ++i)
+				for (uint32_t i = 0; i < MaxFrameInFlight; ++i)
 				{
 					std::stringstream ss;
 					ss << base << "_" << i;
@@ -132,7 +132,7 @@ namespace Neptune::Render {
 		}
 
 		{
-			for (int i = 0; i < MaxFrameInFlight; ++i)
+			for (uint32_t i = 0; i < MaxFrameInFlight; ++i)
 			{
 				m_PreProcessDescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
 				m_PreProcessDescriptorList.Get(i)->AddShaderConstant(sizeof(PreProcessPush));
@@ -158,7 +158,7 @@ namespace Neptune::Render {
 		}
 
 		{
-			for (int i = 0; i < MaxFrameInFlight; ++i)
+			for (uint32_t i = 0; i < MaxFrameInFlight; ++i)
 			{
 				m_SetupDescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
 				m_SetupDescriptorList.Get(i)->AddShaderConstant(sizeof(SetupPush));
@@ -188,7 +188,7 @@ namespace Neptune::Render {
 										const char* shaderName,
 										const char* spvPath)
 			{
-				for (int i = 0; i < MaxFrameInFlight; ++i)
+				for (uint32_t i = 0; i < MaxFrameInFlight; ++i)
 				{
 					descList.Get(i) = CreateSP<RHI::DescriptorList>();
 					descList.Get(i)->AddShaderConstant(sizeof(RadixPush));
@@ -223,7 +223,7 @@ namespace Neptune::Render {
 		}
 		
 		{
-			for (int i = 0; i < MaxFrameInFlight; ++i)
+			for (uint32_t i = 0; i < MaxFrameInFlight; ++i)
 			{
 				m_RangeDescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
 				m_RangeDescriptorList.Get(i)->AddShaderConstant(sizeof(RangePush));
@@ -248,7 +248,7 @@ namespace Neptune::Render {
 		}
 		
 		{
-			for (int i = 0; i < MaxFrameInFlight; ++i)
+			for (uint32_t i = 0; i < MaxFrameInFlight; ++i)
 			{
 				m_TileRenderDescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
 				m_TileRenderDescriptorList.Get(i)->AddShaderConstant(sizeof(TileRenderPush));
@@ -308,42 +308,26 @@ namespace Neptune::Render {
 		
 		uint32_t frame = clock.m_FrameIndex;
 		
-		uint64_t splatAddr  = m_SplatBuffer.Get(frame)->GetDeviceAddress();
-		uint64_t entryAAddr = m_EntryBufferA.Get(frame)->GetDeviceAddress();
-		uint64_t entryBAddr = m_EntryBufferB.Get(frame)->GetDeviceAddress();
-		uint64_t histAddr   = m_HistBuffer.Get(frame)->GetDeviceAddress();
-		uint64_t infoAddr   = m_InfoBuffer.Get(frame)->GetDeviceAddress();
-		uint64_t rangeAddr  = m_RangeBuffer.Get(frame)->GetDeviceAddress();
+		uint64_t splatAddr              = m_SplatBuffer .Get(frame)->GetDeviceAddress();
+		uint64_t entryAAddr             = m_EntryBufferA.Get(frame)->GetDeviceAddress();
+		uint64_t entryBAddr             = m_EntryBufferB.Get(frame)->GetDeviceAddress();
+		uint64_t histAddr               = m_HistBuffer  .Get(frame)->GetDeviceAddress();
+		uint64_t infoAddr               = m_InfoBuffer  .Get(frame)->GetDeviceAddress();
+		uint64_t rangeAddr              = m_RangeBuffer .Get(frame)->GetDeviceAddress();
 		
-		MemoryBarrierDesc       barrier{};
-		barrier.srcAccess     = EPipelineAccess::ShaderWrite;
-		barrier.dstAccess     = { EPipelineAccess::ShaderRead, EPipelineAccess::ShaderWrite };
-		barrier.srcStage      = EPipelineStage::ComputeShader;
-		barrier.dstStage      = EPipelineStage::ComputeShader;
-		
-		MemoryBarrierDesc         fillBarrier{};
-		fillBarrier.srcAccess = EPipelineAccess::TransferWrite;
-		fillBarrier.dstAccess = { EPipelineAccess::ShaderRead, EPipelineAccess::ShaderWrite };
-		fillBarrier.srcStage  = EPipelineStage::Transfer;
-		fillBarrier.dstStage  = EPipelineStage::ComputeShader;
-		
-		MemoryBarrierDesc              indirectBarrier{};
-		indirectBarrier.srcAccess = EPipelineAccess::ShaderWrite;
-		indirectBarrier.dstAccess = EPipelineAccess::IndirectCommandRead;
-		indirectBarrier.srcStage  = EPipelineStage::ComputeShader;
-		indirectBarrier.dstStage  = EPipelineStage::DrawIndirect;
+		MemoryBarrierDesc                 barrier{};
+		barrier.srcAccess            = EPipelineAccess::ShaderWrite;
+		barrier.dstAccess            = { EPipelineAccess::ShaderRead, EPipelineAccess::ShaderWrite };
+		barrier.srcStage             = EPipelineStage::ComputeShader;
+		barrier.dstStage             = EPipelineStage::ComputeShader;
 		
 		RHI::CmdList cmdList;
 
 		cmdList.SetComputeCmdList(clock);
 		
-		cmdList.CmdFillBuffer(m_InfoBuffer.Get(frame), 0, sizeof(uint32_t), 0u);
+		cmdList.CmdFillBuffer(m_InfoBuffer.Get(frame), 0, sizeof(uint32_t), 0);
 		
-		cmdList.CmdFillBuffer(m_RangeBuffer.Get(frame), 0, uint64_t(kMaxTiles) * 8ull, 0u);
-		
-		cmdList.CmdInsertBarrier(fillBarrier);
-		
-		cmdList.CmdInsertBarrier(barrier);
+		cmdList.CmdFillBuffer(m_RangeBuffer.Get(frame), 0, static_cast<uint64_t>(kMaxTiles) * 8, 0);
 		
 		{
 			PreProcessPush                 push{};
@@ -383,6 +367,12 @@ namespace Neptune::Render {
 			
 			cmdList.CmdInsertBarrier(barrier);
 			
+			MemoryBarrierDesc                  indirectBarrier{};
+			indirectBarrier.srcAccess     = EPipelineAccess::ShaderWrite;
+			indirectBarrier.dstAccess     = EPipelineAccess::IndirectCommandRead;
+			indirectBarrier.srcStage      = EPipelineStage::ComputeShader;
+			indirectBarrier.dstStage      = EPipelineStage::DrawIndirect;
+			
 			cmdList.CmdInsertBarrier(indirectBarrier);
 		}
 		
@@ -395,9 +385,9 @@ namespace Neptune::Render {
 			push.histAddress         = histAddr;
 			push.infoAddress         = infoAddr;
 			
-			for (int pass = 0; pass < kRadixPasses; ++pass)
+			for (uint32_t pass = 0; pass < kRadixPasses; ++pass)
 			{
-				push.shift = 25u + 8u * static_cast<uint32_t>(pass);
+				push.shift = 25 + 8 * pass;
 
 				cmdList.CmdBindPipeline(m_HistogramPipeline);
 
@@ -436,17 +426,17 @@ namespace Neptune::Render {
 		}
 		
 		{
-			RangePush                 rpush{};
-			rpush.sortedAddress     = sortedAddr;
-			rpush.rangeAddress      = rangeAddr;
-			rpush.infoAddress       = infoAddr;
-			rpush.numTiles          = numTiles;
+			RangePush                 push{};
+			push.sortedAddress      = sortedAddr;
+			push.rangeAddress       = rangeAddr;
+			push.infoAddress        = infoAddr;
+			push.numTiles           = numTiles;
 
 			cmdList.CmdBindPipeline(m_RangePipeline);
 			
 			cmdList.CmdBindDescriptor(m_RangeDescriptorList.Get(frame));
 			
-			cmdList.CmdUpdateShaderConstant(&rpush, sizeof(rpush));
+			cmdList.CmdUpdateShaderConstant(&push, sizeof(push));
 			
 			cmdList.CmdDispatchIndirect(m_InfoBuffer.Get(frame), 12);
 			
@@ -454,13 +444,13 @@ namespace Neptune::Render {
 		}
 		
 		{
-			TileRenderPush               tpush{};
-			tpush.splatAddress         = splatAddr;
-			tpush.sortedAddress        = sortedAddr;
-			tpush.rangeAddress         = rangeAddr;
-			tpush.tilesX               = tilesX;
-			tpush.width                = width;
-			tpush.height               = height;
+			TileRenderPush               push{};
+			push.splatAddress          = splatAddr;
+			push.sortedAddress         = sortedAddr;
+			push.rangeAddress          = rangeAddr;
+			push.tilesX                = tilesX;
+			push.width                 = width;
+			push.height                = height;
 
 			m_TileRenderDescriptorList.Get(frame)->UpdateStorageTexture(1, 0, ResourcePool<RenderTarget>::Instance().Access("GS3DScene")->GetRHIResource());
 			
@@ -468,7 +458,7 @@ namespace Neptune::Render {
 			
 			cmdList.CmdBindDescriptor(m_TileRenderDescriptorList.Get(frame));
 			
-			cmdList.CmdUpdateShaderConstant(&tpush, sizeof(tpush));
+			cmdList.CmdUpdateShaderConstant(&push, sizeof(push));
 			
 			cmdList.CmdDispatch(tilesX, tilesY, 1);
 		}
