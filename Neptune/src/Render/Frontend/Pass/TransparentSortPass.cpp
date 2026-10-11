@@ -27,7 +27,7 @@ namespace Neptune::Render {
 		
 		constexpr uint32_t kTileSize            = 16;
 		constexpr uint32_t kRadixPasses         = 5;
-		constexpr uint32_t kMaxGaussians        = 18000000;
+		constexpr uint32_t kMaxGaussians        = 1 << 24;
 		constexpr uint32_t kAvgTilesPerGaussian = 3;
 		constexpr uint32_t kMaxInstances        = kMaxGaussians * kAvgTilesPerGaussian;
 		constexpr uint32_t kMaxInstanceNumWG    = (kMaxInstances + 255u) / 256u;
@@ -387,7 +387,7 @@ namespace Neptune::Render {
 			
 			for (uint32_t pass = 0; pass < kRadixPasses; ++pass)
 			{
-				push.shift = 25 + 8 * pass;
+				push.shift = 24u + 8u * pass;
 
 				cmdList.CmdBindPipeline(m_HistogramPipeline);
 
