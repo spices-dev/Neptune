@@ -1,11 +1,12 @@
 /**
-* @file TransparentSortPass.cpp.
-* @brief The TransparentSortPass Class Implementation.
+* @file GS3DTileRenderPass.cpp.
+* @brief The GS3DTileRenderPass Class Implementation.
 * @author Spices.
 */
 
 #include "Pchheader.h"
-#include "TransparentSortPass.h"
+#include "GS3DTileRenderPass.h"
+#include "Header/GS3DTileRenderCore.h"
 #include "Device/Graphics/Frontend/RHI/Pipeline.h"
 #include "Device/Graphics/Frontend/RHI/DescriptorList.h"
 #include "Device/Graphics/Frontend/RHI/CmdList.h"
@@ -22,69 +23,12 @@
 namespace Neptune::Render {
 
 	using namespace Graphic;
-
-	namespace {
-		
-		constexpr uint32_t kTileSize            = 16;
-		constexpr uint32_t kRadixPasses         = 5;
-		constexpr uint32_t kMaxGaussians        = 1 << 24;
-		constexpr uint32_t kAvgTilesPerGaussian = 3;
-		constexpr uint32_t kMaxInstances        = kMaxGaussians * kAvgTilesPerGaussian;
-		constexpr uint32_t kMaxInstanceNumWG    = (kMaxInstances + 255u) / 256u;
-		constexpr uint32_t kMaxTilesX           = (3840u + kTileSize - 1u) / kTileSize;
-		constexpr uint32_t kMaxTilesY           = (2160u + kTileSize - 1u) / kTileSize;
-		constexpr uint32_t kMaxTiles            = kMaxTilesX * kMaxTilesY;
-		
-		struct PreProcessPush
-		{
-			uint64_t splatAddress;
-			uint64_t entryAddress;
-			uint64_t infoAddress;
-			uint32_t gsCount;
-			uint32_t tilesX;
-			uint32_t tilesY;
-			uint32_t maxInstances;
-		};
-
-		struct SetupPush
-		{
-			uint64_t infoAddress;
-			uint32_t maxInstances;
-		};
-
-		struct RadixPush
-		{
-			uint64_t srcAddress;
-			uint64_t dstAddress;
-			uint64_t histAddress;
-			uint64_t infoAddress;
-			uint32_t shift;
-		};
-
-		struct RangePush
-		{
-			uint64_t sortedAddress;
-			uint64_t rangeAddress;
-			uint64_t infoAddress;
-			uint32_t numTiles;
-		};
-
-		struct TileRenderPush
-		{
-			uint64_t splatAddress;
-			uint64_t sortedAddress;
-			uint64_t rangeAddress;
-			uint32_t tilesX;
-			uint32_t width;
-			uint32_t height;
-		};
-	}
+	using namespace ShaderCore::GS3DTileRenderCore;
 	
-	void TransparentSortPass::OnConstruct()
+	void GS3DTileRenderPass::OnConstruct()
 	{
 		NEPTUNE_PROFILE_ZONE
-
-		auto& bufferPool       = ResourcePool<Buffer>::Instance();
+		
 		auto& shaderPool       = ResourcePool<Shader>::Instance();
 		auto& renderTargetPool = ResourcePool<RenderTarget>::Instance();
 		
@@ -113,22 +57,20 @@ namespace Neptune::Render {
 					std::stringstream ss;
 					ss << base << "_" << i;
 
-					if (!bufferPool.Has(ss.str()))
-					{
-						auto s = bufferPool.Load<Buffer>(ss.str(), BufferCreateInfo{ bytes, usage });
-						s->GetRHIResource()->SetName(ss.str());
-					}
-
-					slot.Get(i) = bufferPool.Access(ss.str())->GetRHIResource();
+					slot.Get(i) = CreateSP<RHI::Buffer>();
+					
+					slot.Get(i)->CreateBuffer(BufferCreateInfo{ bytes, usage });
+					
+					slot.Get(i)->SetName(ss.str());
 				}
 			};
 
-			MakeBuffer(m_SplatBuffer,  "TileSplatBuffer",  uint64_t(kMaxGaussians) * 32ull);
-			MakeBuffer(m_EntryBufferA, "TileEntryBufferA", uint64_t(kMaxInstances) * sizeof(uint64_t));
-			MakeBuffer(m_EntryBufferB, "TileEntryBufferB", uint64_t(kMaxInstances) * sizeof(uint64_t));
-			MakeBuffer(m_HistBuffer,   "TileHistBuffer",   (256ull * kMaxInstanceNumWG + 256ull) * sizeof(uint32_t));
-			MakeBuffer(m_RangeBuffer,  "TileRangeBuffer",  uint64_t(kMaxTiles) * sizeof(uint32_t) * 2ull, EBufferUsage::TransferDst);
-			MakeBuffer(m_InfoBuffer,   "TileSortInfoBuffer", 24ull, { EBufferUsage::Indirect, EBufferUsage::TransferDst} );
+			MakeBuffer(m_SplatBuffer,  "TileSplatBuffer",  static_cast<uint64_t>(MAXGAUSSIANS) * sizeof(Splat));
+			MakeBuffer(m_EntryBufferA, "TileEntryBufferA", static_cast<uint64_t>(MAXTILEGAUSSIANS) * sizeof(uint64_t));
+			MakeBuffer(m_EntryBufferB, "TileEntryBufferB", static_cast<uint64_t>(MAXTILEGAUSSIANS) * sizeof(uint64_t));
+			MakeBuffer(m_HistBuffer,   "TileHistBuffer",   (256ull * MAXTILEGAUSSIANSNUMWG + 256ull) * sizeof(uint32_t));
+			MakeBuffer(m_RangeBuffer,  "TileRangeBuffer",  static_cast<uint64_t>(MAXTILES) * sizeof(uint32_t) * 2ull, EBufferUsage::TransferDst);
+			MakeBuffer(m_InfoBuffer,   "TileSortInfoBuffer", sizeof(TileSortInfo), { EBufferUsage::Indirect, EBufferUsage::TransferDst} );
 		}
 
 		{
@@ -136,7 +78,6 @@ namespace Neptune::Render {
 			{
 				m_PreProcessDescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
 				m_PreProcessDescriptorList.Get(i)->AddShaderConstant(sizeof(PreProcessPush));
-				m_PreProcessDescriptorList.Get(i)->AddUniformBuffer(1, 0, sizeof(uint64_t));
 				m_PreProcessDescriptorList.Get(i)->CombineSharedLayout();
 				m_PreProcessDescriptorList.Get(i)->Build();
 			}
@@ -161,7 +102,7 @@ namespace Neptune::Render {
 			for (uint32_t i = 0; i < MaxFrameInFlight; ++i)
 			{
 				m_SetupDescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
-				m_SetupDescriptorList.Get(i)->AddShaderConstant(sizeof(SetupPush));
+				m_SetupDescriptorList.Get(i)->AddShaderConstant(sizeof(uint64_t));
 				m_SetupDescriptorList.Get(i)->CombineSharedLayout();
 				m_SetupDescriptorList.Get(i)->Build();
 			}
@@ -275,7 +216,7 @@ namespace Neptune::Render {
 		}
 	}
 
-	void TransparentSortPass::OnCollectRHI(Scene* scene)
+	void GS3DTileRenderPass::OnCollectRHI(Scene* scene)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -297,14 +238,14 @@ namespace Neptune::Render {
 		const auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
 		
 		uint32_t gsCount = item->GetPointCount();
-		assert(gsCount <= kMaxGaussians);
+		assert(gsCount <= MAXGAUSSIANS);
 		
 		uint32_t width    = static_cast<uint32_t>(m_RTSize.x);
 		uint32_t height   = static_cast<uint32_t>(m_RTSize.y);
-		uint32_t tilesX   = (width  + kTileSize - 1u) / kTileSize;
-		uint32_t tilesY   = (height + kTileSize - 1u) / kTileSize;
+		uint32_t tilesX   = (width  + TILE_SIZE - 1u) / TILE_SIZE;
+		uint32_t tilesY   = (height + TILE_SIZE - 1u) / TILE_SIZE;
 		uint32_t numTiles = tilesX * tilesY;
-		assert(tilesX <= kMaxTilesX && tilesY <= kMaxTilesY);
+		assert(tilesX <= MAXTILESX && tilesY <= MAXTILESY);
 		
 		uint32_t frame = clock.m_FrameIndex;
 		
@@ -327,19 +268,17 @@ namespace Neptune::Render {
 		
 		cmdList.CmdFillBuffer(m_InfoBuffer.Get(frame), 0, sizeof(uint32_t), 0);
 		
-		cmdList.CmdFillBuffer(m_RangeBuffer.Get(frame), 0, static_cast<uint64_t>(kMaxTiles) * 8, 0);
+		cmdList.CmdFillBuffer(m_RangeBuffer.Get(frame), 0, static_cast<uint64_t>(MAXTILES) * 8, 0);
 		
 		{
-			PreProcessPush                 push{};
-			push.splatAddress            = splatAddr;
-			push.entryAddress            = entryAAddr;
-			push.infoAddress             = infoAddr;
-			push.gsCount                 = gsCount;
-			push.tilesX                  = tilesX;
-			push.tilesY                  = tilesY;
-			push.maxInstances            = kMaxInstances;
-			
-			m_PreProcessDescriptorList.Get(frame)->UpdateUniformBuffer(1, 0, &item->GetDescDeviceAddress());
+			PreProcessPush                   push{};
+			push.splatAddress              = splatAddr;
+			push.entryAddress              = entryAAddr;
+			push.infoAddress               = infoAddr;
+			push.descAddress               = item->GetDescDeviceAddress();
+			push.gsCount                   = gsCount;
+			push.tilesX                    = tilesX;
+			push.tilesY                    = tilesY;
 			
 			cmdList.CmdBindPipeline(m_PreProcessPipeline);
 
@@ -353,15 +292,11 @@ namespace Neptune::Render {
 		}
 		
 		{
-			SetupPush                push{};
-			push.infoAddress       = infoAddr;
-			push.maxInstances      = kMaxInstances;
-			
 			cmdList.CmdBindPipeline(m_SetupPipeline);
 
 			cmdList.CmdBindDescriptor(m_SetupDescriptorList.Get(frame));
 			
-			cmdList.CmdUpdateShaderConstant(&push, sizeof(push));
+			cmdList.CmdUpdateShaderConstant(&infoAddr, sizeof(infoAddr));
 			
 			cmdList.CmdDispatch(1, 1, 1);
 			
@@ -385,7 +320,7 @@ namespace Neptune::Render {
 			push.histAddress         = histAddr;
 			push.infoAddress         = infoAddr;
 			
-			for (uint32_t pass = 0; pass < kRadixPasses; ++pass)
+			for (uint32_t pass = 0; pass < RADIX_NUM_PASSES; ++pass)
 			{
 				push.shift = 24u + 8u * pass;
 
@@ -444,6 +379,8 @@ namespace Neptune::Render {
 		}
 		
 		{
+			auto GS3DScene = ResourcePool<RenderTarget>::Instance().Access("GS3DScene")->GetRHIResource();
+			
 			TileRenderPush               push{};
 			push.splatAddress          = splatAddr;
 			push.sortedAddress         = sortedAddr;
@@ -452,7 +389,7 @@ namespace Neptune::Render {
 			push.width                 = width;
 			push.height                = height;
 
-			m_TileRenderDescriptorList.Get(frame)->UpdateStorageTexture(1, 0, ResourcePool<RenderTarget>::Instance().Access("GS3DScene")->GetRHIResource());
+			m_TileRenderDescriptorList.Get(frame)->UpdateStorageTexture(1, 0, GS3DScene);
 			
 			cmdList.CmdBindPipeline(m_TileRenderPipeline);
 			

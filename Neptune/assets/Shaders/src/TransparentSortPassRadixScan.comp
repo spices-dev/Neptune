@@ -28,11 +28,7 @@ layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
 */
 layout(push_constant) uniform Push
 {
-    uint64_t srcAddress;
-    uint64_t dstAddress;
-    uint64_t histAddress;
-    uint64_t infoAddress;
-    uint     shift;
+    RadixPush push;
 };
 
 shared uint sSum[256];
@@ -43,12 +39,12 @@ shared uint sSum[256];
         
 void main()
 {
-    uint numWG = TileSortInfo(infoAddress).numWG;
+    uint numWG = TileSortInfos(push.infoAddress).i[0].numWG;
         
     uint tid   = gl_LocalInvocationID.x;
     uint digit = gl_WorkGroupID.x;
 
-    TileUints h = TileUints(histAddress);
+    TileUints h = TileUints(push.histAddress);
     uint base   = digit * numWG;
         
     uint perThread = (numWG + 255u) / 256u;

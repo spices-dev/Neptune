@@ -6,10 +6,10 @@
 
 /************************************Pre Compile*******************************************/
 
-#ifndef GS3DDESC_LAYOUT_H
-#define GS3DDESC_LAYOUT_H
+#ifndef GS3D_DESC_LAYOUT_H
+#define GS3D_DESC_LAYOUT_H
 
-#include "Core.h"
+#include "GS3DTileRenderCore.h"
 
 /*****************************************************************************************/
 

@@ -146,6 +146,7 @@ namespace Neptune::Graphic {
         TopPipeline,                       // @brief TopPipeline.
         Transfer,                          // @brief Transfer.
         DrawIndirect,                      // @brief DrawIndirect.
+        Graphic,                           // @brief Graphic.
         
         Count
     };

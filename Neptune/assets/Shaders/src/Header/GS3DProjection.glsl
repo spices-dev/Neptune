@@ -1,13 +1,13 @@
 /**
-* @file GSProjection.glsl.
-* @brief This Shader Header File Defines GSProjection Functions.
+* @file GS3DProjection.glsl.
+* @brief This Shader Header File Defines GS3DProjection Functions.
 * @author Spices.
 */
 
 /************************************Pre Compile*******************************************/
         
-#ifndef GS_PROJECTION_H
-#define GS_PROJECTION_H
+#ifndef GS3D_PROJECTION_H
+#define GS3D_PROJECTION_H
 
 #include "Core.h"
 

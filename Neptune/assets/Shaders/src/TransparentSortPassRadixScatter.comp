@@ -28,11 +28,7 @@ layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
 */
 layout(push_constant) uniform Push
 {
-    uint64_t srcAddress;
-    uint64_t dstAddress;
-    uint64_t histAddress;
-    uint64_t infoAddress;
-    uint     shift;
+    RadixPush push;
 };
 
 shared uint sTmp[256];
@@ -45,7 +41,7 @@ shared uint sDigit[256];
         
 void main()
 {
-    TileSortInfo info = TileSortInfo(infoAddress);
+    TileSortInfo info = TileSortInfos(push.infoAddress).i[0];
     uint numElements  = info.numElements;
     uint numWG        = info.numWG;
         
@@ -53,7 +49,7 @@ void main()
     uint wg  = gl_WorkGroupID.x;
     uint idx = gl_GlobalInvocationID.x;
 
-    TileUints h = TileUints(histAddress);
+    TileUints h = TileUints(push.histAddress);
         
     uint total = h.i[256u * numWG + tid];
     sTmp[tid]  = total;
@@ -68,8 +64,8 @@ void main()
     sBase[tid] = sTmp[tid] - total;
         
     bool     valid = idx < numElements;
-    uint64_t e     = valid ? TileEntries(srcAddress).i[idx] : uint64_t(0);
-    uint     d     = valid ? (uint(e >> shift) & 0xFFu) : 256u;
+    uint64_t e     = valid ? TileEntries(push.srcAddress).i[idx] : uint64_t(0);
+    uint     d     = valid ? (uint(e >> push.shift) & 0xFFu) : 256u;
 
     sDigit[tid] = d;
     barrier();
@@ -82,7 +78,7 @@ void main()
 
     uint pos = sBase[d] + h.i[d * numWG + wg] + rank;
     if (pos >= numElements) return;
-    TileEntries(dstAddress).i[pos] = e;
+    TileEntries(push.dstAddress).i[pos] = e;
 }
 
 /*****************************************************************************************/

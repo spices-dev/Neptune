@@ -6,56 +6,39 @@
 
 /************************************Pre Compile*******************************************/
         
-#ifndef TILE_RENDER_COMMON_H
-#define TILE_RENDER_COMMON_H
+#ifndef GS3D_TILERENDER_COMMON_H
+#define GS3D_TILERENDER_COMMON_H
 
-const uint  TILE_SIZE          = 16u;
-const float RADIUS_SIGMA       = 3.0f;
-
-const uint ENTRY_GID_BITS      = 24u;
-const uint ENTRY_DEPTH_BITS    = 24u;
-const uint ENTRY_DEPTH_SHIFT   = 24u;
-const uint ENTRY_TILE_SHIFT    = 48u;
-const uint ENTRY_GID_MASK      = ((1u << ENTRY_GID_BITS) - 1u);
-const uint RADIX_FIRST_BIT     = 24u;
-const uint RADIX_NUM_PASSES    = 5u;
+#include "GS3DTileRenderCore.h"
 
 /*****************************************************************************************/
 
 /****************************************Buffer Data**************************************/
 
-struct Splat
-{
-    vec2  center;
-    vec3  conic;
-    float opacity;
-    uvec2 color;
-};
-
-layout(buffer_reference, scalar, buffer_reference_align = 4) buffer TileSortInfo
-{
-    uint instanceCounter;
-    uint numElements;
-    uint numWG;
-    uint dispatchX;
-    uint dispatchY;
-    uint dispatchZ;
-};
-
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer TileEntries { uint64_t i[]; };
-layout(buffer_reference, scalar, buffer_reference_align = 4) buffer TileUints   { uint     i[]; };
-layout(buffer_reference, scalar, buffer_reference_align = 4) buffer TileSplats  { Splat    i[]; };
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer TileRanges  { uvec2    i[]; };
+layout(buffer_reference, scalar, buffer_reference_align = 4) buffer TileSortInfos { TileSortInfo i[]; };  // @brief TileSortInfo Buffer.
+layout(buffer_reference, scalar, buffer_reference_align = 8) buffer TileEntries   { uint64_t i[]; };      // @brief Sort Buffer.
+layout(buffer_reference, scalar, buffer_reference_align = 4) buffer TileUints     { uint     i[]; };      // @brief hist Buffer.
+layout(buffer_reference, scalar, buffer_reference_align = 4) buffer TileSplats    { Splat    i[]; };      // @brief Splats Buffer.
+layout(buffer_reference, scalar, buffer_reference_align = 8) buffer TileRanges    { uvec2    i[]; };      // @brief Range Buffer.
 
 /*****************************************************************************************/
 
 /******************************************Functions**************************************/
 
-uint64_t PackEntry(uint tile, float viewDepth, uint gid)
+/**
+* @brief Make Sort Key.
+* 
+* @param[in] tile Tile Id.
+* @param[in] viewDepth GS ID Depth.
+* @param[in] gid GS ID.
+* 
+* @return Returns Key.
+*/
+uint64_t MakeSortKey(uint tile, float viewDepth, uint gid)
 {
     uint depthKey = (floatBitsToUint(max(viewDepth, 0.0)) >> 7u) & 0xFFFFFFu;
 
-    return (uint64_t(tile) << ENTRY_TILE_SHIFT) | (uint64_t(depthKey) << ENTRY_DEPTH_SHIFT) | uint64_t(gid);
+    return (uint64_t(tile) << TILE_SHIFT) | (uint64_t(depthKey) << DEPTH_SHIFT) | uint64_t(gid);
 }
 
 /*****************************************************************************************/

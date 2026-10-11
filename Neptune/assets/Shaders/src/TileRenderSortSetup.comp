@@ -29,7 +29,6 @@ layout (local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
 layout(push_constant) uniform Push
 {
     uint64_t infoAddress;
-    uint     maxInstances;
 };
 
 /*****************************************************************************************/
@@ -38,14 +37,14 @@ layout(push_constant) uniform Push
         
 void main()
 {
-    TileSortInfo info = TileSortInfo(infoAddress);
+    TileSortInfos info      = TileSortInfos(infoAddress);
 
-    uint n            = min(info.instanceCounter, maxInstances);
-    info.numElements  = n;
-    info.numWG        = (n + 255u) / 256u;
-    info.dispatchX    = info.numWG;
-    info.dispatchY    = 1u;
-    info.dispatchZ    = 1u;
+    uint n                  = min(info.i[0].instanceCounter, MAXTILEGAUSSIANS);
+    info.i[0].numElements   = n;
+    info.i[0].numWG         = (n + (1u << RADIX_DIGITAL_BIT) - 1u) / (1u << RADIX_DIGITAL_BIT);
+    info.i[0].dispatchX     = info.i[0].numWG;
+    info.i[0].dispatchY     = 1u;
+    info.i[0].dispatchZ     = 1u;
 }
 
 /*****************************************************************************************/

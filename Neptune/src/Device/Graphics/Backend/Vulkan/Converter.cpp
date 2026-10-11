@@ -261,6 +261,7 @@ namespace Neptune::Vulkan {
 		if (set.Test(TopPipeline))            flag |= VK_PIPELINE_STAGE_2_TOP_OF_PIPE_BIT;
 		if (set.Test(Transfer))               flag |= VK_PIPELINE_STAGE_2_TRANSFER_BIT;
 		if (set.Test(DrawIndirect))           flag |= VK_PIPELINE_STAGE_2_DRAW_INDIRECT_BIT;
+		if (set.Test(Graphic))                flag |= VK_PIPELINE_STAGE_2_ALL_GRAPHICS_BIT;
 		
 		return flag;
 	}

@@ -28,37 +28,34 @@ layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
 */
 layout(push_constant) uniform Push
 {
-    uint64_t sortedAddress;
-    uint64_t rangeAddress;
-    uint64_t infoAddress;
-    uint     numTiles;
+    RangePush push;
 };
 
 /**********************************Shader Entry*******************************************/
 
 void main()
 {
-    uint n   = TileSortInfo(infoAddress).numElements;
+    uint n   = TileSortInfos(push.infoAddress).i[0].numElements;
     uint idx = gl_GlobalInvocationID.x;
     if (idx >= n) return;
 
-    TileEntries e  = TileEntries(sortedAddress);
-    TileRanges  r  = TileRanges(rangeAddress);
+    TileEntries e  = TileEntries(push.sortedAddress);
+    TileRanges  r  = TileRanges(push.rangeAddress);
 
-    uint tile = uint(e.i[idx] >> ENTRY_TILE_SHIFT);
-    if (tile >= numTiles) return;
+    uint tile = uint(e.i[idx] >> TILE_SHIFT);
+    if (tile >= push.numTiles) return;
 
     bool isRunStart = (idx == 0u);
     if (!isRunStart)
     {
-        isRunStart = uint(e.i[idx - 1u] >> ENTRY_TILE_SHIFT) != tile;
+        isRunStart = uint(e.i[idx - 1u] >> TILE_SHIFT) != tile;
     }
     if (isRunStart) r.i[tile].x = idx;
 
     bool isRunEnd = (idx == n - 1u);
     if (!isRunEnd)
     {
-        isRunEnd = uint(e.i[idx + 1u] >> ENTRY_TILE_SHIFT) != tile;
+        isRunEnd = uint(e.i[idx + 1u] >> TILE_SHIFT) != tile;
     }
     if (isRunEnd) r.i[tile].y = idx + 1u;
 }

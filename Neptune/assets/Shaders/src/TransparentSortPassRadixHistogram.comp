@@ -28,11 +28,7 @@ layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
 */
 layout(push_constant) uniform Push
 {
-    uint64_t srcAddress;      // @brief Sorts Buffer src.
-    uint64_t dstAddress;      // @brief Sorts Buffer dst.
-    uint64_t histAddress;     // @brief uint[256 * numWG + 256].
-    uint64_t infoAddress;
-    uint     shift;           // @brief 24, 32, 40, 48, 56
+    RadixPush push;
 };
 
 shared uint sHist[256];
@@ -43,7 +39,7 @@ shared uint sHist[256];
         
 void main()
 {
-    TileSortInfo info = TileSortInfo(infoAddress);
+    TileSortInfo info = TileSortInfos(push.infoAddress).i[0];
     uint numElements  = info.numElements;
     uint numWG        = info.numWG;
         
@@ -55,12 +51,12 @@ void main()
 
     if (idx < numElements)
     {
-        uint digit = uint(TileEntries(srcAddress).i[idx] >> shift) & 0xFFu;
+        uint digit = uint(TileEntries(push.srcAddress).i[idx] >> push.shift) & 0xFFu;
         atomicAdd(sHist[digit], 1u);
     }
     barrier();
 
-    TileUints(histAddress).i[tid * numWG + gl_WorkGroupID.x] = sHist[tid];
+    TileUints(push.histAddress).i[tid * numWG + gl_WorkGroupID.x] = sHist[tid];
 }
 
 /*****************************************************************************************/

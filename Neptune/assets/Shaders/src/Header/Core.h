@@ -1,6 +1,6 @@
 /**
-* @file CORE.h.
-* @brief This Shader Header File Defines Shader Structure both Shader side and C++ side.
+* @file Core.h.
+* @brief This Shader Core Header File Defines Shader Structure both Shader side and C++ side.
 * @author Spices.
 */
 
@@ -14,11 +14,14 @@
 
 namespace Neptune::ShaderCore
 {
-using vec2 = glm::vec2;     
-using vec3 = glm::vec3;     
-using vec4 = glm::vec4;     
-using mat4 = glm::mat4;     
-using uint = unsigned int; 
+using vec2  = glm::vec2;     
+using vec3  = glm::vec3;     
+using vec4  = glm::vec4;     
+using uvec2 = glm::uvec2;     
+using uvec3 = glm::uvec3;     
+using uvec4 = glm::uvec4;     
+using mat4  = glm::mat4;     
+using uint  = unsigned int; 
 
 #else
 
@@ -206,25 +209,6 @@ struct PolygonDesc
 	uint64_t meshletsAddress;                 /* @brief Address of the Meshlet Buffer.                    */
 	uint64_t materialParameterAddress;        /* @brief Address of the Material Parameter buffer.         */
 	uint64_t nMeshlets;                       /* @brief Meshlets Count.                                   */
-	uint64_t entityID;                        /* @brief EntityId, cast from entt::entity.                 */
-};
-
-/**
-* @brief GS3D Description Struct.
-*/
-struct GS3DDesc
-{
-	uint64_t modelAddress;                    /* @brief Address of the Model Matrix.                      */
-	uint64_t positionsAddress;                /* @brief Address of the Positions buffer.                  */
-	uint64_t colorsAddress;                   /* @brief Address of the Colors buffer.                     */
-	uint64_t alphasAddress;                   /* @brief Address of the Alphas buffer.                     */
-	uint64_t scalesAddress;                   /* @brief Address of the Scales buffer.                     */
-	uint64_t orientationsAddress;             /* @brief Address of the Orientations buffer.               */
-	uint64_t sphrsAddress;                    /* @brief Address of the SPH_Rs buffer.                     */
-	uint64_t sphgsAddress;                    /* @brief Address of the SPH_Gs buffer.                     */
-	uint64_t sphbsAddress;                    /* @brief Address of the SPH_Bs buffer.                     */
-	uint64_t normalsAddress;                  /* @brief Address of the Normals buffer.                    */
-	uint64_t albedosAddress;                  /* @brief Address of the Albedos buffer.                    */
 	uint64_t entityID;                        /* @brief EntityId, cast from entt::entity.                 */
 };
 

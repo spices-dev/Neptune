@@ -28,15 +28,10 @@ layout (local_size_x = TILE_SIZE, local_size_y = TILE_SIZE, local_size_z = 1) in
 */
 layout(push_constant) uniform Push
 {
-    uint64_t splatAddress;
-    uint64_t sortedAddress;
-    uint64_t rangeAddress;
-    uint     tilesX;
-    uint     width;
-    uint     height;
+    TileRenderPush push;
 };
         
-layout(set = 1, binding = 0, rgba16f) uniform image2D GS3DScene;
+layout(set = 1, binding = 0, rgba16f) uniform image2D GS3DScene;      // @brief Render Target.
 
 shared vec2  sCenter[256];
 shared vec4  sConicOpacity[256];
@@ -51,9 +46,9 @@ void main()
 {
     uint  tid  = gl_LocalInvocationIndex;
     ivec2 pix  = ivec2(gl_GlobalInvocationID.xy);
-    uint  tile = gl_WorkGroupID.y * tilesX + gl_WorkGroupID.x;
+    uint  tile = gl_WorkGroupID.y * push.tilesX + gl_WorkGroupID.x;
 
-    bool inside = pix.x < int(width) && pix.y < int(height);
+    bool inside = pix.x < int(push.width) && pix.y < int(push.height);
     vec2 pf     = vec2(pix) + 0.5;
 
     if (tid == 0u) sDone = 0u;
@@ -63,12 +58,12 @@ void main()
     if (done) atomicAdd(sDone, 1u);
     barrier();
 
-    uvec2 range      = TileRanges(rangeAddress).i[tile];
+    uvec2 range      = TileRanges(push.rangeAddress).i[tile];
     uint  total      = range.y - range.x;
     uint  numBatches = (total + 255u) / 256u;
 
-    TileEntries entries = TileEntries(sortedAddress);
-    TileSplats  splats  = TileSplats(splatAddress);
+    TileEntries entries = TileEntries(push.sortedAddress);
+    TileSplats  splats  = TileSplats(push.splatAddress);
 
     vec3  C = vec3(0.0);
     float T = 1.0;
@@ -81,7 +76,7 @@ void main()
         uint i = b * 256u + tid;
         if (i < total)
         {
-            Splat s = splats.i[uint(entries.i[range.x + i]) & ENTRY_GID_MASK];
+            Splat s = splats.i[uint(entries.i[range.x + i]) & GID_MASK];
             sCenter[tid]       = s.center;
             sConicOpacity[tid] = vec4(s.conic, s.opacity);
             sColor[tid]        = s.color;

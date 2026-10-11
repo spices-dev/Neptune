@@ -1,6 +1,6 @@
 /**
-* @file TransparentSortPass.h.
-* @brief The TransparentSortPass Class Definitions.
+* @file GS3DTileRenderPass.h.
+* @brief The GS3DTileRenderPass Class Definitions.
 * @author Spices.
 */
 
@@ -21,21 +21,21 @@ namespace Neptune::RHI {
 namespace Neptune::Render { 
 
     /**
-    * @brief TransparentSortPass Class
+    * @brief GS3DTileRenderPass Class
     */
-    class TransparentSortPass : public Pass
+    class GS3DTileRenderPass : public Pass
     {
     public:
 
         /**
         * @brief Constructor Function.
         */
-        TransparentSortPass() : Pass() {}
+        GS3DTileRenderPass() : Pass() {}
 		
         /**
         * @brief Destructor Function.
         */
-        ~TransparentSortPass() override = default;
+        ~GS3DTileRenderPass() override = default;
 
         /**
         * @brief Interface of Construct.
@@ -83,8 +83,8 @@ namespace Neptune::Render {
         SP<RHI::Pipeline>                     m_RangePipeline;               // @brief Range Pipeline
         
         // TileRender
-        InFlightResource<RHI::DescriptorList>  m_TileRenderDescriptorList;   // @brief TileRender DescriptorList
-        SP<RHI::Pipeline>                      m_TileRenderPipeline;         // @brief TileRender Pipeline
+        InFlightResource<RHI::DescriptorList> m_TileRenderDescriptorList;    // @brief TileRender DescriptorList
+        SP<RHI::Pipeline>                     m_TileRenderPipeline;          // @brief TileRender Pipeline
         
         InFlightResource<RHI::Buffer> m_SplatBuffer;                         // @brief Splat Buffer
         InFlightResource<RHI::Buffer> m_EntryBufferA;                        // @brief Entry BufferA
@@ -93,6 +93,6 @@ namespace Neptune::Render {
         InFlightResource<RHI::Buffer> m_InfoBuffer;                          // @brief Info Buffer
         InFlightResource<RHI::Buffer> m_RangeBuffer;                         // @brief Range Buffer
         
-        glm::vec2 m_RTSize{ 100.0f, 100.0f };                    // @brief FrameBuffer Attachment Size
+        glm::vec2 m_RTSize{ 100.0f, 100.0f };                            // @brief RenderTarget Size
     };
 }

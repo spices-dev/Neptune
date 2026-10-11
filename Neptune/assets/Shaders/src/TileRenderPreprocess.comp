@@ -12,7 +12,7 @@
 
 #include "Header/PreRendererLayout.glsl"
 #include "Header/GS3DDescLayout.glsl"
-#include "Header/GSProjection.glsl"
+#include "Header/GS3DProjection.glsl"
 #include "Header/GS3DTileRenderCommon.glsl"
 
 /*****************************************************************************************/
@@ -30,16 +30,8 @@ layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
 */
 layout(push_constant) uniform Push
 {
-    uint64_t splatAddress;
-    uint64_t entryAddress;
-    uint64_t infoAddress;
-    uint     gsCount;
-    uint     tilesX;
-    uint     tilesY;
-    uint     maxInstances;
+    PreProcessPush push;
 };
-
-layout(set = 1, binding = 0) uniform UBO1 { uint64_t descAddress; };
 
 /*****************************************************************************************/
 
@@ -108,11 +100,11 @@ bool TileOverlaps(ivec2 t, vec2 c, vec2 a1, float r1, vec2 a2, float r2)
         
 void main()
 {
-    ExplainGS3DDesciption(descAddress);
+    ExplainGS3DDesciption(push.descAddress);
 
     uint gid = gl_GlobalInvocationID.x;
     
-    if (gid >= gsCount) return;
+    if (gid >= push.gsCount) return;
 
     float opacity = alphas.i[gid];
     
@@ -150,17 +142,16 @@ void main()
     vec2  halfExt = abs(r1 * majorAxis) + abs(r2 * minorAxis);
     ivec2 tMin    = ivec2(floor((center - halfExt) / float(TILE_SIZE)));
     ivec2 tMax    = ivec2(floor((center + halfExt) / float(TILE_SIZE)));
-    if (tMax.x < 0 || tMax.y < 0 || tMin.x >= int(tilesX) || tMin.y >= int(tilesY)) return;
+    if (tMax.x < 0 || tMax.y < 0 || tMin.x >= int(push.tilesX) || tMin.y >= int(push.tilesY)) return;
         
     uint count = 0u;
     for (int ty = tMin.y; ty <= tMax.y; ++ty)
         for (int tx = tMin.x; tx <= tMax.x; ++tx)
             if (TileOverlaps(ivec2(tx, ty), center, majorAxis, r1, minorAxis, r2)) ++count;
     if (count == 0u) return;
-            
-    TileSortInfo info = TileSortInfo(infoAddress);
-    uint base = atomicAdd(info.instanceCounter, count);
-    if (base >= maxInstances) return;
+
+    uint base = atomicAdd(TileSortInfos(push.infoAddress).i[0].instanceCounter, count);
+    if (base >= MAXTILEGAUSSIANS) return;
         
     vec3 camPos  = view.inView[3].xyz;
     vec3 dir     = normalize(worldPos - camPos);
@@ -171,15 +162,15 @@ void main()
     s.conic   = conic;
     s.opacity = opacity;
     s.color   = uvec2(packHalf2x16(shColor.rg), packHalf2x16(vec2(shColor.b, 0.0)));
-    TileSplats(splatAddress).i[gid] = s;
+    TileSplats(push.splatAddress).i[gid] = s;
         
-    TileEntries entries = TileEntries(entryAddress);
+    TileEntries entries = TileEntries(push.entryAddress);
     uint n = 0u;
     for (int ty = tMin.y; ty <= tMax.y; ++ty)
         for (int tx = tMin.x; tx <= tMax.x; ++tx)
             if (TileOverlaps(ivec2(tx, ty), center, majorAxis, r1, minorAxis, r2))
             {
-                entries.i[base + n] = PackEntry(uint(ty) * tilesX + uint(tx), viewPos.z, gid);
+                entries.i[base + n] = MakeSortKey(uint(ty) * push.tilesX + uint(tx), viewPos.z, gid);
                 ++n;
             }
 }

@@ -39,7 +39,7 @@
 #include "Render/Backend/Vulkan/RenderBackend.h"
 #endif
 
-#include "Render/Frontend/Pass/TransparentSortPass.h"
+#include "Render/Frontend/Pass/GS3DTileRenderPass.h"
 #include "Render/Frontend/Pass/FPSPass.h"
 #include "Render/Frontend/Pass/BasePass.h"
 #include "Render/Frontend/Pass/SlatePass.h"
@@ -172,7 +172,7 @@ namespace Neptune {
         }
         
         {
-            auto pass = CreateSP<Render::TransparentSortPass>();
+            auto pass = CreateSP<Render::GS3DTileRenderPass>();
             pass->SetRTSize(rtSize);
 
             AddPass(pass);

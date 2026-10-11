@@ -8,6 +8,7 @@
 #include "Core/Core.h"
 #include "DescBase.h"
 #include "Object.h"
+#include "Header/GS3DTileRenderCore.h"
 
 namespace Neptune::Tool {
 	
@@ -19,7 +20,7 @@ namespace Neptune::SOP {
 	/**
 	* @brief GS3D Description.
 	*/
-	struct GS3DDesc : DescBase<ShaderCore::GS3DDesc>
+	struct GS3DDesc : DescBase<ShaderCore::GS3DTileRenderCore::GS3DDesc>
 	{
 		/**
 		* @brief Constructor Function.
