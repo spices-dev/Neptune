@@ -270,39 +270,31 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		switch (f)
-		{
-		case VK_ACCESS_2_NONE:                            return VK_ACCESS_NONE;
-		case VK_ACCESS_2_SHADER_READ_BIT:                 return VK_ACCESS_SHADER_READ_BIT;
-		case VK_ACCESS_2_SHADER_WRITE_BIT:                return VK_ACCESS_SHADER_WRITE_BIT;
-		case VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT:      return VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-		default:
-			{
-				NEPTUNE_LOG_CORE(E) << "Unsupported VkAccessFlags To VkAccessFlags2.";
-				return VK_ACCESS_NONE;
-			}
-		}
+		VkAccessFlags flag = 0;
+		
+		if (f & VK_ACCESS_2_NONE)                           flag |= VK_ACCESS_NONE;
+		if (f & VK_ACCESS_2_SHADER_READ_BIT)                flag |= VK_ACCESS_SHADER_READ_BIT;
+		if (f & VK_ACCESS_2_SHADER_WRITE_BIT)               flag |= VK_ACCESS_SHADER_WRITE_BIT;
+		if (f & VK_ACCESS_2_COLOR_ATTACHMENT_WRITE_BIT)     flag |= VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+		
+		return flag;
 	}
 	
 	VkPipelineStageFlags ToVkPipelineStageFlags(VkPipelineStageFlags2 f)
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		switch (f)
-		{
-		case VK_PIPELINE_STAGE_2_TOP_OF_PIPE_BIT:                    return VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-		case VK_PIPELINE_STAGE_2_VERTEX_SHADER_BIT:                  return VK_PIPELINE_STAGE_VERTEX_SHADER_BIT;
-		case VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT:                return VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
-		case VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT:                 return VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT;
-		case VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT:        return VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-		case VK_PIPELINE_STAGE_2_BOTTOM_OF_PIPE_BIT:                 return VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
-		case VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT:                   return VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
-		default:
-			{
-				NEPTUNE_LOG_CORE(E) << "Unsupported VkPipelineStageFlags To VkPipelineStageFlags2.";
-				return VK_PIPELINE_STAGE_NONE;
-			}
-		}
+		VkPipelineStageFlags flag = 0;
+		
+		if (f & VK_PIPELINE_STAGE_2_TOP_OF_PIPE_BIT)                 flag |= VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+		if (f & VK_PIPELINE_STAGE_2_VERTEX_SHADER_BIT)               flag |= VK_PIPELINE_STAGE_VERTEX_SHADER_BIT;
+		if (f & VK_PIPELINE_STAGE_2_FRAGMENT_SHADER_BIT)             flag |= VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+		if (f & VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT)              flag |= VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT;
+		if (f & VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT)     flag |= VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+		if (f & VK_PIPELINE_STAGE_2_BOTTOM_OF_PIPE_BIT)              flag |= VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
+		if (f & VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT)                flag |= VK_PIPELINE_STAGE_ALL_COMMANDS_BIT;
+		
+		return flag;
 	}
 
 	TextureFormat ToTextureFormat(VkFormat f)
