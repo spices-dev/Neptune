@@ -64,3 +64,6 @@
 [submodule "Neptune/vendor/emdawnwebgpu"]
 	path = Neptune/vendor/emdawnwebgpu
 	url = https://github.com/spices-lib/emdawnwebgpu.git
+[submodule "Neptune/vendor/nlohmannjson"]
+	path = Neptune/vendor/nlohmannjson
+	url = https://github.com/nlohmann/json.git

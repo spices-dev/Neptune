@@ -81,6 +81,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		vendor.tracy.includes,                                -- Library: tracy Source Folder.
 		vendor.IconFontCppHeaders.includes,                   -- Library: IconFontCppHeaders Source Folder.
 		vendor.tinyply.includes,                              -- Library: tinyply Source Folder.
+		vendor.nlohmannjson.includes,                         -- Library: nlohmannjson Source Folder.
 	}
 
 	-- The Solution Dependency

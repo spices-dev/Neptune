@@ -36,6 +36,7 @@ local module                          = {
     ["AdaptiveCpp"]                   = loadfile(current_dir .. "AdaptiveCpp.lua")(),                                  -- Third Party: AdaptiveCpp
     ["ffmpeg"]                        = loadfile(current_dir .. "ffmpeg.lua")(),                                       -- Third Party: ffmpeg
     ["tinyply"]                       = loadfile(current_dir .. "tinyply.lua")(),                                      -- Third Party: tinyply
+    ["nlohmannjson"]                  = loadfile(current_dir .. "nlohmannjson.lua")(),                                 -- Third Party: nlohmannjson
     ["RenderDoc"]                     = loadfile(current_dir .. "RenderDoc.lua")(),                                    -- Third Party: RenderDoc
     ["googletest"]                    = loadfile(current_dir .. "googletest.lua")(),                                   -- Third Party: googletest
 }
