@@ -37,6 +37,7 @@ local module                          = {
     ["ffmpeg"]                        = loadfile(current_dir .. "ffmpeg.lua")(),                                       -- Third Party: ffmpeg
     ["tinyply"]                       = loadfile(current_dir .. "tinyply.lua")(),                                      -- Third Party: tinyply
     ["nlohmannjson"]                  = loadfile(current_dir .. "nlohmannjson.lua")(),                                 -- Third Party: nlohmannjson
+    ["miniz"]                         = loadfile(current_dir .. "miniz.lua")(),                                        -- Third Party: miniz
     ["RenderDoc"]                     = loadfile(current_dir .. "RenderDoc.lua")(),                                    -- Third Party: RenderDoc
     ["googletest"]                    = loadfile(current_dir .. "googletest.lua")(),                                   -- Third Party: googletest
 }

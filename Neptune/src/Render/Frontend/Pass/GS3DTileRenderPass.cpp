@@ -322,7 +322,7 @@ namespace Neptune::Render {
 			
 			for (uint32_t pass = 0; pass < RADIX_NUM_PASSES; ++pass)
 			{
-				push.shift = 24u + 8u * pass;
+				push.shift = RADIX_FIRST_BIT + RADIX_DIGITAL_BIT * pass;
 
 				cmdList.CmdBindPipeline(m_HistogramPipeline);
 

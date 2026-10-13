@@ -38,8 +38,8 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		-- Library: IconFontCppHeaders Files.
 		"vendor/IconFontCppHeaders/**.h",
 
-		-- Library: tinyply Files.
-		"vendor/tinyply/source/tinyply.h",
+		-- Library: miniz Files.
+		"vendor/miniz/miniz.c",
 	}
 
 	-- Macros Definitions
@@ -82,6 +82,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		vendor.IconFontCppHeaders.includes,                   -- Library: IconFontCppHeaders Source Folder.
 		vendor.tinyply.includes,                              -- Library: tinyply Source Folder.
 		vendor.nlohmannjson.includes,                         -- Library: nlohmannjson Source Folder.
+		vendor.miniz.includes,                                -- Library: miniz Source Folder.
 	}
 
 	-- The Solution Dependency
@@ -94,6 +95,10 @@ solution.DefineCppStaticLibrary("Neptune", function()
 
 	-- Library: ImGuizmo is included this solution, do not use PreCompiler Header.
 	filter "files:vendor/ImGuizmo/**.cpp"
+		enablepch "Off"
+
+	-- Library: miniz is included this solution, do not use PreCompiler Header.
+	filter "files:vendor/miniz/**.c"
 		enablepch "Off"
 
 	-- Platform: Windows
