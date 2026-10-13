@@ -83,6 +83,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		vendor.tinyply.includes,                              -- Library: tinyply Source Folder.
 		vendor.nlohmannjson.includes,                         -- Library: nlohmannjson Source Folder.
 		vendor.miniz.includes,                                -- Library: miniz Source Folder.
+		vendor.libwebp.includes,                              -- Library: libwebp Source Folder.
 	}
 
 	-- The Solution Dependency
@@ -312,6 +313,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 			"ImGui",                                                       -- Dependency: imgui
 			"yaml-cpp",                                                    -- Dependency: yaml-cpp
 			"implot",                                                      -- Dependency: implot
+			"libwebp",                                                     -- Dependency: libwebp
 		}
 
 		-- Platform: Windows
