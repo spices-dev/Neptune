@@ -67,3 +67,6 @@
 [submodule "Neptune/vendor/nlohmannjson"]
 	path = Neptune/vendor/nlohmannjson
 	url = https://github.com/nlohmann/json.git
+[submodule "Neptune/vendor/miniz"]
+	path = Neptune/vendor/miniz
+	url = https://github.com/spices-lib/miniz.git
