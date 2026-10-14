@@ -45,6 +45,10 @@
 #include "UnifiedImageLayouts.h"
 #include "MeshShader.h"
 #include "DeviceAddressCommands.h"
+#include "Subgroup.h"
+#include "SubgroupPartitioned.h"
+#include "SubgroupRotate.h"
+#include "SubgroupSizeControl.h"
 
 // Device
 //m_ExtensionProperties.push_back(VK_KHR_SHADER_CLOCK_EXTENSION_NAME);

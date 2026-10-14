@@ -42,14 +42,14 @@ namespace Neptune::Vulkan::Middleware {
     {
         NEPTUNE_PROFILE_ZONE
 
-        vkGetPhysicalDeviceProperties2(device, &properties);
+        vkGetPhysicalDeviceProperties(device, &properties.properties);
     }
     
     void GetPhysicalDeviceProperties2::GetProperties(VkPhysicalDevice device, VkPhysicalDeviceProperties2& properties) const
     {
         NEPTUNE_PROFILE_ZONE
 
-        vkGetPhysicalDeviceProperties(device, &properties.properties);
+        vkGetPhysicalDeviceProperties2(device, &properties);
     }
 }
 

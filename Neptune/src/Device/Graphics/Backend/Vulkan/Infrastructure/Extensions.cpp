@@ -87,6 +87,10 @@ namespace Neptune::Vulkan {
 		m_Context->Registry<Extension::IUnifiedImageLayouts>              (Extension::EExtensionState::Extent);          // @brief Done.
 		m_Context->Registry<Extension::IMeshShader>                       (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IDeviceAddressCommands>            (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::ISubgroup>                         (Extension::EExtensionState::Core);
+		m_Context->Registry<Extension::ISubgroupPartitioned>              (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::ISubgroupRotate>                   (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::ISubgroupSizeControl>              (Extension::EExtensionState::Extent);
 	}
 	
 	SP<Extensions> Extensions::Copy() const

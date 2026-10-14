@@ -52,6 +52,10 @@ namespace Neptune::Vulkan {
         UnifiedImageLayouts,                        // @brief UnifiedImageLayouts.
         MeshShader,                                 // @brief MeshShader.
         DeviceAddressCommands,                      // @brief DeviceAddressCommands.
+        Subgroup,                                   // @brief Subgroup.
+        SubgroupSizeControl,                        // @brief SubgroupSizeControl.
+        SubgroupPartitioned,                        // @brief SubgroupPartitioned.
+        SubgroupRotate,                             // @brief SubgroupRotate.
 
         Count
     };
@@ -100,6 +104,10 @@ namespace Neptune::Vulkan {
             case UnifiedImageLayouts:             return "UnifiedImageLayouts";
             case MeshShader:                      return "MeshShader";
             case DeviceAddressCommands:           return "DeviceAddressCommands";
+            case Subgroup:                        return "Subgroup";
+            case SubgroupSizeControl:             return "SubgroupSizeControl";
+            case SubgroupPartitioned:             return "SubgroupPartitioned";
+            case SubgroupRotate:                  return "SubgroupRotate";
             default:                              return "NonNamed";
         }
     }

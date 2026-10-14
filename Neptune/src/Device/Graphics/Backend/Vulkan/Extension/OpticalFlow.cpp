@@ -33,12 +33,7 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
         
-        if (std::invoke(filter, m_OpticalFlowProperties.sType))
-        {
-            *pNext = &m_OpticalFlowProperties;
-
-            pNext  = &m_OpticalFlowProperties.pNext;
-        }
+        LinkToChain(pNext, filter, m_OpticalFlowProperties);
     }
     
     bool OpticalFlow::IsFeaturesSatisfied()
