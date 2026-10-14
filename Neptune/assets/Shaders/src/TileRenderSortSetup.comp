@@ -40,9 +40,10 @@ void main()
     TileSortInfos info      = TileSortInfos(infoAddress);
 
     uint n                  = min(info.i[0].instanceCounter, MAXTILEGAUSSIANS);
+    uint wg                 = (n + RADIX_ELEMS_PER_WG - 1u) / RADIX_ELEMS_PER_WG;
     info.i[0].numElements   = n;
-    info.i[0].numWG         = (n + (1u << RADIX_DIGITAL_BIT) - 1u) / (1u << RADIX_DIGITAL_BIT);
-    info.i[0].dispatchX     = info.i[0].numWG;
+    info.i[0].numWG         = wg;
+    info.i[0].dispatchX     = wg;
     info.i[0].dispatchY     = 1u;
     info.i[0].dispatchZ     = 1u;
 }

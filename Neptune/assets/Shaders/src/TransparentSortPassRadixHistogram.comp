@@ -39,24 +39,32 @@ shared uint sHist[256];
         
 void main()
 {
-    TileSortInfo info = TileSortInfos(push.infoAddress).i[0];
-    uint numElements  = info.numElements;
-    uint numWG        = info.numWG;
+    TileSortInfos info = TileSortInfos(push.infoAddress);
+    uint numElements   = info.i[0].numElements;
+    uint numWG         = info.i[0].numWG;
         
     uint tid = gl_LocalInvocationID.x;
-    uint idx = gl_GlobalInvocationID.x;
+    uint wg  = gl_WorkGroupID.x;
 
     sHist[tid] = 0u;
+
+    TileEntries src  = TileEntries(push.srcAddress);
+    uint        base = wg * RADIX_ELEMS_PER_WG + tid;
+    uint64_t    e0   = (base            < numElements) ? src.i[base           ] : uint64_t(0);
+    uint64_t    e1   = (base + 256u     < numElements) ? src.i[base + 256u    ] : uint64_t(0);
+    uint64_t    e2   = (base + 512u     < numElements) ? src.i[base + 512u    ] : uint64_t(0);
+    uint64_t    e3   = (base + 768u     < numElements) ? src.i[base + 768u    ] : uint64_t(0);
+
     barrier();
 
-    if (idx < numElements)
-    {
-        uint digit = uint(TileEntries(push.srcAddress).i[idx] >> push.shift) & 0xFFu;
-        atomicAdd(sHist[digit], 1u);
-    }
+    if (base            < numElements) atomicAdd(sHist[uint(e0 >> push.shift) & 0xFFu], 1u);
+    if (base + 256u     < numElements) atomicAdd(sHist[uint(e1 >> push.shift) & 0xFFu], 1u);
+    if (base + 512u     < numElements) atomicAdd(sHist[uint(e2 >> push.shift) & 0xFFu], 1u);
+    if (base + 768u     < numElements) atomicAdd(sHist[uint(e3 >> push.shift) & 0xFFu], 1u);
+
     barrier();
 
-    TileUints(push.histAddress).i[tid * numWG + gl_WorkGroupID.x] = sHist[tid];
+    TileUints(push.histAddress).i[tid * numWG + wg] = sHist[tid];
 }
 
 /*****************************************************************************************/

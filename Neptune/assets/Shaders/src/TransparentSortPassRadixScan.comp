@@ -8,7 +8,8 @@
 
 #version 460
 
-#extension GL_GOOGLE_include_directive : enable    /* @brief Enable include Macro. */
+#extension GL_GOOGLE_include_directive       : enable    /* @brief Enable include Macro. */
+#extension GL_KHR_shader_subgroup_arithmetic : require   /* @brief Enable SubGroup Operation. */
 
 #include "Header/PreRendererLayout.glsl"
 #include "Header/GS3DTileRenderCommon.glsl"
@@ -31,7 +32,7 @@ layout(push_constant) uniform Push
     RadixPush push;
 };
 
-shared uint sSum[256];
+shared uint sWarp[2][8];      // @brief Warp totals
 
 /*****************************************************************************************/
 
@@ -43,37 +44,47 @@ void main()
         
     uint tid   = gl_LocalInvocationID.x;
     uint digit = gl_WorkGroupID.x;
+    uint warp  = tid >> 5u;
+    uint lane  = tid & 31u;
 
     TileUints h = TileUints(push.histAddress);
     uint base   = digit * numWG;
         
-    uint perThread = (numWG + 255u) / 256u;
-    uint begin     = min(tid * perThread, numWG);
-    uint end       = min(begin + perThread, numWG);
+    uint carry = 0u;
+    uint par   = 0u;
 
-    uint local = 0u;
-    for (uint i = begin; i < end; ++i) local += h.i[base + i];
-
-    sSum[tid] = local;
-    barrier();
-        
-    for (uint off = 1u; off < 256u; off <<= 1u)
+    for (uint b0 = 0u; b0 < numWG; b0 += 1024u)
     {
-        uint v = (tid >= off) ? sSum[tid - off] : 0u;
-        barrier();
-        sSum[tid] += v;
-        barrier();
+        uint i0 = b0 + tid;
+        uint v[4];
+        v[0] = (i0         < numWG) ? h.i[base + i0        ] : 0u;
+        v[1] = (i0 + 256u  < numWG) ? h.i[base + i0 + 256u ] : 0u;
+        v[2] = (i0 + 512u  < numWG) ? h.i[base + i0 + 512u ] : 0u;
+        v[3] = (i0 + 768u  < numWG) ? h.i[base + i0 + 768u ] : 0u;
+        
+        for (uint k = 0u; k < 4u; ++k)
+        {
+            uint incl = subgroupInclusiveAdd(v[k]);
+            if (lane == 31u) sWarp[par][warp] = incl;
+            barrier();
+            
+            uint wp = 0u, tot = 0u;
+            for (uint w = 0u; w < 8u; ++w)
+            {
+                uint t = sWarp[par][w];
+                if (w < warp) wp += t;
+                tot += t;
+            }
+            
+            uint idx = i0 + k * 256u;
+            if (idx < numWG) h.i[base + idx] = carry + wp + incl - v[k];
+            
+            carry += tot;
+            par   ^= 1u;
+        }
     }
         
-    uint running = sSum[tid] - local;
-    for (uint i = begin; i < end; ++i)
-    {
-        uint v = h.i[base + i];
-        h.i[base + i] = running;
-        running += v;
-    }
-        
-    if (tid == 255u) h.i[256u * numWG + digit] = sSum[255];
+    if (tid == 0u) h.i[256u * numWG + digit] = carry;
 }
 
 /*****************************************************************************************/

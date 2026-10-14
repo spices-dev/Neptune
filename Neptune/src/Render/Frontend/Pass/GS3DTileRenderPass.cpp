@@ -10,6 +10,7 @@
 #include "Device/Graphics/Frontend/RHI/Pipeline.h"
 #include "Device/Graphics/Frontend/RHI/DescriptorList.h"
 #include "Device/Graphics/Frontend/RHI/CmdList.h"
+#include "Device/Graphics/Frontend/RHI/RenderTarget.h"
 #include "Resource/Shader/Shader.h"
 #include "Resource/Buffer/Buffer.h"
 #include "Resource/ResourcePool/ResourcePool.h"
@@ -42,11 +43,14 @@ namespace Neptune::Render {
 			info.usage.Set(Graphic::EImageUsage::TransferSrc);
 			info.usage.Set(Graphic::EImageUsage::Sampler);
 			
-			auto GS3DScene = CreateSP<RenderTarget>(info);
-
-			renderTargetPool.Registry("GS3DScene", GS3DScene);
-			
-			GS3DScene->SetName("GS3DScene");
+			for (uint32_t i = 0; i < MaxFrameInFlight; ++i)
+			{
+				auto GS3DScene = CreateSP<RenderTarget>(info);
+				
+				renderTargetPool.Registry("GS3DScene_" + i, GS3DScene);
+				
+				GS3DScene->SetName("GS3DScene_" + i);
+			}
 		}
 		
 		{
@@ -193,7 +197,7 @@ namespace Neptune::Render {
 			{
 				m_TileRenderDescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
 				m_TileRenderDescriptorList.Get(i)->AddShaderConstant(sizeof(TileRenderPush));
-				m_TileRenderDescriptorList.Get(i)->AddStorageTexture(1, 0, ResourcePool<RenderTarget>::Instance().Access("GS3DScene")->GetRHIResource());
+				m_TileRenderDescriptorList.Get(i)->AddStorageTexture(1, 0, ResourcePool<RenderTarget>::Instance().Access("GS3DScene_" + i)->GetRHIResource());
 
 				m_TileRenderDescriptorList.Get(i)->CombineSharedLayout();
 				m_TileRenderDescriptorList.Get(i)->Build();
@@ -379,7 +383,7 @@ namespace Neptune::Render {
 		}
 		
 		{
-			auto GS3DScene = ResourcePool<RenderTarget>::Instance().Access("GS3DScene")->GetRHIResource();
+			auto GS3DScene = ResourcePool<RenderTarget>::Instance().Access("GS3DScene_" + frame)->GetRHIResource();
 			
 			TileRenderPush               push{};
 			push.splatAddress          = splatAddr;

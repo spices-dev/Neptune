@@ -8,7 +8,9 @@
 
 #version 460
 
-#extension GL_GOOGLE_include_directive : enable    /* @brief Enable include Macro. */
+#extension GL_GOOGLE_include_directive       : enable    /* @brief Enable include Macro.        */
+#extension GL_KHR_shader_subgroup_ballot     : require   /* @brief Enable SubGroup Ballot.      */
+#extension GL_KHR_shader_subgroup_arithmetic : require   /* @brief Enable SubGroup Operation.   */
 
 #include "Header/PreRendererLayout.glsl"
 #include "Header/GS3DTileRenderCommon.glsl"
@@ -31,9 +33,11 @@ layout(push_constant) uniform Push
     RadixPush push;
 };
 
-shared uint sTmp[256];
-shared uint sBase[256];
-shared uint sDigit[256];
+shared uint sWarpTot[8];            // @brief Per-warp sum of the digit totals.
+shared uint sBase[256];             // @brief Global start of every digit.
+shared uint sPrefix[256];           // @brief Where this workgroup starts inside every digit (Scan output).
+shared uint sCarry[2][256];         // @brief Per digit: elements of earlier sub-tiles, double buffered.
+shared uint sWarpHist[2][8][256];   // @brief Per sub-tile, per warp, per digit counts, double buffered.
 
 /*****************************************************************************************/
 
@@ -41,44 +45,75 @@ shared uint sDigit[256];
         
 void main()
 {
-    TileSortInfo info = TileSortInfos(push.infoAddress).i[0];
-    uint numElements  = info.numElements;
-    uint numWG        = info.numWG;
-        
-    uint tid = gl_LocalInvocationID.x;
-    uint wg  = gl_WorkGroupID.x;
-    uint idx = gl_GlobalInvocationID.x;
+    TileSortInfos infos       = TileSortInfos(push.infoAddress);
+    uint          numElements = infos.i[0].numElements;
+    uint          numWG       = infos.i[0].numWG;
+    
+    uint tid  = gl_LocalInvocationID.x;
+    uint wg   = gl_WorkGroupID.x;
+    uint warp = tid >> 5u;
+    uint lane = tid & 31u;
 
     TileUints h = TileUints(push.histAddress);
         
     uint total = h.i[256u * numWG + tid];
-    sTmp[tid]  = total;
+    uint pre   = h.i[tid * numWG + wg];
+    
+    uint incl = subgroupInclusiveAdd(total);
+    if (lane == 31u) sWarpTot[warp] = incl;
+    sPrefix[tid]   = pre;
+    sCarry[0][tid] = 0u;
+    for (uint w = 0u; w < 8u; ++w) sWarpHist[0][w][tid] = 0u;
     barrier();
-    for (uint off = 1u; off < 256u; off <<= 1u)
+    
+    uint warpOff = 0u;
+    for (uint w = 0u; w < 8u; ++w) if (w < warp) warpOff += sWarpTot[w];
+    sBase[tid] = warpOff + incl - total;
+    
+    TileEntries src = TileEntries(push.srcAddress);
+    TileEntries dst = TileEntries(push.dstAddress);
+    
+    for (uint k = 0u; k < 4u; ++k)
     {
-        uint v = (tid >= off) ? sTmp[tid - off] : 0u;
+        uint p = k & 1u;
+        uint q = p ^ 1u;
+        
+        uint     idx   = wg * RADIX_ELEMS_PER_WG + k * 256u + tid;
+        bool     valid = idx < numElements;
+        uint64_t e     = valid ? src.i[idx] : uint64_t(0);
+        uint     d     = valid ? (uint(e >> push.shift) & 0xFFu) : 0u;
+
+        uint mask = subgroupBallot(valid).x;
+        for (uint bit = 0u; bit < 8u; ++bit)
+        {
+            bool b   = ((d >> bit) & 1u) != 0u;
+            uint bal = subgroupBallot(b).x;
+            mask &= b ? bal : ~bal;
+        }
+        uint rankW = bitCount(mask & ((1u << lane) - 1u));
+        uint cntW  = bitCount(mask);
+        
+        if (valid && rankW == 0u) sWarpHist[p][warp][d] = cntW;
         barrier();
-        sTmp[tid] += v;
+
+        if (valid)
+        {
+            uint rank = sCarry[p][d] + rankW;
+            for (uint w = 0u; w < 8u; ++w) if (w < warp) rank += sWarpHist[p][w][d];
+            
+            uint pos = sBase[d] + sPrefix[d] + rank;
+            if (pos < numElements) dst.i[pos] = e;
+        }
+
+        uint c = sCarry[p][tid];
+        for (uint w = 0u; w < 8u; ++w)
+        {
+            c += sWarpHist[p][w][tid];
+            sWarpHist[q][w][tid] = 0u;
+        }
+        sCarry[q][tid] = c;
         barrier();
     }
-    sBase[tid] = sTmp[tid] - total;
-        
-    bool     valid = idx < numElements;
-    uint64_t e     = valid ? TileEntries(push.srcAddress).i[idx] : uint64_t(0);
-    uint     d     = valid ? (uint(e >> push.shift) & 0xFFu) : 256u;
-
-    sDigit[tid] = d;
-    barrier();
-
-    if (!valid) return;
-        
-    uint rank = 0u;
-    for (uint j = 0u; j < tid; ++j)
-        rank += (sDigit[j] == d) ? 1u : 0u;
-
-    uint pos = sBase[d] + h.i[d * numWG + wg] + rank;
-    if (pos >= numElements) return;
-    TileEntries(push.dstAddress).i[pos] = e;
 }
 
 /*****************************************************************************************/

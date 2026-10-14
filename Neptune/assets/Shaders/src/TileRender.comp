@@ -8,7 +8,9 @@
 
 #version 460
 
-#extension GL_GOOGLE_include_directive : enable    /* @brief Enable include Macro. */
+#extension GL_GOOGLE_include_directive   : enable    /* @brief Enable include Macro.    */
+#extension GL_KHR_shader_subgroup_ballot : require   /* @brief Enable SubGroup Ballot.  */
+#extension GL_KHR_shader_subgroup_vote   : require   /* @brief Enable SubGroup Vote.    */
 
 #include "Header/PreRendererLayout.glsl"
 #include "Header/GS3DTileRenderCommon.glsl"
@@ -33,23 +35,58 @@ layout(push_constant) uniform Push
         
 layout(set = 1, binding = 0, rgba16f) uniform image2D GS3DScene;      // @brief Render Target.
 
-shared vec2  sCenter[256];
-shared vec4  sConicOpacity[256];
-shared uvec2 sColor[256];
+const float LOG2E       = 1.4426950408889634;
+const float LOG2_1_255  = -7.994353436858858;      // log2(1 / 255)
+const float TWO_LN2     = 1.3862943611198906;      // 2 * ln(2)
+const float CULL_MARGIN = 0.05;
+
+shared vec4  sGeom[256];
+shared vec4  sCoef[256];
+shared uint  sMask[256];
 shared uint  sDone;
 
 /*****************************************************************************************/
 
+/**********************************Functions**********************************************/
+        
+uint WarpMask(vec2 c, float a, float b, float cc, float log2Opacity)
+{
+    float det = a * cc - b * b;
+    if (!(a > 0.0 && cc > 0.0 && det > 1e-12)) return 0xFFu;
+    
+    float T  = TWO_LN2 * (log2Opacity - LOG2_1_255);
+    float hx = sqrt(max(T * cc / det, 0.0));
+    float hy = sqrt(max(T * a  / det, 0.0));
+        
+    int xmin = int(floor(c.x - hx - 0.5 - CULL_MARGIN));
+    int xmax = int(ceil (c.x + hx - 0.5 + CULL_MARGIN));
+    int ymin = int(floor(c.y - hy - 0.5 - CULL_MARGIN));
+    int ymax = int(ceil (c.y + hy - 0.5 + CULL_MARGIN));
+    
+    uint xm = ((xmin <= 7  && xmax >= 0) ? 1u : 0u) | ((xmax >= 8 && xmin <= 15) ? 2u : 0u);
+    uint m  = 0u;
+    for (int by = 0; by < 4; ++by)
+        if (ymax >= 4 * by && ymin <= 4 * by + 3) m |= xm << uint(by * 2);
+    return m;
+}
+
+/*****************************************************************************************/
+        
 /**********************************Shader Entry*******************************************/
         
 void main()
 {
-    uint  tid  = gl_LocalInvocationIndex;
-    ivec2 pix  = ivec2(gl_GlobalInvocationID.xy);
-    uint  tile = gl_WorkGroupID.y * push.tilesX + gl_WorkGroupID.x;
+    uint tid  = gl_LocalInvocationIndex;
+    uint warp = tid >> 5u;
+    uint lane = tid & 31u;
+    uint tile = gl_WorkGroupID.y * push.tilesX + gl_WorkGroupID.x;
 
+    uvec2 local = uvec2((warp & 1u) * 8u + (lane & 7u), (warp >> 1u) * 4u + (lane >> 3u));
+    ivec2 pix   = ivec2(gl_WorkGroupID.xy * TILE_SIZE + local);
+    vec2  pl    = vec2(local) + 0.5;
+    vec2  org   = vec2(gl_WorkGroupID.xy * TILE_SIZE);
+    
     bool inside = pix.x < int(push.width) && pix.y < int(push.height);
-    vec2 pf     = vec2(pix) + 0.5;
 
     if (tid == 0u) sDone = 0u;
     barrier();
@@ -59,54 +96,81 @@ void main()
     barrier();
 
     uvec2 range      = TileRanges(push.rangeAddress).i[tile];
-    uint  total      = range.y - range.x;
+    uint  total      = (range.y > range.x) ? (range.y - range.x) : 0u;
     uint  numBatches = (total + 255u) / 256u;
 
-    TileEntries entries = TileEntries(push.sortedAddress);
-    TileSplats  splats  = TileSplats(push.splatAddress);
-
+    TileEntries  entries = TileEntries(push.sortedAddress);
+    TileSplats  splats   = TileSplats(push.splatAddress);
+    
     vec3  C = vec3(0.0);
     float T = 1.0;
-
+    
     for (uint b = 0u; b < numBatches; ++b)
     {
-        /* sDone is only modified between the two barriers below, so every thread reads the same value here. */
         if (sDone >= 256u) break;
 
-        uint i = b * 256u + tid;
+        uint i    = b * 256u + tid;
+        uint mask = 0u;
         if (i < total)
         {
-            Splat s = splats.i[uint(entries.i[range.x + i]) & GID_MASK];
-            sCenter[tid]       = s.center;
-            sConicOpacity[tid] = vec4(s.conic, s.opacity);
-            sColor[tid]        = s.color;
+            uint  gid = uint(entries.i[range.x + i]) & GID_MASK;
+            uvec4 u0  = splats.i[2u * gid + 0u];
+            uvec4 u1  = splats.i[2u * gid + 1u];
+            
+            vec2  center  = uintBitsToFloat(u0.xy) - org;
+            float a       = uintBitsToFloat(u0.z);
+            float bb      = uintBitsToFloat(u0.w);
+            float cc      = uintBitsToFloat(u1.x);
+            float opacity = uintBitsToFloat(u1.y);
+            
+            float lo2 = log2(opacity);
+            sGeom[tid] = vec4(center, -0.5 * a * LOG2E, -bb * LOG2E);
+            sCoef[tid] = vec4(-0.5 * cc * LOG2E, lo2, uintBitsToFloat(u1.z), uintBitsToFloat(u1.w));
+            mask       = (opacity >= 1.0 / 255.0) ? WarpMask(center, a, bb, cc, lo2) : 0u;
         }
+        sMask[tid] = mask;
         barrier();
 
         uint cnt = min(256u, total - b * 256u);
-        for (uint j = 0u; j < cnt && !done; ++j)
+        for (uint c0 = 0u; c0 < cnt; c0 += 32u)
         {
-            vec2 d  = pf - sCenter[j];
-            vec4 co = sConicOpacity[j];
-
-            float power = -0.5 * (co.x * d.x * d.x + co.z * d.y * d.y) - co.y * d.x * d.y;
-            if (power > 0.0) continue;
-
-            float alpha = min(0.99, co.w * exp(power));
-            if (alpha < 1.0 / 255.0) continue;
-
-            float nT = T * (1.0 - alpha);
-            if (nT < 1e-4)
+            uint j0 = c0 + lane;
+            bool hit = (j0 < cnt) && (((sMask[j0] >> warp) & 1u) != 0u);
+            uint m   = subgroupBallot(hit).x;
+            
+            while (m != 0u)
             {
-                done = true;
-                atomicAdd(sDone, 1u);
-                break;
+                uint j = c0 + uint(findLSB(m));
+                m &= m - 1u;
+                
+                if (done) continue;
+                
+                vec4 g  = sGeom[j];
+                vec4 cf = sCoef[j];
+                
+                vec2  d  = pl - g.xy;
+                float pw = d.x * (g.z * d.x + g.w * d.y) + cf.x * d.y * d.y;
+                if (pw > 0.0) continue;
+                
+                float p2 = pw + cf.y;
+                if (p2 < LOG2_1_255) continue;
+                
+                float alpha = min(0.99, exp2(p2));
+                float nT    = T * (1.0 - alpha);
+                if (nT < 1e-4)
+                {
+                    done = true;
+                    atomicAdd(sDone, 1u);
+                    continue;
+                }
+            
+                uvec2 cu  = floatBitsToUint(cf.zw);
+                vec3  col = vec3(unpackHalf2x16(cu.x), unpackHalf2x16(cu.y).x);
+                C += col * (alpha * T);
+                T  = nT;
             }
-
-            uvec2 c   = sColor[j];
-            vec3  col = vec3(unpackHalf2x16(c.x), unpackHalf2x16(c.y).x);
-            C += col * (alpha * T);
-            T  = nT;
+        
+            if (subgroupAll(done)) break;
         }
         barrier();
     }

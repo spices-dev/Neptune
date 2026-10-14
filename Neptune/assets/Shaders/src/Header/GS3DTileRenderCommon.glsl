@@ -15,11 +15,11 @@
 
 /****************************************Buffer Data**************************************/
 
-layout(buffer_reference, scalar, buffer_reference_align = 4) buffer TileSortInfos { TileSortInfo i[]; };  // @brief TileSortInfo Buffer.
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer TileEntries   { uint64_t i[]; };      // @brief Sort Buffer.
-layout(buffer_reference, scalar, buffer_reference_align = 4) buffer TileUints     { uint     i[]; };      // @brief hist Buffer.
-layout(buffer_reference, scalar, buffer_reference_align = 4) buffer TileSplats    { Splat    i[]; };      // @brief Splats Buffer.
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer TileRanges    { uvec2    i[]; };      // @brief Range Buffer.
+layout(buffer_reference, scalar, buffer_reference_align = 4)  buffer TileSortInfos { TileSortInfo i[]; };  // @brief TileSortInfo Buffer.
+layout(buffer_reference, scalar, buffer_reference_align = 8)  buffer TileEntries   { uint64_t i[]; };      // @brief Sort Buffer.
+layout(buffer_reference, scalar, buffer_reference_align = 4)  buffer TileUints     { uint     i[]; };      // @brief hist Buffer.
+layout(buffer_reference, scalar, buffer_reference_align = 16) buffer TileSplats    { uvec4 i[]; };         // @brief Splats Buffer. @see Splat.
+layout(buffer_reference, scalar, buffer_reference_align = 8)  buffer TileRanges    { uvec2    i[]; };      // @brief Range Buffer.
 
 /*****************************************************************************************/
 

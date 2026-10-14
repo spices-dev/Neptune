@@ -31,33 +31,40 @@ layout(push_constant) uniform Push
     RangePush push;
 };
 
+const uint NO_TILE = 0xFFFFFFFFu;             // Sentinel: differs from every real tile id.
+
+shared uint sTile[RADIX_ELEMS_PER_WG + 2u];   // sTile[s] = tile of element (wg * 1024 + s - 1).
+
 /**********************************Shader Entry*******************************************/
 
 void main()
 {
     uint n   = TileSortInfos(push.infoAddress).i[0].numElements;
-    uint idx = gl_GlobalInvocationID.x;
-    if (idx >= n) return;
+    uint tid = gl_LocalInvocationID.x;
+    uint wg  = gl_WorkGroupID.x;
+    
+    TileEntries e = TileEntries(push.sortedAddress);
+    TileRanges  r = TileRanges(push.rangeAddress);
 
-    TileEntries e  = TileEntries(push.sortedAddress);
-    TileRanges  r  = TileRanges(push.rangeAddress);
-
-    uint tile = uint(e.i[idx] >> TILE_SHIFT);
-    if (tile >= push.numTiles) return;
-
-    bool isRunStart = (idx == 0u);
-    if (!isRunStart)
+    for (uint s = tid; s < RADIX_ELEMS_PER_WG + 2u; s += 256u)
     {
-        isRunStart = uint(e.i[idx - 1u] >> TILE_SHIFT) != tile;
+        uint g = wg * RADIX_ELEMS_PER_WG + s;
+        sTile[s] = (g >= 1u && g - 1u < n) ? uint(e.i[g - 1u] >> TILE_SHIFT) : NO_TILE;
     }
-    if (isRunStart) r.i[tile].x = idx;
+    barrier();
 
-    bool isRunEnd = (idx == n - 1u);
-    if (!isRunEnd)
+    for (uint k = 0u; k < 4u; ++k)
     {
-        isRunEnd = uint(e.i[idx + 1u] >> TILE_SHIFT) != tile;
+        uint s   = k * 256u + tid + 1u;
+        uint idx = wg * RADIX_ELEMS_PER_WG + k * 256u + tid;
+        if (idx >= n) continue;
+        
+        uint tile = sTile[s];
+        if (tile >= push.numTiles) continue;
+            
+        if (sTile[s - 1u] != tile) r.i[tile].x = idx;
+        if (sTile[s + 1u] != tile) r.i[tile].y = idx + 1u;
     }
-    if (isRunEnd) r.i[tile].y = idx + 1u;
 }
 
 /*****************************************************************************************/
