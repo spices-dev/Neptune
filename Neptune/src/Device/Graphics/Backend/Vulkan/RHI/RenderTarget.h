@@ -11,6 +11,7 @@
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/Image.h"
+#include "Device/Graphics/Frontend/RHI/Buffer.h"
 #include "Device/Graphics/Frontend/RHI/RenderTarget.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/DescriptorSet.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/IImageLayout.h"
@@ -62,6 +63,15 @@ namespace Neptune::Vulkan {
 		*/
 		bool CopyToRenderTarget(const SP<RHI::RenderTarget>& target) override;
 
+		/**
+		* @brief Interface of Copy From Buffer.
+		*
+		* @param[in] buffer Buffer.
+		*
+		* @return Returns true if succeeded.
+		*/
+		bool CopyFromBuffer(const SP<RHI::Buffer>& buffer) override;
+		
 		/**
 		* @brief Interface of SetName.
 		*

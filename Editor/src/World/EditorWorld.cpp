@@ -95,8 +95,7 @@ namespace Neptune::Editor {
         }*/
         
         {
-            auto gs3d = CreateSP<SOP::GS3D>("C:/Users/spices/Downloads/flowers_1/flowers_1.ply");
-            //auto gs3d = CreateSP<SOP::GS3D>("C:/Users/spices/Downloads/Winter-Garden-view2.ply");
+            auto gs3d = CreateSP<SOP::GS3D>("C:/Users/spices/Downloads/Winter-Garden-view2.sog");
             gs3d->LoadFromDisk();
             
             auto entity = scene->Create("gs3d");

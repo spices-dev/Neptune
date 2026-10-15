@@ -19,6 +19,7 @@ namespace Neptune::Vulkan {
 		switch (f)
 		{
 			case TextureFormat::RGBA8_UNORM:               return VkFormat::VK_FORMAT_R8G8B8A8_UNORM;
+			case TextureFormat::RGBA8_UINT:                return VkFormat::VK_FORMAT_R8G8B8A8_UINT;
 			case TextureFormat::RGBA16_SFLOAT:             return VkFormat::VK_FORMAT_R16G16B16A16_SFLOAT;
 			case TextureFormat::R8_G8B8_2PLANE_420_UNORM:  return VkFormat::VK_FORMAT_G8_B8R8_2PLANE_420_UNORM;
 			default:
@@ -304,6 +305,7 @@ namespace Neptune::Vulkan {
 		switch (f)
 		{
 			case VkFormat::VK_FORMAT_R8G8B8A8_UNORM:                  return TextureFormat::RGBA8_UNORM;
+			case VkFormat::VK_FORMAT_R8G8B8A8_UINT:                  return TextureFormat::RGBA8_UINT;
 			case VkFormat::VK_FORMAT_R16G16B16A16_SFLOAT:             return TextureFormat::RGBA16_SFLOAT;
 			case VkFormat::VK_FORMAT_G8_B8R8_2PLANE_420_UNORM:        return TextureFormat::R8_G8B8_2PLANE_420_UNORM;
 			default:

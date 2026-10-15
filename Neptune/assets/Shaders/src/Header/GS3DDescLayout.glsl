@@ -34,94 +34,31 @@ layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Models
 mat4 model;
 
 /**
-* @brief Positions Buffer.
+* @brief MeansRanges Buffer.
 */
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Positions
+layout(buffer_reference, scalar, buffer_reference_align = 8) buffer MeansRanges
 {
     vec3 i[];
 };
-Positions positions;
+MeansRanges meansRanges;
 
 /**
-* @brief Colors Buffer.
+* @brief ScaleCodes Buffer.
 */
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Colors
-{
-    vec3 i[];
-};
-Colors colors;
-
-/**
-* @brief Alphas Buffer.
-*/
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Alphas
+layout(buffer_reference, scalar, buffer_reference_align = 8) buffer ScaleCodes
 {
     float i[];
 };
-Alphas alphas;
+ScaleCodes scaleCodes;
 
 /**
-* @brief Scales Buffer.
+* @brief Sh0Codes Buffer.
 */
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Scales
+layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Sh0Codes
 {
-    vec3 i[];
+    float i[];
 };
-Scales scales;
-
-/**
-* @brief Orientations Buffer.
-*/
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Orientations
-{
-    vec4 i[];
-};
-Orientations orientations;
-
-/**
-* @brief SPH_Rs Buffer.
-*/
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer SPH_Rs
-{
-    mat4 i[];
-};
-SPH_Rs sphrs;
-
-/**
-* @brief SPH_Gs Buffer.
-*/
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer SPH_Gs
-{
-    mat4 i[];
-};
-SPH_Gs sphgs;
-
-/**
-* @brief SPH_Bs Buffer.
-*/
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer SPH_Bs
-{
-    mat4 i[];
-};
-SPH_Bs sphbs;
-
-/**
-* @brief Normals Buffer.
-*/
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Normals
-{
-    vec3 i[];
-};
-Normals normals;
-
-/**
-* @brief Albedos Buffer.
-*/
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Albedos
-{
-    vec3 i[];
-};
-Albedos albedos;
+Sh0Codes sh0Codes;
 
 /*****************************************************************************************/
 
@@ -136,16 +73,9 @@ void ExplainGS3DDesciption(const in uint64_t gs3dDescAddress)
 {
     desc                = GS3DDescs(gs3dDescAddress).i[0];
     model               = Models(desc.modelAddress).i[0];
-    positions           = Positions(desc.positionsAddress);
-    colors              = Colors(desc.colorsAddress);
-    alphas              = Alphas(desc.alphasAddress);
-    scales              = Scales(desc.scalesAddress);
-    orientations        = Orientations(desc.orientationsAddress);
-    sphrs               = SPH_Rs(desc.sphrsAddress);
-    sphgs               = SPH_Gs(desc.sphgsAddress);
-    sphbs               = SPH_Bs(desc.sphbsAddress);
-    normals             = Normals(desc.normalsAddress);
-    albedos             = Albedos(desc.albedosAddress);
+    meansRanges         = MeansRanges(desc.meansRangesAddress);
+    scaleCodes          = ScaleCodes(desc.scaleCodesAddress);
+    sh0Codes            = Sh0Codes(desc.sh0CodesAddress);
 }
 
 /*****************************************************************************************/

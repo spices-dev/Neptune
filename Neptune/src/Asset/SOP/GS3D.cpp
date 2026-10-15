@@ -14,18 +14,15 @@ namespace Neptune::SOP
     {
         NEPTUNE_PROFILE_ZONE
         
-        Update_Attribute(positions)
-        Update_Attribute(colors)
-        Update_Attribute(alphas)
-        Update_Attribute(scales)
-        Update_Attribute(orientations)
+        Update_Attribute(meansRanges)
+        Update_Attribute(scaleCodes)
+        Update_Attribute(sh0Codes)
         
-        Update_Attribute(sphrs)
-        Update_Attribute(sphgs)
-        Update_Attribute(sphbs)
-        
-        Update_Attribute(normals)
-        Update_Attribute(albedos)
+        Update_Texture(means0, 0)
+        Update_Texture(means1, 1)
+        Update_Texture(scales, 2)
+        Update_Texture(quats,  3)
+        Update_Texture(sh0,    4)
         
         DescBase::UploadToDevice();
     }

@@ -19,6 +19,7 @@ namespace Neptune {
 	enum class TextureFormat : uint16_t
 	{
 		RGBA8_UNORM = 0,
+		RGBA8_UINT,
 		RGBA16_SFLOAT,
 		R8_G8B8_2PLANE_420_UNORM,
 

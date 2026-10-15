@@ -340,7 +340,7 @@ namespace Neptune::SOP {
 			return false;
 		}
 		
-		{
+		/*{
 			auto& positions = obj->m_Desc.positions.host;
 			
 			positions->resize(count);
@@ -398,7 +398,7 @@ namespace Neptune::SOP {
 		
 		obj->SetEObject(EObject::GS3D);
 		
-		obj->CreateRHIBuffer();
+		obj->CreateRHIBuffer();*/
 		
 		return true;
 	}

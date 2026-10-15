@@ -54,6 +54,8 @@ namespace Neptune {
 
 		bool CopyToRenderTarget(const SP<RenderTarget>& target) const;
 
+		bool CopyFromBuffer(const SP<class Buffer>& buffer) const;
+		
 	private:
 
 		std::string           m_Name;

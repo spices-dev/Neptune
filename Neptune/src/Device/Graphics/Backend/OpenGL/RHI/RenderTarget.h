@@ -11,6 +11,7 @@
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/OpenGL/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Backend/OpenGL/Resource/Texture.h"
+#include "Device/Graphics/Frontend/RHI/Buffer.h"
 #include "Device/Graphics/Frontend/RHI/RenderTarget.h"
 
 namespace Neptune::OpenGL {
@@ -60,6 +61,15 @@ namespace Neptune::OpenGL {
 		*/
 		bool CopyToRenderTarget(const SP<RHI::RenderTarget>& target) override;
 
+		/**
+		* @brief Interface of Copy From Buffer.
+		*
+		* @param[in] buffer Buffer.
+		*
+		* @return Returns true if succeeded.
+		*/
+		bool CopyFromBuffer(const SP<RHI::Buffer>& buffer) override;
+		
 		/**
 		* @brief Interface of SetName.
 		*

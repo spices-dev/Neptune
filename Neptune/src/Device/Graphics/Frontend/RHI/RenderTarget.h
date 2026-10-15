@@ -58,6 +58,15 @@ namespace Neptune::RHI {
 		* @return Returns true if succeeded.
 		*/
 		virtual bool CopyToRenderTarget(const SP<class RenderTarget>& target) = 0;
+		
+		/**
+		* @brief Interface of Copy From Buffer.
+		*
+		* @param[in] buffer Buffer.
+		*
+		* @return Returns true if succeeded.
+		*/
+		virtual bool CopyFromBuffer(const SP<class Buffer>& buffer) = 0;
 
 		/**
 		* @brief Interface of SetName.
@@ -127,6 +136,15 @@ namespace Neptune::RHI {
 		* @return Returns true if succeeded.
 		*/
 		bool CopyToRenderTarget(const SP<class RenderTarget>& target) const { return m_Impl->CopyToRenderTarget(target); }
+		
+		/**
+		* @brief Interface of Copy From Buffer.
+		*
+		* @param[in] buffer Buffer.
+		*
+		* @return Returns true if succeeded.
+		*/
+		bool CopyFromBuffer(const SP<class Buffer>& buffer) const { return m_Impl->CopyFromBuffer(buffer); }
 
 		/**
 		* @brief Interface of SetName.

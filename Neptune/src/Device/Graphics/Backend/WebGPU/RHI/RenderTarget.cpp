@@ -11,6 +11,7 @@
 #include "RenderTarget.h"
 #include "Device/Graphics/Backend/WebGPU/Converter.h"
 #include "Device/Graphics/Backend/WebGPU/RHI/CmdList2.h"
+#include "Device/Graphics/Backend/WebGPU/RHI/Buffer.h"
 
 namespace Neptune::WebGPU {
 
@@ -37,6 +38,15 @@ namespace Neptune::WebGPU {
 		return CopyToRenderTarget(rhi);
 	}
 
+	bool RenderTarget::CopyFromBuffer(const SP<RHI::Buffer>& buffer)
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		auto rhi = target->GetRHIImpl<Buffer>();
+
+		return true;
+	}
+	
 	void RenderTarget::SetName(const std::string& name)
 	{
 		NEPTUNE_PROFILE_ZONE

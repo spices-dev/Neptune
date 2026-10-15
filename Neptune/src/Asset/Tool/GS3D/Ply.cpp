@@ -182,7 +182,7 @@ namespace Neptune::Tool {
     ) {
         NEPTUNE_PROFILE_ZONE
         
-        {
+        /*{
             auto& positions = obj->m_Desc.positions.host;
 			
             positions->resize(p->count);
@@ -343,7 +343,7 @@ namespace Neptune::Tool {
             albedos->resize(p->count);
             
             memcpy(albedos->data(), obj->m_Desc.colors.host->data(), f_dc->buffer.size_bytes());
-        }
+        }*/
         
         return true;
     }

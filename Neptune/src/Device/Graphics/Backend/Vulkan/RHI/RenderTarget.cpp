@@ -9,6 +9,7 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "RenderTarget.h"
+#include "Buffer.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/PhysicalDevice.h"
 #include "Device/Graphics/Backend/Vulkan/Converter.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/CmdList2.h"
@@ -59,6 +60,69 @@ namespace Neptune::Vulkan {
 		auto rhi = target->GetRHIImpl<RenderTarget>();
 
 		return CopyToRenderTarget(rhi);
+	}
+	
+	bool RenderTarget::CopyFromBuffer(const SP<RHI::Buffer>& buffer)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		auto rhi = buffer->GetRHIImpl<Buffer>();
+		
+		CmdList2 cmdList(GetContext());
+
+		cmdList.SetGraphicCmdList();
+
+        cmdList.Begin();
+
+		if (m_Image->GetFormat() == VK_FORMAT_G8_B8R8_2PLANE_420_UNORM)
+		{
+			NEPTUNE_LOG_CORE(E) << "CopyToRenderTarget with YUV format do dot support.";
+			
+			return false;
+		}
+
+		VkBufferImageCopy                                     region{};
+		region.bufferOffset                                 = 0;
+		region.bufferRowLength                              = 0;
+		region.bufferImageHeight                            = 0;
+		region.imageSubresource.aspectMask                  = VK_IMAGE_ASPECT_COLOR_BIT;
+		region.imageSubresource.mipLevel                    = 0;
+		region.imageSubresource.baseArrayLayer              = 0;
+		region.imageSubresource.layerCount                  = m_Image->GetLayerCount();
+		region.imageOffset                                  = { 0, 0, 0 };
+		region.imageExtent                                  = { m_Image->Width(), m_Image->Height(), 1 };
+
+		{
+			Graphic::ImageBarrierDesc           desc{};
+			desc.memoryDesc.srcAccess         = Graphic::EPipelineAccess::ShaderRead;
+			desc.memoryDesc.dstAccess         = Graphic::EPipelineAccess::TransferWrite;
+			desc.memoryDesc.srcStage          = Graphic::EPipelineStage::FragmentShader;
+			desc.memoryDesc.dstStage          = Graphic::EPipelineStage::Transfer;
+			desc.srcLayout                    = Graphic::EImageLayout::ShaderRead;
+			desc.dstLayout                    = Graphic::EImageLayout::TransferDst;
+			
+			cmdList.CmdInsertBarrier(m_Image->Handle(), desc);
+		}
+
+		cmdList.CopyBufferToImage(rhi->Handle(), m_Image->Handle(), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, region);
+
+		{
+			Graphic::ImageBarrierDesc           desc{};
+			desc.memoryDesc.srcAccess         = Graphic::EPipelineAccess::TransferWrite;
+			desc.memoryDesc.dstAccess         = Graphic::EPipelineAccess::ShaderRead;
+			desc.memoryDesc.srcStage          = Graphic::EPipelineStage::Transfer;
+			desc.memoryDesc.dstStage          = Graphic::EPipelineStage::FragmentShader;
+			desc.srcLayout                    = Graphic::EImageLayout::TransferDst;
+			desc.dstLayout                    = Graphic::EImageLayout::ShaderRead;
+        
+			cmdList.CmdInsertBarrier(m_Image->Handle(), desc);
+		}
+
+        cmdList.End();
+
+        cmdList.SubmitWait();
+
+		return true;
 	}
 
 	void RenderTarget::SetName(const std::string& name)
@@ -279,8 +343,16 @@ namespace Neptune::Vulkan {
 			
 			VkSamplerCreateInfo                                createInfo{};
 			createInfo.sType                                 = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-			createInfo.magFilter                             = VK_FILTER_LINEAR;
-			createInfo.minFilter                             = VK_FILTER_LINEAR;
+			if (info.format == TextureFormat::RGBA8_UINT)
+			{
+				createInfo.magFilter                         = VK_FILTER_NEAREST;
+				createInfo.minFilter                         = VK_FILTER_NEAREST;
+			}
+			else
+			{
+				createInfo.magFilter                         = VK_FILTER_LINEAR;
+				createInfo.minFilter                         = VK_FILTER_LINEAR;
+			}
 			createInfo.addressModeU                          = VK_SAMPLER_ADDRESS_MODE_REPEAT;
 			createInfo.addressModeV                          = VK_SAMPLER_ADDRESS_MODE_REPEAT;
 			createInfo.addressModeW                          = VK_SAMPLER_ADDRESS_MODE_REPEAT;

@@ -242,6 +242,16 @@ namespace Neptune::Vulkan {
 		* @param[in] region VkBufferCopy.
 		*/
 		void CmdCopyBuffer(VkBuffer src, VkBuffer dst, const VkBufferCopy& region) const;
+		
+		/**
+		* @brief Copy Buffer to Image.
+		*
+		* @param[in] src VkBuffer.
+		* @param[in] dst VkImage.
+		* @param[in] dstImageLayout VkImageLayout.
+		* @param[in] region VkBufferImageCopy.
+		*/
+		void CopyBufferToImage(VkBuffer src, VkImage dst, VkImageLayout dstImageLayout, const VkBufferImageCopy& region) const;
 
 		/**
 		* @brief Insert Barrier.

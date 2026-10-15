@@ -8,12 +8,14 @@
 #include "GS3D.h"
 #include "Asset/SOP/GS3D.h"
 #include "Ply.h"
+#include "Sog.h"
 
 namespace Neptune::Tool {
 
     namespace {
         
         constexpr char kPly[]     = ".ply";           // @brief Ply identify.
+        constexpr char kSog[]     = ".sog";           // @brief Sog identify.
     }
     
     bool GS3D::Load(const std::filesystem::path& file, SOP::Object* obj)
@@ -32,6 +34,11 @@ namespace Neptune::Tool {
         if (std::strncmp(file.extension().string().c_str(), kPly, sizeof(kPly)) == 0)
         {
             return Ply::Load(file, static_cast<SOP::GS3D*>(obj));
+        }
+        
+        if (std::strncmp(file.extension().string().c_str(), kSog, sizeof(kSog)) == 0)
+        {
+            return Sog::Load(file, static_cast<SOP::GS3D*>(obj));
         }
         
         NEPTUNE_LOG_CORE(E) << "File: [ " << file << " ] has an unknown extension: " << file.extension().string();

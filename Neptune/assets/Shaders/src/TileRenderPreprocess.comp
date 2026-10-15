@@ -27,6 +27,12 @@ layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
 
 /********************************Descriptor List******************************************/
 
+layout(set = 1, binding = 0) uniform usampler2D means0Image;
+layout(set = 1, binding = 1) uniform usampler2D means1Image;
+layout(set = 1, binding = 2) uniform usampler2D scalesImage;
+layout(set = 1, binding = 3) uniform usampler2D quatsImage;
+layout(set = 1, binding = 4) uniform usampler2D sh0Image;
+
 /**
 * @brief push constant.
 */
@@ -35,57 +41,11 @@ layout(push_constant) uniform Push
     PreProcessPush push;
 };
 
+const float SH_C0 = 0.28209479177387814;
+        
 /*****************************************************************************************/
 
 /******************************************Functions**************************************/
-        
-void EvalSHBasis(vec3 dir, out float basis[16])
-{
-    float x = dir.x, y = dir.y, z = dir.z;
-    
-    basis[0] =  0.28209479177387814;
-    
-    basis[1] = -0.4886025119029199 * y;
-    basis[2] =  0.4886025119029199 * z;
-    basis[3] = -0.4886025119029199 * x;
-    
-    float xx = x * x, yy = y * y, zz = z * z;
-    float xy = x * y, yz = y * z, xz = x * z;
-    
-    basis[4] =  1.0925484305920792  * xy;
-    basis[5] = -1.0925484305920792  * yz;
-    basis[6] =  0.31539156525252005 * (2.0 * zz - xx - yy);
-    basis[7] = -1.0925484305920792  * xz;
-    basis[8] =  0.5462742152960396  * (xx - yy);
-    
-    basis[9]  = -0.5900435899266435 * y * (3.0 * xx - yy);
-    basis[10] =  2.890611442640554  * xy * z;
-    basis[11] = -0.4570457994644658 * y * (4.0 * zz - xx - yy);
-    basis[12] =  0.3731763325901154 * z * (2.0 * zz - 3.0 * xx - 3.0 * yy);
-    basis[13] = -0.4570457994644658 * x * (4.0 * zz - xx - yy);
-    basis[14] =  1.445305721320277  * z * (xx - yy);
-    basis[15] = -0.5900435899266435 * x * (xx - 3.0 * yy);
-}
-
-float GetSHCoeff(mat4 m, int idx)
-{
-    return m[idx / 4][idx % 4];
-}
-
-vec3 EvalSH(vec3 dir, mat4 shR, mat4 shG, mat4 shB)
-{
-    float basis[16];
-    EvalSHBasis(dir, basis);
-    
-    vec3 color = vec3(0.0);
-    for (int i = 0; i < 16; ++i)
-    {
-        color += vec3(GetSHCoeff(shR, i), GetSHCoeff(shG, i), GetSHCoeff(shB, i)) * basis[i];
-    }
-    
-    color += 0.5;
-    return max(color, vec3(0.0));
-}
 
 bool TileOverlaps(ivec2 t, vec2 c, vec2 a1, float r1, vec2 a2, float r2)
 {
@@ -96,6 +56,33 @@ bool TileOverlaps(ivec2 t, vec2 c, vec2 a1, float r1, vec2 a2, float r2)
     return true;
 }
 
+vec4 unpackSmallestThree(uint r, uint g, uint b, uint a) 
+{
+    int maxComp = int(a) - 252;
+    float scaleFactor = 1.0 / sqrt(2.0);
+    
+    float v0 = (float(r) / 255.0) * 2.0 - 1.0;
+    float v1 = (float(g) / 255.0) * 2.0 - 1.0;
+    float v2 = (float(b) / 255.0) * 2.0 - 1.0;
+    
+    vec4 q = vec4(0.0);
+    int idx[4][3] = int[4][3](
+                        int[3](1, 2, 3),
+                        int[3](0, 2, 3),
+                        int[3](0, 1, 3),
+                        int[3](0, 1, 2)
+                    );
+    
+    q[idx[maxComp][0]] = v0 * scaleFactor;
+    q[idx[maxComp][1]] = v1 * scaleFactor;
+    q[idx[maxComp][2]] = v2 * scaleFactor;
+    
+    float sumSq = q.x*q.x + q.y*q.y + q.z*q.z + q.w*q.w;
+    q[maxComp] = sqrt(max(0.0, 1.0 - sumSq));
+    
+    return q;
+}
+
 /*****************************************************************************************/
 
 /**********************************Shader Entry*******************************************/
@@ -104,8 +91,9 @@ void main()
 {
     ExplainGS3DDesciption(push.descAddress);
 
-    uint gid   = gl_GlobalInvocationID.x;
-    bool alive = gid < push.gsCount;
+    uint gid    = gl_GlobalInvocationID.x;
+    bool alive  = gid < push.gsCount;
+    ivec2 texel = ivec2(gid % push.imageWidth, gid / push.imageWidth);
 
     float opacity = 0.0;
     vec3  pos     = vec3(0.0);
@@ -114,10 +102,26 @@ void main()
 
     if (alive)
     {
-        opacity = alphas.i[gid];
-        pos     = positions.i[gid];
-        scale   = scales.i[gid];
-        quat    = orientations.i[gid];
+        uvec4 l = texelFetch(means0Image, texel, 0);
+        uvec4 h = texelFetch(means1Image, texel, 0);
+            
+        uint qx = (h.r << 8) | l.r;
+        uint qy = (h.g << 8) | l.g;
+        uint qz = (h.b << 8) | l.b;
+            
+        vec3 n  = meansRanges.i[0] + (meansRanges.i[1] - meansRanges.i[0]) * (vec3(qx, qy, qz) / 65535.0);
+            pos = sign(n) * (exp(abs(n)) - 1.0);
+
+        uvec4 idx  = texelFetch(scalesImage, texel, 0);
+             scale = exp(vec3(scaleCodes.i[idx.r], scaleCodes.i[idx.g], scaleCodes.i[idx.b]));
+
+        uvec4 qRaw = texelFetch(quatsImage, texel, 0);
+        quat = unpackSmallestThree(qRaw.r, qRaw.g, qRaw.b, qRaw.a);
+
+        uvec4 sh0Raw = texelFetch(sh0Image, texel, 0);
+        float opacityQuantized = float(sh0Raw.a) / 255.0;
+        opacity = log(opacityQuantized / (1.0 - opacityQuantized));
+            
         alive   = opacity >= 1.0 / 255.0;
     }
 
@@ -187,7 +191,16 @@ void main()
                             if (TileOverlaps(ivec2(tx, ty), center, majorAxis, r1, minorAxis, r2)) ++count;
                 }
                     
-                if (count > 0u) color = colors.i[gid];//EvalSH(normalize(worldPos - view.inView[3].xyz), sphrs.i[gid], sphgs.i[gid], sphbs.i[gid]);
+                if (count > 0u)
+                {
+                    uvec4 sh0Raw = texelFetch(sh0Image, texel, 0);
+
+                    float rDC = sh0Codes.i[sh0Raw.r];
+                    float gDC = sh0Codes.i[sh0Raw.g];
+                    float bDC = sh0Codes.i[sh0Raw.b];
+                        
+                    vec3 color = vec3(0.5) + vec3(rDC, gDC, bDC) * SH_C0;
+                }
             }
         }
     }

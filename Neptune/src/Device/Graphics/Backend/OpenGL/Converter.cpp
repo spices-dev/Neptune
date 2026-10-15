@@ -58,6 +58,7 @@ namespace Neptune::OpenGL {
 		switch (f)
 		{
 			case RGBA8_UNORM:                    return GL_RGBA8;
+			case RGBA8_UINT:                     return GL_RGBA8UI;
 			case RGBA16_SFLOAT:                  return GL_RGBA16F;
 			default:
 			{

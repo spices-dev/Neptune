@@ -377,6 +377,13 @@ namespace Neptune::Vulkan::Unit {
 		
 		vkCmdCopyBuffer(m_Handle, src, dst, 1, &region);
 	}
+	
+	void CommandBuffer::CopyBufferToImage(VkBuffer src, VkImage dst, VkImageLayout dstImageLayout, const VkBufferImageCopy& region) const
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		vkCmdCopyBufferToImage(m_Handle, src, dst, dstImageLayout, 1, &region);
+	}
 
 	void CommandBuffer::BeginQuery(VkQueryPool pool, uint32_t index, VkQueryControlFlags flag) const
 	{

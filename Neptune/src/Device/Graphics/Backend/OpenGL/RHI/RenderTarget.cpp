@@ -34,6 +34,13 @@ namespace Neptune::OpenGL {
 		return false;
 	}
 
+	bool RenderTarget::CopyFromBuffer(const SP<RHI::Buffer>& buffer)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		return false;
+	}
+	
 	void RenderTarget::SetName(const std::string& name)
 	{
 		NEPTUNE_PROFILE_ZONE

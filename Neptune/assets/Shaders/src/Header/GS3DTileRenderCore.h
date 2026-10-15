@@ -50,17 +50,15 @@ const uint  MAXTILES                  = MAXTILESX * MAXTILESY;                  
 struct GS3DDesc
 {
 	uint64_t modelAddress;                    /* @brief Address of the Model Matrix.                      */
-	uint64_t positionsAddress;                /* @brief Address of the Positions buffer.                  */
-	uint64_t colorsAddress;                   /* @brief Address of the Colors buffer.                     */
-	uint64_t alphasAddress;                   /* @brief Address of the Alphas buffer.                     */
-	uint64_t scalesAddress;                   /* @brief Address of the Scales buffer.                     */
-	uint64_t orientationsAddress;             /* @brief Address of the Orientations buffer.               */
-	uint64_t sphrsAddress;                    /* @brief Address of the SPH_Rs buffer.                     */
-	uint64_t sphgsAddress;                    /* @brief Address of the SPH_Gs buffer.                     */
-	uint64_t sphbsAddress;                    /* @brief Address of the SPH_Bs buffer.                     */
-	uint64_t normalsAddress;                  /* @brief Address of the Normals buffer.                    */
-	uint64_t albedosAddress;                  /* @brief Address of the Albedos buffer.                    */
-	uint64_t entityID;                        /* @brief EntityId, cast from entt::entity.                 */
+    uint64_t meansRangesAddress;              /* @brief Address of meansRanges Buffer.                    */
+    uint64_t scaleCodesAddress;               /* @brief Address of ScaleCodes Buffer.                     */
+    uint64_t sh0CodesAddress;                 /* @brief Address of sh0Codes Buffer.                       */
+	uint     means0Address;                   /* @brief Address of the Positions Texture.                 */
+	uint     means1Address;                   /* @brief Address of the Positions Texture.                 */
+	uint     scalesAddress;                   /* @brief Address of the Scales Texture.                    */
+	uint     quatsAddress;                    /* @brief Address of the Orientations Texture.              */
+	uint     sh0Address;                      /* @brief Address of the SH Texture.                        */
+	uint     entityID;                        /* @brief EntityId, cast from entt::entity.                 */
 };
 
 /*****************************************************************************************/
@@ -105,6 +103,7 @@ struct PreProcessPush
     uint64_t infoAddress;         // @brief TileSortInfo Buffer Address.
     uint64_t descAddress;         // @brief GS3DDesc Buffer Address.
     uint     gsCount;             // @brief GS Count.
+    uint     imageWidth;          // @brief GS imageWidth.
     uint     tilesX;              // @brief Tiles in X.
     uint     tilesY;              // @brief Tiles in Y.
 };

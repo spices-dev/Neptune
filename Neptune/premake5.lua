@@ -37,9 +37,6 @@ solution.DefineCppStaticLibrary("Neptune", function()
 
 		-- Library: IconFontCppHeaders Files.
 		"vendor/IconFontCppHeaders/**.h",
-
-		-- Library: miniz Files.
-		"vendor/miniz/miniz.c",
 	}
 
 	-- Macros Definitions
@@ -96,10 +93,6 @@ solution.DefineCppStaticLibrary("Neptune", function()
 
 	-- Library: ImGuizmo is included this solution, do not use PreCompiler Header.
 	filter "files:vendor/ImGuizmo/**.cpp"
-		enablepch "Off"
-
-	-- Library: miniz is included this solution, do not use PreCompiler Header.
-	filter "files:vendor/miniz/**.c"
 		enablepch "Off"
 
 	-- Platform: Windows
@@ -314,6 +307,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 			"yaml-cpp",                                                    -- Dependency: yaml-cpp
 			"implot",                                                      -- Dependency: implot
 			"libwebp",                                                     -- Dependency: libwebp
+			"miniz",                                                       -- Dependency: miniz
 		}
 
 		-- Platform: Windows

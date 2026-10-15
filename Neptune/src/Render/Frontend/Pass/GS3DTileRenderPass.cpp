@@ -82,6 +82,11 @@ namespace Neptune::Render {
 			{
 				m_PreProcessDescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
 				m_PreProcessDescriptorList.Get(i)->AddShaderConstant(sizeof(PreProcessPush));
+				m_PreProcessDescriptorList.Get(i)->AddUniformTexture(1, 0, ResourcePool<RenderTarget>::Instance().Access("CurrDecodeRT")->GetRHIResource());
+				m_PreProcessDescriptorList.Get(i)->AddUniformTexture(1, 1, ResourcePool<RenderTarget>::Instance().Access("CurrDecodeRT")->GetRHIResource());
+				m_PreProcessDescriptorList.Get(i)->AddUniformTexture(1, 2, ResourcePool<RenderTarget>::Instance().Access("CurrDecodeRT")->GetRHIResource());
+				m_PreProcessDescriptorList.Get(i)->AddUniformTexture(1, 3, ResourcePool<RenderTarget>::Instance().Access("CurrDecodeRT")->GetRHIResource());
+				m_PreProcessDescriptorList.Get(i)->AddUniformTexture(1, 4, ResourcePool<RenderTarget>::Instance().Access("CurrDecodeRT")->GetRHIResource());
 				m_PreProcessDescriptorList.Get(i)->CombineSharedLayout();
 				m_PreProcessDescriptorList.Get(i)->Build();
 			}
@@ -275,12 +280,19 @@ namespace Neptune::Render {
 		cmdList.CmdFillBuffer(m_RangeBuffer.Get(frame), 0, static_cast<uint64_t>(MAXTILES) * 8, 0);
 		
 		{
+			m_PreProcessDescriptorList.Get(frame)->UpdateUniformTexture(1, 0, item->GetDesc().means_0->GetRHIResource());
+			m_PreProcessDescriptorList.Get(frame)->UpdateUniformTexture(1, 1, item->GetDesc().means_1->GetRHIResource());
+			m_PreProcessDescriptorList.Get(frame)->UpdateUniformTexture(1, 2, item->GetDesc().scales->GetRHIResource());
+			m_PreProcessDescriptorList.Get(frame)->UpdateUniformTexture(1, 3, item->GetDesc().quats->GetRHIResource());
+			m_PreProcessDescriptorList.Get(frame)->UpdateUniformTexture(1, 4, item->GetDesc().sh0->GetRHIResource());
+			
 			PreProcessPush                   push{};
 			push.splatAddress              = splatAddr;
 			push.entryAddress              = entryAAddr;
 			push.infoAddress               = infoAddr;
 			push.descAddress               = item->GetDescDeviceAddress();
 			push.gsCount                   = gsCount;
+			push.imageWidth                = item->GetDesc().means_0->GetRHIResource()->GetWidth();
 			push.tilesX                    = tilesX;
 			push.tilesY                    = tilesY;
 			

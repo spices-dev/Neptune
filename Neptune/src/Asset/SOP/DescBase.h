@@ -25,6 +25,11 @@ namespace Neptune::SOP {
 		(*desc.host)[0].item##Address = item.device->GetDeviceAddress();         \
 	}
 	
+#define Update_Texture(item, position)                                           \
+	{                                                                            \
+		(*desc.host)[0].item##Address = position;                                \
+	}
+	
 #define Update_Desc(item)                                                        \
 	{                                                                            \
 		using Item = Decay<decltype(item)>;                                      \

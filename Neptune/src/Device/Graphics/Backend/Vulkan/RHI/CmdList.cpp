@@ -253,6 +253,13 @@ namespace Neptune::Vulkan {
 
 		m_CommandBuffer->CopyBuffer(src, dst, region);
 	}
+	
+	void CmdList::CopyBufferToImage(VkBuffer src, VkImage dst, VkImageLayout dstImageLayout, const VkBufferImageCopy& region) const
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		m_CommandBuffer->CopyBufferToImage(src, dst, dstImageLayout, region);
+	}
 
 	void CmdList::CmdInsertBarrier(VkImage image, const Graphic::ImageBarrierDesc& desc) const
 	{

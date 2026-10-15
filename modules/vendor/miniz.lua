@@ -22,4 +22,7 @@ module.library_dirs = {}
 -- Library Dependencies
 module.libraries = {}
 
+-- Project
+module.project = solution_root .. "/Neptune/vendor/miniz"
+
 return module

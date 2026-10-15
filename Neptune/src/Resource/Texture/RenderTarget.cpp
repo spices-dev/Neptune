@@ -1,5 +1,6 @@
 #include "Pchheader.h"
 #include "RenderTarget.h"
+#include "Resource/Buffer/Buffer.h"
 #include "Device/Graphics/Frontend/RHI/RenderTarget.h"
 
 namespace Neptune {
@@ -28,5 +29,10 @@ namespace Neptune {
 	bool RenderTarget::CopyToRenderTarget(const SP<RenderTarget>& target) const
 	{
 		return m_RHIResource->CopyToRenderTarget(target->GetRHIResource());
+	}
+	
+	bool RenderTarget::CopyFromBuffer(const SP<Buffer>& buffer) const
+	{
+		return m_RHIResource->CopyFromBuffer(buffer->GetRHIResource());
 	}
 }

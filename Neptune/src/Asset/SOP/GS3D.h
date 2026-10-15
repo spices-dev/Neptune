@@ -9,10 +9,11 @@
 #include "DescBase.h"
 #include "Object.h"
 #include "Header/GS3DTileRenderCore.h"
+#include "Resource/Texture/RenderTarget.h"
 
 namespace Neptune::Tool {
 	
-	class Ply;
+	class Sog;
 }
 
 namespace Neptune::SOP {
@@ -37,31 +38,19 @@ namespace Neptune::SOP {
 		*/
 		void UploadToDevice() override;
 		
-		using Positions           = Attribute<glm::vec3>;               
-		using Colors              = Attribute<glm::vec3>;               
-		using Alphas              = Attribute<float>;
-		using Scales              = Attribute<glm::vec3>;               
-		using Orientations        = Attribute<glm::vec4>;   
+		using MeansRanges          = Attribute<glm::vec3>;    
+		using ScaleCodes           = Attribute<float>;    
+		using Sh0Codes             = Attribute<float>;    
 
-		using SPH_R               = Attribute<glm::mat4>;      
-		using SPH_G               = Attribute<glm::mat4>;      
-		using SPH_B               = Attribute<glm::mat4>;      
-
-		using Normals             = Attribute<glm::vec3>;  
-		using Albedos             = Attribute<glm::vec3>;
+		MeansRanges                        meansRanges;                       // @brief MeansRanges.
+		ScaleCodes                         scaleCodes;                        // @brief ScaleCodes.
+		Sh0Codes                           sh0Codes;                          // @brief Sh0Codes.
 		
-		Positions                   positions;                           // @brief Position.
-		Colors                      colors;                              // @brief Color.
-		Alphas                      alphas;                              // @brief Alpha.
-		Scales                      scales;                              // @brief Scale.
-		Orientations                orientations;                        // @brief Orientation.
-		
-		SPH_R                       sphrs;                               // @brief SPH_R.
-		SPH_G                       sphgs;                               // @brief SPH_G.
-		SPH_B                       sphbs;                               // @brief SPH_B.
-		
-		Normals                     normals;                             // @brief Normal.
-		Albedos                     albedos;                             // @brief Albedo.
+		SP<RenderTarget>                   means_0;                           // @brief Position.
+		SP<RenderTarget>                   means_1;                           // @brief Position.
+		SP<RenderTarget>                   scales;                            // @brief Scale.
+		SP<RenderTarget>                   quats;                             // @brief Orientation.
+		SP<RenderTarget>                   sh0;                               // @brief SH.
 	};
 	
 	/**
@@ -100,7 +89,14 @@ namespace Neptune::SOP {
 		* 
 		* @return Returns Point Count.
 		*/
-		uint32_t GetPointCount() const { return static_cast<uint32_t>(m_Desc.positions.host->size()); }
+		uint32_t GetPointCount() const { return m_Count; }
+		
+		/**
+		* @brief Get GS3DDesc.
+		* 
+		* @return Returns GS3DDesc.
+		*/
+		const GS3DDesc& GetDesc() const { return m_Desc; }
 		
 		/**
 		* @brief Get Desc Device Address.
@@ -111,9 +107,10 @@ namespace Neptune::SOP {
 		
 	private:
 
-		GS3DDesc m_Desc{};   // @brief GS3D Description.
+		GS3DDesc m_Desc{};       // @brief GS3D Description.
+		uint32_t m_Count = 0;    // @brief GS3D Count.
 		
 		friend class Loader;
-		friend class Tool::Ply;
+		friend class Tool::Sog;
 	};
 }
