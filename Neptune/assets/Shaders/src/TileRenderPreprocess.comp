@@ -56,30 +56,27 @@ bool TileOverlaps(ivec2 t, vec2 c, vec2 a1, float r1, vec2 a2, float r2)
     return true;
 }
 
-vec4 unpackSmallestThree(uint r, uint g, uint b, uint a) 
+vec4 unpackSmallestThree(uint r, uint g, uint b, uint a)
 {
     int maxComp = int(a) - 252;
-    float scaleFactor = 1.0 / sqrt(2.0);
-    
-    float v0 = (float(r) / 255.0) * 2.0 - 1.0;
-    float v1 = (float(g) / 255.0) * 2.0 - 1.0;
-    float v2 = (float(b) / 255.0) * 2.0 - 1.0;
+
+    float invSqrt2 = 1.0 / sqrt(2.0);
+    float v0 = (float(r) / 255.0 * 2.0 - 1.0) * invSqrt2;
+    float v1 = (float(g) / 255.0 * 2.0 - 1.0) * invSqrt2;
+    float v2 = (float(b) / 255.0 * 2.0 - 1.0) * invSqrt2;
+        
+    float sumSq = v0*v0 + v1*v1 + v2*v2;
+    float omitted = sqrt(max(0.0, 1.0 - sumSq));
     
     vec4 q = vec4(0.0);
-    int idx[4][3] = int[4][3](
-                        int[3](1, 2, 3),
-                        int[3](0, 2, 3),
-                        int[3](0, 1, 3),
-                        int[3](0, 1, 2)
-                    );
-    
-    q[idx[maxComp][0]] = v0 * scaleFactor;
-    q[idx[maxComp][1]] = v1 * scaleFactor;
-    q[idx[maxComp][2]] = v2 * scaleFactor;
-    
-    float sumSq = q.x*q.x + q.y*q.y + q.z*q.z + q.w*q.w;
-    q[maxComp] = sqrt(max(0.0, 1.0 - sumSq));
-    
+    switch (maxComp) 
+    {
+        case 0: q = vec4(v0, v1, v2, omitted); break;
+        case 1: q = vec4(omitted, v1, v2, v0); break;
+        case 2: q = vec4(v1, omitted, v2, v0); break;
+        case 3: q = vec4(v1, v2, omitted, v0); break;
+        default: q = vec4(0.0, 0.0, 0.0, 1.0); break;
+    }
     return q;
 }
 
@@ -113,14 +110,13 @@ void main()
             pos = sign(n) * (exp(abs(n)) - 1.0);
 
         uvec4 idx  = texelFetch(scalesImage, texel, 0);
-             scale = exp(vec3(scaleCodes.i[idx.r], scaleCodes.i[idx.g], scaleCodes.i[idx.b]));
+             scale = exp(vec3(scaleCodes.i[int(idx.r)], scaleCodes.i[int(idx.g)], scaleCodes.i[int(idx.b)]));
 
         uvec4 qRaw = texelFetch(quatsImage, texel, 0);
         quat = unpackSmallestThree(qRaw.r, qRaw.g, qRaw.b, qRaw.a);
 
         uvec4 sh0Raw = texelFetch(sh0Image, texel, 0);
-        float opacityQuantized = float(sh0Raw.a) / 255.0;
-        opacity = log(opacityQuantized / (1.0 - opacityQuantized));
+        opacity = float(sh0Raw.a) / 255.0;
             
         alive   = opacity >= 1.0 / 255.0;
     }
@@ -195,11 +191,11 @@ void main()
                 {
                     uvec4 sh0Raw = texelFetch(sh0Image, texel, 0);
 
-                    float rDC = sh0Codes.i[sh0Raw.r];
-                    float gDC = sh0Codes.i[sh0Raw.g];
-                    float bDC = sh0Codes.i[sh0Raw.b];
+                    float rDC = sh0Codes.i[int(sh0Raw.r)];
+                    float gDC = sh0Codes.i[int(sh0Raw.g)];
+                    float bDC = sh0Codes.i[int(sh0Raw.b)];
                         
-                    vec3 color = vec3(0.5) + vec3(rDC, gDC, bDC) * SH_C0;
+                    color = vec3(0.5) + vec3(rDC, gDC, bDC) * SH_C0;
                 }
             }
         }

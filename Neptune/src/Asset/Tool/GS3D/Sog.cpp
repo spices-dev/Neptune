@@ -45,10 +45,10 @@ namespace Neptune::Tool {
         auto sh0_img    = DecodeWebp(files[meta["sh0"]["files"][0].get<std::string>()]);
         
         means_l->SetName("means_0");
-        means_l->SetName("means_1");
-        means_l->SetName("scales");
-        means_l->SetName("quats");
-        means_l->SetName("sh0");
+        means_u->SetName("means_1");
+        scales_img->SetName("scales");
+        quats_img->SetName("quats");
+        sh0_img->SetName("sh0");
 
         obj->m_Count        = meta["count"];
         
@@ -59,11 +59,11 @@ namespace Neptune::Tool {
             
         auto& scaleCodes = *obj->m_Desc.scaleCodes.host;
         scaleCodes.resize(scale_codebook.size());
-        std::memcpy(scaleCodes.data(), scale_codebook.data(), scale_codebook.size());
+        std::memcpy(scaleCodes.data(), scale_codebook.data(), scale_codebook.size() * sizeof(float));
         
         auto& sh0Codes = *obj->m_Desc.sh0Codes.host;
         sh0Codes.resize(sh0_codebook.size());
-        std::memcpy(sh0Codes.data(), sh0_codebook.data(), sh0_codebook.size());
+        std::memcpy(sh0Codes.data(), sh0_codebook.data(), sh0_codebook.size() * sizeof(float));
         
         obj->m_Desc.means_0 = means_l;
         obj->m_Desc.means_1 = means_u;

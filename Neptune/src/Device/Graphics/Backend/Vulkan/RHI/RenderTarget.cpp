@@ -94,24 +94,24 @@ namespace Neptune::Vulkan {
 
 		{
 			Graphic::ImageBarrierDesc           desc{};
-			desc.memoryDesc.srcAccess         = Graphic::EPipelineAccess::ShaderRead;
+			desc.memoryDesc.srcAccess         = Graphic::EPipelineAccess::None;
 			desc.memoryDesc.dstAccess         = Graphic::EPipelineAccess::TransferWrite;
-			desc.memoryDesc.srcStage          = Graphic::EPipelineStage::FragmentShader;
+			desc.memoryDesc.srcStage          = Graphic::EPipelineStage::TopPipeline;
 			desc.memoryDesc.dstStage          = Graphic::EPipelineStage::Transfer;
-			desc.srcLayout                    = Graphic::EImageLayout::ShaderRead;
+			desc.srcLayout                    = Graphic::EImageLayout::Undefined;
 			desc.dstLayout                    = Graphic::EImageLayout::TransferDst;
 			
 			cmdList.CmdInsertBarrier(m_Image->Handle(), desc);
 		}
 
-		cmdList.CopyBufferToImage(rhi->Handle(), m_Image->Handle(), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, region);
+		cmdList.CopyBufferToImage(rhi->Handle(), m_Image->Handle(), m_ImageLayout->From(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL), region);
 
 		{
 			Graphic::ImageBarrierDesc           desc{};
 			desc.memoryDesc.srcAccess         = Graphic::EPipelineAccess::TransferWrite;
-			desc.memoryDesc.dstAccess         = Graphic::EPipelineAccess::ShaderRead;
+			desc.memoryDesc.dstAccess         = Graphic::EPipelineAccess::None;
 			desc.memoryDesc.srcStage          = Graphic::EPipelineStage::Transfer;
-			desc.memoryDesc.dstStage          = Graphic::EPipelineStage::FragmentShader;
+			desc.memoryDesc.dstStage          = Graphic::EPipelineStage::TopPipeline;
 			desc.srcLayout                    = Graphic::EImageLayout::TransferDst;
 			desc.dstLayout                    = Graphic::EImageLayout::ShaderRead;
         
