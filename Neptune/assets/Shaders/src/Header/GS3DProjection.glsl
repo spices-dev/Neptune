@@ -23,9 +23,9 @@ const float kGSMaxRadiusRatio = 0.35f;
 
 /**
 * @brief Transform Quaterion to Matrix.
-* 
+*
 * @param[in] q Quaterion.
-* 
+*
 * @return Returns Matrix.
 */
 mat3 QuatToMat3(vec4 q)
@@ -117,11 +117,12 @@ bool ProjectGaussian(vec3 p, vec3 s, vec4 q,
     float invDet   = 1.0 / det;
     conic          = vec3(c * invDet, -b * invDet, a * invDet);
 
-    float theta    = 0.5 * atan(2.0 * b, a - c);
-    float ct       = cos(theta);
-    float st       = sin(theta);
-    majorAxis      = vec2(ct, st);
-    minorAxis      = vec2(-st, ct);
+    float disc     = sqrt(max(mid * mid - det, 0.0));
+    float lambdaT  = mid + disc;
+    vec2  ev       = (a >= c) ? vec2(lambdaT - c, b) : vec2(b, lambdaT - a);
+    float evLen2   = dot(ev, ev);
+    majorAxis      = (evLen2 > 1e-20) ? ev * inversesqrt(evLen2) : vec2(1.0, 0.0);
+    minorAxis      = vec2(-majorAxis.y, majorAxis.x);
 
     r1             = max(3.0 * sqrt(max(lambda1, 0.0)), 1.0);
     r2             = max(3.0 * sqrt(max(lambda2, 0.0)), 1.0);

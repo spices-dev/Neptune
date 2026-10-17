@@ -35,6 +35,17 @@ const uint NO_TILE = 0xFFFFFFFFu;             // Sentinel: differs from every re
 
 shared uint sTile[RADIX_ELEMS_PER_WG + 2u];   // sTile[s] = tile of element (wg * 1024 + s - 1).
 
+/*****************************************************************************************/
+        
+/**********************************Functions**********************************************/
+
+uint LoadTile(TileEntries e, uint g, uint n)
+{
+    return (g >= 1u && g - 1u < n) ? uint(e.i[g - 1u] >> TILE_SHIFT) : NO_TILE;
+}
+
+/*****************************************************************************************/
+        
 /**********************************Shader Entry*******************************************/
 
 void main()
@@ -46,11 +57,19 @@ void main()
     TileEntries e = TileEntries(push.sortedAddress);
     TileRanges  r = TileRanges(push.rangeAddress);
 
-    for (uint s = tid; s < RADIX_ELEMS_PER_WG + 2u; s += 256u)
-    {
-        uint g = wg * RADIX_ELEMS_PER_WG + s;
-        sTile[s] = (g >= 1u && g - 1u < n) ? uint(e.i[g - 1u] >> TILE_SHIFT) : NO_TILE;
-    }
+    uint g0 = wg * RADIX_ELEMS_PER_WG + tid;
+    uint t0 = LoadTile(e, g0,         n);
+    uint t1 = LoadTile(e, g0 + 256u,  n);
+    uint t2 = LoadTile(e, g0 + 512u,  n);
+    uint t3 = LoadTile(e, g0 + 768u,  n);
+    uint t4 = (tid < 2u) ? LoadTile(e, g0 + 1024u, n) : NO_TILE;
+
+    sTile[tid]         = t0;
+    sTile[tid + 256u]  = t1;
+    sTile[tid + 512u]  = t2;
+    sTile[tid + 768u]  = t3;
+    if (tid < 2u) sTile[tid + 1024u] = t4;
+
     barrier();
 
     for (uint k = 0u; k < 4u; ++k)

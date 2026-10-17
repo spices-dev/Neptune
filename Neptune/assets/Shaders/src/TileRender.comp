@@ -9,6 +9,7 @@
 #version 460
 
 #extension GL_GOOGLE_include_directive   : enable    /* @brief Enable include Macro.    */
+#extension GL_KHR_shader_subgroup_basic  : require   /* @brief Enable SubGroup Basic.   */
 #extension GL_KHR_shader_subgroup_ballot : require   /* @brief Enable SubGroup Ballot.  */
 #extension GL_KHR_shader_subgroup_vote   : require   /* @brief Enable SubGroup Vote.    */
 
@@ -35,39 +36,57 @@ layout(push_constant) uniform Push
         
 layout(set = 1, binding = 0, rgba16f) uniform image2D GS3DScene;      // @brief Render Target.
 
-const float LOG2E       = 1.4426950408889634;
+const float LOG2E       =  1.4426950408889634;
 const float LOG2_1_255  = -7.994353436858858;      // log2(1 / 255)
-const float TWO_LN2     = 1.3862943611198906;      // 2 * ln(2)
-const float CULL_MARGIN = 0.05;
+const float TWO_LN2     =  1.3862943611198906;      // 2 * ln(2)
+const float CULL_MARGIN =  0.05;
+const uint  NUM_WARPS   = (TILE_SIZE * TILE_SIZE) / SUBGROUP_SIZE;
 
-shared vec4  sGeom[256];
-shared vec4  sCoef[256];
-shared uint  sMask[256];
-shared uint  sDone;
+shared vec4 sGeom[NUM_WARPS][SUBGROUP_SIZE];
+shared vec4 sCoef[NUM_WARPS][SUBGROUP_SIZE];
 
 /*****************************************************************************************/
 
 /**********************************Functions**********************************************/
         
-uint WarpMask(vec2 c, float a, float b, float cc, float log2Opacity)
+bool BlockHit(vec2 c, float a, float b, float cc, float log2Opacity, int bx0, int by0)
 {
     float det = a * cc - b * b;
-    if (!(a > 0.0 && cc > 0.0 && det > 1e-12)) return 0xFFu;
+    if (!(a > 0.0 && cc > 0.0 && det > 1e-12)) return true;
     
-    float T  = TWO_LN2 * (log2Opacity - LOG2_1_255);
-    float hx = sqrt(max(T * cc / det, 0.0));
-    float hy = sqrt(max(T * a  / det, 0.0));
-        
+    float T      = TWO_LN2 * (log2Opacity - LOG2_1_255);
+    float invDet = 1.0 / det;
+    float hx     = sqrt(max(T * cc * invDet, 0.0));
+    float hy     = sqrt(max(T * a  * invDet, 0.0));
+    
     int xmin = int(floor(c.x - hx - 0.5 - CULL_MARGIN));
     int xmax = int(ceil (c.x + hx - 0.5 + CULL_MARGIN));
     int ymin = int(floor(c.y - hy - 0.5 - CULL_MARGIN));
     int ymax = int(ceil (c.y + hy - 0.5 + CULL_MARGIN));
     
-    uint xm = ((xmin <= 7  && xmax >= 0) ? 1u : 0u) | ((xmax >= 8 && xmin <= 15) ? 2u : 0u);
-    uint m  = 0u;
-    for (int by = 0; by < 4; ++by)
-        if (ymax >= 4 * by && ymin <= 4 * by + 3) m |= xm << uint(by * 2);
-    return m;
+    return (xmin <= bx0 + 7) && (xmax >= bx0) && (ymin <= by0 + 3) && (ymax >= by0);
+}
+        
+void Blend(vec4 g, vec4 cf, vec2 pl, inout vec3 C, inout float T, inout bool done)
+{
+    vec2  d  = pl - g.xy;
+    float pw = d.x * (g.z * d.x + g.w * d.y) + cf.x * d.y * d.y;
+    float p2 = pw + cf.y;
+        
+    if (done || pw > 0.0 || p2 < LOG2_1_255) return;
+    
+    float alpha = min(0.99, exp2(p2));
+    float nT    = T * (1.0 - alpha);
+    if (nT < 1e-4)
+    {
+        done = true;
+        return;
+    }
+    
+    uvec2 cu  = floatBitsToUint(cf.zw);
+    vec3  col = vec3(unpackHalf2x16(cu.x), unpackHalf2x16(cu.y).x);
+    C += col * (alpha * T);
+    T  = nT;
 }
 
 /*****************************************************************************************/
@@ -86,37 +105,49 @@ void main()
     vec2  pl    = vec2(local) + 0.5;
     vec2  org   = vec2(gl_WorkGroupID.xy * TILE_SIZE);
     
+    int bx0 = int((warp & 1u) * 8u);
+    int by0 = int((warp >> 1u) * 4u);
+        
     bool inside = pix.x < int(push.width) && pix.y < int(push.height);
-
-    if (tid == 0u) sDone = 0u;
-    barrier();
-
     bool done = !inside;
-    if (done) atomicAdd(sDone, 1u);
-    barrier();
 
-    uvec2 range      = TileRanges(push.rangeAddress).i[tile];
-    uint  total      = (range.y > range.x) ? (range.y - range.x) : 0u;
-    uint  numBatches = (total + 255u) / 256u;
+    uvec2 range = TileRanges(push.rangeAddress).i[tile];
+    uint  total = (range.y > range.x) ? (range.y - range.x) : 0u;
 
     TileEntries  entries = TileEntries(push.sortedAddress);
-    TileSplats  splats   = TileSplats(push.splatAddress);
+    TileSplats   splats  = TileSplats(push.splatAddress);
     
     vec3  C = vec3(0.0);
     float T = 1.0;
-    
-    for (uint b = 0u; b < numBatches; ++b)
-    {
-        if (sDone >= 256u) break;
 
-        uint i    = b * 256u + tid;
-        uint mask = 0u;
+    uvec4 u0   = uvec4(0u);
+    uvec4 u1   = uvec4(0u);
+    uint  gidN = 0u;
+    
+    if (total > 0u)
+    {
+        if (lane < total)
+        {
+            uint gid = uint(entries.i[range.x + lane]) & GID_MASK;
+            u0 = splats.i[2u * gid + 0u];
+            u1 = splats.i[2u * gid + 1u];
+        }
+        if (SUBGROUP_SIZE + lane < total)
+            gidN = uint(entries.i[range.x + SUBGROUP_SIZE + lane]) & GID_MASK;
+    }
+
+    for (uint base = 0u; base < total; base += SUBGROUP_SIZE)
+    {
+        if (subgroupAll(done)) break;
+        
+        uint i = base + lane;
+
+        bool hit = false;
+        vec4 g   = vec4(0.0);
+        vec4 cf  = vec4(0.0);
+        
         if (i < total)
         {
-            uint  gid = uint(entries.i[range.x + i]) & GID_MASK;
-            uvec4 u0  = splats.i[2u * gid + 0u];
-            uvec4 u1  = splats.i[2u * gid + 1u];
-            
             vec2  center  = uintBitsToFloat(u0.xy) - org;
             float a       = uintBitsToFloat(u0.z);
             float bb      = uintBitsToFloat(u0.w);
@@ -124,55 +155,46 @@ void main()
             float opacity = uintBitsToFloat(u1.y);
             
             float lo2 = log2(opacity);
-            sGeom[tid] = vec4(center, -0.5 * a * LOG2E, -bb * LOG2E);
-            sCoef[tid] = vec4(-0.5 * cc * LOG2E, lo2, uintBitsToFloat(u1.z), uintBitsToFloat(u1.w));
-            mask       = (opacity >= 1.0 / 255.0) ? WarpMask(center, a, bb, cc, lo2) : 0u;
+            hit = (opacity >= 1.0 / 255.0) && BlockHit(center, a, bb, cc, lo2, bx0, by0);
+            
+            g  = vec4(center, -0.5 * a * LOG2E, -bb * LOG2E);
+            cf = vec4(-0.5 * cc * LOG2E, lo2, uintBitsToFloat(u1.z), uintBitsToFloat(u1.w));
         }
-        sMask[tid] = mask;
-        barrier();
 
-        uint cnt = min(256u, total - b * 256u);
-        for (uint c0 = 0u; c0 < cnt; c0 += 32u)
+        if (i + SUBGROUP_SIZE < total)
         {
-            uint j0 = c0 + lane;
-            bool hit = (j0 < cnt) && (((sMask[j0] >> warp) & 1u) != 0u);
-            uint m   = subgroupBallot(hit).x;
-            
-            while (m != 0u)
-            {
-                uint j = c0 + uint(findLSB(m));
-                m &= m - 1u;
-                
-                if (done) continue;
-                
-                vec4 g  = sGeom[j];
-                vec4 cf = sCoef[j];
-                
-                vec2  d  = pl - g.xy;
-                float pw = d.x * (g.z * d.x + g.w * d.y) + cf.x * d.y * d.y;
-                if (pw > 0.0) continue;
-                
-                float p2 = pw + cf.y;
-                if (p2 < LOG2_1_255) continue;
-                
-                float alpha = min(0.99, exp2(p2));
-                float nT    = T * (1.0 - alpha);
-                if (nT < 1e-4)
-                {
-                    done = true;
-                    atomicAdd(sDone, 1u);
-                    continue;
-                }
-            
-                uvec2 cu  = floatBitsToUint(cf.zw);
-                vec3  col = vec3(unpackHalf2x16(cu.x), unpackHalf2x16(cu.y).x);
-                C += col * (alpha * T);
-                T  = nT;
-            }
-        
-            if (subgroupAll(done)) break;
+            u0 = splats.i[2u * gidN + 0u];
+            u1 = splats.i[2u * gidN + 1u];
         }
-        barrier();
+        if (i + 2u * SUBGROUP_SIZE < total)
+        gidN = uint(entries.i[range.x + i + 2u * SUBGROUP_SIZE]) & GID_MASK;
+            
+        uint hm = subgroupBallot(hit).x;
+        if (hm != 0u)
+        {
+            if (hit)
+            {
+                uint pos = bitCount(hm & gl_SubgroupLtMask.x);
+                sGeom[warp][pos] = g;
+                sCoef[warp][pos] = cf;
+            }
+            subgroupMemoryBarrierShared();
+            subgroupBarrier();
+
+            uint n = bitCount(hm);
+            for (uint k = 0u; k < n; k += 2u)
+            {
+                vec4 g0 = sGeom[warp][k];
+                vec4 c0 = sCoef[warp][k];
+                vec4 g1 = sGeom[warp][k + 1u];
+                vec4 c1 = sCoef[warp][k + 1u];
+                
+                Blend(g0, c0, pl, C, T, done);
+                if (k + 1u < n) Blend(g1, c1, pl, C, T, done);
+            }
+
+            subgroupBarrier();
+        }
     }
 
     if (inside)
