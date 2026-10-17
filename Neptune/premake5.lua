@@ -77,7 +77,6 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		vendor.ImGuizmo.includes,                             -- Library: ImGuizmo Source Folder.
 		vendor.tracy.includes,                                -- Library: tracy Source Folder.
 		vendor.IconFontCppHeaders.includes,                   -- Library: IconFontCppHeaders Source Folder.
-		vendor.tinyply.includes,                              -- Library: tinyply Source Folder.
 		vendor.nlohmannjson.includes,                         -- Library: nlohmannjson Source Folder.
 		vendor.miniz.includes,                                -- Library: miniz Source Folder.
 		vendor.libwebp.includes,                              -- Library: libwebp Source Folder.
