@@ -11,10 +11,8 @@
 #include "Core/Core.h"
 #include "Infrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/PhysicalDevice.h"
-#include "Core/Container/LinkedUnorderedMap.h"
 
 #include <vector>
-#include <optional>
 
 namespace Neptune::Vulkan {
 

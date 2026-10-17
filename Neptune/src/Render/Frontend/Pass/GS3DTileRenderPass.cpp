@@ -373,7 +373,10 @@ namespace Neptune::Render {
 				std::swap(push.srcAddress, push.dstAddress);
 			}
 			
-			sortedAddr = push.srcAddress;
+			if constexpr (RADIX_NUM_PASSES % 2 == 1)
+			{
+				sortedAddr = push.srcAddress;
+			}
 		}
 		
 		{

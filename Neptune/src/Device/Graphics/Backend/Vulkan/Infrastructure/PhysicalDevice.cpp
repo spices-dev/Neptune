@@ -19,6 +19,7 @@
 #include "Device/Graphics/Backend/Vulkan/Middleware/IGetPhysicalDeviceProperties.h"
 #include "Device/Graphics/Backend/Vulkan/Converter.h"
 #include "Window/Window.h"
+#include "Core/Container/LinkedUnorderedMap.h"
 
 namespace Neptune::Vulkan {
 

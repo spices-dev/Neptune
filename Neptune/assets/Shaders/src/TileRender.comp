@@ -120,9 +120,9 @@ void main()
     vec3  C = vec3(0.0);
     float T = 1.0;
 
-    uvec4 u0   = uvec4(0u);
-    uvec4 u1   = uvec4(0u);
-    uint  gidN = 0u;
+    uvec4 u0      = uvec4(0u);
+    uvec4 u1      = uvec4(0u);
+    uint64_t rawN = 0ul;
     
     if (total > 0u)
     {
@@ -133,7 +133,7 @@ void main()
             u1 = splats.i[2u * gid + 1u];
         }
         if (SUBGROUP_SIZE + lane < total)
-            gidN = uint(entries.i[range.x + SUBGROUP_SIZE + lane]) & GID_MASK;
+            rawN = entries.i[range.x + SUBGROUP_SIZE + lane];
     }
 
     for (uint base = 0u; base < total; base += SUBGROUP_SIZE)
@@ -163,11 +163,12 @@ void main()
 
         if (i + SUBGROUP_SIZE < total)
         {
+            uint gidN = uint(rawN) & GID_MASK;
             u0 = splats.i[2u * gidN + 0u];
             u1 = splats.i[2u * gidN + 1u];
         }
         if (i + 2u * SUBGROUP_SIZE < total)
-        gidN = uint(entries.i[range.x + i + 2u * SUBGROUP_SIZE]) & GID_MASK;
+            rawN = entries.i[range.x + i + 2u * SUBGROUP_SIZE];
             
         uint hm = subgroupBallot(hit).x;
         if (hm != 0u)
