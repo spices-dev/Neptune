@@ -38,8 +38,22 @@ namespace Neptune::Tool {
         
     private:
         
+        /**
+        * @brief UnZip SOP file.
+        * 
+        * @param[in] file mesh file path.
+        * 
+        * @return Returns file data.
+        */
         static std::unordered_map<std::string, std::vector<uint8_t>> UnZip(const std::filesystem::path& file);
         
+        /**
+        * @brief Decode SOP Webp.
+        * 
+        * @param[in] buf Webp buffer.
+        * 
+        * @return Returns RenderTarget.
+        */
         static SP<RenderTarget> DecodeWebp(const std::vector<uint8_t>& buf);
     };
     

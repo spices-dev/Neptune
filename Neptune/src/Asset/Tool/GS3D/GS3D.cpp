@@ -7,7 +7,6 @@
 #include "Pchheader.h"
 #include "GS3D.h"
 #include "Asset/SOP/GS3D.h"
-#include "Ply.h"
 #include "Sog.h"
 
 namespace Neptune::Tool {
@@ -29,11 +28,6 @@ namespace Neptune::Tool {
             NEPTUNE_LOG_CORE(E) << "File: [ " << file << " ] do not exist.";
 			
             return false;
-        }
-		
-        if (std::strncmp(file.extension().string().c_str(), kPly, sizeof(kPly)) == 0)
-        {
-            return Ply::Load(file, static_cast<SOP::GS3D*>(obj));
         }
         
         if (std::strncmp(file.extension().string().c_str(), kSog, sizeof(kSog)) == 0)
