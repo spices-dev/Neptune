@@ -18,7 +18,7 @@
 /**
 * @brief GS3D Desciption Buffer.
 */
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer GS3DDescs
+layout(buffer_reference, scalar, buffer_reference_align = 8) readonly buffer GS3DDescs
 {
     GS3DDesc i[];             /* @see GS3DDesc. */
 };
@@ -27,7 +27,7 @@ GS3DDesc desc;
 /**
 * @brief GS3D Model Matrix Buffer.
 */
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Models
+layout(buffer_reference, scalar, buffer_reference_align = 8) readonly buffer Models
 {
     mat4 i[];
 };
@@ -36,7 +36,7 @@ mat4 model;
 /**
 * @brief MeansRanges Buffer.
 */
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer MeansRanges
+layout(buffer_reference, scalar, buffer_reference_align = 8) readonly buffer MeansRanges
 {
     vec3 i[];
 };
@@ -45,7 +45,7 @@ MeansRanges meansRanges;
 /**
 * @brief ScaleCodes Buffer.
 */
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer ScaleCodes
+layout(buffer_reference, scalar, buffer_reference_align = 4) readonly buffer ScaleCodes
 {
     float i[];
 };
@@ -54,7 +54,7 @@ ScaleCodes scaleCodes;
 /**
 * @brief Sh0Codes Buffer.
 */
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer Sh0Codes
+layout(buffer_reference, scalar, buffer_reference_align = 4) readonly buffer Sh0Codes
 {
     float i[];
 };

@@ -404,6 +404,7 @@ namespace Neptune::Render {
 			push.splatAddress          = splatAddr;
 			push.sortedAddress         = sortedAddr;
 			push.rangeAddress          = rangeAddr;
+			push.sh0CodesAddress       = item->GetDesc().desc.host->at(0).sh0CodesAddress;
 			push.tilesX                = tilesX;
 			push.width                 = width;
 			push.height                = height;

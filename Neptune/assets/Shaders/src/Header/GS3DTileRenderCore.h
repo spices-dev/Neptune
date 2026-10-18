@@ -67,13 +67,14 @@ struct GS3DDesc
     
 /**
 * @brief Splat Data.
+* x : center.x
+* y : center.y
+* z : eigenvalue 1 of the conic
+* w : angle of eigenvector
 */
 struct Splat
 {
-    vec2  center;            // @brief GS Center.
-    vec3  conic;             // @brief GS Conic.
-    float opacity;           // @brief GS Opacity.
-    uvec2 color;             // @brief GS Color.
+    uvec4 packed;            // @brief Packed GS data.
 };
 
 /**
@@ -139,6 +140,7 @@ struct TileRenderPush
     uint64_t splatAddress;        // @brief Splat Buffer Address.
     uint64_t sortedAddress;       // @brief Sorts Buffer Address.
     uint64_t rangeAddress;        // @brief Ranges Buffer Address.
+    uint64_t sh0CodesAddress;     // @brief Address of sh0Codes Buffer.
     uint     tilesX;              // @brief Tiles in X.
     uint     width;               // @brief RenderTarget Width.
     uint     height;              // @brief RenderTarget Height.

@@ -41,7 +41,6 @@ layout(push_constant) uniform Push
     PreProcessPush push;
 };
 
-const float SH_C0     = 0.28209479177387814;
 const float INV_SQRT2 = 0.7071067811865476;
         
 /*****************************************************************************************/
@@ -211,16 +210,8 @@ void main()
 
     if (count > 0u)
     {
-        float rDC = sh0Codes.i[int(sh0Raw.r)];
-        float gDC = sh0Codes.i[int(sh0Raw.g)];
-        float bDC = sh0Codes.i[int(sh0Raw.b)];
-        vec3 color = vec3(0.5) + vec3(rDC, gDC, bDC) * SH_C0;
-            
         TileSplats sv = TileSplats(push.splatAddress);
-        sv.i[2u * gid + 0u] = uvec4(floatBitsToUint(center.x), floatBitsToUint(center.y),
-                                    floatBitsToUint(conic.x),  floatBitsToUint(conic.y));
-        sv.i[2u * gid + 1u] = uvec4(floatBitsToUint(conic.z),  floatBitsToUint(opacity),
-                                    packHalf2x16(color.rg),    packHalf2x16(vec2(color.b, 0.0)));
+        sv.i[gid] = PackSplat(center, conic, sh0Raw);
     }
 
     warpBase = subgroupBroadcastFirst(warpBase);
