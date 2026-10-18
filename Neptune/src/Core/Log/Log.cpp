@@ -93,21 +93,10 @@ namespace Neptune {
                 default:              log->ClientTrace(msg);    break;
             }
         }
-        
-#ifdef NEPTUNE_DEBUG
 
         if (m_Level >= LogLevel::E)
         {
             NEPTUNE_BREAK
         }
-
-#else
-
-        if (m_Level >= LogStream::LogLevel::C)
-        {
-            NEPTUNE_BREAK
-        }
-
-#endif
     }
 }

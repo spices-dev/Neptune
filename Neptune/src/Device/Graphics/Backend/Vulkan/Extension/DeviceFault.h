@@ -52,7 +52,8 @@ namespace Neptune::Vulkan::Extension {
         
     private:
 
-        VkPhysicalDeviceFaultFeaturesKHR m_FaultFeatures { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FAULT_FEATURES_KHR };    // @brief FaultFeatures.
+        VkPhysicalDeviceFaultFeaturesKHR m_FaultFeatureKHRs { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FAULT_FEATURES_KHR };    // @brief FaultFeatures.
+        VkPhysicalDeviceFaultFeaturesEXT m_FaultFeatureEXTs { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FAULT_FEATURES_EXT };    // @brief FaultFeatures.
     };
 }
 

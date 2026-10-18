@@ -51,7 +51,7 @@ namespace Neptune::Vulkan {
     	debugInfo.messageType                    = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT      
 									           	 | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT   
 									           	 | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
-    	debugInfo.pfnUserCallback                = DebugCallback;
+    	debugInfo.pfnUserCallback                = InstanceDebugCallback;
     	debugInfo.pUserData                      = nullptr;
     	debugInfo.pNext                          = nullptr;
     	

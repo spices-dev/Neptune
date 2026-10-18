@@ -26,10 +26,10 @@ namespace Neptune::Vulkan {
         void HandleDeviceLostResult(VkDevice device, std::stringstream& ss)
 		{
         	NEPTUNE_PROFILE_ZONE
-        	
-        	uint32_t faultCount = 0;
 
-        	VkResult result = vkGetDeviceFaultReportsKHR(device, 0, &faultCount, nullptr);
+        	VkDeviceFaultCountsEXT faultCount = { VK_STRUCTURE_TYPE_DEVICE_FAULT_COUNTS_EXT };
+        	
+        	VkResult result = vkGetDeviceFaultInfoEXT(device, &faultCount, nullptr);
 
             if (result != VK_SUCCESS) 
             {
@@ -37,81 +37,55 @@ namespace Neptune::Vulkan {
                 return;
             }
 
-        	if (faultCount == 0)
+        	if (faultCount.addressInfoCount == 0 && faultCount.vendorInfoCount == 0)
         	{
         		NEPTUNE_LOG_CORE(W) << "Device Lost: Nothing Report.";
         		return;
         	}
 
-        	std::vector<VkDeviceFaultInfoKHR> faultInfos(faultCount, { VK_STRUCTURE_TYPE_DEVICE_FAULT_INFO_KHR });
+        	std::vector<VkDeviceFaultAddressInfoEXT> addressInfos(faultCount.addressInfoCount);
+        	std::vector<VkDeviceFaultVendorInfoEXT> vendorInfos(faultCount.vendorInfoCount);
+        	std::vector<char> vendorBinaryData(faultCount.vendorBinarySize);
 
-        	result = vkGetDeviceFaultReportsKHR(device, 0, &faultCount, faultInfos.data());
-            if (result != VK_SUCCESS && result != VK_INCOMPLETE) 
-            {
-                NEPTUNE_LOG_CORE(E) << "Device Lost: Failed to Query Fault Info.";
-                return;
-            }
+        	VkDeviceFaultInfoEXT faultInfo = { VK_STRUCTURE_TYPE_DEVICE_FAULT_INFO_EXT };
 
-        	std::ranges::for_each(faultInfos, [&](const auto& faultInfo) {
+        	faultInfo.pAddressInfos     = addressInfos.data();
+        	faultInfo.pVendorInfos      = vendorInfos.data();
+        	faultInfo.pVendorBinaryData = vendorBinaryData.data();
+
+        	result = vkGetDeviceFaultInfoEXT(device, &faultCount, &faultInfo);
+        	
+        	if (result != VK_SUCCESS) return;
+
+        	std::stringstream info;
         		
-        		std::stringstream info;
+        	info << "\n" << "Description: " << faultInfo.description << "\n";
+        	info << "    Vendor: description = " << (faultInfo.pVendorInfos ? faultInfo.pVendorInfos->description : "No Vendor Information available.");
+        	
+			for (uint32_t i = 0; i < faultCount.addressInfoCount; i++) {
+				
+				const char* typeStr = "Unknown";
         		
-        		info << "\n" << "Description: " << faultInfo.description << "\n";
-        		
-        		const char* typeStr = "Unknown";
-        		
-        		switch (faultInfo.faultAddressInfo.addressType)
-        		{
-        			case VK_DEVICE_FAULT_ADDRESS_TYPE_READ_INVALID_EXT:                     typeStr = "Invalid Read";                break;
+				switch (addressInfos[i].addressType)
+				{
+					case VK_DEVICE_FAULT_ADDRESS_TYPE_READ_INVALID_EXT:                     typeStr = "Invalid Read";                break;
 					case VK_DEVICE_FAULT_ADDRESS_TYPE_WRITE_INVALID_EXT:                    typeStr = "Invalid Write";               break;
 					case VK_DEVICE_FAULT_ADDRESS_TYPE_EXECUTE_INVALID_EXT:                  typeStr = "Invalid Execute";             break;
 					case VK_DEVICE_FAULT_ADDRESS_TYPE_INSTRUCTION_POINTER_FAULT_EXT:        typeStr = "Instruction Pointer Fault";   break;
 					case VK_DEVICE_FAULT_ADDRESS_TYPE_NONE_EXT:                             typeStr = "Invalid Read";                break;
 					case VK_DEVICE_FAULT_ADDRESS_TYPE_INSTRUCTION_POINTER_UNKNOWN_EXT:      typeStr = "Instruction Pointer unknown"; break;
 					case VK_DEVICE_FAULT_ADDRESS_TYPE_INSTRUCTION_POINTER_INVALID_EXT:      typeStr = "Instruction Pointer invalid"; break;
-        			default:                                                                typeStr = "Unknown";
-        		}
-        		
-        		uint64_t lower = faultInfo.instructionAddressInfo.reportedAddress & ~(faultInfo.instructionAddressInfo.addressPrecision - 1);
-				uint64_t upper = faultInfo.instructionAddressInfo.reportedAddress | (faultInfo.instructionAddressInfo.addressPrecision - 1);
-        		
-        		info << "    Address: type = " << typeStr << ", reported = " << (unsigned long long)faultInfo.instructionAddressInfo.reportedAddress << ", precision = " << (unsigned long long)faultInfo.instructionAddressInfo.addressPrecision
-        		   << "\n" << "    Address range :" << lower << " - " << upper << "\n";
-        		
-        		info << "    Vendor: description = " << faultInfo.vendorInfo.description;
-        		
-        		if (faultInfo.vendorInfo.vendorFaultCode > 0)
-        		{
-        			try
-        			{
-						std::filesystem::path dumpPath = "DeviceLostDump.bin";
-
-						std::ofstream file(dumpPath, std::ios::binary);
-
-						if (file.is_open())
-						{
-							file.write(reinterpret_cast<const char*>(faultInfo.vendorInfo.vendorFaultData), static_cast<std::streamsize>(faultInfo.vendorInfo.vendorFaultCode));
-							file.close();
-
-							NEPTUNE_LOG_CORE(E) << "Device Lost Vendor binary crash dump saved to " << dumpPath.string();
-						}
-						else
-						{
-							NEPTUNE_LOG_CORE(E) << "Failed to open device lost dump file";
-						}
-					}
-					catch (const std::filesystem::filesystem_error& e)
-					{
-						NEPTUNE_LOG_CORE(E) << "Filesystem error saving device lost dump: " << e.what();
-					}
-					catch (const std::exception& e)
-					{
-						NEPTUNE_LOG_CORE(E) << "Unexpected error saving device lost dump: " << e.what();
-					}
-        		}
-        		
-        		ss << info.str();
-        	});
+					default:                                                                typeStr = "Unknown";
+				}
+				
+				uint64_t lower = addressInfos[i].reportedAddress & ~(addressInfos[i].addressPrecision - 1);
+				uint64_t upper = addressInfos[i].reportedAddress | (addressInfos[i].addressPrecision - 1);
+				
+				info << "    Address: type = " << typeStr << ", reported = " << addressInfos[i].reportedAddress << ", precision = " << addressInfos[i].addressPrecision
+				   << "\n" << "    Address range :" << lower << " - " << upper << "\n";
+			}
+        	
+        	ss << info.str();
         	
             NEPTUNE_LOG_CORE(E) << ss.str();
 		}
@@ -161,7 +135,7 @@ namespace Neptune::Vulkan {
 		return s_Handler;
 	}
 
-	VKAPI_ATTR VkBool32 VKAPI_CALL DebugCallback(
+	VKAPI_ATTR VkBool32 VKAPI_CALL InstanceDebugCallback(
 		VkDebugUtilsMessageSeverityFlagBitsEXT         messageSeverity, 
 		VkDebugUtilsMessageTypeFlagsEXT                messageType, 
 		const VkDebugUtilsMessengerCallbackDataEXT*    pCallbackData, 
@@ -221,6 +195,71 @@ namespace Neptune::Vulkan {
 			}
 		}
 
+		return VK_FALSE;
+	}
+	
+	VKAPI_ATTR VkBool32 VKAPI_CALL DeviceDebugCallback(
+		VkDebugUtilsMessageSeverityFlagBitsEXT         messageSeverity, 
+		VkDebugUtilsMessageTypeFlagsEXT                messageType, 
+		const VkDebugUtilsMessengerCallbackDataEXT*    pCallbackData, 
+		void*                                          pUserData
+	) {
+		NEPTUNE_PROFILE_ZONE
+		
+		if (auto* bindingData = static_cast<const VkDeviceAddressBindingCallbackDataEXT*>(pCallbackData->pNext))
+		{
+			std::stringstream ss;
+			
+			ss << "\n " << "Objects: \n";
+			
+			if (bindingData->sType == VK_STRUCTURE_TYPE_DEVICE_ADDRESS_BINDING_CALLBACK_DATA_EXT)
+			{
+				for (uint32_t i = 0; i < pCallbackData->objectCount; ++i) {
+					const auto& obj = pCallbackData->pObjects[i];
+					ss << "    ObjectType: " << obj.objectType << ", ObjectHandle: " << obj.objectHandle << ", ObjectName: " << (obj.pObjectName ? obj.pObjectName : "NonNamed") << "\n";
+				}
+				
+				switch (bindingData->bindingType) {
+				case VK_DEVICE_ADDRESS_BINDING_TYPE_BIND_EXT:
+					ss << "Address Bound -> Decimal: " << bindingData->baseAddress << " | Hex: 0x" << bindingData->baseAddress << " | Size = " << bindingData->size << " Bytes";
+					break;
+
+				case VK_DEVICE_ADDRESS_BINDING_TYPE_UNBIND_EXT:
+					ss << "Address Unbound -> Decimal: " << bindingData->baseAddress << " | Hex: 0x" << bindingData->baseAddress << " | Size = " << bindingData->size << " Bytes";
+					break;
+				}
+			}
+			
+			switch (messageSeverity)
+			{
+				case VkDebugUtilsMessageSeverityFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:
+				{
+					NEPTUNE_LOG_CORE(T) << ss.str();
+					break;
+				}
+				case VkDebugUtilsMessageSeverityFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
+				{
+					NEPTUNE_LOG_CORE(I) << ss.str();
+					break;
+				}
+				case VkDebugUtilsMessageSeverityFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
+				{
+					NEPTUNE_LOG_CORE(W) << ss.str();
+					break;
+				}
+				case VkDebugUtilsMessageSeverityFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
+				{
+					NEPTUNE_LOG_CORE(E) << ss.str();
+					break;
+				}
+				default:
+				{
+					NEPTUNE_LOG_CORE(I) << ss.str();
+					break;
+				}
+			}
+		}
+		
 		return VK_FALSE;
 	}
 	

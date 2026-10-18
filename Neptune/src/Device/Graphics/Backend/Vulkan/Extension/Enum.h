@@ -56,6 +56,8 @@ namespace Neptune::Vulkan {
         SubgroupSizeControl,                        // @brief SubgroupSizeControl.
         SubgroupPartitioned,                        // @brief SubgroupPartitioned.
         SubgroupRotate,                             // @brief SubgroupRotate.
+        DeviceGroup,                                // @brief DeviceGroup.
+        DeviceAddressBindingReport,                 // @brief DeviceAddressBindingReport.
 
         Count
     };
@@ -108,6 +110,8 @@ namespace Neptune::Vulkan {
             case SubgroupSizeControl:             return "SubgroupSizeControl";
             case SubgroupPartitioned:             return "SubgroupPartitioned";
             case SubgroupRotate:                  return "SubgroupRotate";
+            case DeviceGroup:                     return "DeviceGroup";
+            case DeviceAddressBindingReport:      return "DeviceAddressBindingReport";
             default:                              return "NonNamed";
         }
     }

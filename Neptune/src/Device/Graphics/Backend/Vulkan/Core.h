@@ -66,7 +66,7 @@ namespace Neptune::Vulkan {
     };
 
 	/**
-	* @brief Debug Callback Functor.
+	* @brief Instance Debug Callback Functor.
 	* 
 	* @param[in] messageSeverity VkDebugUtilsMessageSeverityFlagBitsEXT.
 	* @param[in] messageType VkDebugUtilsMessageTypeFlagsEXT.
@@ -75,7 +75,24 @@ namespace Neptune::Vulkan {
 	* 
 	* @return Returns resumed.
 	*/
-	VKAPI_ATTR VkBool32 VKAPI_CALL DebugCallback(
+	VKAPI_ATTR VkBool32 VKAPI_CALL InstanceDebugCallback(
+		VkDebugUtilsMessageSeverityFlagBitsEXT         messageSeverity, 
+		VkDebugUtilsMessageTypeFlagsEXT                messageType, 
+		const VkDebugUtilsMessengerCallbackDataEXT*    pCallbackData, 
+		void*                                          pUserData
+	);
+	
+	/**
+	* @brief Device Debug Callback Functor.
+	* 
+	* @param[in] messageSeverity VkDebugUtilsMessageSeverityFlagBitsEXT.
+	* @param[in] messageType VkDebugUtilsMessageTypeFlagsEXT.
+	* @param[in] pCallbackData VkDebugUtilsMessengerCallbackDataEXT.
+	* @param[in] pUserData Payload.
+	* 
+	* @return Returns resumed.
+	*/
+	VKAPI_ATTR VkBool32 VKAPI_CALL DeviceDebugCallback(
 		VkDebugUtilsMessageSeverityFlagBitsEXT         messageSeverity, 
 		VkDebugUtilsMessageTypeFlagsEXT                messageType, 
 		const VkDebugUtilsMessengerCallbackDataEXT*    pCallbackData, 

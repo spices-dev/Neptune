@@ -11,9 +11,11 @@
 #include "Device.h"
 #include "Functions.h"
 #include "PhysicalDevice.h"
+#include "Instance.h"
 #include "DebugUtilsObject.h"
 #include "Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/DebugUtils.h"
 
 namespace Neptune::Vulkan {
 
@@ -115,6 +117,22 @@ namespace Neptune::Vulkan {
     	GetContext().Get<IFunctions>()->LoadDevice(Handle());
     	
 		DEBUGUTILS_SETOBJECTNAME(m_Device, physicalDevice->GetProperties().deviceName)
+    	
+    	VkDebugUtilsMessengerCreateInfoEXT         debugInfo {};
+    	debugInfo.sType                          = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+    	debugInfo.messageSeverity                = VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT 
+												 | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT 
+												 | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT   
+												 | VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT;
+    	debugInfo.messageType                    = VK_DEBUG_UTILS_MESSAGE_TYPE_DEVICE_ADDRESS_BINDING_BIT_EXT;
+    	debugInfo.pfnUserCallback                = DeviceDebugCallback;
+    	debugInfo.pUserData                      = nullptr;
+    	debugInfo.pNext                          = nullptr;
+
+    	if (GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IDebugUtils>())
+    	{
+    		m_DebugMessenger.CreateDebugUtilsMessenger(GetContext().Get<IInstance>()->Handle(), debugInfo);
+    	}
     }
 
 }

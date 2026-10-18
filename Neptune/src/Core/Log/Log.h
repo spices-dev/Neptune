@@ -146,7 +146,6 @@ namespace Neptune {
 }
 
 // Cross-platform debug break
-#ifdef NEPTUNE_DEBUG
 #ifdef _MSC_VER
 #define NEPTUNE_BREAK __debugbreak(); std::abort(); 
 #elif defined(__GNUC__) || defined(__clang__)
@@ -154,11 +153,6 @@ namespace Neptune {
 #define NEPTUNE_BREAK raise(SIGTRAP); std::abort(); 
 #else
 #define NEPTUNE_BREAK std::abort(); 
-#endif
-#endif
-
-#ifdef NEPTUNE_RELEASE
-#define NEPTUNE_BREAK
 #endif
 
 #ifdef NEPTUNE_DEBUG

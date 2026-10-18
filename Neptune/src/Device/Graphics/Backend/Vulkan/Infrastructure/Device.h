@@ -11,6 +11,7 @@
 #include "Core/Core.h"
 #include "Infrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/Device.h"
+#include "Device/Graphics/Backend/Vulkan/Unit/DebugUtilsMessenger.h"
 
 namespace Neptune::Vulkan {
 
@@ -68,7 +69,8 @@ namespace Neptune::Vulkan {
 
 	private:
 
-		Unit::Device m_Device; // @brief this Device.
+		Unit::Device                m_Device;             // @brief this Device.
+		Unit::DebugUtilsMessenger   m_DebugMessenger;     // @brief DebugUtilsMessenger.
 
 	};
 }

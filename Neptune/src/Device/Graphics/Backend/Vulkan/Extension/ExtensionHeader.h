@@ -46,9 +46,11 @@
 #include "MeshShader.h"
 #include "DeviceAddressCommands.h"
 #include "Subgroup.h"
+#include "SubgroupSizeControl.h"
 #include "SubgroupPartitioned.h"
 #include "SubgroupRotate.h"
-#include "SubgroupSizeControl.h"
+#include "DeviceGroup.h"
+#include "DeviceAddressBindingReport.h"
 
 // Device
 //m_ExtensionProperties.push_back(VK_KHR_SHADER_CLOCK_EXTENSION_NAME);
