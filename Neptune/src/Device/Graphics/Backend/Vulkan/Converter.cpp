@@ -92,7 +92,7 @@ namespace Neptune::Vulkan {
 		switch (m)
 		{
 			case EMemory::Device:    return VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
-			case EMemory::Host:      return VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
+			case EMemory::Host:      return VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
 			case EMemory::Shared:    return VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
 			case EMemory::Other:     return VK_MEMORY_PROPERTY_PROTECTED_BIT;
 			default:
@@ -305,7 +305,7 @@ namespace Neptune::Vulkan {
 		switch (f)
 		{
 			case VkFormat::VK_FORMAT_R8G8B8A8_UNORM:                  return TextureFormat::RGBA8_UNORM;
-			case VkFormat::VK_FORMAT_R8G8B8A8_UINT:                  return TextureFormat::RGBA8_UINT;
+			case VkFormat::VK_FORMAT_R8G8B8A8_UINT:                   return TextureFormat::RGBA8_UINT;
 			case VkFormat::VK_FORMAT_R16G16B16A16_SFLOAT:             return TextureFormat::RGBA16_SFLOAT;
 			case VkFormat::VK_FORMAT_G8_B8R8_2PLANE_420_UNORM:        return TextureFormat::R8_G8B8_2PLANE_420_UNORM;
 			default:

@@ -44,7 +44,7 @@ namespace Neptune::Vulkan::Middleware {
 		memory.dstQueueFamilyIndex     = barrier.dstQueueFamilyIndex;
 		memory.buffer                  = barrier.buffer;
 		memory.offset                  = barrier.offset;
-		memory.size                    = barrier.offset;
+		memory.size                    = barrier.size;
 		
 		commandBuffer->CmdPipelineBarrier(ToVkPipelineStageFlags(barrier.srcStageMask), ToVkPipelineStageFlags(barrier.dstStageMask), 0, memory);
 	}

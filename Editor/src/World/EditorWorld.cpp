@@ -91,11 +91,11 @@ namespace Neptune::Editor {
             auto& component = entity.AddComponent<ScriptComponent>();
             
             component.AddScript(CreateSP<RHICapturer>());
-            component.AddScript(CreateSP<VideoPlayer>("C:/Users/spices/Desktop/hevc_8k60P_bilibili_1.mp4"));
+            component.AddScript(CreateSP<VideoPlayer>("D:/ExternalAssets/hevc_8k60P_bilibili_1.mp4"));
         }*/
         
         {
-            auto gs3d = CreateSP<SOP::GS3D>("C:/Users/spices/Downloads/Winter-Garden-view2.sog");
+            auto gs3d = CreateSP<SOP::GS3D>("D:/ExternalAssets/Winter-Garden-view2.sog");
             gs3d->LoadFromDisk();
             
             auto entity = scene->Create("gs3d");
