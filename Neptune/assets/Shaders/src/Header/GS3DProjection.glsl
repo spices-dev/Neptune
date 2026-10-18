@@ -15,7 +15,8 @@
 
 /**************************************Constant*******************************************/
 
-const float kGSMaxRadiusRatio = 0.35f;
+const float kGSMaxRadiusRatio    = 0.35f;
+const float kDistanceScaleCutOff = 0.05f;
 
 /*****************************************************************************************/
 
@@ -73,6 +74,10 @@ bool ProjectGaussian(vec3 p, vec3 s, vec4 q,
     radius = 0.0;
 
     if (viewPos.z <= 0.01) return false;
+            
+    // Distance Cutoff.
+    float ms = max(s.x, max(s.y, s.z));
+    if (ms < kDistanceScaleCutOff && ms * 1000.0f < viewPos.z) return false;
 
     mat3 R     = QuatToMat3(q);
     mat3 S     = mat3(s.x,0,0, 0,s.y,0, 0,0,s.z);
