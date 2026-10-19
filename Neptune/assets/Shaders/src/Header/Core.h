@@ -10,60 +10,53 @@
 #define CORE_H
 
 #ifdef __cplusplus
+#include <cstdint>
 #include <glm/glm.hpp>
 
 namespace Neptune::ShaderCore
 {
-using vec2  = glm::vec2;     
-using vec3  = glm::vec3;     
-using vec4  = glm::vec4;     
-using uvec2 = glm::uvec2;     
-using uvec3 = glm::uvec3;     
-using uvec4 = glm::uvec4;     
-using mat4  = glm::mat4;     
-using uint  = unsigned int; 
-
-#else
-
-#extension GL_EXT_scalar_block_layout                    : enable   /* @brief Enable shader vec3 type memory align.                         */
-#extension GL_EXT_shader_explicit_arithmetic_types_int64 : require  /* @brief Enable uint64_t type in shader.                               */
-#extension GL_EXT_buffer_reference2                      : require  /* @brief Enable Shader Buffer Address access.                          */
-#extension GL_EXT_nonuniform_qualifier                   : enable   /* @brief Enable Bindless DescriptorSet dynamic index.                  */
-#extension GL_EXT_debug_printf                           : require  /* @brief Enable shader debug info. (debugPrintfEXT("Hello: %d", num);) */
+using float2   = glm::vec2;     
+using float3   = glm::vec3;     
+using float4   = glm::vec4;     
+using uint2    = glm::uvec2;     
+using uint3    = glm::uvec3;     
+using uint4    = glm::uvec4;     
+using float4x4 = glm::mat4;     
+using uint     = unsigned int; 
 
 #endif
 
 /**
 * @brief Macros.
 */
-#define VIEWPORT_FLIP_Y                                                   /* @brief ViewPort Flip Y                                       */
+#define VIEWPORT_FLIP_Y                                                          /* @brief ViewPort Flip Y                                       */
 	
 /**
 * @brief Macros for Variable Constant.
 */
-const uint BINDLESS_TEXTURE_MAXNUM        = 65535                     ;   /* @brief Maximum number of BindLess Texture Array.             */
-const uint BINDLESS_TEXTURE_SET           = 1                         ;   /* @brief BindLess Texture Descriptor Set.                      */
-const uint BINDLESS_TEXTURE_BINDING       = 0                         ;   /* @brief BindLess Texture Descriptor Set Binding.              */
-const uint MESH_BUFFER_MAXNUM             = 100000                    ;   /* @brief Ray Tracing Renderer Maximum mesh desc buffer count.  */
-const uint DIRECTIONALLIGHT_BUFFER_MAXNUM = 100                       ;   /* @brief Maximum number of Directional lights.                 */
-const uint POINTLIGHT_BUFFER_MAXNUM       = 10000                     ;   /* @brief Maximum number of Point lights.                       */
-const uint MESHLET_NVERTICES              = 64                        ;   /* @brief Maximum number of Meshlet's nVertices.                */
-const uint MESHLET_NPRIMITIVES            = 124                       ;   /* @brief Maximum number of Meshlet's nPrimitives.              */
+static const uint BINDLESS_TEXTURE_MAXNUM        = 65535                     ;   /* @brief Maximum number of BindLess Texture Array.             */
+static const uint BINDLESS_TEXTURE_SET           = 1                         ;   /* @brief BindLess Texture Descriptor Set.                      */
+static const uint BINDLESS_TEXTURE_BINDING       = 0                         ;   /* @brief BindLess Texture Descriptor Set Binding.              */
+static const uint MESH_BUFFER_MAXNUM             = 100000                    ;   /* @brief Ray Tracing Renderer Maximum mesh desc buffer count.  */
+static const uint DIRECTIONALLIGHT_BUFFER_MAXNUM = 100                       ;   /* @brief Maximum number of Directional lights.                 */
+static const uint POINTLIGHT_BUFFER_MAXNUM       = 10000                     ;   /* @brief Maximum number of Point lights.                       */
+static const uint MESHLET_NVERTICES              = 64                        ;   /* @brief Maximum number of Meshlet's nVertices.                */
+static const uint MESHLET_NPRIMITIVES            = 124                       ;   /* @brief Maximum number of Meshlet's nPrimitives.              */
           
-const uint NV_SUBGROUP_SIZE               = 32                        ;   /* @brief Nvidia Hardware only support 32 subgroup size.        */
-const uint AMD_SUBGROUP_SIZE              = 64                        ;   /* @brief AMD    Hardware only support 64 subgroup size.        */
+static const uint NV_SUBGROUP_SIZE               = 32                        ;   /* @brief Nvidia Hardware only support 32 subgroup size.        */
+static const uint AMD_SUBGROUP_SIZE              = 64                        ;   /* @brief AMD    Hardware only support 64 subgroup size.        */
           
-const uint SUBGROUP_SIZE                  = NV_SUBGROUP_SIZE          ;   /* @brief Use Nvidia Hardware.                                  */
+static const uint SUBGROUP_SIZE                  = NV_SUBGROUP_SIZE          ;   /* @brief Use Nvidia Hardware.                                  */
 
-const uint POST_BLOOM_MIPMAP              = 5                         ;   /* @brief PostRenderer Bloom mipmap count.                      */
+static const uint POST_BLOOM_MIPMAP              = 5                         ;   /* @brief PostRenderer Bloom mipmap count.                      */
 
 /**
 * @brief  Macros for Calculate Constant.
 */
-const vec2 invAtan                        = vec2(0.1591, 0.3183)      ;     /* @brief inverse arctan.                                       */
-const float PI                            = 3.141592654f              ;     /* @brief PI.                                                   */
-const float BIAS                          = 0.01f                     ;     /* @brief small blas.                                           */
-const float EPS                           = 1e-6f                     ;     /* @brief small eps.                                            */
+static const float2 invAtan                       = float2(0.1591, 0.3183)    ;     /* @brief inverse arctan.                                       */
+static const float  PI                            = 3.141592654f              ;     /* @brief PI.                                                   */
+static const float  BIAS                          = 0.01f                     ;     /* @brief small blas.                                           */
+static const float  EPS                           = 1e-6f                     ;     /* @brief small eps.                                            */
 
 /*****************************************************************************************/
 
@@ -75,10 +68,10 @@ const float EPS                           = 1e-6f                     ;     /* @
 */
 struct Vertex
 {
-	vec3 position;            /* @brief Vertex Position in local world. */
-	vec3 normal;              /* @brief Vertex Normal.                  */
-	vec3 color;               /* @brief Vertex Color.                   */
-	vec2 texCoord;            /* @brief Vertex UV.                      */
+	float3 position;            /* @brief Vertex Position in local world. */
+	float3 normal;              /* @brief Vertex Normal.                  */
+	float3 color;               /* @brief Vertex Color.                   */
+	float2 texCoord;            /* @brief Vertex UV.                      */
 };
 
 /**
@@ -101,11 +94,11 @@ struct HalfEdge
 */
 struct GBufferPixel
 {
-	vec3  albedo;              /* @brief Albedo.     */
-	vec3  normal;              /* @brief Normal.     */
-	float roughness;           /* @brief Roughness.  */
-	float metallic;            /* @brief Metallic.   */
-	vec3  position;            /* @brief Position.   */
+	float3 albedo;              /* @brief Albedo.     */
+	float3 normal;              /* @brief Normal.     */
+	float  roughness;           /* @brief Roughness.  */
+	float  metallic;            /* @brief Metallic.   */
+	float3 position;            /* @brief Position.   */
 };
 
 /*****************************************************************************************/
@@ -118,14 +111,14 @@ struct GBufferPixel
 */
 struct MaterialAttributes
 {
-	vec3  albedo;              /* @brief Albedo, used for Reflection attenuation.                       */
-	float roughness;           /* @brief Roughness, used for Reflection direction.                      */
-	float metallic;            /* @brief Metallic, used for                                             */
-	vec3  emissive;            /* @brief Emissive, used for Direct illumination.                        */
-	vec3  normal;              /* @brief Normal, used for light effect.                                 */
-	uint  maxRayDepth;         /* @brief Max Ray Tracing Depth, defined specific from material.         */
-	uint  maxLightDepth;       /* @brief Max Ray Tracing Light Depth, defined specific from material.   */
-	uint  maxShadowDepth;      /* @brief Max Ray Tracing Shadow Depth, defined specific from material.  */
+	float3 albedo;              /* @brief Albedo, used for Reflection attenuation.                       */
+	float  roughness;           /* @brief Roughness, used for Reflection direction.                      */
+	float  metallic;            /* @brief Metallic, used for                                             */
+	float3 emissive;            /* @brief Emissive, used for Direct illumination.                        */
+	float3 normal;              /* @brief Normal, used for light effect.                                 */
+	uint   maxRayDepth;         /* @brief Max Ray Tracing Depth, defined specific from material.         */
+	uint   maxLightDepth;       /* @brief Max Ray Tracing Light Depth, defined specific from material.   */
+	uint   maxShadowDepth;      /* @brief Max Ray Tracing Shadow Depth, defined specific from material.  */
 };
 
 /*****************************************************************************************/
@@ -138,15 +131,15 @@ struct MaterialAttributes
 */
 struct View 
 {
-	mat4  projection;          /* @brief Projection Matrix from major Camera Entity.                   */
-	mat4  inProjection;        /* @brief Inverse Projection Matrix from major Camera Entity.                   */
-	mat4  nprojection;         /* @brief Negative y-axis Projection Matrix from major Camera Entity.   */
-	mat4  view;                /* @brief View Matrix from major Camera Entity.                         */
-	mat4  inView;              /* @brief Inverse View Matrix from major Camera Entity.                 */
-	vec4  sceneTextureSize;    /* @brief Scene Texture Size.                                           */
-	vec4  windowSize;          /* @brief Application Window Size.                                      */
-	uint  stableFrames;        /* @brief Camera Stable Frames Number.                                  */
-	float fov;                 /* @brief Camera Radians fov.                                           */
+	float4x4 projection;          /* @brief Projection Matrix from major Camera Entity.                   */
+	float4x4 inProjection;        /* @brief Inverse Projection Matrix from major Camera Entity.           */
+	float4x4 nprojection;         /* @brief Negative y-axis Projection Matrix from major Camera Entity.   */
+	float4x4 view;                /* @brief View Matrix from major Camera Entity.                         */
+	float4x4 inView;              /* @brief Inverse View Matrix from major Camera Entity.                 */
+	float4   sceneTextureSize;    /* @brief Scene Texture Size.                                           */
+	float4   windowSize;          /* @brief Application Window Size.                                      */
+	uint     stableFrames;        /* @brief Camera Stable Frames Number.                                  */
+	float    fov;                 /* @brief Camera Radians fov.                                           */
 };
 
 /**
@@ -154,9 +147,9 @@ struct View
 */
 struct Input
 {
-	vec4  mousePos;            /* @brief Mouse Position and inverse position. */
-	float engineTime;          /* @brief Application Run time since start.    */
-	float frameTime;           /* @brief Duration time since last frame.      */
+	float4 mousePos;            /* @brief Mouse Position and inverse position. */
+	float  engineTime;          /* @brief Application Run time since start.    */
+	float  frameTime;           /* @brief Duration time since last frame.      */
 };
 
 /*****************************************************************************************/
@@ -169,9 +162,9 @@ struct Input
 */
 struct DirectionalLight
 {
-	mat4  rotationMatrix;      /* @brief Rotation of SunLight.   */
-	vec3  color;               /* @brief Color of SunLight.      */
-	float intensity;           /* @brief Intensity of SunLight.  */
+	float4x4 rotationMatrix;      /* @brief Rotation of SunLight.   */
+	float3   color;               /* @brief Color of SunLight.      */
+	float    intensity;           /* @brief Intensity of SunLight.  */
 };
 
 /**
@@ -179,12 +172,12 @@ struct DirectionalLight
 */
 struct PointLight
 {
-	vec3  position;            /* @brief World Position of PointLight. */
-	vec3  color;               /* @brief Color of PointLight.          */
-	float intensity;           /* @brief Intensity of PointLight.      */
-	float constantf;           /* @brief Constantf of PointLight.      */
-	float linear;              /* @brief Linear of PointLight.         */
-	float quadratic;           /* @brief Quadratic of PointLight.      */
+	float3 position;            /* @brief World Position of PointLight. */
+	float3 color;               /* @brief Color of PointLight.          */
+	float  intensity;           /* @brief Intensity of PointLight.      */
+	float  constantf;           /* @brief Constantf of PointLight.      */
+	float  linear;              /* @brief Linear of PointLight.         */
+	float  quadratic;           /* @brief Quadratic of PointLight.      */
 };
 
 /*****************************************************************************************/
@@ -222,16 +215,16 @@ struct PolygonDesc
 */
 struct HitPayLoad
 {
-	vec3  hitValue;                  /* @brief Current Hit Fragment Color.                                                */
-	uint  seed;                      /* @brief Random Seed for BRDF Lambertian Light Reflection Direction Select.         */
-	uint  rayDepth;                  /* @brief Ray Tracing Depth for diffuse.                                             */
-	vec3  rayOrigin;                 /* @brief Next Ray Original World Position.                                          */
-	vec3  rayDirection;              /* @brief Next Ray Direction in World Space.                                         */
-	vec3  weight;                    /* @brief Current Fragment Color Weight.                                             */
-	uint  maxRayDepth;               /* @brief Max Ray Tracing Depth, defined specific from material.                     */
-	uint  entityID;                  /* @brief Entity ID from Closest Hit to Ray Gen Shader to RayEntityID Image.         */
-	uint  triangleID;                /* @brief Triangle ID from Closest Hit to Ray Gen Shader to RayTriangleID Image.     */
-	float depth;                     /* @brief Hit point depth to camera.                                                 */
+	float3 hitValue;                  /* @brief Current Hit Fragment Color.                                                */
+	uint   seed;                      /* @brief Random Seed for BRDF Lambertian Light Reflection Direction Select.         */
+	uint   rayDepth;                  /* @brief Ray Tracing Depth for diffuse.                                             */
+	float3 rayOrigin;                 /* @brief Next Ray Original World Position.                                          */
+	float3 rayDirection;              /* @brief Next Ray Direction in World Space.                                         */
+	float3 weight;                    /* @brief Current Fragment Color Weight.                                             */
+	uint   maxRayDepth;               /* @brief Max Ray Tracing Depth, defined specific from material.                     */
+	uint   entityID;                  /* @brief Entity ID from Closest Hit to Ray Gen Shader to RayEntityID Image.         */
+	uint   triangleID;                /* @brief Triangle ID from Closest Hit to Ray Gen Shader to RayTriangleID Image.     */
+	float  depth;                     /* @brief Hit point depth to camera.                                                 */
 };
 
 /*****************************************************************************************/
@@ -244,8 +237,8 @@ struct HitPayLoad
 */
 struct Sphere
 {
-	vec3  c;                                          /* @brief Center of Bound Sphere.                 */
-	float r;                                          /* @brief Radius of Bound Sphere.                 */
+	float3 c;                                          /* @brief Center of Bound Sphere.                 */
+	float  r;                                          /* @brief Radius of Bound Sphere.                 */
 };
 
 /**
@@ -253,8 +246,8 @@ struct Sphere
 */
 struct AABB
 {
-	vec3 min;                                         /* @brief Min of Bound AABB.                 */    
-	vec3 max;                                         /* @brief Max of Bound AABB.                 */
+	float3 min;                                         /* @brief Min of Bound AABB.                 */    
+	float3 max;                                         /* @brief Max of Bound AABB.                 */
 };
 
 /**
@@ -262,22 +255,41 @@ struct AABB
 */
 struct Meshlet
 {
-	uint    vertexOffset;                        /* @brief Offset of Vertices this meshlet.        */
-	uint    primitiveOffset;                     /* @brief Offset of primitives this meshlet.      */
-	uint    nVertices;                           /* @brief Vertices Count this meshlet.( <= 64)    */
-	uint    nPrimitives;                         /* @brief Primitives Count this meshlet.( <= 126) */
-	uint    lod;                                 /* @brief Current meshlet lod level.              */
-	Sphere  boundSphere;                         /* @brief Bounding Sphere in local world.         */
-	Sphere  clusterBoundSphere;                  /* @brief Cluster Bounding Sphere in local world. */
-	vec3    coneApex;                            /* @brief Normal Cone center.                     */
-	vec3    coneAxis;                            /* @brief Normal Cone axis.                       */
-	float   coneCutoff;                          /* @brief Normal Cone cutoff rate.                */
+	uint   vertexOffset;                        /* @brief Offset of Vertices this meshlet.        */
+	uint   primitiveOffset;                     /* @brief Offset of primitives this meshlet.      */
+	uint   nVertices;                           /* @brief Vertices Count this meshlet.( <= 64)    */
+	uint   nPrimitives;                         /* @brief Primitives Count this meshlet.( <= 126) */
+	uint   lod;                                 /* @brief Current meshlet lod level.              */
+	Sphere boundSphere;                         /* @brief Bounding Sphere in local world.         */
+	Sphere clusterBoundSphere;                  /* @brief Cluster Bounding Sphere in local world. */
+	float3 coneApex;                            /* @brief Normal Cone center.                     */
+	float3 coneAxis;                            /* @brief Normal Cone axis.                       */
+	float  coneCutoff;                          /* @brief Normal Cone cutoff rate.                */
 };
 
 /*****************************************************************************************/
 
 #ifdef __cplusplus
 }
+#else
+	
+/**********************************Functions**********************************************/
+	
+/**
+* @brief GLSL style mod.
+* 
+* @param[in] x .
+* @param[in] y .
+* 
+* @return Returns mod value.
+*/
+float Mod(float x, float y)
+{
+	return x - y * floor(x / y);
+}
+	
+/*****************************************************************************************/
+
 #endif
 
 #endif

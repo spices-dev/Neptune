@@ -32,6 +32,7 @@ namespace Neptune::Vulkan {
         DebugUtils,                                 // @brief DebugUtils.
         BufferDeviceAddress,                        // @brief BufferDeviceAddress.
         DescriptorIndexing,                         // @brief DescriptorIndexing.
+        Vulkan11,                                   // @brief Vulkan11.
         Vulkan13,                                   // @brief Vulkan13.
         Portability,                                // @brief Portability.
         Queue,                                      // @brief Queue.
@@ -86,6 +87,7 @@ namespace Neptune::Vulkan {
             case DebugUtils:                      return "DebugUtils";
             case BufferDeviceAddress:             return "BufferDeviceAddress";
             case DescriptorIndexing:              return "DescriptorIndexing";
+            case Vulkan11:                        return "Vulkan11";
             case Vulkan13:                        return "Vulkan13";
             case Portability:                     return "Portability";
             case Queue:                           return "Queue";

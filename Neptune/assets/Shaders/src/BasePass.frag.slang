@@ -1,28 +1,24 @@
 /**
-* @file BasePass.frag.
+* @file BasePass.frag.slang.
 * @brief This Shader Defines BasePass Fragment Shader Behaver.
 * @author Spices.
 */
 
 /************************************Pre Compile*******************************************/
 
-#version 460
-
-#extension GL_GOOGLE_include_directive : enable    /* @brief Enable include Macro. */
-
-#include "Header/Core.h"
-#include "Header/PreRendererLayout.glsl"
+#include "Header/PreRendererLayout.slangh"
 
 /*****************************************************************************************/
-        
-layout(set = 1, binding = 0) uniform sampler2D bgImage;
 
 /************************************Fragment Input***************************************/
 
 /**
 * @brief Fragment Shader Input From Vertex Shader.
 */
-layout(location = 0) in vec2 texCoord;
+struct FSInput
+{
+    [[vk::location(0)]] float2 texCoord : TEXCOORD0;
+};
 
 /*****************************************************************************************/
         
@@ -31,36 +27,48 @@ layout(location = 0) in vec2 texCoord;
 /**
 * @brief Fragment Shader Output to FrameBuffer.
 */
-layout(location = 0) out vec4 outSceneColor;
+struct FSOutput
+{
+    [[vk::location(0)]] float4 outSceneColor : SV_Target0;
+};
+
+/*****************************************************************************************/
+
+/********************************Descriptor List******************************************/
+
+[[vk::binding(0, 1)]] Sampler2D bgImage;
 
 /*****************************************************************************************/
         
 /**********************************Shader Entry*******************************************/
         
-void main()
+[shader("fragment")]
+FSOutput main(FSInput input)
 {
-    vec2 ndcDir  = vec2(2.0 * texCoord.x - 1.0, 2.0 * texCoord.y - 1.0);
-        
-    vec4 clipDir = vec4(ndcDir, 1.0, 1.0);
+    float2 ndcDir  = float2(2.0 * input.texCoord.x - 1.0, 2.0 * input.texCoord.y - 1.0);
 
-    vec4 viewDir = view.inProjection * clipDir;
+    float4 clipDir = float4(ndcDir, 1.0, 1.0);
+
+    float4 viewDir = mul(view.inProjection, clipDir);
 
     viewDir /= viewDir.w;
 
-    vec3 worldDir = normalize(view.inView * vec4(viewDir.xyz, 0.0)).xyz;
+    float3 worldDir = normalize(mul(view.inView, float4(viewDir.xyz, 0.0)).xyz);
 
-    worldDir.y *= -1;
+    worldDir.y *= -1.0;
         
-    vec4 color = vec4(1.0f);
+    float4 color = float4(1.0f);
             
     if(worldDir.y > 0.0f)
     {
-        color = mix(vec4(1.0f), vec4(0.25f, 0.5f, 1.0f, 1.0f), worldDir.y);
+        color = lerp(float4(1.0f), float4(0.25f, 0.5f, 1.0f, 1.0f), worldDir.y);
     }
 
-    vec4 image = texture(bgImage, texCoord);
+    float4 image = bgImage.Sample(input.texCoord);
 
-    outSceneColor = mix(color, image, image.a);
+    FSOutput output;
+    output.outSceneColor = lerp(color, image, image.a);
+    return output;
 }
 
 /*****************************************************************************************/

@@ -56,7 +56,7 @@ namespace Neptune::Vulkan::Extension {
         
     private:
         
-        VkPhysicalDeviceSamplerYcbcrConversionFeatures m_SamplerYcbcrConversionFeatures { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SAMPLER_YCBCR_CONVERSION_FEATURES };  // @brief SamplerYcbcrConversionFeatures.
+        VkPhysicalDeviceVulkan11Features m_Vulkan11Features { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_1_FEATURES };  // @brief Vulkan11Features.
     };
 }
 

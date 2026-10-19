@@ -1,5 +1,5 @@
 /**
-* @file VertexInput.glsl.
+* @file VertexInput.slangh.
 * @brief This Shader Header File Defines Vertex Input Structure.
 * @author Spices.
 */

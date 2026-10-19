@@ -26,16 +26,16 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        LinkToChain(pNext, filter, m_SamplerYcbcrConversionFeatures);
+        LinkToChain(pNext, filter, m_Vulkan11Features);
     }
     
     bool SamplerYcbcrConversion::IsFeaturesSatisfied()
     {
         NEPTUNE_PROFILE_ZONE
         
-        NEPTUNE_LOG_CORE(I) << "SamplerYcbcrConversion [ samplerYcbcrConversion ] : " << m_SamplerYcbcrConversionFeatures.samplerYcbcrConversion;
+        NEPTUNE_LOG_CORE(I) << "Vulkan11 [ samplerYcbcrConversion ] : " << m_Vulkan11Features.samplerYcbcrConversion;
         
-        if (!m_SamplerYcbcrConversionFeatures.samplerYcbcrConversion)
+        if (!m_Vulkan11Features.samplerYcbcrConversion)
         {
             return false;
         }
