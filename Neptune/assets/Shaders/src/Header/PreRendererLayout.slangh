@@ -1,5 +1,5 @@
 /**
-* @file PreRendererLayout.glsl.
+* @file PreRendererLayout.slangh.
 * @brief This Shader Header File Defines Pre Shader DescriptorSets.
 * @author Spices.
 */
@@ -18,23 +18,17 @@
 /**
 * @brief Global View Struct.
 */
-layout(set = 0, binding = 0) uniform ShaderView 
-{
-    View view;                        /* @see View */
-};
+[[vk::binding(0, 0)]] ConstantBuffer<View> view;                 /* @see View  */
 
 /**
 * @brief Application Inout Struct.
 */
-layout(set = 0, binding = 1) uniform ShaderInput 
-{
-    Input engineInput;          /* @see EngineInput */
-};
+[[vk::binding(1, 0)]] ConstantBuffer<Input> engineInput;         /* @see Input */
 
 /**
 * @brief BindLess Texture Buffer.
 */
-layout (set = BINDLESS_TEXTURE_SET, binding = BINDLESS_TEXTURE_BINDING) uniform sampler2D BindLessTextureBuffer[];
+//[[vk::binding(BINDLESS_TEXTURE_BINDING, BINDLESS_TEXTURE_SET)]] Sampler2D BindLessTextureBuffer[];
 
 /*****************************************************************************************/
 

@@ -90,7 +90,7 @@ namespace Neptune {
 		* 
 		* @return Returns resource smart pointer.
 		*/
-		std::shared_ptr<T> Access(const std::string& path);
+		std::shared_ptr<T> Access(const std::string& path) const;
 
 		/**
 		* @brief UnLoad a resource by path.
@@ -146,11 +146,11 @@ namespace Neptune {
 			m_Resources[path] = CreateUP<Resource>(fn);
 		}
 
-		return m_Resources[path]->template GetResource<T>();
+		return m_Resources.at(path)->template GetResource<T>();
 	}
 
 	template<typename T>
-	inline std::shared_ptr<T> ResourcePool<T>::Access(const std::string& path)
+	inline std::shared_ptr<T> ResourcePool<T>::Access(const std::string& path) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -158,7 +158,7 @@ namespace Neptune {
 		
 		if (!m_Resources.contains(path)) return nullptr;
 
-		return m_Resources[path]->template GetResource<T>();
+		return m_Resources.at(path)->template GetResource<T>();
 	}
 
 	template<typename T>
