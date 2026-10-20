@@ -1,5 +1,5 @@
 /**
-* @file ToneMappers.glsl.
+* @file ToneMappers.slangh.
 * @brief This Shader Header File Defines Tone Mappers.
 * @author Spices.
 */
@@ -17,11 +17,11 @@
 
 // General tonemapping operator, build 'b' term.
 float ColToneB(
-    const in float hdrMax   , 
-    const in float contrast , 
-    const in float shoulder , 
-    const in float midIn    , 
-    const in float midOut
+    float hdrMax   , 
+    float contrast , 
+    float shoulder , 
+    float midIn    , 
+    float midOut
 )
 {
     return
@@ -33,11 +33,11 @@ float ColToneB(
 
 // General tonemapping operator, build 'c' term.
 float ColToneC(
-    const in float hdrMax   , 
-    const in float contrast , 
-    const in float shoulder , 
-    const in float midIn    , 
-    const in float midOut
+    float hdrMax   , 
+    float contrast , 
+    float shoulder , 
+    float midIn    , 
+    float midOut
 )
 {
     return 
@@ -46,18 +46,18 @@ float ColToneC(
 }
 
 // General tonemapping operator, p := {contrast,shoulder,b,c}.
-float ColTone(const in float x, const in vec4 p)
+float ColTone(float x, float4 p)
 {
     float z = pow(x, p.r);
     return z / (pow(z, p.g) * p.b + p.a);
 }
 
 // AMD Tonemapper
-vec3 AMDTonemapper(in vec3 color)
+float3 AMDTonemapper(float3 color)
 {
     const float hdrMax   = 16.0f;  // How much HDR range before clipping. HDR modes likely need this pushed up to say 25.0.
     const float contrast = 2.0f;   // Use as a baseline to tune the amount of contrast the tonemapper has.
-    const float shoulder = 1.0f;   // Likely don抰 need to mess with this factor, unless matching existing tonemapper is not working well..
+    const float shoulder = 1.0f;   // Likely don't need to mess with this factor, unless matching existing tonemapper is not working well..
     const float midIn    = 0.18f;  // most games will have a {0.0 to 1.0} range for LDR so midIn should be 0.18.
     const float midOut   = 0.18f;  // Use for LDR. For HDR10 10:10:10:2 use maybe 0.18/25.0 to start. For scRGB, I forget what a good starting point is, need to re-calculate.
 
@@ -67,8 +67,8 @@ vec3 AMDTonemapper(in vec3 color)
     float peak = max(color.r, max(color.g, color.b));
     peak = max(EPS, peak);
 
-    vec3 ratio = color / peak;
-    peak = ColTone(peak, vec4(contrast, shoulder, b, c) );
+    float3 ratio = color / peak;
+    peak = ColTone(peak, float4(contrast, shoulder, b, c) );
     // then process ratio
 
     // probably want send these pre-computed (so send over saturation/crossSaturation as a constant)
@@ -79,9 +79,9 @@ vec3 AMDTonemapper(in vec3 color)
     float white = 1.0f;
 
     // wrap crosstalk in transform
-    ratio = pow(abs(ratio), vec3(saturation / crossSaturation));
-    ratio = mix(ratio, vec3(white), vec3(pow(peak, crosstalk)));
-    ratio = pow(abs(ratio), vec3(crossSaturation));
+    ratio = pow(abs(ratio), float3(saturation / crossSaturation));
+    ratio = lerp(ratio, float3(white), float3(pow(peak, crosstalk)));
+    ratio = pow(abs(ratio), float3(crossSaturation));
 
     // then apply ratio to peak
     color = peak * ratio;
@@ -89,7 +89,7 @@ vec3 AMDTonemapper(in vec3 color)
 }
 
 // The tone mapper used in HDRToneMappingCS11
-vec3 DX11DSK(in vec3 color)
+float3 DX11DSK(float3 color)
 {
     float  MIDDLE_GRAY = 0.72f;
     float  LUM_WHITE = 1.5f;
@@ -103,13 +103,13 @@ vec3 DX11DSK(in vec3 color)
 }
 
 // Reinhard
-vec3 Reinhard(const in vec3 color)
+float3 Reinhard(float3 color)
 {
-    return color/(1+color);
+    return color/(1.0f + color);
 }
 
 // Hable's filmic
-vec3 Uncharted2TonemapOp(const in vec3 x)
+float3 Uncharted2TonemapOp(float3 x)
 {
     float A = 0.15;
     float B = 0.50;
@@ -121,13 +121,13 @@ vec3 Uncharted2TonemapOp(const in vec3 x)
     return ((x*(A*x+C*B)+D*E)/(x*(A*x+B)+D*F))-E/F;
 }
 
-vec3 Uncharted2Tonemap(const in vec3 color)
+float3 Uncharted2Tonemap(float3 color)
 {
     float W = 11.2;
-    return Uncharted2TonemapOp(2.0 * color) / Uncharted2TonemapOp(vec3(W));
+    return Uncharted2TonemapOp(2.0 * color) / Uncharted2TonemapOp(float3(W));
 }
 
-vec3 tonemapACES(const in vec3 x)
+float3 tonemapACES(float3 x)
 {
     float a = 2.51;
     float b = 0.03;

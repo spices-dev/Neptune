@@ -16,7 +16,10 @@
 /**
 * @brief Position Input from InputAssembly.
 */
-layout(location = 0) in vec3 position;             /* @brief Vertex Position. */
+struct VertexInput
+{
+    [[vk::location(0)]] float3 position : POSITION;     /* @brief Vertex Position. */
+};
 
 /*****************************************************************************************/
 

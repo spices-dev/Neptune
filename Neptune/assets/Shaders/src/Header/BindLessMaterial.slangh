@@ -1,5 +1,5 @@
 /**
-* @file BindLessMaterial.glsl.
+* @file BindLessMaterial.slangh.
 * @brief This Shader Header File Defines BindLess Material Structure.
 * @author Spices.
 */
@@ -19,11 +19,8 @@
 * @brief Buffer of all Material Parameters in World.
 * Only Access index 0, unless you want access other material parameter.
 */
-layout(buffer_reference, scalar, buffer_reference_align = 8) buffer MaterialParameters 
-{ 
-    MaterialParameter i[]; 
-};
-MaterialParameter materialParam;
+typealias MaterialParameters = MaterialParameter*;
+static MaterialParameter materialParam;
 
 /*****************************************************************************************/
 
@@ -33,9 +30,9 @@ MaterialParameter materialParam;
 * @brief Explain Material Parameter to split struct and texture.
 * @param[in] materialParameterAddress the MaterialParameter address.
 */
-void ExplainMaterialParameter(const in uint64_t materialParameterAddress)
+void ExplainMaterialParameter(uint64_t materialParameterAddress)
 {
-    materialParam = MaterialParameters(materialParameterAddress).i[0];
+    materialParam = ((MaterialParameters)materialParameterAddress)[0];
 }
 
 /*****************************************************************************************/
