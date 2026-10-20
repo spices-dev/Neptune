@@ -19,26 +19,26 @@ namespace Neptune::ShaderCore::GS3DTileRenderCore
 /**
 * @brief Macros for Variable Constant.
 */
-const uint  TILE_SIZE                 = 16u;                                                                                   // @brief Tile Render Size.
-const float RADIUS_SIGMA              = 3.0f;                                                                                  // @brief Splat Radius Sigma.
-const uint  GID_BITS                  = 24u;                                                                                   // @brief GS id bits.
-const uint  MAXGAUSSIANS              = 1u << GID_BITS;                                                                        // @brief GS Max Count.
-const uint  DEPTH_BITS                = 24u;                                                                                   // @brief Depth bits.
-const uint  TILEID_BITS               = 16u;                                                                                   // @brief Tile id bits.
-const uint  GID_SHIFT                 = 0u;                                                                                    // @brief GS id shift.
-const uint  DEPTH_SHIFT               = GID_BITS;                                                                              // @brief Depth shift.
-const uint  TILE_SHIFT                = DEPTH_BITS + GID_BITS;                                                                 // @brief Tile shift.
-const uint  GID_MASK                  = ((1u << GID_BITS) - 1u);                                                               // @brief GS id mask.
-const uint  RADIX_FIRST_BIT           = DEPTH_SHIFT;                                                                           // @brief Radix First bits.
-const uint  RADIX_DIGITAL_BIT         = 8u;                                                                                    // @brief Radix Digital bits.
-const uint  RADIX_NUM_PASSES          = (64u - RADIX_FIRST_BIT + RADIX_DIGITAL_BIT - 1u) / RADIX_DIGITAL_BIT;                  // @brief Radix Passes.
-const uint  RADIX_ELEMS_PER_WG        = 1024u;                                                                                 // @brief Radix Handled Splats Count Per WorkGroup.
-const uint  AVGTILESPERGAUSSIAN       = 1u;                                                                                    // @brief Avg GS Count Per Tile.
-const uint  MAXTILEGAUSSIANS          = MAXGAUSSIANS * AVGTILESPERGAUSSIAN;                                                    // @brief Max Tile GS Count.
-const uint  MAXTILEGAUSSIANSNUMWG     = (MAXTILEGAUSSIANS + RADIX_ELEMS_PER_WG - 1u) / RADIX_ELEMS_PER_WG;                     // @brief Max Tile GS WorkGroup Count.
-const uint  MAXTILESX                 = (3840u + TILE_SIZE - 1u) / TILE_SIZE;                                                  // @brief Max Tiles in X.
-const uint  MAXTILESY                 = (2160u + TILE_SIZE - 1u) / TILE_SIZE;                                                  // @brief Max Tiles in Y.
-const uint  MAXTILES                  = MAXTILESX * MAXTILESY;                                                                 // @brief Max Tiles Count.
+static const uint  TILE_SIZE                 = 16u;                                                                                   // @brief Tile Render Size.
+static const float RADIUS_SIGMA              = 3.0f;                                                                                  // @brief Splat Radius Sigma.
+static const uint  GID_BITS                  = 24u;                                                                                   // @brief GS id bits.
+static const uint  MAXGAUSSIANS              = 1u << GID_BITS;                                                                        // @brief GS Max Count.
+static const uint  DEPTH_BITS                = 24u;                                                                                   // @brief Depth bits.
+static const uint  TILEID_BITS               = 16u;                                                                                   // @brief Tile id bits.
+static const uint  GID_SHIFT                 = 0u;                                                                                    // @brief GS id shift.
+static const uint  DEPTH_SHIFT               = GID_BITS;                                                                              // @brief Depth shift.
+static const uint  TILE_SHIFT                = DEPTH_BITS + GID_BITS;                                                                 // @brief Tile shift.
+static const uint  GID_MASK                  = ((1u << GID_BITS) - 1u);                                                               // @brief GS id mask.
+static const uint  RADIX_FIRST_BIT           = DEPTH_SHIFT;                                                                           // @brief Radix First bits.
+static const uint  RADIX_DIGITAL_BIT         = 8u;                                                                                    // @brief Radix Digital bits.
+static const uint  RADIX_NUM_PASSES          = (64u - RADIX_FIRST_BIT + RADIX_DIGITAL_BIT - 1u) / RADIX_DIGITAL_BIT;                  // @brief Radix Passes.
+static const uint  RADIX_ELEMS_PER_WG        = 1024u;                                                                                 // @brief Radix Handled Splats Count Per WorkGroup.
+static const uint  AVGTILESPERGAUSSIAN       = 1u;                                                                                    // @brief Avg GS Count Per Tile.
+static const uint  MAXTILEGAUSSIANS          = MAXGAUSSIANS * AVGTILESPERGAUSSIAN;                                                    // @brief Max Tile GS Count.
+static const uint  MAXTILEGAUSSIANSNUMWG     = (MAXTILEGAUSSIANS + RADIX_ELEMS_PER_WG - 1u) / RADIX_ELEMS_PER_WG;                     // @brief Max Tile GS WorkGroup Count.
+static const uint  MAXTILESX                 = (3840u + TILE_SIZE - 1u) / TILE_SIZE;                                                  // @brief Max Tiles in X.
+static const uint  MAXTILESY                 = (2160u + TILE_SIZE - 1u) / TILE_SIZE;                                                  // @brief Max Tiles in Y.
+static const uint  MAXTILES                  = MAXTILESX * MAXTILESY;                                                                 // @brief Max Tiles Count.
     
 /*****************************************************************************************/
 
@@ -74,7 +74,7 @@ struct GS3DDesc
 */
 struct Splat
 {
-    uvec4 packed;            // @brief Packed GS data.
+    uint4 packed;            // @brief Packed GS data.
 };
 
 /**

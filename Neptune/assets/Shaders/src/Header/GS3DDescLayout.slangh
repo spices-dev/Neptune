@@ -1,0 +1,50 @@
+/**
+* @file GS3DDescLayout.slangh.
+* @brief This Shader Header File Defines GS3D Descriptions.
+* @author Spices.
+*/
+
+/************************************Pre Compile*******************************************/
+
+#ifndef GS3D_DESC_LAYOUT_H
+#define GS3D_DESC_LAYOUT_H
+
+#include "GS3DTileRenderCore.h"
+
+/*****************************************************************************************/
+
+/****************************************Buffer Data**************************************/
+
+typealias GS3DDescs   = GS3DDesc*;        /* @brief GS3D Desciption Buffer. @see GS3DDesc. */
+typealias Models      = float4x4*;        /* @brief GS3D Model Matrix Buffer.              */
+typealias MeansRanges = float3*;          /* @brief MeansRanges Buffer.                    */
+typealias ScaleCodes  = float*;           /* @brief ScaleCodes Buffer.                     */
+typealias Sh0Codes    = float*;           /* @brief Sh0Codes Buffer.                       */
+
+static GS3DDesc     desc;
+static float4x4     model;
+static MeansRanges  meansRanges;
+static ScaleCodes   scaleCodes;
+static Sh0Codes     sh0Codes;
+
+/*****************************************************************************************/
+
+/******************************************Functions**************************************/
+
+/**
+* @brief Explain GS3D Desciption to split variable.
+* 
+* @param[in] gs3dDescAddress The GS3D Desciption Buffer Address address.
+*/
+void ExplainGS3DDesciption(uint64_t gs3dDescAddress)
+{
+    desc                = ((GS3DDescs)gs3dDescAddress)[0];
+    model               = ((Models)desc.modelAddress)[0];
+    meansRanges         = (MeansRanges)desc.meansRangesAddress;
+    scaleCodes          = (ScaleCodes)desc.scaleCodesAddress;
+    sh0Codes            = (Sh0Codes)desc.sh0CodesAddress;
+}
+
+/*****************************************************************************************/
+
+#endif
