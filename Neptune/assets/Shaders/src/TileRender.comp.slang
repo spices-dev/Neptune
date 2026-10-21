@@ -27,10 +27,10 @@ static const float SH_C0       = 0.28209479177387814;
 static const float LOG2_1_255  = -7.994353436858858;       // log2(1 / 255)
 static const float TWO_LN2     =  1.3862943611198906;      // 2 * ln(2)
 static const float CULL_MARGIN =  0.05;
-static const uint  NUM_WARPS   = (TILE_SIZE * TILE_SIZE) / SUBGROUP_SIZE;
+static const uint  NUM_WARPS   = (TILE_SIZE * TILE_SIZE) / WAVE_SIZE;
 
-groupshared float4 sGeom[NUM_WARPS][SUBGROUP_SIZE];
-groupshared float4 sCoef[NUM_WARPS][SUBGROUP_SIZE];
+groupshared float4 sGeom[NUM_WARPS][WAVE_SIZE];
+groupshared float4 sCoef[NUM_WARPS][WAVE_SIZE];
 groupshared float  sSh0Codes[256];
 
 /*****************************************************************************************/
@@ -122,11 +122,11 @@ void main(uint3 groupID : SV_GroupID, uint tid : SV_GroupIndex)
             uint gid = uint(entries[range.x + lane]) & GID_MASK;
             u = splats[gid];
         }
-        if (SUBGROUP_SIZE + lane < total)
-            rawN = entries[range.x + SUBGROUP_SIZE + lane];
+        if (WAVE_SIZE + lane < total)
+            rawN = entries[range.x + WAVE_SIZE + lane];
     }
 
-    for (uint base = 0u; base < total; base += SUBGROUP_SIZE)
+    for (uint base = 0u; base < total; base += WAVE_SIZE)
     {
         if (WaveActiveAllTrue(done)) break;
         
@@ -158,24 +158,24 @@ void main(uint3 groupID : SV_GroupID, uint tid : SV_GroupIndex)
             }
         }
 
-        if (i + SUBGROUP_SIZE < total)
+        if (i + WAVE_SIZE < total)
         {
             uint gidN = uint(rawN) & GID_MASK;
             u = splats[gidN];
         }
-        if (i + 2u * SUBGROUP_SIZE < total)
-            rawN = entries[range.x + i + 2u * SUBGROUP_SIZE];
+        if (i + 2u * WAVE_SIZE < total)
+            rawN = entries[range.x + i + 2u * WAVE_SIZE];
             
         uint hm = WaveActiveBallot(hit).x;
         if (hm != 0u)
         {
-            uint pos = WavePrefixCountBits(hit);       // Same as bitCount(hm & gl_SubgroupLtMask.x).
+            uint pos = WavePrefixCountBits(hit);
             if (hit)
             {
                 sGeom[warp][pos] = g;
                 sCoef[warp][pos] = cf;
             }
-            GroupMemoryBarrierWithWaveSync();           // subgroupMemoryBarrierShared + subgroupBarrier.
+            GroupMemoryBarrierWithWaveSync();
 
             uint n = countbits(hm);
             for (uint k = 0u; k < n; k += 2u)

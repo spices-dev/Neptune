@@ -10,7 +10,7 @@ setlocal enabledelayedexpansion
 ::------------------------------------------------------------------------------
 
 :: @brief 1: Debug, 0: Release.
-set DEBUG=0
+set DEBUG=1
 
 :: @brief Target SPIR-V profile.
 set SPIRV_PROFILE=spirv_1_4

@@ -43,10 +43,10 @@ static const uint POINTLIGHT_BUFFER_MAXNUM       = 10000                     ;  
 static const uint MESHLET_NVERTICES              = 64                        ;   /* @brief Maximum number of Meshlet's nVertices.                */
 static const uint MESHLET_NPRIMITIVES            = 124                       ;   /* @brief Maximum number of Meshlet's nPrimitives.              */
           
-static const uint NV_SUBGROUP_SIZE               = 32                        ;   /* @brief Nvidia Hardware only support 32 subgroup size.        */
-static const uint AMD_SUBGROUP_SIZE              = 64                        ;   /* @brief AMD    Hardware only support 64 subgroup size.        */
+static const uint NV_WAVE_SIZE                   = 32                        ;   /* @brief Nvidia Hardware only support 32 wave size.            */
+static const uint AMD_WAVE_SIZE                  = 64                        ;   /* @brief AMD    Hardware only support 64 wave size.            */
           
-static const uint SUBGROUP_SIZE                  = NV_SUBGROUP_SIZE          ;   /* @brief Use Nvidia Hardware.                                  */
+static const uint WAVE_SIZE                      = NV_WAVE_SIZE          ;       /* @brief Use Nvidia Hardware.                                  */
 
 static const uint POST_BLOOM_MIPMAP              = 5                         ;   /* @brief PostRenderer Bloom mipmap count.                      */
 
