@@ -52,7 +52,7 @@ namespace Neptune::Vulkan::Extension {
         
     private:
         
-        VkPhysicalDeviceTimelineSemaphoreFeatures m_TimelineSemaphoreFeatures { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_TIMELINE_SEMAPHORE_FEATURES };       // @brief TimelineSemaphoreFeatures.
+        VkPhysicalDeviceVulkan12Features m_Vulkan12Features { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES };  // @brief Vulkan12Features.
         VkPhysicalDeviceTimelineSemaphoreProperties m_TimelineSemaphoreProperties { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_TIMELINE_SEMAPHORE_PROPERTIES };  // @brief TimelineSemaphoreProperties.
     
     };

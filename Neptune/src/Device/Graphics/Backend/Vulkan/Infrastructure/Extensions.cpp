@@ -70,6 +70,7 @@ namespace Neptune::Vulkan {
 		m_Context->Registry<Extension::IBufferDeviceAddress>              (Extension::EExtensionState::Core);
 		m_Context->Registry<Extension::IDescriptorIndexing>               (Extension::EExtensionState::Core);
 		m_Context->Registry<Extension::IVulkan11>                         (Extension::EExtensionState::Core);
+		m_Context->Registry<Extension::IVulkan12>                         (Extension::EExtensionState::Core);
 		m_Context->Registry<Extension::IVulkan13>                         (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IPortability>                      (Extension::EExtensionState::Extent);          // @brief Done.
 		m_Context->Registry<Extension::IQueue>                            (Extension::EExtensionState::Core);            // @brief Done.

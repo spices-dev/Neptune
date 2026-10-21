@@ -56,7 +56,7 @@ namespace Neptune::Vulkan::Extension {
         
     private:
         
-        VkPhysicalDeviceDescriptorIndexingFeatures m_DescriptorIndexingFeatures { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_INDEXING_FEATURES };  // @brief DescriptorIndexingFeatures.
+        VkPhysicalDeviceVulkan12Features m_Vulkan12Features { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES };  // @brief Vulkan12Features.
     
     };
 }

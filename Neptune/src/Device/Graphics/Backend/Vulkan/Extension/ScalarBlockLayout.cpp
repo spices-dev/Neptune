@@ -20,16 +20,16 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        LinkToChain(pNext, filter, m_ScalarBlockLayoutFeatures);
+        LinkToChain(pNext, filter, m_Vulkan12Features);
     }
     
     bool ScalarBlockLayout::IsFeaturesSatisfied()
     {
         NEPTUNE_PROFILE_ZONE
         
-        NEPTUNE_LOG_CORE(I) << "ScalarBlockLayout [ scalarBlockLayout ] : " << m_ScalarBlockLayoutFeatures.scalarBlockLayout;
+        NEPTUNE_LOG_CORE(I) << "Vulkan12 [ scalarBlockLayout ] : " << m_Vulkan12Features.scalarBlockLayout;
         
-        if (!m_ScalarBlockLayoutFeatures.scalarBlockLayout)
+        if (!m_Vulkan12Features.scalarBlockLayout)
         {
             return false;
         }

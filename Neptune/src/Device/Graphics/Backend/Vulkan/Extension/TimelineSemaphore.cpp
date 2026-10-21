@@ -26,16 +26,16 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        LinkToChain(pNext, filter, m_TimelineSemaphoreFeatures);
+        LinkToChain(pNext, filter, m_Vulkan12Features);
     }
     
     bool TimelineSemaphore::IsFeaturesSatisfied()
     {
         NEPTUNE_PROFILE_ZONE
         
-        NEPTUNE_LOG_CORE(I) << "TimelineSemaphore [ timelineSemaphore ] : " << m_TimelineSemaphoreFeatures.timelineSemaphore;
+        NEPTUNE_LOG_CORE(I) << "Vulkan12 [ timelineSemaphore ] : " << m_Vulkan12Features.timelineSemaphore;
         
-        if (!m_TimelineSemaphoreFeatures.timelineSemaphore)
+        if (!m_Vulkan12Features.timelineSemaphore)
         {
             return false;
         }

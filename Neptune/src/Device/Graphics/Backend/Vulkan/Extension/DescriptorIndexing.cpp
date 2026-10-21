@@ -16,22 +16,22 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        LinkToChain(pNext, filter, m_DescriptorIndexingFeatures);
+        LinkToChain(pNext, filter, m_Vulkan12Features);
     }
     
     bool DescriptorIndexing::IsFeaturesSatisfied()
     {
         NEPTUNE_PROFILE_ZONE
         
-        NEPTUNE_LOG_CORE(I) << "DescriptorIndexing [ descriptorBindingPartiallyBound ] : " << m_DescriptorIndexingFeatures.descriptorBindingPartiallyBound;
-        NEPTUNE_LOG_CORE(I) << "DescriptorIndexing [ descriptorBindingSampledImageUpdateAfterBind ] : " << m_DescriptorIndexingFeatures.descriptorBindingSampledImageUpdateAfterBind;
+        NEPTUNE_LOG_CORE(I) << "Vulkan12 [ descriptorBindingPartiallyBound ] : " << m_Vulkan12Features.descriptorBindingPartiallyBound;
+        NEPTUNE_LOG_CORE(I) << "Vulkan12 [ descriptorBindingSampledImageUpdateAfterBind ] : " << m_Vulkan12Features.descriptorBindingSampledImageUpdateAfterBind;
 
-        if (!m_DescriptorIndexingFeatures.descriptorBindingPartiallyBound)
+        if (!m_Vulkan12Features.descriptorBindingPartiallyBound)
         {
             return false;
         }
 
-        if (!m_DescriptorIndexingFeatures.descriptorBindingSampledImageUpdateAfterBind)
+        if (!m_Vulkan12Features.descriptorBindingSampledImageUpdateAfterBind)
         {
             return false;
         }

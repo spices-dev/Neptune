@@ -16,16 +16,16 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        LinkToChain(pNext, filter, m_BufferDeviceAddressFeatures);
+        LinkToChain(pNext, filter, m_Vulkan12Features);
     }
     
     bool BufferDeviceAddress::IsFeaturesSatisfied()
     {
         NEPTUNE_PROFILE_ZONE
         
-        NEPTUNE_LOG_CORE(I) << "BufferDeviceAddress [ bufferDeviceAddress ] : " << m_BufferDeviceAddressFeatures.bufferDeviceAddress;
+        NEPTUNE_LOG_CORE(I) << "Vulkan12 [ bufferDeviceAddress ] : " << m_Vulkan12Features.bufferDeviceAddress;
 
-        if (!m_BufferDeviceAddressFeatures.bufferDeviceAddress)
+        if (!m_Vulkan12Features.bufferDeviceAddress)
         {
             return false;
         }

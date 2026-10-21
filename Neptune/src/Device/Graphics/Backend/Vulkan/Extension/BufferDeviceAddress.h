@@ -57,7 +57,7 @@ namespace Neptune::Vulkan::Extension {
         
     private:
         
-        VkPhysicalDeviceBufferDeviceAddressFeatures m_BufferDeviceAddressFeatures { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BUFFER_DEVICE_ADDRESS_FEATURES };  // @brief BufferDeviceAddressFeatures.
+        VkPhysicalDeviceVulkan12Features m_Vulkan12Features { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES };  // @brief Vulkan12Features.
     
     };
 }

@@ -48,7 +48,7 @@ namespace Neptune::Vulkan::Extension {
 
     private:
 
-        VkPhysicalDeviceScalarBlockLayoutFeatures m_ScalarBlockLayoutFeatures{ VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SCALAR_BLOCK_LAYOUT_FEATURES }; // @brief ScalarBlockLayoutFeatures.
+        VkPhysicalDeviceVulkan12Features m_Vulkan12Features { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES };  // @brief Vulkan12Features.
     
     };
 }

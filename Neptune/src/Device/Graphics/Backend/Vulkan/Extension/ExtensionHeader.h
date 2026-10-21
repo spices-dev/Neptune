@@ -26,6 +26,7 @@
 #include "BufferDeviceAddress.h"
 #include "DescriptorIndexing.h"
 #include "Vulkan11.h"
+#include "Vulkan12.h"
 #include "Vulkan13.h"
 #include "Portability.h"
 #include "Queue.h"
