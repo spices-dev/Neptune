@@ -26,6 +26,31 @@ typealias TileRanges    = uint2*;          // @brief Range Buffer.
 /******************************************Functions**************************************/
 
 /**
+* @brief pack float2 to uint
+* 
+* @param[in] v float2.
+*
+* @return Returns uint.
+*/
+uint PackHalf2x16(float2 v)
+{
+    uint2 h = f32tof16(v);
+    return h.x | (h.y << 16u);
+}
+
+/**
+* @brief pack float2 from uint
+* 
+* @param[in] v uint.
+*
+* @return Returns float2.
+*/
+float2 UnpackHalf2x16(uint v)
+{
+    return float2(f16tof32(v & 0xFFFFu), f16tof32(v >> 16u));
+}
+
+/**
 * @brief Make Sort Key.
 * 
 * @param[in] tile Tile Id.

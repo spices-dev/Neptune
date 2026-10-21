@@ -1,23 +1,13 @@
 /**
-* @file TileRenderRanges.comp.
+* @file TileRenderRanges.comp.slang.
 * @brief This Shader Defines TileRenderRanges Compute Shader Behaver.
 * @author Spices.
 */
 
 /************************************Pre Compile*******************************************/
 
-#version 460
-
-#extension GL_GOOGLE_include_directive : enable    /* @brief Enable include Macro. */
-
-#include "Header/PreRendererLayout.glsl"
-#include "Header/GS3DTileRenderCommon.glsl"
-
-/*****************************************************************************************/
-
-/*************************************Comp Input******************************************/
-        
-layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+#include "Header/PreRendererLayout.slangh"
+#include "Header/GS3DTileRenderCommon.slangh"
 
 /*****************************************************************************************/
 
@@ -26,14 +16,11 @@ layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
 /**
 * @brief push constant.
 */
-layout(push_constant) uniform Push
-{
-    RangePush push;
-};
+[[vk::push_constant]] ConstantBuffer<RangePush> push;
 
-const uint NO_TILE = 0xFFFFFFFFu;             // Sentinel: differs from every real tile id.
+static const uint NO_TILE = 0xFFFFFFFFu;             // Sentinel: differs from every real tile id.
 
-shared uint sTile[RADIX_ELEMS_PER_WG + 2u];   // sTile[s] = tile of element (wg * 1024 + s - 1).
+groupshared uint sTile[RADIX_ELEMS_PER_WG + 2u];   // sTile[s] = tile of element (wg * 1024 + s - 1).
 
 /*****************************************************************************************/
         
@@ -41,21 +28,24 @@ shared uint sTile[RADIX_ELEMS_PER_WG + 2u];   // sTile[s] = tile of element (wg 
 
 uint LoadTile(TileEntries e, uint g, uint n)
 {
-    return (g >= 1u && g - 1u < n) ? uint(e.i[g - 1u] >> TILE_SHIFT) : NO_TILE;
+    return (g >= 1u && g - 1u < n) ? uint(e[g - 1u] >> TILE_SHIFT) : NO_TILE;
 }
 
 /*****************************************************************************************/
         
 /**********************************Shader Entry*******************************************/
 
-void main()
+[shader("compute")]
+[numthreads(256, 1, 1)]
+void main(uint3 groupThreadID : SV_GroupThreadID, uint3 groupID : SV_GroupID)
 {
-    uint n   = TileSortInfos(push.infoAddress).i[0].numElements;
-    uint tid = gl_LocalInvocationID.x;
-    uint wg  = gl_WorkGroupID.x;
+    TileSortInfos infos = (TileSortInfos)push.infoAddress;
+    uint n   = infos[0].numElements;
+    uint tid = groupThreadID.x;
+    uint wg  = groupID.x;
     
-    TileEntries e = TileEntries(push.sortedAddress);
-    TileRanges  r = TileRanges(push.rangeAddress);
+    TileEntries e = (TileEntries)push.sortedAddress;
+    TileRanges  r = (TileRanges)push.rangeAddress;
 
     uint g0 = wg * RADIX_ELEMS_PER_WG + tid;
     uint t0 = LoadTile(e, g0,         n);
@@ -70,7 +60,7 @@ void main()
     sTile[tid + 768u]  = t3;
     if (tid < 2u) sTile[tid + 1024u] = t4;
 
-    barrier();
+    GroupMemoryBarrierWithGroupSync();
 
     for (uint k = 0u; k < 4u; ++k)
     {
@@ -81,8 +71,8 @@ void main()
         uint tile = sTile[s];
         if (tile >= push.numTiles) continue;
             
-        if (sTile[s - 1u] != tile) r.i[tile].x = idx;
-        if (sTile[s + 1u] != tile) r.i[tile].y = idx + 1u;
+        if (sTile[s - 1u] != tile) r[tile].x = idx;
+        if (sTile[s + 1u] != tile) r[tile].y = idx + 1u;
     }
 }
 

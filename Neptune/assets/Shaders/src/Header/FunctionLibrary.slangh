@@ -16,6 +16,57 @@
 /******************************************Functions**************************************/
 
 /**
+* @brief Inverse Matrix.
+* 
+* @param[in] m Matrix.
+* 
+* @return Returns Inverse Matrix.
+*/
+float3x3 Inverse(float3x3 m)
+{
+	float3 c0 = cross(m[1], m[2]);
+	float3 c1 = cross(m[2], m[0]);
+	float3 c2 = cross(m[0], m[1]);
+
+	float det = dot(m[0], c0);
+
+	return transpose(float3x3(c0, c1, c2)) / det;
+}
+
+/**
+* @brief Inverse Matrix.
+* 
+* @param[in] m Matrix.
+* 
+* @return Returns Inverse Matrix.
+*/
+float4x4 Inverse(float4x4 m)
+{
+	float s0 = m[0][0] * m[1][1] - m[1][0] * m[0][1];
+	float s1 = m[0][0] * m[1][2] - m[1][0] * m[0][2];
+	float s2 = m[0][0] * m[1][3] - m[1][0] * m[0][3];
+	float s3 = m[0][1] * m[1][2] - m[1][1] * m[0][2];
+	float s4 = m[0][1] * m[1][3] - m[1][1] * m[0][3];
+	float s5 = m[0][2] * m[1][3] - m[1][2] * m[0][3];
+
+	float c5 = m[2][2] * m[3][3] - m[3][2] * m[2][3];
+	float c4 = m[2][1] * m[3][3] - m[3][1] * m[2][3];
+	float c3 = m[2][1] * m[3][2] - m[3][1] * m[2][2];
+	float c2 = m[2][0] * m[3][3] - m[3][0] * m[2][3];
+	float c1 = m[2][0] * m[3][2] - m[3][0] * m[2][2];
+	float c0 = m[2][0] * m[3][1] - m[3][0] * m[2][1];
+
+	float invDet = 1.0f / (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
+
+	return float4x4(
+		float4(( m[1][1] * c5 - m[1][2] * c4 + m[1][3] * c3), (-m[0][1] * c5 + m[0][2] * c4 - m[0][3] * c3), ( m[3][1] * s5 - m[3][2] * s4 + m[3][3] * s3), (-m[2][1] * s5 + m[2][2] * s4 - m[2][3] * s3)) * invDet,
+		float4((-m[1][0] * c5 + m[1][2] * c2 - m[1][3] * c1), ( m[0][0] * c5 - m[0][2] * c2 + m[0][3] * c1), (-m[3][0] * s5 + m[3][2] * s2 - m[3][3] * s1), ( m[2][0] * s5 - m[2][2] * s2 + m[2][3] * s1)) * invDet,
+		float4(( m[1][0] * c4 - m[1][1] * c2 + m[1][3] * c0), (-m[0][0] * c4 + m[0][1] * c2 - m[0][3] * c0), ( m[3][0] * s4 - m[3][1] * s2 + m[3][3] * s0), (-m[2][0] * s4 + m[2][1] * s2 - m[2][3] * s0)) * invDet,
+		float4((-m[1][0] * c3 + m[1][1] * c1 - m[1][2] * c0), ( m[0][0] * c3 - m[0][1] * c1 + m[0][2] * c0), (-m[3][0] * s3 + m[3][1] * s1 - m[3][2] * s0), ( m[2][0] * s3 - m[2][1] * s1 + m[2][2] * s0)) * invDet
+	);
+}
+
+/**
 * @brief Generate a random unsigned int from two unsigned int values, using 16 pairs
 * of rounds of the Tiny Encryption Algorithm. See Zafar, Olano, and Curtis,
 * "GPU Random Numbers via the Tiny Encryption Algorithm".
@@ -173,9 +224,9 @@ bool IsConeBackfacing(float3 coneApex, float3 coneAxis, float coneCutoff, float3
 * 
 * @update 24.08.07 by spices.
 */
-void ExtractFrustumPlanes(float4x4 matrix, inout float4 planes[5])
+void ExtractFrustumPlanes(float4x4 mat, inout float4 planes[5])
 {
-    float4x4 m = transpose(matrix);
+    float4x4 m = transpose(mat);
     
     planes[0] = m[3] + m[0];        /* @brief Left.   */
     planes[1] = m[3] - m[0];        /* @brief Right.  */

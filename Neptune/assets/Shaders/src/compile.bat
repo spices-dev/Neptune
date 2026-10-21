@@ -22,8 +22,9 @@ set INCLUDE_FLAGS=-I. -I./Header
 ::  -matrix-layout-column-major : column-major matrices, keep mul(M, v) same as GLSL (M * v).
 ::  -fvk-use-scalar-layout      : GL_EXT_scalar_block_layout.
 ::  -emit-spirv-directly        : emit SPIR-V directly.
-::  -entry main                 : entry name,.
-set COMMON_FLAGS=-target spirv -profile %SPIRV_PROFILE% -entry main -matrix-layout-column-major -fvk-use-scalar-layout -emit-spirv-directly
+::  -entry main                 : entry name.
+::  -capability ...             : declare subgroup (Wave*) capabilities.
+set COMMON_FLAGS=-target spirv -profile %SPIRV_PROFILE% -entry main -matrix-layout-column-major -fvk-use-scalar-layout -emit-spirv-directly -capability spvGroupNonUniform+spvGroupNonUniformVote+spvGroupNonUniformBallot+spvGroupNonUniformArithmetic
 
 if "%DEBUG%"=="1" (
     set BUILD_FLAGS=-g -O0

@@ -1,0 +1,199 @@
+/**
+* @file PolygonDescLayout.slangh.
+* @brief This Shader Header File Defines Polygon Descriptions.
+* @author Spices.
+*/
+
+/************************************Pre Compile*******************************************/
+
+#ifndef POLYGONDESC_LAYOUT_H
+#define POLYGONDESC_LAYOUT_H
+
+#include "Core.h"
+#include "FunctionLibrary.slangh"
+
+/*****************************************************************************************/
+
+/****************************************Buffer Data**************************************/
+
+typealias PolygonDescs       = PolygonDesc*;    /* @brief Polygon Desciption Buffer. @see PolygonDesc. */
+typealias Models             = float4x4*;       /* @brief Polygon Model Matrix Buffer.                 */
+typealias Positions          = float3*;         /* @brief Positions Buffer.                            */
+typealias Normals            = float3*;         /* @brief Normals Buffer.                              */
+typealias Colors             = float3*;         /* @brief Colors Buffer.                               */
+typealias TexCoords          = float2*;         /* @brief TexCoords Buffer.                            */
+typealias Vertices           = uint4*;          /* @brief Mesh Vertices Buffer.                        */
+typealias PrimitivePoints    = uint3*;          /* @brief Mesh PrimitivePoints Buffer.                 */
+typealias PrimitiveVertices  = uint3*;          /* @brief Mesh PrimitiveVertices Buffer.               */
+typealias PrimitiveLocations = uint3*;          /* @brief Mesh PrimitiveLocations Buffer.              */
+typealias Meshlets           = Meshlet*;        /* @brief Mesh Meshlets Buffer.                        */
+
+static PolygonDesc         desc;
+static float4x4            model;
+static Positions           positions;
+static Normals             normals;
+static Colors              colors;
+static TexCoords           texCoords;
+static Vertices            vertices;
+static PrimitivePoints     primitivePoints;
+static PrimitiveVertices   primitiveVertices;
+static PrimitiveLocations  primitiveLocations;
+static Meshlets            meshlets;
+
+/*****************************************************************************************/
+
+/******************************************Functions**************************************/
+
+/**
+* @brief Explain Polygon Desciption to split variable.
+* 
+* @param[in] polygonDescAddress The Polygon Desciption Buffer Address address.
+*/
+void ExplainPolygonDesciption(uint64_t polygonDescAddress)
+{
+    desc                = ((PolygonDescs)polygonDescAddress)[0];
+    model               = ((Models)desc.modelAddress)[0];
+    positions           = (Positions)desc.positionsAddress;
+    normals             = (Normals)desc.normalsAddress;
+    colors              = (Colors)desc.colorsAddress;
+    texCoords           = (TexCoords)desc.texCoordsAddress;
+    vertices            = (Vertices)desc.verticesAddress;
+    primitivePoints     = (PrimitivePoints)desc.primitivePointsAddress;
+    primitiveVertices   = (PrimitiveVertices)desc.primitiveVerticesAddress;
+    primitiveLocations  = (PrimitiveLocations)desc.primitiveLocationsAddress;
+    meshlets            = (Meshlets)desc.meshletsAddress;
+    
+#ifdef SHADER_BINDLESS_MATERIAL
+
+    ExplainMaterialParameter(desc.materialParameterAddress);
+    
+#endif
+
+}
+
+/**
+* @brief Transform a Vertex to World.
+* 
+* @param[in] vertex Vertex.
+* @param[in] model model matrix.
+* 
+* @return Returns Transformed Vertex.
+*/
+Vertex TransformVertexToWorld(Vertex vertex, float4x4 model)
+{
+    float3x3 m3model   = transpose(Inverse((float3x3)model));
+        
+    Vertex trVertex;
+    
+    trVertex.position = mul(model, float4(vertex.position, 1.0f)).xyz;
+    trVertex.normal   = normalize(mul(m3model, vertex.normal));
+    trVertex.color    = vertex.color;
+    trVertex.texCoord = vertex.texCoord;
+
+    return trVertex;
+}
+
+/**
+* @brief Get Vertices from PrimitiveVerteces.
+* 
+* @param[in] primitiveID Primitive index.
+* 
+* @return Returns Primitive Vertices.
+*/
+Vertex[3] GetVerticesUsingPrimitive(uint primitiveID)
+{
+    uint3 primVertex   = primitiveVertices[primitiveID];
+                           
+    uint4 vti0         = vertices[primVertex.x];
+    uint4 vti1         = vertices[primVertex.y];
+    uint4 vti2         = vertices[primVertex.z];
+                       
+    Vertex v0;         
+    v0.position        = positions[vti0.x];
+    v0.normal          =   normals[vti0.y];
+    v0.color           =    colors[vti0.z];
+    v0.texCoord        = texCoords[vti0.w];
+                       
+    Vertex v1;         
+    v1.position        = positions[vti1.x];
+    v1.normal          =   normals[vti1.y];
+    v1.color           =    colors[vti1.z];
+    v1.texCoord        = texCoords[vti1.w];
+                       
+    Vertex v2;         
+    v2.position        = positions[vti2.x];
+    v2.normal          =   normals[vti2.y];
+    v2.color           =    colors[vti2.z];
+    v2.texCoord        = texCoords[vti2.w];
+                       
+    Vertex[3] vts      = { v0, v1, v2 };
+
+    return vts;
+}
+
+/**
+* @brief Sort PrimLocation from min to max.
+* 
+* @param[in] primLocation Primitive Location.
+* 
+* @return Returns PrimLocation Order.
+* 
+* @attention Not in use right now.
+*/
+uint3 GetPrimLocationOrder(uint3 primLocation)
+{
+    uint3 order = uint3(0, 1, 2);
+        
+    uint maxV = max(max(primLocation.x, primLocation.y), primLocation.z);
+    uint minV = min(min(primLocation.x, primLocation.y), primLocation.z);
+
+    if(primLocation.x == maxV) order.z = 0;
+    if(primLocation.y == maxV) order.z = 1;
+    if(primLocation.z == maxV) order.z = 2;
+    
+    if(primLocation.x == minV) order.x = 0;
+    if(primLocation.y == minV) order.x = 1;
+    if(primLocation.z == minV) order.x = 2;
+    
+    if(primLocation.x != maxV && primLocation.x != minV) order.y = 0;
+    if(primLocation.y != maxV && primLocation.y != minV) order.y = 1;
+    if(primLocation.z != maxV && primLocation.z != minV) order.y = 2;
+    
+    //return order;
+    return uint3(0, 1, 2);
+}
+
+/**
+* @brief Get Pixel from Primitive Barycentric.
+* 
+* @param[in] primitiveID Primitive index.
+* @param[in] baryCoord Barycentric Coord.
+* 
+* @return Returns Barycentric Pxiel.
+* 
+* @attention Not in use right now.
+*/
+Pixel GetPixelUsingPrimitiveBarycentric(uint primitiveID, float3 baryCoord)
+{
+    Vertex[3] vts = GetVerticesUsingPrimitive(primitiveID);
+    
+    uint3 primLocation = primitiveLocations[primitiveID];
+    uint3 order        = GetPrimLocationOrder(primLocation);
+
+    Pixel pixel;
+    float3 p           = vts[order.x].position * baryCoord.x + vts[order.y].position * baryCoord.y + vts[order.z].position * baryCoord.z;
+    float3 n           = vts[order.x].normal   * baryCoord.x + vts[order.y].normal   * baryCoord.y + vts[order.z].normal   * baryCoord.z;
+    pixel.color        = vts[order.x].color    * baryCoord.x + vts[order.y].color    * baryCoord.y + vts[order.z].color    * baryCoord.z;
+    pixel.texCoord     = vts[order.x].texCoord * baryCoord.x + vts[order.y].texCoord * baryCoord.y + vts[order.z].texCoord * baryCoord.z;
+
+    pixel.position     = mul(model, float4(p, 1.0f)).xyz;
+
+    float3x3 m3model   = NormalMatrix(model);
+    pixel.normal       = normalize(mul(m3model, n));
+
+    return pixel;
+}
+
+/*****************************************************************************************/
+
+#endif

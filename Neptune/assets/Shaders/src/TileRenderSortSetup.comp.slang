@@ -1,23 +1,13 @@
 /**
-* @file TileRenderSortSetup.comp.
+* @file TileRenderSortSetup.comp.slang.
 * @brief This Shader Defines TileRenderSortSetup Compute Shader Behaver.
 * @author Spices.
 */
 
 /************************************Pre Compile*******************************************/
 
-#version 460
-
-#extension GL_GOOGLE_include_directive : enable    /* @brief Enable include Macro. */
-
-#include "Header/PreRendererLayout.glsl"
-#include "Header/GS3DTileRenderCommon.glsl"
-
-/*****************************************************************************************/
-
-/*************************************Comp Input******************************************/
-        
-layout (local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
+#include "Header/PreRendererLayout.slangh"
+#include "Header/GS3DTileRenderCommon.slangh"
 
 /*****************************************************************************************/
 
@@ -26,26 +16,30 @@ layout (local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
 /**
 * @brief push constant.
 */
-layout(push_constant) uniform Push
+struct SortSetupPush
 {
     uint64_t infoAddress;
 };
+
+[[vk::push_constant]] ConstantBuffer<SortSetupPush> push;
 
 /*****************************************************************************************/
 
 /**********************************Shader Entry*******************************************/
         
+[shader("compute")]
+[numthreads(1, 1, 1)]
 void main()
 {
-    TileSortInfos info      = TileSortInfos(infoAddress);
+    TileSortInfos info      = (TileSortInfos)push.infoAddress;
 
-    uint n                  = min(info.i[0].instanceCounter, MAXTILEGAUSSIANS);
+    uint n                  = min(info[0].instanceCounter, MAXTILEGAUSSIANS);
     uint wg                 = (n + RADIX_ELEMS_PER_WG - 1u) / RADIX_ELEMS_PER_WG;
-    info.i[0].numElements   = n;
-    info.i[0].numWG         = wg;
-    info.i[0].dispatchX     = wg;
-    info.i[0].dispatchY     = 1u;
-    info.i[0].dispatchZ     = 1u;
+    info[0].numElements     = n;
+    info[0].numWG           = wg;
+    info[0].dispatchX       = wg;
+    info[0].dispatchY       = 1u;
+    info[0].dispatchZ       = 1u;
 }
 
 /*****************************************************************************************/

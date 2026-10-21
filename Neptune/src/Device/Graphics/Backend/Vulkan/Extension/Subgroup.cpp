@@ -32,8 +32,24 @@ namespace Neptune::Vulkan::Extension {
         NEPTUNE_PROFILE_ZONE
         
         NEPTUNE_LOG_CORE(I) << "Subgroup [ subgroupSize ] : " << m_SubgroupProperties.subgroupSize;
+        NEPTUNE_LOG_CORE(I) << "Subgroup [ supportedOperations ] : " << m_SubgroupProperties.supportedOperations;
         
         if (m_SubgroupProperties.subgroupSize < 32)
+        {
+            return false;
+        }
+        
+        if (!((m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_BASIC_BIT) && 
+              (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_VOTE_BIT) &&
+              (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_ARITHMETIC_BIT) &&
+              (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_BALLOT_BIT) &&
+              (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_SHUFFLE_BIT) &&
+              (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_SHUFFLE_RELATIVE_BIT) &&
+              (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_CLUSTERED_BIT) &&
+              (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_QUAD_BIT) &&
+              (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_ROTATE_BIT) &&
+              (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_ROTATE_CLUSTERED_BIT) &&
+              (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_PARTITIONED_BIT_EXT)))
         {
             return false;
         }

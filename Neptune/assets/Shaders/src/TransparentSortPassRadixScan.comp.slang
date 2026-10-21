@@ -1,24 +1,13 @@
 /**
-* @file TransparentSortPassRadixScan.comp.
+* @file TransparentSortPassRadixScan.comp.slang.
 * @brief This Shader Defines TransparentSortPassRadixScan Compute Shader Behaver.
 * @author Spices.
 */
 
 /************************************Pre Compile*******************************************/
 
-#version 460
-
-#extension GL_GOOGLE_include_directive       : enable    /* @brief Enable include Macro. */
-#extension GL_KHR_shader_subgroup_arithmetic : require   /* @brief Enable SubGroup Operation. */
-
-#include "Header/PreRendererLayout.glsl"
-#include "Header/GS3DTileRenderCommon.glsl"
-
-/*****************************************************************************************/
-
-/*************************************Comp Input******************************************/
-
-layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+#include "Header/PreRendererLayout.slangh"
+#include "Header/GS3DTileRenderCommon.slangh"
 
 /*****************************************************************************************/
 
@@ -27,27 +16,27 @@ layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
 /**
 * @brief push constant.
 */
-layout(push_constant) uniform Push
-{
-    RadixPush push;
-};
+[[vk::push_constant]] ConstantBuffer<RadixPush> push;
 
-shared uint sWarp[2][8];      // @brief Warp totals
+groupshared uint sWarp[2][8];      // @brief Warp totals
 
 /*****************************************************************************************/
 
 /**********************************Shader Entry*******************************************/
         
-void main()
+[shader("compute")]
+[numthreads(256, 1, 1)]
+void main(uint3 groupThreadID : SV_GroupThreadID, uint3 groupID : SV_GroupID)
 {
-    uint numWG = TileSortInfos(push.infoAddress).i[0].numWG;
+    TileSortInfos infos = (TileSortInfos)push.infoAddress;
+    uint numWG = infos[0].numWG;
         
-    uint tid   = gl_LocalInvocationID.x;
-    uint digit = gl_WorkGroupID.x;
+    uint tid   = groupThreadID.x;
+    uint digit = groupID.x;
     uint warp  = tid >> 5u;
     uint lane  = tid & 31u;
 
-    TileUints h = TileUints(push.histAddress);
+    TileUints h = (TileUints)push.histAddress;
     uint base   = digit * numWG;
         
     uint carry = 0u;
@@ -57,16 +46,16 @@ void main()
     {
         uint i0 = b0 + tid;
         uint v[4];
-        v[0] = (i0         < numWG) ? h.i[base + i0        ] : 0u;
-        v[1] = (i0 + 256u  < numWG) ? h.i[base + i0 + 256u ] : 0u;
-        v[2] = (i0 + 512u  < numWG) ? h.i[base + i0 + 512u ] : 0u;
-        v[3] = (i0 + 768u  < numWG) ? h.i[base + i0 + 768u ] : 0u;
+        v[0] = (i0         < numWG) ? h[base + i0        ] : 0u;
+        v[1] = (i0 + 256u  < numWG) ? h[base + i0 + 256u ] : 0u;
+        v[2] = (i0 + 512u  < numWG) ? h[base + i0 + 512u ] : 0u;
+        v[3] = (i0 + 768u  < numWG) ? h[base + i0 + 768u ] : 0u;
         
         for (uint k = 0u; k < 4u; ++k)
         {
-            uint incl = subgroupInclusiveAdd(v[k]);
+            uint incl = WavePrefixSum(v[k]) + v[k];
             if (lane == 31u) sWarp[par][warp] = incl;
-            barrier();
+            GroupMemoryBarrierWithGroupSync();
             
             uint wp = 0u, tot = 0u;
             for (uint w = 0u; w < 8u; ++w)
@@ -77,14 +66,14 @@ void main()
             }
             
             uint idx = i0 + k * 256u;
-            if (idx < numWG) h.i[base + idx] = carry + wp + incl - v[k];
+            if (idx < numWG) h[base + idx] = carry + wp + incl - v[k];
             
             carry += tot;
             par   ^= 1u;
         }
     }
         
-    if (tid == 0u) h.i[256u * numWG + digit] = carry;
+    if (tid == 0u) h[256u * numWG + digit] = carry;
 }
 
 /*****************************************************************************************/

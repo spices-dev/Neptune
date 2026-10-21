@@ -1,25 +1,13 @@
 /**
-* @file TransparentSortPassRadixScatter.comp.
+* @file TransparentSortPassRadixScatter.comp.slang.
 * @brief This Shader Defines TransparentSortPassRadixScatter Compute Shader Behaver.
 * @author Spices.
 */
 
 /************************************Pre Compile*******************************************/
 
-#version 460
-
-#extension GL_GOOGLE_include_directive       : enable    /* @brief Enable include Macro.        */
-#extension GL_KHR_shader_subgroup_ballot     : require   /* @brief Enable SubGroup Ballot.      */
-#extension GL_KHR_shader_subgroup_arithmetic : require   /* @brief Enable SubGroup Operation.   */
-
-#include "Header/PreRendererLayout.glsl"
-#include "Header/GS3DTileRenderCommon.glsl"
-
-/*****************************************************************************************/
-
-/*************************************Comp Input******************************************/
-        
-layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+#include "Header/PreRendererLayout.slangh"
+#include "Header/GS3DTileRenderCommon.slangh"
 
 /*****************************************************************************************/
 
@@ -28,13 +16,10 @@ layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
 /**
 * @brief push constant.
 */
-layout(push_constant) uniform Push
-{
-    RadixPush push;
-};
+[[vk::push_constant]] ConstantBuffer<RadixPush> push;
 
-shared uint sWarpTot[8];            // @brief Per-warp sum of the digit totals.
-shared uint sWarpHist[2][8][256];   // @brief Per sub-tile, per warp, per digit counts, double buffered.
+groupshared uint sWarpTot[8];            // @brief Per-warp sum of the digit totals.
+groupshared uint sWarpHist[2][8][256];   // @brief Per sub-tile, per warp, per digit counts, double buffered.
 
 /*****************************************************************************************/
 
@@ -42,43 +27,44 @@ shared uint sWarpHist[2][8][256];   // @brief Per sub-tile, per warp, per digit 
         
 uint Digit(uint64_t e, uint shift)
 {
-    uvec2 v = unpackUint2x32(e);
-    return ((shift < 32u) ? (v.x >> shift) : (v.y >> (shift - 32u))) & 0xFFu;
+    return uint(e >> shift) & 0xFFu;
 }
 
 /*****************************************************************************************/
         
 /**********************************Shader Entry*******************************************/
         
-void main()
+[shader("compute")]
+[numthreads(256, 1, 1)]
+void main(uint3 groupThreadID : SV_GroupThreadID, uint3 groupID : SV_GroupID)
 {
-    uint tid  = gl_LocalInvocationID.x;
-    uint wg   = gl_WorkGroupID.x;
+    uint tid  = groupThreadID.x;
+    uint wg   = groupID.x;
     uint warp = tid >> 5u;
     uint lane = tid & 31u;
 
-    TileEntries src = TileEntries(push.srcAddress);
-    TileEntries dst = TileEntries(push.dstAddress);
+    TileEntries src = (TileEntries)push.srcAddress;
+    TileEntries dst = (TileEntries)push.dstAddress;
 
     uint idx0 = wg * RADIX_ELEMS_PER_WG + tid;
     const uint MAXIDX = MAXTILEGAUSSIANS - 1u;
-    uint64_t key0 = src.i[min(idx0,         MAXIDX)];
-    uint64_t key1 = src.i[min(idx0 + 256u,  MAXIDX)];
-    uint64_t key2 = src.i[min(idx0 + 512u,  MAXIDX)];
-    uint64_t key3 = src.i[min(idx0 + 768u,  MAXIDX)];
+    uint64_t key0 = src[min(idx0,         MAXIDX)];
+    uint64_t key1 = src[min(idx0 + 256u,  MAXIDX)];
+    uint64_t key2 = src[min(idx0 + 512u,  MAXIDX)];
+    uint64_t key3 = src[min(idx0 + 768u,  MAXIDX)];
     
-    TileSortInfos infos       = TileSortInfos(push.infoAddress);
-    uint          numElements = infos.i[0].numElements;
-    uint          numWG       = infos.i[0].numWG;
+    TileSortInfos infos       = (TileSortInfos)push.infoAddress;
+    uint          numElements = infos[0].numElements;
+    uint          numWG       = infos[0].numWG;
     
-    TileUints h = TileUints(push.histAddress);
-    uint total = h.i[256u * numWG + tid];
-    uint pre   = h.i[tid * numWG + wg];
+    TileUints h = (TileUints)push.histAddress;
+    uint total = h[256u * numWG + tid];
+    uint pre   = h[tid * numWG + wg];
     
-    uint incl = subgroupInclusiveAdd(total);
+    uint incl = WavePrefixSum(total) + total;
     if (lane == 31u) sWarpTot[warp] = incl;
     for (uint w = 0u; w < 8u; ++w) sWarpHist[0][w][tid] = 0u;
-    barrier();
+    GroupMemoryBarrierWithGroupSync();
     
     uint warpOff = 0u;
     for (uint w = 0u; w < 8u; ++w) if (w < warp) warpOff += sWarpTot[w];
@@ -95,18 +81,18 @@ void main()
         bool     valid = idx < numElements;
         uint     d     = valid ? Digit(e, push.shift) : 0u;
 
-        uint mask = subgroupBallot(valid).x;
+        uint mask = WaveActiveBallot(valid).x;
         for (uint bit = 0u; bit < 8u; ++bit)
         {
             bool b   = ((d >> bit) & 1u) != 0u;
-            uint bal = subgroupBallot(b).x;
+            uint bal = WaveActiveBallot(b).x;
             mask &= b ? bal : ~bal;
         }
-        uint rankW = bitCount(mask & ((1u << lane) - 1u));
-        uint cntW  = bitCount(mask);
+        uint rankW = countbits(mask & ((1u << lane) - 1u));
+        uint cntW  = countbits(mask);
         
         if (valid && rankW == 0u) sWarpHist[p][warp][d] = cntW;
-        barrier();
+        GroupMemoryBarrierWithGroupSync();
 
         for (uint w = 0u; w < 8u; ++w)
         {
@@ -115,12 +101,12 @@ void main()
             run += c;
             sWarpHist[q][w][tid] = 0u;
         }
-        barrier();
+        GroupMemoryBarrierWithGroupSync();
     
         if (valid)
         {
             uint pos = sWarpHist[p][warp][d] + rankW;
-            if (pos < numElements) dst.i[pos] = e;
+            if (pos < numElements) dst[pos] = e;
         }
     }
 }
