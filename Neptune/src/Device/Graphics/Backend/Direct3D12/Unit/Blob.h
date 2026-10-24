@@ -41,6 +41,14 @@ namespace Neptune::Direct3D12::Unit {
 		* @param[in] desc D3D12_VERSIONED_ROOT_SIGNATURE_DESC.
 		*/
 		void CreateBlob(const D3D12_VERSIONED_ROOT_SIGNATURE_DESC& desc);
+		
+		/**
+		* @brief Create Blob.
+		* 
+		* @param[in] data Shader Data.
+		* @param[in] size Shader Size.
+		*/
+		void CreateBlob(const uint8_t* data, uint32_t size);
 
 	};
 }

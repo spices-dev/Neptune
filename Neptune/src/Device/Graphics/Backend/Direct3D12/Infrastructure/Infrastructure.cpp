@@ -30,8 +30,8 @@ namespace Neptune::Direct3D12 {
             case GraphicQueue:                       return "GraphicQueue";
             case ComputeQueue:                       return "ComputeQueue";
             case SwapChain:                          return "SwapChain";
-            case GraphicFence:                       return "GraphicFence";
-            case ComputeFence:                       return "ComputeFence";
+            case GraphicTimeLine:                    return "GraphicTimeLine";
+            case ComputeTimeLine:                    return "ComputeTimeLine";
             case GraphicCommandList:                 return "GraphicCommandList";
             case ComputeCommandList:                 return "ComputeCommandList";
             case RTVDescriptorHeap:                  return "RTVDescriptorHeap";
@@ -39,7 +39,7 @@ namespace Neptune::Direct3D12 {
             case SRVDescriptorHeap:                  return "SRVDescriptorHeap";
             case UAVDescriptorHeap:                  return "UAVDescriptorHeap";
 
-            default:                                                  return "NonNamed";
+            default:                                 return "NonNamed";
         }
     }
 }

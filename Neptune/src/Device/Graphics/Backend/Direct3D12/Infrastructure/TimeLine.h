@@ -1,6 +1,6 @@
 /**
-* @file Fence.h.
-* @brief The Fence Class Definitions.
+* @file TimeLine.h.
+* @brief The TimeLine Class Definitions.
 * @author Spices.
 */
 
@@ -14,14 +14,14 @@
 
 namespace Neptune::Direct3D12 {
 
-	using IGraphicFence     = IInfrastructure<class Fence, EInfrastructure::GraphicFence>;
-	using IComputeFence     = IInfrastructure<class Fence, EInfrastructure::ComputeFence>;
+	using IGraphicTimeLine     = IInfrastructure<class TimeLine, EInfrastructure::GraphicTimeLine>;
+	using IComputeTimeLine     = IInfrastructure<class TimeLine, EInfrastructure::ComputeTimeLine>;
 
 	/**
-	* @brief Direct3D12::Fence Class.
-	* This class defines the Direct3D12::Fence behaves.
+	* @brief Direct3D12::TimeLine Class.
+	* This class defines the Direct3D12::TimeLine behaves.
 	*/
-	class Fence : public Infrastructure
+	class TimeLine : public Infrastructure
 	{
 	public:
 
@@ -32,42 +32,37 @@ namespace Neptune::Direct3D12 {
 		* @param[in] e EInfrastructure.
 		* @param[in] count Fence count.
 		*/
-		Fence(Context& context, EInfrastructure e, uint32_t count = 1);
+		TimeLine(Context& context, EInfrastructure e, uint32_t count = 1);
 
 		/**
 		* @brief Destructor Function.
 		*/
-		~Fence() override = default;
+		~TimeLine() override = default;
 
 		/**
 		* @brief Get Unit Handle.
 		*
-		* @param[in] index Fence index.
+		* @param[in] id Fence id.
 		* 
 		* @return Returns Unit Handle.
 		*/
-		const Unit::Fence::Handle& Handle(uint32_t index = 0) const { return m_Fences[index]->GetHandle(); }
+		const Unit::Fence::Handle& Handle(uint32_t id = 0) const { return m_Fences[id % m_Fences.size()]->GetHandle(); }
 
 		/**
 		* @brief Get Unit Handle Interface.
 		*
-		* @param[in] index Fence index.
+		* @param[in] id Fence id.
 		* 
 		* @return Returns Unit Handle Interface.
 		*/
-		const SP<Unit::Fence>& IHandle(uint32_t index = 0) const { return m_Fences[index]; }
+		const SP<Unit::Fence>& IHandle(uint32_t id = 0) const { return m_Fences[id % m_Fences.size()]; }
 		
 		/**
 		* @brief Fence wait idle.
 		* 
-		* @param[in] index Fence index.
+		* @param[in] frameId Frame Id.
 		*/
-		void Wait(uint32_t index) const;
-
-		/**
-		* @brief All Fence wait idle.
-		*/
-		void WaitAll() const;
+		void Wait(uint32_t frameId) const;
 
 	private:
 

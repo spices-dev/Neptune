@@ -48,18 +48,18 @@ namespace Neptune::Direct3D12 {
 		}
     }
 
-    void CommandList::Begin(uint32_t index) const
+    void CommandList::Begin(uint32_t id) const
     {
         NEPTUNE_PROFILE_ZONE
 
-        m_CommandLists[index]->Begin();
+        m_CommandLists[id % m_CommandLists.size()]->Begin();
     }
 
-    void CommandList::End(uint32_t index) const
+    void CommandList::End(uint32_t id) const
     {
         NEPTUNE_PROFILE_ZONE
 
-        m_CommandLists[index]->End();
+        m_CommandLists[id % m_CommandLists.size()]->End();
     }
 }
 

@@ -61,18 +61,18 @@ namespace Neptune::Vulkan {
 		}
     }
 
-    void CommandBuffer::Begin(const VkCommandBufferBeginInfo& info, uint32_t index) const
+    void CommandBuffer::Begin(const VkCommandBufferBeginInfo& info, uint32_t id) const
     {
         NEPTUNE_PROFILE_ZONE
 
-        m_CommandBuffers[index]->Begin(info);
+        m_CommandBuffers[id % m_CommandBuffers.size()]->Begin(info);
     }
 
-    void CommandBuffer::End(uint32_t index) const
+    void CommandBuffer::End(uint32_t id) const
     {
         NEPTUNE_PROFILE_ZONE
 
-        m_CommandBuffers[index]->End();
+        m_CommandBuffers[id % m_CommandBuffers.size()]->End();
     }
 }
 

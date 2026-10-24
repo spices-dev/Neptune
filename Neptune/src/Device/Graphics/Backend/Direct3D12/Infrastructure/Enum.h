@@ -24,8 +24,8 @@ namespace Neptune::Direct3D12 {
 
         SwapChain,                           // @brief SwapChain.
 
-        GraphicFence,                        // @brief Main Thread Graphic Fence.
-        ComputeFence,                        // @brief Main Thread Compute Fence.
+        GraphicTimeLine,                     // @brief Main Thread Graphic TimeLine.
+        ComputeTimeLine,                     // @brief Main Thread Compute TimeLine.
 
         GraphicCommandList,                  // @brief Main Thread Graphic CommandList.
         ComputeCommandList,                  // @brief Main Thread Compute CommandList.

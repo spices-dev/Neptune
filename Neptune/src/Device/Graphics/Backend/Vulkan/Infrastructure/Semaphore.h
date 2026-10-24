@@ -44,11 +44,11 @@ namespace Neptune::Vulkan {
 		/**
 		* @brief Get Unit Handle.
 		*
-		* @param[in] index Semaphore index.
+		* @param[in] id Semaphore id.
 		* 
 		* @return Returns Unit Handle.
 		*/
-		const Unit::Semaphore::Handle& Handle(uint32_t index = 0) const { return m_Semaphores[index]->GetHandle(); }
+		const Unit::Semaphore::Handle& Handle(uint32_t id = 0) const { return m_Semaphores[id % m_Semaphores.size()]->GetHandle(); }
 
 	private:
 

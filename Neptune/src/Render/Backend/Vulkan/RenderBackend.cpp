@@ -68,7 +68,7 @@ namespace Neptune::Vulkan {
 		}
 
 		{
-			if (!context.Get<ISwapChain>()->GetNextImage(context.Get<IGraphicImageSemaphore>()->Handle(clock.m_FrameIndex), clock.m_ImageIndex))
+			if (!context.Get<ISwapChain>()->GetNextImage(context.Get<IGraphicImageSemaphore>()->Handle(clock.m_FrameId), clock.m_ImageIndex))
 			{
 				RecreateSwapChain();
 			}
@@ -80,9 +80,9 @@ namespace Neptune::Vulkan {
 			beginInfo.flags                      = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
 			beginInfo.pInheritanceInfo           = nullptr;
 
-            context.Get<IComputeCommandBuffer>()->Begin(beginInfo, clock.m_FrameIndex);
+            context.Get<IComputeCommandBuffer>()->Begin(beginInfo, clock.m_FrameId);
 
-            context.Get<IGraphicCommandBuffer>()->Begin(beginInfo, clock.m_FrameIndex);
+            context.Get<IGraphicCommandBuffer>()->Begin(beginInfo, clock.m_FrameId);
 		}
     }
 
@@ -95,9 +95,9 @@ namespace Neptune::Vulkan {
     	auto& context = m_GraphicsBackend->GetContext();
 	    
 		{
-			context.Get<IComputeCommandBuffer>()->End(clock.m_FrameIndex);
+			context.Get<IComputeCommandBuffer>()->End(clock.m_FrameId);
 
-			context.Get<IGraphicCommandBuffer>()->End(clock.m_FrameIndex);
+			context.Get<IGraphicCommandBuffer>()->End(clock.m_FrameId);
 		}
 
 		{
@@ -120,7 +120,7 @@ namespace Neptune::Vulkan {
 
 			VkCommandBufferSubmitInfo              commandInfo{};
 			commandInfo.sType                    = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO;
-			commandInfo.commandBuffer            = context.Get<IComputeCommandBuffer>()->Handle(clock.m_FrameIndex);
+			commandInfo.commandBuffer            = context.Get<IComputeCommandBuffer>()->Handle(clock.m_FrameId);
 
 			VkSubmitInfo2                          submitInfo{};
 			submitInfo.sType                     = VK_STRUCTURE_TYPE_SUBMIT_INFO_2;
@@ -142,7 +142,7 @@ namespace Neptune::Vulkan {
 			VkSemaphoreSubmitInfo                  waitInfo0{};
 			waitInfo0.sType                      = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
 			waitInfo0.stageMask                  = VK_PIPELINE_STAGE_2_VERTEX_SHADER_BIT;
-			waitInfo0.semaphore                  = context.Get<IGraphicImageSemaphore>()->Handle(clock.m_FrameIndex);
+			waitInfo0.semaphore                  = context.Get<IGraphicImageSemaphore>()->Handle(clock.m_FrameId);
 			
 			VkSemaphoreSubmitInfo                  waitInfo1{};
 			waitInfo1.sType                      = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
@@ -167,7 +167,7 @@ namespace Neptune::Vulkan {
 			
 			VkCommandBufferSubmitInfo              commandInfo{};
 			commandInfo.sType                    = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO;
-			commandInfo.commandBuffer            = context.Get<IGraphicCommandBuffer>()->Handle(clock.m_FrameIndex);
+			commandInfo.commandBuffer            = context.Get<IGraphicCommandBuffer>()->Handle(clock.m_FrameId);
 
 			VkSubmitInfo2                          submitInfo{};
 			submitInfo.sType                     = VK_STRUCTURE_TYPE_SUBMIT_INFO_2;

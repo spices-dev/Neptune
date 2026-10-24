@@ -11,7 +11,7 @@
 #include "GraphicsBackend.h"
 #include "Infrastructure/InfrastructureHeader.h"
 #include "AInfrastructure/AccessibleInfrastructure.h"
-//#include "RHI/RHIHeader.h"
+#include "RHI/RHIHeader.h"
 
 namespace Neptune::Direct3D12 {
 
@@ -31,15 +31,20 @@ namespace Neptune::Direct3D12 {
     	
         m_Context = CreateUP<Context>();
 
+#ifdef NEPTUNE_DEBUG
+        
         m_Context->Registry<IDebugUtilsObject>();
+        
+#endif
+        
         m_Context->Registry<IFactory>();
         m_Context->Registry<IDevice>();
 
         m_Context->Registry<IGraphicQueue>();
         m_Context->Registry<IComputeQueue>();
     	
-        m_Context->Registry<IGraphicFence>(MaxFrameInFlight);
-        m_Context->Registry<IComputeFence>(MaxFrameInFlight);
+        m_Context->Registry<IGraphicTimeLine>(MaxFrameInFlight);
+        m_Context->Registry<IComputeTimeLine>(MaxFrameInFlight);
 
         m_Context->Registry<IGraphicCommandList>(MaxFrameInFlight);
         m_Context->Registry<IComputeCommandList>(MaxFrameInFlight);
@@ -73,17 +78,15 @@ namespace Neptune::Direct3D12 {
 
         switch(e)
 		{
-            /*case RHI::ERHI::RenderPass:       return std::static_pointer_cast<RHI::RHIRenderPass::Impl>        (CreateSP<RenderPass>           (*m_Context));
-			case RHI::ERHI::DescriptorList:   return std::static_pointer_cast<RHI::RHIDescriptorList::Impl>    (CreateSP<DescriptorList>       (*m_Context));
-			case RHI::ERHI::Pipeline:         return std::static_pointer_cast<RHI::RHIPipeline::Impl>          (CreateSP<Pipeline>             (*m_Context));
-			case RHI::ERHI::Shader:           return std::static_pointer_cast<RHI::RHIShader::Impl>            (CreateSP<Shader>               (*m_Context));
-			case RHI::ERHI::RenderTarget:     return std::static_pointer_cast<RHI::RHIRenderTarget::Impl>      (CreateSP<RenderTarget>         (*m_Context));
-			case RHI::ERHI::VertexBuffer:     return std::static_pointer_cast<RHI::RHIVertexBuffer::Impl>      (CreateSP<VertexBuffer>         (*m_Context));
-			case RHI::ERHI::IndexBuffer:      return std::static_pointer_cast<RHI::RHIIndexBuffer::Impl>       (CreateSP<IndexBuffer>          (*m_Context));
-            case RHI::ERHI::CmdList:          return std::static_pointer_cast<RHI::RHICmdList::Impl>           (CreateSP<CmdList>              (*m_Context));
-			case RHI::ERHI::CmdList2:         return std::static_pointer_cast<RHI::RHICmdList2::Impl>          (CreateSP<CmdList2>             (*m_Context));
-            case RHI::ERHI::Decoder:          NEPTUNE_LOG_CORE(E) << "Direct3D12 do not support RHI: [ " << ToString(e) << " ].";       return nullptr;
-            case RHI::ERHI::OpticalFlow:      NEPTUNE_LOG_CORE(E) << "Direct3D12 do not support RHI: [ " << ToString(e) << " ].";   return nullptr;*/
+            case RHI::ERHI::Capability:       return CreateUP<Capability>           (*m_Context);
+            case RHI::ERHI::RenderPass:       return CreateUP<RenderPass>           (*m_Context);
+            case RHI::ERHI::DescriptorList:   return CreateUP<DescriptorList>       (*m_Context);
+            case RHI::ERHI::Pipeline:         return CreateUP<Pipeline>             (*m_Context);
+            case RHI::ERHI::Shader:           return CreateUP<Shader>               (*m_Context);
+            case RHI::ERHI::RenderTarget:     return CreateUP<RenderTarget>         (*m_Context);
+            case RHI::ERHI::Buffer:           return CreateUP<Buffer>               (*m_Context);
+            case RHI::ERHI::CmdList:          return CreateUP<CmdList>              (*m_Context);
+            case RHI::ERHI::CmdList2:         return CreateUP<CmdList2>             (*m_Context);
             default:                          NEPTUNE_LOG_CORE(E) << "Direct3D12 do not support RHI: [ " << ToString(e) << " ].";          return nullptr;
 		}
 	}

@@ -10,6 +10,8 @@
 
 #include "Blob.h"
 
+#include <d3dcompiler.h>
+
 namespace Neptune::Direct3D12::Unit {
 
 	Blob::~Blob()
@@ -37,6 +39,15 @@ namespace Neptune::Direct3D12::Unit {
 
 			NEPTUNE_LOG_CORE(E) << errorBlob->GetBufferPointer();
 		}
+	}
+	
+	void Blob::CreateBlob(const uint8_t* data, uint32_t size)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		DIRECT3D12_CHECK(D3DCreateBlob(size, &m_Handle))
+		
+		std::memcpy(m_Handle->GetBufferPointer(), data, size);
 	}
 
 }

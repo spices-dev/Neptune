@@ -31,8 +31,7 @@ namespace Neptune::Direct3D12 {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-#ifdef NEPTUNE_DEBUG
-
+		if (GetContext().Has<IDebugUtilsObject>())
 		{
 			Unit::InfoQueue infoQueue;
 
@@ -50,24 +49,20 @@ namespace Neptune::Direct3D12 {
 
 			DIRECT3D12_CHECK(debug.GetHandle()->ReportLiveDeviceObjects(D3D12_RLDO_SUMMARY | D3D12_RLDO_DETAIL | D3D12_RLDO_IGNORE_INTERNAL))
 		}
-
-#endif
-
 	}
 
 	void Device::Create()
     {
 		NEPTUNE_PROFILE_ZONE
 
-#ifdef NEPTUNE_DEBUG
+    	if (GetContext().Has<IDebugUtilsObject>())
+    	{
+    		Unit::Debug debug;
 
-		Unit::Debug debug;
+    		debug.CreateDebug();
 
-		debug.CreateDebug();
-
-		debug.EnableDebugLayer();
-
-#endif
+    		debug.EnableDebugLayer();
+    	}
 
 		Unit::Adapter adapter;
 
@@ -75,8 +70,7 @@ namespace Neptune::Direct3D12 {
 
 		m_Device.CreateDevice(adapter.GetHandle(), GetMaxFeatureLevel(adapter.GetHandle()));
 
-#ifdef NEPTUNE_DEBUG
-
+    	if (GetContext().Has<IDebugUtilsObject>())
 		{
 			Unit::DebugDevice debug;
 
@@ -89,9 +83,7 @@ namespace Neptune::Direct3D12 {
 				&validationSettings,
 				sizeof(validationSettings)
 			))
-		}
 
-		{
 			Unit::InfoQueue infoQueue;
 
 			infoQueue.CreateInfoQueue(m_Device.GetHandle());
@@ -109,8 +101,6 @@ namespace Neptune::Direct3D12 {
 				&cookie
 			))
 		}
-
-#endif
 		
     	DXGI_ADAPTER_DESC3 desc{};
     	adapter.GetHandle()->GetDesc3(&desc);

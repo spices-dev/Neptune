@@ -64,7 +64,7 @@ namespace Neptune::Direct3D12 {
 			case DSVDescriptorHeap:        return D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 			case SRVDescriptorHeap:        return D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 			case UAVDescriptorHeap:        return D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-			default: return D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+			default:                       return D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 		}
     }
 

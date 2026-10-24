@@ -60,10 +60,8 @@ namespace Neptune::Direct3D12 {
 
 		/**
 		* @brief Present to surface.
-		*
-		* @return Returns true if succeed.
 		*/
-		bool Present() const;
+		void Present() const;
 
 	protected:
 

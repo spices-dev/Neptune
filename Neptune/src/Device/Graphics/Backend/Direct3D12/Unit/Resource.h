@@ -41,9 +41,9 @@ namespace Neptune::Direct3D12::Unit {
 		* @param[in] device D3D12Device.
 		* @param[in] desc D3D12_RESOURCE_DESC.
 		* @param[in] state D3D12_RESOURCE_STATES.
-		* @param[in] clearValue D3D12_CLEAR_VALUE.
+		* @param[in] type D3D12_HEAP_TYPE.
 		*/
-		void CreateCommittedResource(D3D12Device device, const D3D12_RESOURCE_DESC& desc, D3D12_RESOURCE_STATES state, const D3D12_CLEAR_VALUE& clearValue);
+		void CreateCommittedResource(D3D12Device device, const D3D12_RESOURCE_DESC& desc, D3D12_RESOURCE_STATES state, D3D12_HEAP_TYPE type);
 
 		/**
 		* @brief Create Placed Resource.
@@ -53,9 +53,8 @@ namespace Neptune::Direct3D12::Unit {
 		* @param[in] offset UINT64.
 		* @param[in] desc D3D12_RESOURCE_DESC.
 		* @param[in] state D3D12_RESOURCE_STATES.
-		* @param[in] clearValue D3D12_CLEAR_VALUE.
 		*/
-		void CreatePlacedResource(D3D12Device device, D3D12Heap heap, UINT64 offset, const D3D12_RESOURCE_DESC& desc, D3D12_RESOURCE_STATES state, const D3D12_CLEAR_VALUE& clearValue);
+		void CreatePlacedResource(D3D12Device device, D3D12Heap heap, UINT64 offset, const D3D12_RESOURCE_DESC& desc, D3D12_RESOURCE_STATES state);
 
 	};
 }

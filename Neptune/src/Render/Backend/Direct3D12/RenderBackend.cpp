@@ -52,16 +52,17 @@ namespace Neptune::Direct3D12 {
 
     	auto& context = m_GraphicsBackend->GetContext();
     	
+    	if (clock.m_FrameId > MaxFrameInFlight)
 		{
-			context.Get<IComputeFence>()->Wait(clock.m_FrameIndex);
+			context.Get<IComputeTimeLine>()->Wait(clock.m_FrameId - MaxFrameInFlight);
 
-			context.Get<IGraphicFence>()->Wait(clock.m_FrameIndex);
+			context.Get<IGraphicTimeLine>()->Wait(clock.m_FrameId - MaxFrameInFlight);
 		}
 
 		{
-            context.Get<IComputeCommandList>()->Begin(clock.m_FrameIndex);
+            context.Get<IComputeCommandList>()->Begin(clock.m_FrameId);
 
-            context.Get<IGraphicCommandList>()->Begin(clock.m_FrameIndex);
+            context.Get<IGraphicCommandList>()->Begin(clock.m_FrameId);
 		}
     }
 
@@ -74,15 +75,15 @@ namespace Neptune::Direct3D12 {
     	auto& context = m_GraphicsBackend->GetContext();
     	
 		{
-			context.Get<IComputeCommandList>()->End(clock.m_FrameIndex);
+			context.Get<IComputeCommandList>()->End(clock.m_FrameId);
 
-			context.Get<IGraphicCommandList>()->End(clock.m_FrameIndex);
+			context.Get<IGraphicCommandList>()->End(clock.m_FrameId);
 		}
 
 		{
             DEBUGUTILS_BEGINQUEUELABEL(context.Get<IComputeQueue>()->Handle(), "MainComputeQueue")
 
-			context.Get<IComputeQueue>()->Submit(context.Get<IComputeCommandList>()->Handle(clock.m_FrameIndex), context.Get<IComputeFence>()->IHandle(clock.m_FrameIndex));
+			context.Get<IComputeQueue>()->Submit(context.Get<IComputeCommandList>()->Handle(clock.m_FrameId), context.Get<IComputeTimeLine>()->IHandle(clock.m_FrameId));
         	
 			DEBUGUTILS_ENDQUEUELABEL(context.Get<IComputeQueue>()->Handle())
 		}
@@ -90,7 +91,7 @@ namespace Neptune::Direct3D12 {
 		{
 			DEBUGUTILS_BEGINQUEUELABEL(context.Get<IGraphicQueue>()->Handle(), "MainGraphicQueue")
 
-			context.Get<IGraphicQueue>()->Submit(context.Get<IGraphicCommandList>()->Handle(clock.m_FrameIndex), context.Get<IGraphicFence>()->IHandle(clock.m_FrameIndex));
+			context.Get<IGraphicQueue>()->Submit(context.Get<IGraphicCommandList>()->Handle(clock.m_FrameId), context.Get<IGraphicTimeLine>()->IHandle(clock.m_FrameId));
         	
 			DEBUGUTILS_ENDQUEUELABEL(context.Get<IGraphicQueue>()->Handle())
 		}
@@ -98,7 +99,7 @@ namespace Neptune::Direct3D12 {
 		{
 			DEBUGUTILS_BEGINQUEUELABEL(context.Get<IGraphicQueue>()->Handle(), "MainGraphicQueue")
 
-			auto result = context.Get<ISwapChain>()->Present();
+			context.Get<ISwapChain>()->Present();
 
 			DEBUGUTILS_ENDQUEUELABEL(context.Get<IGraphicQueue>()->Handle())
 		}

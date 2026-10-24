@@ -37,10 +37,9 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		m_FrameIndex = clock.m_FrameIndex;
 		m_ImageIndex = clock.m_ImageIndex;
 
-		m_CommandBuffer = GetContext().Get<IGraphicCommandBuffer>()->IHandle(m_FrameIndex);
+		m_CommandBuffer = GetContext().Get<IGraphicCommandBuffer>()->IHandle(clock.m_FrameId);
 
 		m_BindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
 	}
@@ -49,10 +48,9 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		m_FrameIndex = clock.m_FrameIndex;
 		m_ImageIndex = clock.m_ImageIndex;
 
-		m_CommandBuffer = GetContext().Get<IComputeCommandBuffer>()->IHandle(m_FrameIndex);
+		m_CommandBuffer = GetContext().Get<IComputeCommandBuffer>()->IHandle(clock.m_FrameId);
 
 		m_BindPoint = VK_PIPELINE_BIND_POINT_COMPUTE;
 	}

@@ -25,15 +25,7 @@ namespace Neptune::Direct3D12 {
     {
         NEPTUNE_PROFILE_ZONE
 
-#ifdef NEPTUNE_DEBUG
-
-        m_Factory.CreateFactory(DXGI_CREATE_FACTORY_DEBUG);
-
-#else
-
-        m_Factory.CreateFactory(0);
-
-#endif
+        m_Factory.CreateFactory(GetContext().Has<IDebugUtilsObject>() ? DXGI_CREATE_FACTORY_DEBUG : 0);
 
         DEBUGUTILS_SETOBJECTNAME(m_Factory, ToString())
     }

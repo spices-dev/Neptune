@@ -41,6 +41,13 @@ namespace Neptune::Direct3D12::Resource {
 		* @return Returns Unit Handle.
 		*/
 		const Unit::GraphicsCommandList::Handle& Handle() const { return m_CommandList.GetHandle(); }
+		
+		/**
+		* @brief Get Unit Handle Interface.
+		* 
+		* @return Returns Unit Handle Interface.
+		*/
+		const Unit::GraphicsCommandList& IHandle() const { return m_CommandList; }
 
 		/**
 		* @brief Create CommandList.

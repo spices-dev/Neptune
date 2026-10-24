@@ -42,7 +42,7 @@ namespace Neptune::WebGPU {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		auto rhi = target->GetRHIImpl<Buffer>();
+		auto rhi = buffer->GetRHIImpl<Buffer>();
 
 		return true;
 	}

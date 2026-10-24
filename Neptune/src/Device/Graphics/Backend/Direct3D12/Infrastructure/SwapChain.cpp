@@ -60,13 +60,11 @@ namespace Neptune::Direct3D12 {
 		}
     }
 
-	bool SwapChain::Present() const
+	void SwapChain::Present() const
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		DIRECT3D12_CHECK(m_SwapChain->GetHandle()->Present(0, m_AllowTearing ? DXGI_PRESENT_ALLOW_TEARING : 0))
-
-		return true;
 	}
 }
 

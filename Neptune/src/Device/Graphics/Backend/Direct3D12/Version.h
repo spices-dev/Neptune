@@ -8,6 +8,7 @@
 
 #ifdef NP_GRAPHICS_DIRECT3D12
 
+#include <directx/d3dx12.h>
 #include <directx/d3d12.h>
 #include <dxguids/dxguids.h>
 #include <dxgi1_6.h>

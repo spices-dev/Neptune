@@ -1,0 +1,69 @@
+/**
+* @file Shader.h.
+* @brief The Shader Class Definitions.
+* @author Spices.
+*/
+
+#pragma once
+
+#ifdef NP_GRAPHICS_DIRECT3D12
+
+#include "Core/Core.h"
+#include "Device/Graphics/Backend/Direct3D12/Infrastructure/Infrastructure.h"
+#include "Device/Graphics/Backend/Direct3D12/Unit/Blob.h"
+#include "Device/Graphics/Frontend/RHI/Shader.h"
+
+namespace Neptune::Direct3D12 {
+
+	/**
+	* @brief Direct3D12::Shader Class.
+	* This class defines the Direct3D12::Shader behaves.
+	*/
+	class Shader : public ContextAccessor, public RHI::RHIShader::Impl
+	{
+	public:
+
+		/**
+		* @brief Constructor Function.
+		*
+		* @param[in] context Context.
+		*/
+		explicit Shader(Context& context) : ContextAccessor(context) {}
+
+		/**
+		* @brief Destructor Function.
+		*/
+		~Shader() override = default;
+
+	public:
+
+		/**
+		* @brief Interface of Set Shader Source.
+		*
+		* @param[in] source Shader Source.
+		*/
+		void SetSource(const std::vector<uint8_t>& source) override;
+
+		/**
+		* @brief Interface of Set Shader Name.
+		*
+		* @param[in] name Shader Name.
+		*/
+		void SetName(const std::string& name) override;
+
+	public:
+
+		/**
+		* @brief Get Unit Handle.
+		*
+		* @return Returns Unit Handle.
+		*/
+		const Unit::Blob::Handle& Handle() const { return m_Shader.GetHandle(); }
+
+	private:
+
+		Unit::Blob m_Shader;          // @brief This Shader.
+	};
+}
+
+#endif

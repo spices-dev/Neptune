@@ -289,7 +289,6 @@ namespace Neptune::Vulkan {
 
 	protected:
 
-		uint32_t                             m_FrameIndex     = 0;                                     // @brief Frame index.
 		uint32_t                             m_ImageIndex     = 0;                                     // @brief Image index.
 
 		SP<Unit::CommandBuffer>              m_CommandBuffer  = nullptr;                               // @brief CommandBuffer reference.

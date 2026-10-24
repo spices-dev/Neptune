@@ -44,25 +44,34 @@ namespace Neptune::Direct3D12 {
 		/**
 		* @brief Get Unit Handle.
 		* 
-		* @param[in] index Handle index.
+		* @param[in] id Handle id.
 		* 
 		* @return Returns Unit Handle.
 		*/
-		const Unit::GraphicsCommandList::Handle& Handle(uint32_t index = 0) const { return m_CommandLists[index]->Handle(); }
+		const Unit::GraphicsCommandList::Handle& Handle(uint32_t id = 0) const { return m_CommandLists[id % m_CommandLists.size()]->Handle(); }
+
+		/**
+		* @brief Get Unit Handle Interface.
+		*
+		* @param[in] id Handle id.
+		*
+		* @return Returns Unit Handle Interface.
+		*/
+		const SP<Resource::CommandList>& IHandle(uint32_t id = 0) const { return m_CommandLists[id % m_CommandLists.size()]; }
 
 		/**
 		* @brief Begin CommandBuffer.
 		*
-		* @param[in] index Handle index.
+		* @param[in] id Frame id.
 		*/
-		void Begin(uint32_t index = 0) const;
+		void Begin(uint32_t id = 0) const;
 
 		/**
 		* @brief End CommandBuffer.
 		*
-		* @param[in] index Handle index.
+		* @param[in] id Frame id.
 		*/
-		void End(uint32_t index = 0) const;
+		void End(uint32_t id = 0) const;
 
 	private:
 

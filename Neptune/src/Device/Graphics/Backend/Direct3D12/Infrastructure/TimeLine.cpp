@@ -1,6 +1,6 @@
 /**
-* @file Fence.cpp.
-* @brief The Fence Class Implementation.
+* @file TimeLine.cpp.
+* @brief The TimeLine Class Implementation.
 * @author Spices.
 */
 
@@ -8,13 +8,13 @@
 
 #ifdef NP_GRAPHICS_DIRECT3D12
 
-#include "Fence.h"
+#include "TimeLine.h"
 #include "Device.h"
 #include "DebugUtilsObject.h"
 
 namespace Neptune::Direct3D12 {
 
-    Fence::Fence(Context& context, EInfrastructure e, uint32_t count)
+    TimeLine::TimeLine(Context& context, EInfrastructure e, uint32_t count)
         : Infrastructure(context, e)
     {
         NEPTUNE_PROFILE_ZONE
@@ -22,7 +22,7 @@ namespace Neptune::Direct3D12 {
         Create(count);
     }
 
-    void Fence::Create(uint32_t count)
+    void TimeLine::Create(uint32_t count)
     {
         NEPTUNE_PROFILE_ZONE
 
@@ -38,23 +38,11 @@ namespace Neptune::Direct3D12 {
         }
     }
 
-    void Fence::Wait(uint32_t index) const
+    void TimeLine::Wait(uint32_t frameId) const
     {
         NEPTUNE_PROFILE_ZONE
 
-        auto& fence = m_Fences[index];
-
-        fence->Wait();
-    }
-
-    void Fence::WaitAll() const
-    {
-        NEPTUNE_PROFILE_ZONE
-
-        std::ranges::for_each(m_Fences, [&](const auto& fence) {
-            
-            fence->Wait();
-        });
+        m_Fences[frameId % m_Fences.size()]->Wait();
     }
 
 }
