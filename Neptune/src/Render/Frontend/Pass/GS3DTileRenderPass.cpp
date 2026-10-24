@@ -99,7 +99,7 @@ namespace Neptune::Render {
 			{
 				auto s = shaderPool.Load<Shader>("TileRenderPreprocess");
 				s->SetStage(ShaderStage::Compute);
-				s->SetSource("Shaders/src/TileRenderPreprocess.comp.slang.spv");
+				s->SetSource("Shaders/spv/TileRenderPreprocess.comp.slang.spv");
 			}
 
 			auto shader = shaderPool.Access("TileRenderPreprocess");
@@ -124,7 +124,7 @@ namespace Neptune::Render {
 			{
 				auto s = shaderPool.Load<Shader>("TileRenderSortSetup");
 				s->SetStage(ShaderStage::Compute);
-				s->SetSource("Shaders/src/TileRenderSortSetup.comp.slang.spv");
+				s->SetSource("Shaders/spv/TileRenderSortSetup.comp.slang.spv");
 			}
 
 			auto shader = shaderPool.Access("TileRenderSortSetup");
@@ -163,13 +163,13 @@ namespace Neptune::Render {
 			};
 
 			BuildRadixStage(m_HistogramDescriptorList, m_HistogramPipeline,
-							 "TransparentSortPassRadixHistogram", "Shaders/src/TransparentSortPassRadixHistogram.comp.slang.spv");
+							 "TransparentSortPassRadixHistogram", "Shaders/spv/TransparentSortPassRadixHistogram.comp.slang.spv");
 
 			BuildRadixStage(m_ScanDescriptorList, m_ScanPipeline,
-							 "TransparentSortPassRadixScan", "Shaders/src/TransparentSortPassRadixScan.comp.slang.spv");
+							 "TransparentSortPassRadixScan", "Shaders/spv/TransparentSortPassRadixScan.comp.slang.spv");
 
 			BuildRadixStage(m_ScatterDescriptorList, m_ScatterPipeline,
-							 "TransparentSortPassRadixScatter", "Shaders/src/TransparentSortPassRadixScatter.comp.slang.spv");
+							 "TransparentSortPassRadixScatter", "Shaders/spv/TransparentSortPassRadixScatter.comp.slang.spv");
 		}
 		
 		{
@@ -189,7 +189,7 @@ namespace Neptune::Render {
 			{
 				auto s = shaderPool.Load<Shader>("TileRenderRanges");
 				s->SetStage(ShaderStage::Compute);
-				s->SetSource("Shaders/src/TileRenderRanges.comp.slang.spv");
+				s->SetSource("Shaders/spv/TileRenderRanges.comp.slang.spv");
 			}
 
 			auto shader = shaderPool.Access("TileRenderRanges");
@@ -216,7 +216,7 @@ namespace Neptune::Render {
 			{
 				auto s = shaderPool.Load<Shader>("TileRender");
 				s->SetStage(ShaderStage::Compute);
-				s->SetSource("Shaders/src/TileRender.comp.slang.spv");
+				s->SetSource("Shaders/spv/TileRender.comp.slang.spv");
 			}
 
 			auto shader = shaderPool.Access("TileRender");

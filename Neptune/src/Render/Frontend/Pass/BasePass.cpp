@@ -83,7 +83,7 @@ namespace Neptune::Render {
 				auto s = resourcePool.Load<Shader>("BasePassVert");
 
 				s->SetStage(ShaderStage::Vertex);
-				s->SetSource("Shaders/src/BasePass.vert.slang.spv");
+				s->SetSource("Shaders/spv/BasePass.vert.slang.spv");
 			}
 
             auto shader = resourcePool.Access("BasePassVert");
@@ -99,7 +99,7 @@ namespace Neptune::Render {
 				auto s = resourcePool.Load<Shader>("BasePassFrag");
 
 				s->SetStage(ShaderStage::Fragment);
-				s->SetSource("Shaders/src/BasePass.frag.slang.spv");
+				s->SetSource("Shaders/spv/BasePass.frag.slang.spv");
 			}
 
             auto shader = resourcePool.Access("BasePassFrag");

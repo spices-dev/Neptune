@@ -66,9 +66,9 @@ set /a FAILED=0
 for %%f in (*.slang) do (
     set /a TOTAL+=1
     echo Compiling %%f ...
-    %SLANGC% %%f %COMMON_FLAGS% %BUILD_FLAGS% %INCLUDE_FLAGS% -o %%~nf%%~xf.spv
+    %SLANGC% %%f %COMMON_FLAGS% %BUILD_FLAGS% %INCLUDE_FLAGS% -o ../spv/%%~nf%%~xf.spv
     if !errorlevel! equ 0 (
-        echo   [OK] %%f -^> %%~nf%%~xf.spv
+        echo   [OK] %%f -^> ../spv/%%~nf%%~xf.spv
     ) else (
         set /a FAILED+=1
         echo   [FAILED] %%f

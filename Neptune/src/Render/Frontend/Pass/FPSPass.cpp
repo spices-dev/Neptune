@@ -51,7 +51,7 @@ namespace Neptune::Render {
 				auto s = resourcePool.Load<Shader>("FPSPassVert");
 
 				s->SetStage(ShaderStage::Vertex);
-				s->SetSource("Shaders/src/FPSPass.vert.slang.spv");
+				s->SetSource("Shaders/spv/FPSPass.vert.slang.spv");
 			}
 
             auto shader = resourcePool.Access("FPSPassVert");
@@ -67,7 +67,7 @@ namespace Neptune::Render {
 				auto s = resourcePool.Load<Shader>("FPSPassFrag");
 
 				s->SetStage(ShaderStage::Fragment);
-				s->SetSource("Shaders/src/FPSPass.frag.slang.spv");
+				s->SetSource("Shaders/spv/FPSPass.frag.slang.spv");
 			}
 
             auto shader = resourcePool.Access("FPSPassFrag");
