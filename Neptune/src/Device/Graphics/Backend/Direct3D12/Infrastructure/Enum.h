@@ -15,6 +15,7 @@ namespace Neptune::Direct3D12 {
     */
     enum class EInfrastructure : uint8_t
     {
+        Extensions,                          // @brief Extensions.
         DebugUtilsObject,                    // @brief Label/Name Functors.
         Factory,                             // @brief DXGI Factory.
         Device,                              // @brief LogicalDevice.

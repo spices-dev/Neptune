@@ -8,6 +8,7 @@
 
 #ifdef NP_GRAPHICS_DIRECT3D12
 
+#include "Extensions.h"
 #include "DebugUtilsObject.h"
 #include "Factory.h"
 #include "Device.h"

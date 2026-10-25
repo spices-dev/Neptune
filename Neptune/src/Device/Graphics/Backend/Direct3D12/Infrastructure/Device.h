@@ -60,6 +60,13 @@ namespace Neptune::Direct3D12 {
 		*/
 		D3D_FEATURE_LEVEL GetMaxFeatureLevel(DXGIAdapter adapter) const;
 
+		/**
+		* @brief Check Feature Meet Demand.
+		* 
+		* @return Returns true if meets.
+		*/
+		bool CheckFeatureMeetDemand();
+		
 	private:
 
 		Unit::Device m_Device;  // @brief this Device.

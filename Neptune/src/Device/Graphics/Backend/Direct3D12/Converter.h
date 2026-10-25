@@ -14,8 +14,6 @@
 #include "Resource/Shader/Shader.h"
 #include "Device/Graphics/Frontend/Memory.h"
 
-#include <vk_mem_alloc.h>
-
 namespace Neptune::Direct3D12 {
 	
 	/**
@@ -27,6 +25,32 @@ namespace Neptune::Direct3D12 {
 	*/
 	TextureFormat ToTextureFormat(DXGI_FORMAT f);
 
+	/**
+	* @brief Convert TextureDomain to D3D12_RESOURCE_DIMENSION.
+	*
+	* @param[in] d TextureDomain.
+	*
+	* @return Returns D3D12_RESOURCE_DIMENSION.
+	*/
+	D3D12_RESOURCE_DIMENSION ToD3D12ResourceDimension(TextureDomain d);
+
+	/**
+	* @brief Convert TextureFormat to DXGI_FORMAT.
+	*
+	* @param[in] f TextureFormat.
+	*
+	* @return Returns DXGI_FORMAT.
+	*/
+	DXGI_FORMAT ToDXGIFormat(TextureFormat f);
+	
+	/**
+	* @brief Convert EImageUsage to D3D12_RESOURCE_FLAGS.
+	*
+	* @param[in] set Container::BitSet<Graphic::EImageUsage>.
+	*
+	* @return Returns D3D12_RESOURCE_FLAGS.
+	*/
+	D3D12_RESOURCE_FLAGS ToD3D12ResourceFlags(const Container::BitSet<Graphic::EImageUsage>& set);
 }
 
 #endif

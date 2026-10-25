@@ -24,6 +24,7 @@ namespace Neptune::Direct3D12 {
 	    
         switch (GetEInfrastructure())
         {
+            case Extensions:                         return "Extensions";
             case DebugUtilsObject:                   return "DebugUtilsObject";
             case Factory:                            return "Factory";
             case Device:                             return "Device";

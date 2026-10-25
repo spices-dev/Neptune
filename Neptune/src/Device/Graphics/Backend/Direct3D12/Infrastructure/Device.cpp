@@ -10,6 +10,7 @@
 
 #include "Device.h"
 #include "DebugUtilsObject.h"
+#include "Extensions.h"
 #include "Device/Graphics/Backend/Direct3D12/Unit/Debug.h"
 #include "Device/Graphics/Backend/Direct3D12/Unit/Adapter.h"
 #include "Device/Graphics/Backend/Direct3D12/Unit/InfoQueue.h"
@@ -102,6 +103,13 @@ namespace Neptune::Direct3D12 {
 			))
 		}
 		
+    	if (!CheckFeatureMeetDemand())
+    	{
+    		NEPTUNE_LOG_CORE(E) << "D3D12 Device Feature Check Failed";
+    		
+    		return;
+    	}
+    	
     	DXGI_ADAPTER_DESC3 desc{};
     	adapter.GetHandle()->GetDesc3(&desc);
     	
@@ -125,6 +133,41 @@ namespace Neptune::Direct3D12 {
 		return level.MaxSupportedFeatureLevel;
 	}
 
+	bool Device::CheckFeatureMeetDemand()
+	{
+    	NEPTUNE_PROFILE_ZONE
+    	
+    	bool coreSatisfied = true;
+		
+    	std::vector<EExtension> removedExtension;
+		
+    	GetContext().Get<IExtensions>()->GetContext()->View([&](const auto e, const auto& extension) {
+			
+			if (!extension->IsFeaturesSatisfied(m_Device.GetHandle()))
+			{
+				if (extension->GetState() == Extension::EExtensionState::Core)
+				{
+					coreSatisfied = false;
+
+					NEPTUNE_LOG_CORE(E) << "Device Feature Required: [ " << Direct3D12::ToString(e) << " ], Which is not satisfied";
+				}
+				else
+				{
+					NEPTUNE_LOG_CORE(W) << "Device Feature Required: [ " << Direct3D12::ToString(e) << " ], Which is not satisfied";
+				}
+				
+				removedExtension.emplace_back(e);
+			}
+			
+		});
+		
+    	std::ranges::for_each(removedExtension, [&](const auto& e) {
+    		
+			GetContext().Get<IExtensions>()->GetContext()->UnRegistry(e);
+		});
+    	
+    	return coreSatisfied;
+	}
 }
 
 #endif

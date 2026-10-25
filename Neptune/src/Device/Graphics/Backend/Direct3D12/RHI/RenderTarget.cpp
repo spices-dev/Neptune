@@ -84,6 +84,25 @@ namespace Neptune::Direct3D12 {
 	{
 		NEPTUNE_PROFILE_ZONE
 
+		m_Texture = CreateSP<Resource::Texture>(GetContext());
+		
+		{
+			D3D12_RESOURCE_DESC             desc{};
+			desc.Dimension                = ToD3D12ResourceDimension(info.domain);
+			desc.Width                    = info.width;
+			desc.Height                   = info.height;
+			desc.DepthOrArraySize         = 1;
+			desc.MipLevels                = 1;
+			desc.Format                   = ToDXGIFormat(info.format);
+			desc.SampleDesc.Count         = 1;
+			desc.SampleDesc.Quality       = 0;
+			desc.Layout                   = D3D12_TEXTURE_LAYOUT_UNKNOWN;
+			desc.Flags                    = ToD3D12ResourceFlags(info.usage);
+			
+			m_Texture->CreateTexture(desc);
+		}
+		
+		m_Texture->SetName("RenderTarget");
 	}
 
 	void RenderTarget::CreateDepthRenderTarget(const RenderTargetCreateInfo& info)

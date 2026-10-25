@@ -1,0 +1,32 @@
+/**
+* @file RenderPass.cpp.
+* @brief The RenderPass Class Implementation.
+* @author Spices.
+*/
+
+#include "Pchheader.h"
+
+#ifdef NP_GRAPHICS_DIRECT3D12
+
+#include "RenderPass.h"
+
+namespace Neptune::Direct3D12::Extension {
+    
+    bool RenderPass::IsFeaturesSatisfied(D3D12Device device)
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        DIRECT3D12_CHECK(device->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS18, &m_Options18, sizeof(m_Options18)))
+        
+        NEPTUNE_LOG_CORE(I) << "Options18 [ RenderPassesValid ] : " << m_Options18.RenderPassesValid;
+
+        if (!m_Options18.RenderPassesValid)
+        {
+            return false;
+        }
+
+        return true;
+    }
+}
+
+#endif

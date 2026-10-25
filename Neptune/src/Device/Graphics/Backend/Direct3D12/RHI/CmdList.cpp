@@ -42,11 +42,27 @@ namespace Neptune::Direct3D12 {
 	void CmdList::CmdBeginRenderPass() const
 	{
 		NEPTUNE_PROFILE_ZONE
+		
+		/*D3D12_RENDER_PASS_BEGINNING_ACCESS        beginAccess{};
+		beginAccess.Type                        = D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_CLEAR;
+		beginAccess.Clear.ClearValue            = ;
+
+		D3D12_RENDER_PASS_ENDING_ACCESS           endAccess{};
+		endAccess.Type                          = D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_PRESERVE;
+
+		D3D12_RENDER_PASS_RENDER_TARGET_DESC      rtvDesc{};
+		rtvDesc.cpuDescriptor                   = rtvHandle;
+		rtvDesc.BeginningAccess                 = beginAccess;
+		rtvDesc.EndingAccess                    = endAccess;
+		
+		m_CommandList->Handle()->BeginRenderPass(1, &rtvDesc, nullptr, D3D12_RENDER_PASS_FLAG_NONE);*/
 	}
 
 	void CmdList::CmdEndRenderPass() const
 	{
 		NEPTUNE_PROFILE_ZONE
+		
+		//m_CommandList->Handle()->EndRenderPass();
 	}
 
 	void CmdList::CmdBindDescriptor(const SP<RHI::DescriptorList>& descriptorList) const
@@ -77,11 +93,15 @@ namespace Neptune::Direct3D12 {
 	void CmdList::CmdDraw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) const
 	{
 		NEPTUNE_PROFILE_ZONE
+		
+		m_CommandList->Handle()->DrawInstanced(vertexCount, instanceCount, firstVertex, firstInstance);
 	}
 	
 	void CmdList::CmdDrawIndexed(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const
 	{
 		NEPTUNE_PROFILE_ZONE
+		
+		m_CommandList->Handle()->DrawIndexedInstanced(indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
 	}
 	
 	void CmdList::CmdDrawIndexedIndirect(const SP<RHI::Buffer>& buffer, uint64_t offset, uint32_t drawCount, uint32_t stride) const
@@ -97,6 +117,8 @@ namespace Neptune::Direct3D12 {
 	void CmdList::CmdDispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const
 	{
 		NEPTUNE_PROFILE_ZONE
+		
+		m_CommandList->Handle()->Dispatch(groupCountX, groupCountY, groupCountZ);
 	}
 	
 	void CmdList::CmdDispatchIndirect(const SP<RHI::Buffer>& buffer, uint64_t offset) const
