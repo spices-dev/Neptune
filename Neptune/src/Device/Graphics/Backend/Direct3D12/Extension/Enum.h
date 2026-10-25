@@ -35,12 +35,33 @@ namespace Neptune::Direct3D12 {
         VariableShadingRate,                                      // @brief VariableShadingRate
         ShadingRateImageTileSize,                                 // @brief ShadingRateImageTileSize
         BackgroundProcessing,                                     // @brief BackgroundProcessing
+        MeshShader,                                               // @brief MeshShader
+        SamplerFeedback,                                          // @brief SamplerFeedback
+        UnalignedBlockTextures,                                   // @brief UnalignedBlockTextures
+        MeshShaderPipelineStats,                                  // @brief MeshShaderPipelineStats
+        MeshShaderFullRangeRenderTargetArrayIndex,                // @brief MeshShaderFullRangeRenderTargetArrayIndex      
+        AtomicInt64OnTypedResource,                               // @brief AtomicInt64OnTypedResource
+        AtomicInt64OnGroupShared,                                 // @brief AtomicInt64OnGroupShared
+        DerivativesInMeshAndAmplificationShaders,                 // @brief DerivativesInMeshAndAmplificationShaders
+        WaveMMA,                                                  // @brief WaveMMA
+        VariableRateShadingSumCombiner,                           // @brief VariableRateShadingSumCombiner
+        MeshShaderPerPrimitiveShadingRate,                        // @brief MeshShaderPerPrimitiveShadingRate
+        AtomicInt64OnDescriptorHeapResource,                      // @brief AtomicInt64OnDescriptorHeapResource
+        MSPrimitivesPipelineStatisticIncludesCulledPrimitives,    // @brief MSPrimitivesPipelineStatisticIncludesCulledPrimitives       
+        EnhancedBarriers,                                         // @brief EnhancedBarriers
+        RelaxedFormatCasting,                                     // @brief RelaxedFormatCasting
+        UnrestrictedBufferTextureCopyPitch,                       // @brief UnrestrictedBufferTextureCopyPitch
+        UnrestrictedVertexElementAlignment,                       // @brief UnrestrictedVertexElementAlignment
+        InvertedViewportHeightFlipsY,                             // @brief InvertedViewportHeightFlipsY
+        InvertedViewportDepthFlipsZ,                              // @brief InvertedViewportDepthFlipsZ
+        TextureCopyBetweenDimensions,                             // @brief TextureCopyBetweenDimensions
+        AlphaBlendFactor,                                         // @brief AlphaBlendFactor
+        AdvancedTextureOps,                                       // @brief AdvancedTextureOps
+        WriteableMSAATextures,                                    // @brief WriteableMSAATextures
+        IndependentFrontAndBackStencilRefMask,                    // @brief IndependentFrontAndBackStencilRefMask
         
-        
-        
-        MeshShader,
+
         RenderPass,
-        SamplerFeedback,
 
         Count
     };
@@ -53,27 +74,51 @@ namespace Neptune::Direct3D12 {
         
         switch (e)
         {
-            case WaveOps:                                           return "WaveOps";
-            case ExpandedComputeResourceStates:                     return "ExpandedComputeResourceStates";
-            case Int64ShaderOps:                                    return "Int64ShaderOps";
-            case DepthBoundsTest:                                   return "DepthBoundsTest";
-            case ProgrammableSamplePositions:                       return "ProgrammableSamplePositions";
-            case CopyQueueTimestampQueries:                         return "CopyQueueTimestampQueries";
-            case CastingFullyTypedFormat:                           return "CastingFullyTypedFormat";
-            case WriteBufferImmediate:                              return "WriteBufferImmediate";
-            case ViewInstancing:                                    return "ViewInstancing";
-            case Barycentrics:                                      return "Barycentrics";
-            case MSAA64KBAlignedTexture:                            return "MSAA64KBAlignedTexture";
-            case SharedResourceCompatibility:                       return "SharedResourceCompatibility";
-            case Native16BitShaderOps:                              return "Native16BitShaderOps";
-            case SRVOnlyTiledResource:                              return "SRVOnlyTiledResource";
-            case Raytracing:                                        return "Raytracing";
-            case AdditionalShadingRates:                            return "AdditionalShadingRates";
-            case PerPrimitiveShadingRateWithViewportIndexing:       return "PerPrimitiveShadingRateWithViewportIndexing";
-            case VariableShadingRate:                               return "VariableShadingRate";
-            case ShadingRateImageTileSize:                          return "ShadingRateImageTileSize";
-            case BackgroundProcessing:                              return "BackgroundProcessing";
-            default:                                                return "NonNamed";
+            case WaveOps:                                                          return "WaveOps";
+            case ExpandedComputeResourceStates:                                    return "ExpandedComputeResourceStates";
+            case Int64ShaderOps:                                                   return "Int64ShaderOps";
+            case DepthBoundsTest:                                                  return "DepthBoundsTest";
+            case ProgrammableSamplePositions:                                      return "ProgrammableSamplePositions";
+            case CopyQueueTimestampQueries:                                        return "CopyQueueTimestampQueries";
+            case CastingFullyTypedFormat:                                          return "CastingFullyTypedFormat";
+            case WriteBufferImmediate:                                             return "WriteBufferImmediate";
+            case ViewInstancing:                                                   return "ViewInstancing";
+            case Barycentrics:                                                     return "Barycentrics";
+            case MSAA64KBAlignedTexture:                                           return "MSAA64KBAlignedTexture";
+            case SharedResourceCompatibility:                                      return "SharedResourceCompatibility";
+            case Native16BitShaderOps:                                             return "Native16BitShaderOps";
+            case SRVOnlyTiledResource:                                             return "SRVOnlyTiledResource";
+            case Raytracing:                                                       return "Raytracing";
+            case AdditionalShadingRates:                                           return "AdditionalShadingRates";
+            case PerPrimitiveShadingRateWithViewportIndexing:                      return "PerPrimitiveShadingRateWithViewportIndexing";
+            case VariableShadingRate:                                              return "VariableShadingRate";
+            case ShadingRateImageTileSize:                                         return "ShadingRateImageTileSize";
+            case BackgroundProcessing:                                             return "BackgroundProcessing";
+            case MeshShader:                                                       return "MeshShader";
+            case SamplerFeedback:                                                  return "SamplerFeedback";
+            case UnalignedBlockTextures:                                           return "UnalignedBlockTextures";
+            case MeshShaderPipelineStats:                                          return "MeshShaderPipelineStats";
+            case MeshShaderFullRangeRenderTargetArrayIndex:                        return "MeshShaderFullRangeRenderTargetArrayIndex";
+            case AtomicInt64OnTypedResource:                                       return "AtomicInt64OnTypedResource";
+            case AtomicInt64OnGroupShared:                                         return "AtomicInt64OnGroupShared";
+            case DerivativesInMeshAndAmplificationShaders:                         return "DerivativesInMeshAndAmplificationShaders";
+            case WaveMMA:                                                          return "WaveMMA";
+            case VariableRateShadingSumCombiner:                                   return "VariableRateShadingSumCombiner";
+            case MeshShaderPerPrimitiveShadingRate:                                return "MeshShaderPerPrimitiveShadingRate";
+            case AtomicInt64OnDescriptorHeapResource:                              return "AtomicInt64OnDescriptorHeapResource";
+            case MSPrimitivesPipelineStatisticIncludesCulledPrimitives:            return "MSPrimitivesPipelineStatisticIncludesCulledPrimitives";
+            case EnhancedBarriers:                                                 return "EnhancedBarriers";
+            case RelaxedFormatCasting:                                             return "RelaxedFormatCasting";
+            case UnrestrictedBufferTextureCopyPitch:                               return "UnrestrictedBufferTextureCopyPitch";
+            case UnrestrictedVertexElementAlignment:                               return "UnrestrictedVertexElementAlignment";
+            case InvertedViewportHeightFlipsY:                                     return "InvertedViewportHeightFlipsY";
+            case InvertedViewportDepthFlipsZ:                                      return "InvertedViewportDepthFlipsZ";
+            case TextureCopyBetweenDimensions:                                     return "TextureCopyBetweenDimensions";
+            case AlphaBlendFactor:                                                 return "AlphaBlendFactor";
+            case AdvancedTextureOps:                                               return "AdvancedTextureOps";
+            case WriteableMSAATextures:                                            return "WriteableMSAATextures";
+            case IndependentFrontAndBackStencilRefMask:                            return "IndependentFrontAndBackStencilRefMask";
+            default:                                                               return "NonNamed";
         }
     }
 
