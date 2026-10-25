@@ -72,6 +72,32 @@ namespace Neptune::Direct3D12 {
 		m_Context->Registry<Extension::IAdvancedTextureOps>                            				  (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IWriteableMSAATextures>                          			  (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IIndependentFrontAndBackStencilRefMask>                        (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::ITriangleFan>												  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IDynamicIndexBufferStripCut>									  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IDynamicDepthBias>                                             (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IGPUUploadHeap>							                      (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::INonNormalizedCoordinateSamplers>                              (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IManualWriteTrackingResource>                        		  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IRenderPasses>												  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IMismatchingOutputDimensions>                        		  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::ISampleCountsWithNoOutputs>                          		  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IPointSamplingAddressesNeverRoundUp>                 		  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IRasterizerDesc2>											  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::INarrowQuadrilateralLines>                        			  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IAnisoFilterWithPointMip>                         			  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IMaxSamplerDescriptorHeapSize>                       		  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IMaxViewDescriptorHeapSize>                          		  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IComputeOnlyCustomHeap>                        	 			  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IComputeOnlyWriteWatch>                        	 			  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IRecreateAt>                        			  	 			  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IWorkGraphs>                        			  	 			  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IExecuteIndirect>                              	 			  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::ISampleCmpGradientAndBias>                        			  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IExtendedCommandInfo>										  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IShaderExecutionReorderingActuallyReorders>                    (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::ICreateByteOffsetViews>                        				  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IMax1DDispatchSize>							  				  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IMax1DDispatchMeshSize>                        				  (Extension::EExtensionState::Extent);
 
 	}
 }

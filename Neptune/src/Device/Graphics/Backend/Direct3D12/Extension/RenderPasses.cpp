@@ -1,6 +1,6 @@
 /**
-* @file RenderPass.cpp.
-* @brief The RenderPass Class Implementation.
+* @file RenderPasses.cpp.
+* @brief The RenderPasses Class Implementation.
 * @author Spices.
 */
 
@@ -8,11 +8,11 @@
 
 #ifdef NP_GRAPHICS_DIRECT3D12
 
-#include "RenderPass.h"
+#include "RenderPasses.h"
 
 namespace Neptune::Direct3D12::Extension {
     
-    bool RenderPass::IsFeaturesSatisfied(D3D12Device device)
+    bool RenderPasses::IsFeaturesSatisfied(D3D12Device device)
     {
         NEPTUNE_PROFILE_ZONE
         

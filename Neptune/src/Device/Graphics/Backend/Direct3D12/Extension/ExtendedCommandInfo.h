@@ -1,6 +1,6 @@
 /**
-* @file RenderPass.h.
-* @brief The RenderPass Class Definitions.
+* @file ExtendedCommandInfo.h.
+* @brief The ExtendedCommandInfo Class Definitions.
 * @author Spices.
 */
 
@@ -13,9 +13,9 @@
 
 namespace Neptune::Direct3D12::Extension {
 
-    using IRenderPass = IExtension<class RenderPass, EExtension::RenderPass>;
+    using IExtendedCommandInfo = IExtension<class ExtendedCommandInfo, EExtension::ExtendedCommandInfo>;
     
-    class RenderPass : public Extension
+    class ExtendedCommandInfo : public Extension
     {
     public:
 
@@ -24,12 +24,12 @@ namespace Neptune::Direct3D12::Extension {
         * 
         * @param[in] state EExtensionState.
         */
-        explicit RenderPass(EExtensionState state = EExtensionState::Core) : Extension(state) {}
+        explicit ExtendedCommandInfo(EExtensionState state = EExtensionState::Core) : Extension(state) {}
         
         /**
         * @brief Destructor Function.
         */
-        ~RenderPass() override = default;
+        ~ExtendedCommandInfo() override = default;
 
         /**
         * @brief Combine Device Features.
@@ -42,8 +42,7 @@ namespace Neptune::Direct3D12::Extension {
         
     private:
         
-        D3D12_FEATURE_DATA_D3D12_OPTIONS5  m_Options5{};  // @brief D3D12_FEATURE_DATA_D3D12_OPTIONS5.
-        D3D12_FEATURE_DATA_D3D12_OPTIONS18 m_Options18{};  // @brief D3D12_FEATURE_DATA_D3D12_OPTIONS18.
+        D3D12_FEATURE_DATA_D3D12_OPTIONS21 m_Options21{};  // @brief D3D12_FEATURE_DATA_D3D12_OPTIONS21.
     
     };
 }

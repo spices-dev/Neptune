@@ -59,9 +59,32 @@ namespace Neptune::Direct3D12 {
         AdvancedTextureOps,                                       // @brief AdvancedTextureOps
         WriteableMSAATextures,                                    // @brief WriteableMSAATextures
         IndependentFrontAndBackStencilRefMask,                    // @brief IndependentFrontAndBackStencilRefMask
-        
-
-        RenderPass,
+        TriangleFan,                                              // @brief TriangleFan
+        DynamicIndexBufferStripCut,                               // @brief DynamicIndexBufferStripCut
+        DynamicDepthBias,                                         // @brief DynamicDepthBias
+        GPUUploadHeap,                                            // @brief GPUUploadHeap
+        NonNormalizedCoordinateSamplers,                          // @brief NonNormalizedCoordinateSamplers
+        ManualWriteTrackingResource,                              // @brief ManualWriteTrackingResource
+        RenderPasses,                                             // @brief RenderPasses
+        MismatchingOutputDimensions,                              // @brief MismatchingOutputDimensions
+        SampleCountsWithNoOutputs,                                // @brief SampleCountsWithNoOutputs
+        PointSamplingAddressesNeverRoundUp,                       // @brief PointSamplingAddressesNeverRoundUp
+        RasterizerDesc2,                                          // @brief RasterizerDesc2
+        NarrowQuadrilateralLines,                                 // @brief NarrowQuadrilateralLines
+        AnisoFilterWithPointMip,                                  // @brief AnisoFilterWithPointMip
+        MaxSamplerDescriptorHeapSize,                             // @brief MaxSamplerDescriptorHeapSize
+        MaxViewDescriptorHeapSize,                                // @brief MaxViewDescriptorHeapSize
+        ComputeOnlyCustomHeap,                                    // @brief ComputeOnlyCustomHeap
+        ComputeOnlyWriteWatch,                                    // @brief ComputeOnlyWriteWatch
+        RecreateAt,                                               // @brief RecreateAt
+        WorkGraphs,                                               // @brief WorkGraphs
+        ExecuteIndirect,                                          // @brief ExecuteIndirect
+        SampleCmpGradientAndBias,                                 // @brief SampleCmpGradientAndBias
+        ExtendedCommandInfo,                                      // @brief ExtendedCommandInfo
+        ShaderExecutionReorderingActuallyReorders,                // @brief ShaderExecutionReorderingActuallyReorders
+        CreateByteOffsetViews,                                    // @brief CreateByteOffsetViews
+        Max1DDispatchSize,                                        // @brief Max1DDispatchSize
+        Max1DDispatchMeshSize,                                    // @brief Max1DDispatchMeshSize
 
         Count
     };
@@ -118,6 +141,32 @@ namespace Neptune::Direct3D12 {
             case AdvancedTextureOps:                                               return "AdvancedTextureOps";
             case WriteableMSAATextures:                                            return "WriteableMSAATextures";
             case IndependentFrontAndBackStencilRefMask:                            return "IndependentFrontAndBackStencilRefMask";
+            case TriangleFan:                                                      return "TriangleFan";
+            case DynamicIndexBufferStripCut:                                       return "DynamicIndexBufferStripCut";
+            case DynamicDepthBias:                                                 return "DynamicDepthBias";
+            case GPUUploadHeap:                                                    return "GPUUploadHeap";
+            case NonNormalizedCoordinateSamplers:                                  return "NonNormalizedCoordinateSamplers";
+            case ManualWriteTrackingResource:                                      return "ManualWriteTrackingResource";
+            case RenderPasses:                                                     return "RenderPasses";
+            case MismatchingOutputDimensions:                                      return "MismatchingOutputDimensions";
+            case SampleCountsWithNoOutputs:                                        return "SampleCountsWithNoOutputs";
+            case PointSamplingAddressesNeverRoundUp:                               return "PointSamplingAddressesNeverRoundUp";
+            case RasterizerDesc2:                                                  return "RasterizerDesc2";
+            case NarrowQuadrilateralLines:                                         return "NarrowQuadrilateralLines";
+            case AnisoFilterWithPointMip:                                          return "AnisoFilterWithPointMip";
+            case MaxSamplerDescriptorHeapSize:                                     return "MaxSamplerDescriptorHeapSize";
+            case MaxViewDescriptorHeapSize:                                        return "MaxViewDescriptorHeapSize";
+            case ComputeOnlyCustomHeap:                                            return "ComputeOnlyCustomHeap";
+            case ComputeOnlyWriteWatch:                                            return "ComputeOnlyWriteWatch";
+            case RecreateAt:                                                       return "RecreateAt";
+            case WorkGraphs:                                                       return "WorkGraphs";
+            case ExecuteIndirect:                                                  return "ExecuteIndirect";
+            case SampleCmpGradientAndBias:                                         return "SampleCmpGradientAndBias";
+            case ExtendedCommandInfo:                                              return "ExtendedCommandInfo";
+            case ShaderExecutionReorderingActuallyReorders:                        return "ShaderExecutionReorderingActuallyReorders";
+            case CreateByteOffsetViews:                                            return "CreateByteOffsetViews";
+            case Max1DDispatchSize:                                                return "Max1DDispatchSize";
+            case Max1DDispatchMeshSize:                                            return "Max1DDispatchMeshSize";
             default:                                                               return "NonNamed";
         }
     }
