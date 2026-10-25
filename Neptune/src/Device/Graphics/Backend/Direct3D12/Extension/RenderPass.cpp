@@ -16,8 +16,10 @@ namespace Neptune::Direct3D12::Extension {
     {
         NEPTUNE_PROFILE_ZONE
         
+        DIRECT3D12_CHECK(device->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS5, &m_Options5, sizeof(m_Options5)))
         DIRECT3D12_CHECK(device->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS18, &m_Options18, sizeof(m_Options18)))
         
+        NEPTUNE_LOG_CORE(I) << "Options5 [ RenderPassesTier ] : " << m_Options5.RenderPassesTier;
         NEPTUNE_LOG_CORE(I) << "Options18 [ RenderPassesValid ] : " << m_Options18.RenderPassesValid;
 
         if (!m_Options18.RenderPassesValid)

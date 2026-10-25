@@ -42,6 +42,7 @@ namespace Neptune::Direct3D12::Extension {
         
     private:
         
+        D3D12_FEATURE_DATA_D3D12_OPTIONS5  m_Options5{};  // @brief D3D12_FEATURE_DATA_D3D12_OPTIONS5.
         D3D12_FEATURE_DATA_D3D12_OPTIONS18 m_Options18{};  // @brief D3D12_FEATURE_DATA_D3D12_OPTIONS18.
     
     };
