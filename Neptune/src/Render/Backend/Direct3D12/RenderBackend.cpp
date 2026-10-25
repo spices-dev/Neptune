@@ -30,7 +30,7 @@ namespace Neptune::Direct3D12 {
     	
         const auto& window = Window::Instance();
 
-    	GetContext().Registry<ISwapChain>(MaxFrameInFlight, window.Implement(), window.NativeWindow());
+    	GetContext().Registry<ISwapChain>(SwapChainImageCount, window.Implement(), window.NativeWindow());
     	
         RenderFrontend::OnInitialize();
     }

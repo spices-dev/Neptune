@@ -9,6 +9,7 @@
 #ifdef NP_GRAPHICS_DIRECT3D12
 
 #include "RenderPass.h"
+#include "Device/Graphics/Backend/Direct3D12/Converter.h"
 #include "Device/Graphics/Backend/Direct3D12/Infrastructure/DebugUtilsObject.h"
 #include "Device/Graphics/Backend/Direct3D12/RHI/RenderTarget.h"
 #include "Device/Graphics/Backend/Direct3D12/RHI/Pipeline.h"
@@ -25,42 +26,27 @@ namespace Neptune::Direct3D12 {
 	{
 		NEPTUNE_PROFILE_ZONE
 
+		D3D12_RENDER_PASS_RENDER_TARGET_DESC                  attachment{};
+		//attachment.cpuDescriptor                            = rtvHandle0; 
+		attachment.BeginningAccess.Type                     = ToD3D12RenderPassBeginAccessType(info.loadOp);
+		attachment.BeginningAccess.Clear.ClearValue         = { .Color{ 0.0, 0.0, 0.0, 1.0 } };
+		attachment.EndingAccess.Type                        = D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_PRESERVE;
+		
+		m_Attachments.emplace_back(attachment);
 	}
 
-	void RenderPass::BeginRenderPass(const Unit::CommandEncoder* commandEncoder)
+	void RenderPass::BeginRenderPass(Unit::GraphicsCommandList::Handle commandList) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		commandList->BeginRenderPass(m_Attachments.size(), m_Attachments.data(), nullptr, D3D12_RENDER_PASS_FLAG_NONE);
 	}
 	
-	void RenderPass::BeginComputePass(const Unit::CommandEncoder* commandEncoder)
+	void RenderPass::EndPass(Unit::GraphicsCommandList::Handle commandList) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-	}
-
-	void RenderPass::EndPass() const
-	{
-		NEPTUNE_PROFILE_ZONE
-		
-	}
-
-	void RenderPass::BindPipeline(const SP<RHI::Pipeline>& pipeline) const
-	{
-		NEPTUNE_PROFILE_ZONE
-		
-	}
-	
-	void RenderPass::BindDescriptorList(const DescriptorList* descriptorList) const
-	{
-		NEPTUNE_PROFILE_ZONE
-		
-	}
-
-	void RenderPass::UpdateShaderConstant(const void* data, uint32_t size, uint32_t offset) const
-	{
-		NEPTUNE_PROFILE_ZONE
-		
+		commandList->EndRenderPass();
 	}
 }
 

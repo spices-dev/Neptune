@@ -43,26 +43,14 @@ namespace Neptune::Direct3D12 {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		/*D3D12_RENDER_PASS_BEGINNING_ACCESS        beginAccess{};
-		beginAccess.Type                        = D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_CLEAR;
-		beginAccess.Clear.ClearValue            = ;
-
-		D3D12_RENDER_PASS_ENDING_ACCESS           endAccess{};
-		endAccess.Type                          = D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_PRESERVE;
-
-		D3D12_RENDER_PASS_RENDER_TARGET_DESC      rtvDesc{};
-		rtvDesc.cpuDescriptor                   = rtvHandle;
-		rtvDesc.BeginningAccess                 = beginAccess;
-		rtvDesc.EndingAccess                    = endAccess;
-		
-		m_CommandList->Handle()->BeginRenderPass(1, &rtvDesc, nullptr, D3D12_RENDER_PASS_FLAG_NONE);*/
+		m_RenderPass->BeginRenderPass(m_CommandList->Handle());
 	}
 
 	void CmdList::CmdEndRenderPass() const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		//m_CommandList->Handle()->EndRenderPass();
+		m_RenderPass->EndPass(m_CommandList->Handle());
 	}
 
 	void CmdList::CmdBindDescriptor(const SP<RHI::DescriptorList>& descriptorList) const
@@ -134,6 +122,8 @@ namespace Neptune::Direct3D12 {
 	void CmdList::SetRenderPass(const SP<RHI::RenderPass>& renderPass)
 	{
 		NEPTUNE_PROFILE_ZONE
+		
+		m_RenderPass = renderPass->GetRHIImpl<RenderPass>();
 	}
 }
 

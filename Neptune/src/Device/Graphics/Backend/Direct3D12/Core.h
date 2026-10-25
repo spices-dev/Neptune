@@ -18,7 +18,9 @@
 
 namespace Neptune::Direct3D12 {
 
-	constexpr uint32_t MaxFrameInFlight = Neptune::MaxFrameInFlight;       // @brief Frames In Flight.
+	constexpr uint32_t MaxFrameInFlight    = Neptune::MaxFrameInFlight;          // @brief Frames In Flight.
+	
+	constexpr uint32_t SwapChainImageCount = Neptune::SwapChainImageCount;       // @brief SwapChainImageCount.
 
 	constexpr D3D_FEATURE_LEVEL MinimumLevel { 
 		D3D_FEATURE_LEVEL_11_0 

@@ -51,6 +51,33 @@ namespace Neptune::Direct3D12 {
 	* @return Returns D3D12_RESOURCE_FLAGS.
 	*/
 	D3D12_RESOURCE_FLAGS ToD3D12ResourceFlags(const Container::BitSet<Graphic::EImageUsage>& set);
+	
+	/**
+	* @brief Convert AttachmentOP to D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE.
+	*
+	* @param[in] op AttachmentOP.
+	*
+	* @return Returns D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE.
+	*/
+	D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE ToD3D12RenderPassBeginAccessType(AttachmentOP op);
+	
+	/**
+	* @brief Convert ECullMode to D3D12_CULL_MODE.
+	*
+	* @param[in] c ECullMode.
+	*
+	* @return Returns D3D12_CULL_MODE.
+	*/
+	D3D12_CULL_MODE ToD3D12CullMode(ECullMode c);
+	
+	/**
+	* @brief Convert ETopology to D3D12_PRIMITIVE_TOPOLOGY_TYPE.
+	*
+	* @param[in] t ETopology.
+	*
+	* @return Returns D3D12_PRIMITIVE_TOPOLOGY_TYPE.
+	*/
+	D3D12_PRIMITIVE_TOPOLOGY_TYPE ToD3D12PrimitiveTopologyType(ETopology t);
 }
 
 #endif

@@ -29,6 +29,7 @@ extensions: dict = {
     'py':       1,
     'material': 1,
     'glsl':     1,
+    'slang':    1,
     'mesh':     1,
     'task':     1,
     'vert':     1,

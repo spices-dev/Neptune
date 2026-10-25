@@ -218,6 +218,7 @@ namespace Neptune::Direct3D12 {
 	protected:
 
 		SP<Resource::CommandList>        m_CommandList    = nullptr;                               // @brief GraphicsCommandList reference.
+		const RenderPass*                m_RenderPass     = nullptr;                               // @brief RenderPass reference.
 		
 	};
 }

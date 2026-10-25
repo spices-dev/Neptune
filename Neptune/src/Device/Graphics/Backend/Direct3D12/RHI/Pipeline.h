@@ -9,6 +9,7 @@
 #ifdef NP_GRAPHICS_DIRECT3D12
 
 #include "Core/Core.h"
+#include "Device/Graphics/Backend/Direct3D12/Unit/PipelineState.h"
 #include "Device/Graphics/Backend/Direct3D12/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Frontend/RHI/Pipeline.h"
 
@@ -98,6 +99,29 @@ namespace Neptune::Direct3D12 {
 		* @brief Interface of Build ComputePipeline.
 		*/
 		void BuildComputePipeline() override;
+		
+	private:
+		
+		struct PSOStream
+		{
+			CD3DX12_PIPELINE_STATE_STREAM_ROOT_SIGNATURE          rootSignature;
+			CD3DX12_PIPELINE_STATE_STREAM_VS                      vs;
+			CD3DX12_PIPELINE_STATE_STREAM_PS                      ps;
+			CD3DX12_PIPELINE_STATE_STREAM_CS                      cs;
+			CD3DX12_PIPELINE_STATE_STREAM_RASTERIZER              rasterizerState;
+			CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL           depthStencilState;
+			CD3DX12_PIPELINE_STATE_STREAM_BLEND_DESC              blendState;
+			CD3DX12_PIPELINE_STATE_STREAM_RENDER_TARGET_FORMATS   RTFormats;
+			CD3DX12_PIPELINE_STATE_STREAM_DEPTH_STENCIL_FORMAT    DSVFormat;
+			CD3DX12_PIPELINE_STATE_STREAM_SAMPLE_DESC             sampleDesc;
+			CD3DX12_PIPELINE_STATE_STREAM_SAMPLE_MASK             sampleMask;
+			CD3DX12_PIPELINE_STATE_STREAM_INPUT_LAYOUT            inputLayout;
+			CD3DX12_PIPELINE_STATE_STREAM_PRIMITIVE_TOPOLOGY      primitiveTopologyType;
+		};
+		
+		Unit::PipelineState        m_Pipeline;             // @brief PipelineState.
+		
+		PSOStream                  m_PSOStream{};          // @brief PSOStream
 	};
 }
 

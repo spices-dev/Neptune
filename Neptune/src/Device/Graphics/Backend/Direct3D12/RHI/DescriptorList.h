@@ -9,6 +9,7 @@
 #ifdef NP_GRAPHICS_DIRECT3D12
 
 #include "Core/Core.h"
+#include "Device/Graphics/Backend/Direct3D12/Unit/RootSignature.h"
 #include "Device/Graphics/Backend/Direct3D12/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Frontend/RHI/DescriptorList.h"
 
@@ -132,6 +133,19 @@ namespace Neptune::Direct3D12 {
 		* @brief Interface of Build DescriptorList.
 		*/
 		void Build() override;
+		
+	public:
+		
+		/**
+		* @brief Get Unit Handle.
+		*
+		* @return Returns Unit Handle.
+		*/
+		const Unit::RootSignature::Handle& Handle() const { return m_RootSignature.GetHandle(); }
+		
+	private:
+		
+		Unit::RootSignature m_RootSignature;  // @brief RootSignature
 	};
 }
 

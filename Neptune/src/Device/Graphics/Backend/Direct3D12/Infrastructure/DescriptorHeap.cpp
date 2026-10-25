@@ -11,7 +11,6 @@
 #include "DescriptorHeap.h"
 #include "DebugUtilsObject.h"
 #include "Device.h"
-#include "Device/Graphics/Backend/Direct3D12/Unit/Fence.h"
 
 namespace Neptune::Direct3D12 {
 

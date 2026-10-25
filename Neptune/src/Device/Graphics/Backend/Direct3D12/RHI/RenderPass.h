@@ -9,6 +9,7 @@
 #ifdef NP_GRAPHICS_DIRECT3D12
 
 #include "Core/Core.h"
+#include "Device/Graphics/Backend/Direct3D12/Unit/GraphicsCommandList.h"
 #include "Device/Graphics/Backend/Direct3D12/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Frontend/RHI/RenderPass.h"
 
@@ -74,44 +75,20 @@ namespace Neptune::Direct3D12 {
 		/**
 		* @brief Begin RenderPass.
 		* 
-		* @param[in] commandEncoder CommandEncoder.
+		* @param[in] commandList GraphicsCommandList.
 		*/
-		void BeginRenderPass(const Unit::CommandEncoder* commandEncoder);
-		
-		/**
-		* @brief Begin Compute.
-		* 
-		* @param[in] commandEncoder CommandEncoder.
-		*/
-		void BeginComputePass(const Unit::CommandEncoder* commandEncoder);
+		void BeginRenderPass(Unit::GraphicsCommandList::Handle commandList) const;
 		
 		/**
 		* @brief End Pass.
-		*/
-		void EndPass() const;
-		
-		/**
-		* @brief Bind Pipeline.
 		* 
-		* @param[in] pipeline RHI::Pipeline
+		* @param[in] commandList GraphicsCommandList.
 		*/
-		void BindPipeline(const SP<RHI::Pipeline>& pipeline) const;
+		void EndPass(Unit::GraphicsCommandList::Handle commandList) const;
 		
-		/**
-		* @brief Bind DescriptorList.
-		* 
-		* @param[in] descriptorList DescriptorList
-		*/
-		void BindDescriptorList(const DescriptorList* descriptorList) const;
+	private:
 		
-		/**
-		* @brief Update ShaderConstant.
-		*
-		* @param[in] data ShaderConstant data.
-		* @param[in] size ShaderConstant size.
-		* @param[in] offset ShaderConstant offset.
-		*/
-		void UpdateShaderConstant(const void* data, uint32_t size, uint32_t offset = 0) const;
+		std::vector<D3D12_RENDER_PASS_RENDER_TARGET_DESC> m_Attachments; // @brief D3D12_RENDER_PASS_RENDER_TARGET_DESC.
 	};
 }
 
