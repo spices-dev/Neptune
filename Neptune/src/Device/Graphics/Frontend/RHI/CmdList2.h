@@ -60,6 +60,11 @@ namespace Neptune::RHI {
 		virtual void SetGraphicCmdList() = 0;
 
 		/**
+		* @brief Interface of Set Transfer CommandList Context.
+		*/
+		virtual void SetTransferCmdList() = 0;
+		
+		/**
 		* @brief Interface of Set VideoDecode CommandList Context.
 		*/
 		virtual void SetVideoDecodeCmdList() = 0;
@@ -109,6 +114,11 @@ namespace Neptune::RHI {
 		*/
 		void SetGraphicCmdList() const { RHICmdList2::m_Impl->SetGraphicCmdList(); }
 
+		/**
+		* @brief Interface of Set Transfer CommandList Context.
+		*/
+		void SetTransferCmdList() { RHICmdList2::m_Impl->SetTransferCmdList(); }
+		
 		/**
 		* @brief Interface of Set VideoDecode CommandList Context.
 		*/

@@ -69,6 +69,11 @@ namespace Neptune::WebGPU {
 		m_RenderBindPoint = true;
 	}
 	
+	void CmdList2::SetTransferCmdList()
+	{
+		NEPTUNE_PROFILE_ZONE
+	}
+	
 }
 
 #endif

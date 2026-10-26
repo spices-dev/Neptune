@@ -54,6 +54,10 @@ namespace Neptune::Direct3D12 {
 		DEBUGUTILS_SETOBJECTNAME(m_CommandList->IHandle(), "CmdList2CommandList")
 	}
 	
+	void CmdList2::SetTransferCmdList()
+	{
+		NEPTUNE_PROFILE_ZONE
+	}
 }
 
 #endif

@@ -58,6 +58,11 @@ namespace Neptune::WebGPU {
 		void SetGraphicCmdList() override;
 
 		/**
+		* @brief Interface of Set Transfer CommandList Context.
+		*/
+		void SetTransferCmdList() override;
+		
+		/**
 		* @brief Interface of Set VideoDecode CommandList Context.
 		*/
 		void SetVideoDecodeCmdList() override {}

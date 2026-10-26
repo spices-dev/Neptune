@@ -29,6 +29,13 @@ namespace Neptune::Vulkan::Extension {
         LinkToChain(pNext, filter, m_DescriptorBufferFeatures);
     }
     
+    void DescriptorBuffer::BuildPropertyChain(void**& pNext, const std::function<bool(VkStructureType)>& filter)
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        LinkToChain(pNext, filter, m_DescriptorBufferProperties);
+    }
+
     bool DescriptorBuffer::IsFeaturesSatisfied()
     {
         NEPTUNE_PROFILE_ZONE
@@ -41,6 +48,21 @@ namespace Neptune::Vulkan::Extension {
             return false;
         }
 
+        return true;
+    }
+
+    bool DescriptorBuffer::IsPropertiesSatisfied()
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        NEPTUNE_LOG_CORE(I) << "DescriptorBuffer [ descriptorBufferOffsetAlignment ] : " << m_DescriptorBufferProperties.descriptorBufferOffsetAlignment;
+        NEPTUNE_LOG_CORE(I) << "DescriptorBuffer [ combinedImageSamplerDescriptorSingleArray ] : " << m_DescriptorBufferProperties.combinedImageSamplerDescriptorSingleArray; // False: Image, Image, Sampler, Sampler 
+
+        if (!m_DescriptorBufferProperties.descriptorBufferOffsetAlignment)
+        {
+            return false;
+        }
+        
         return true;
     }
 }

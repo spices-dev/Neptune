@@ -58,10 +58,10 @@ namespace Neptune::Vulkan::Resource {
 		/**
 		* @brief Create Buffer.
 		*
-		* @param[in] capabilities VkBufferCreateInfo.
+		* @param[in] info VkBufferCreateInfo.
 		* @param[in] properties VkMemoryPropertyFlags.
 		*/
-		void CreateBuffer(const VkBufferCreateInfo& capabilities, VkMemoryPropertyFlags properties);
+		void CreateBuffer(const VkBufferCreateInfo& info, VkMemoryPropertyFlags properties);
 
 		/**
 		* @brief Write host data to Buffer.

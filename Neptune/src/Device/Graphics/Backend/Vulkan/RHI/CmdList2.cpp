@@ -78,6 +78,23 @@ namespace Neptune::Vulkan {
 		m_BindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
 	}
 
+	void CmdList2::SetTransferCmdList() override
+	{
+		VkCommandBufferAllocateInfo            allocInfo{};
+		allocInfo.sType                      = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+		allocInfo.commandPool                = GetContext().Get<ITransferThreadCommandPool>()->Handle();
+		allocInfo.level                      = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+		allocInfo.commandBufferCount         = 1;
+
+		m_CommandBuffer = CreateSP<Unit::CommandBuffer>();
+
+		m_CommandBuffer->CreateCommandBuffer(GetContext().Get<IDevice>()->Handle(), allocInfo);
+
+		DEBUGUTILS_SETOBJECTNAME(*m_CommandBuffer, "CmdList2CommandBuffer")
+		
+		m_ThreadQueue = GetContext().Get<ITransferThreadQueue>();
+	}
+	
 	void CmdList2::SetVideoDecodeCmdList()
 	{
 		NEPTUNE_PROFILE_ZONE

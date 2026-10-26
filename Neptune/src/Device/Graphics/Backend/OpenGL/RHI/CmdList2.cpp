@@ -38,6 +38,11 @@ namespace Neptune::OpenGL {
 
 	}
 
+	void CmdList2::SetTransferCmdList()
+	{
+		NEPTUNE_PROFILE_ZONE
+	}
+
 	void CmdList2::SetVideoDecodeCmdList()
 	{
 		NEPTUNE_PROFILE_ZONE

@@ -57,7 +57,7 @@ namespace Neptune::Vulkan {
         
         CmdList2 cmdList(GetContext());
 
-        cmdList.SetGraphicCmdList();
+        cmdList.SetTransferCmdList();
 
         cmdList.Begin();
 

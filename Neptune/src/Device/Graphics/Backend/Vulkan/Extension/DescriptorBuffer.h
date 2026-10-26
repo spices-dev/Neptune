@@ -46,15 +46,40 @@ namespace Neptune::Vulkan::Extension {
         void BuildFeatureChain(void**& pNext, const std::function<bool(VkStructureType)>& filter) override;
 
         /**
+        * @brief Build Device Property Chain.
+        * 
+        * @param[in,out] pNext pNext Chain.
+        * @param[in] filter Feature Filter.
+        */
+        void BuildPropertyChain(void**& pNext, const std::function<bool(VkStructureType)>& filter) override;
+        
+        /**
         * @brief Combine Device Features.
         *
         * @return Returns true if satisfied.
         */
         bool IsFeaturesSatisfied() override;
 
+        /**
+        * @brief Is Device Properties satisfied.
+        * 
+        * @return Returns true if satisfied.
+        */
+        bool IsPropertiesSatisfied() override;
+        
+    public:
+        
+        /**
+        * @brief Get VkPhysicalDeviceDescriptorBufferPropertiesEXT.
+        * 
+        * @return Returns VkPhysicalDeviceDescriptorBufferPropertiesEXT.
+        */
+        const VkPhysicalDeviceDescriptorBufferPropertiesEXT& GetProperties() const { return m_DescriptorBufferProperties; }
+        
     private:
 
-        VkPhysicalDeviceDescriptorBufferFeaturesEXT m_DescriptorBufferFeatures{ VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_BUFFER_FEATURES_EXT }; // @briefDescriptorBufferFeatures.
+        VkPhysicalDeviceDescriptorBufferFeaturesEXT m_DescriptorBufferFeatures{ VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_BUFFER_FEATURES_EXT }; // @brief DescriptorBufferFeatures.
+        VkPhysicalDeviceDescriptorBufferPropertiesEXT m_DescriptorBufferProperties{ VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_BUFFER_PROPERTIES_EXT }; // @brief DescriptorBufferProperties.
     };
 }
 
