@@ -176,7 +176,7 @@ struct PointLight
 	float3 color;               /* @brief Color of PointLight.          */
 	float  intensity;           /* @brief Intensity of PointLight.      */
 	float  constantf;           /* @brief Constantf of PointLight.      */
-	float  linear;              /* @brief Linear of PointLight.         */
+	float  linearf;             /* @brief Linear of PointLight.         */
 	float  quadratic;           /* @brief Quadratic of PointLight.      */
 };
 

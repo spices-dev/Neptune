@@ -39,9 +39,9 @@ namespace Neptune::Direct3D12::Unit {
 		* @brief Create RootSignature.
 		*
 		* @param[in] device D3D12Device.
-		* @param[in] blob D3DBlob.
+		* @param[in] desc D3D12_VERSIONED_ROOT_SIGNATURE_DESC.
 		*/
-		void CreateRootSignature(D3D12Device device, D3DBlob blob);
+		void CreateRootSignature(D3D12Device device, const D3D12_VERSIONED_ROOT_SIGNATURE_DESC& desc);
 
 	};
 }

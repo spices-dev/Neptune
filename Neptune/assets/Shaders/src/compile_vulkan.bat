@@ -1,5 +1,5 @@
 ::@file compile.bat
-::@brief This file is used for compile shader source with slang.
+::@brief This file is used for compile shader source with slang to SpirV.
 ::@author Spices.
 @echo off
 
@@ -14,6 +14,12 @@ set DEBUG=1
 
 :: @brief Target SPIR-V profile.
 set SPIRV_PROFILE=spirv_1_4
+
+:: @brief 1: Dump reflection json.
+set DUMP_REFLECTION=1
+
+:: @brief Output directory (relative to this script).
+set OUT_DIR=..\spv
 
 :: @brief Include search paths (shaders use #include "Header/xxx").
 set INCLUDE_FLAGS=-I. -I./Header
@@ -50,6 +56,8 @@ if not exist %SLANGC% (
     exit /b 1
 )
 
+if not exist "%OUT_DIR%" mkdir "%OUT_DIR%"
+
 ::------------------------------------------------------------------------------
 :: Compile
 ::------------------------------------------------------------------------------
@@ -66,9 +74,13 @@ set /a FAILED=0
 for %%f in (*.slang) do (
     set /a TOTAL+=1
     echo Compiling %%f ...
-    %SLANGC% %%f %COMMON_FLAGS% %BUILD_FLAGS% %INCLUDE_FLAGS% -o ../spv/%%~nf%%~xf.spv
+    if "%DUMP_REFLECTION%"=="1" (
+        %SLANGC% %%f %COMMON_FLAGS% %BUILD_FLAGS% %INCLUDE_FLAGS% -reflection-json %OUT_DIR%/%%~nf%%~xf.json -o %OUT_DIR%/%%~nf%%~xf.spv
+    ) else (
+        %SLANGC% %%f %COMMON_FLAGS% %BUILD_FLAGS% %INCLUDE_FLAGS% -o %OUT_DIR%/%%~nf%%~xf.spv
+    )
     if !errorlevel! equ 0 (
-        echo   [OK] %%f -^> ../spv/%%~nf%%~xf.spv
+        echo   [OK] %%f -^> %OUT_DIR%/%%~nf%%~xf.spv
     ) else (
         set /a FAILED+=1
         echo   [FAILED] %%f

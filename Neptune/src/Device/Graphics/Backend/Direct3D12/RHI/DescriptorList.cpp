@@ -79,6 +79,9 @@ namespace Neptune::Direct3D12 {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		D3D12_VERSIONED_ROOT_SIGNATURE_DESC desc{};
+		
+		m_RootSignature.CreateRootSignature(GetContext().Get<IDevice>()->Handle(), desc);
 	}
 }
 

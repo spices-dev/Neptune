@@ -59,6 +59,7 @@ Makefile
 
 /Neptune/assets/Shaders/src/*.spv
 /Neptune/assets/Shaders/spv
+/Neptune/assets/Shaders/dxil
 
 /Neptune/vendor/Glad/bin
 /Neptune/vendor/Glad/bin-int

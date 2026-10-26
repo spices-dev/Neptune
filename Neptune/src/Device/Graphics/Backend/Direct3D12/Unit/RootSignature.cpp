@@ -21,11 +21,21 @@ namespace Neptune::Direct3D12::Unit {
 		m_Handle->Release();
 	}
 
-	void RootSignature::CreateRootSignature(D3D12Device device, D3DBlob blob)
+	void RootSignature::CreateRootSignature(D3D12Device device, const D3D12_VERSIONED_ROOT_SIGNATURE_DESC& desc)
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		DIRECT3D12_CHECK(device->CreateRootSignature(0, blob->GetBufferPointer(), blob->GetBufferSize(), IID_PPV_ARGS(&m_Handle)))
+		D3DBlob signatureBlob = nullptr;
+		D3DBlob errorBlob     = nullptr;
+		
+		DIRECT3D12_CHECK(D3D12SerializeVersionedRootSignature(&desc, &signatureBlob, &errorBlob))
+		
+		if (errorBlob)
+		{
+			NEPTUNE_LOG_CORE(E) << errorBlob->GetBufferPointer();
+		}
+		
+		DIRECT3D12_CHECK(device->CreateRootSignature(0, signatureBlob->GetBufferPointer(), signatureBlob->GetBufferSize(), IID_PPV_ARGS(&m_Handle)))
 	}
 
 }
