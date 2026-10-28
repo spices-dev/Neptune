@@ -28,7 +28,7 @@
 /**
 * @brief BindLess Texture Buffer.
 */
-//[[vk::binding(BINDLESS_TEXTURE_BINDING, BINDLESS_TEXTURE_SET)]] Sampler2D BindLessTextureBuffer[];
+//[[vk::binding(2, 0)]] Sampler2D BindLessTextureBuffer[];
 
 /*****************************************************************************************/
 

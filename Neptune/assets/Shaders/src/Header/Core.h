@@ -34,9 +34,6 @@ using uint     = unsigned int;
 /**
 * @brief Macros for Variable Constant.
 */
-static const uint BINDLESS_TEXTURE_MAXNUM        = 65535                     ;   /* @brief Maximum number of BindLess Texture Array.             */
-static const uint BINDLESS_TEXTURE_SET           = 1                         ;   /* @brief BindLess Texture Descriptor Set.                      */
-static const uint BINDLESS_TEXTURE_BINDING       = 0                         ;   /* @brief BindLess Texture Descriptor Set Binding.              */
 static const uint MESH_BUFFER_MAXNUM             = 100000                    ;   /* @brief Ray Tracing Renderer Maximum mesh desc buffer count.  */
 static const uint DIRECTIONALLIGHT_BUFFER_MAXNUM = 100                       ;   /* @brief Maximum number of Directional lights.                 */
 static const uint POINTLIGHT_BUFFER_MAXNUM       = 10000                     ;   /* @brief Maximum number of Point lights.                       */

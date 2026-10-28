@@ -97,6 +97,22 @@ namespace Neptune::Vulkan::Unit {
 
 		vkCmdBindDescriptorSets(m_Handle, bindPoint, layout, set, 1, &descriptorSet, 1, &offset);
 	}
+	
+	void CommandBuffer::BindDescriptorBuffer(const std::vector<VkDescriptorBufferBindingInfoEXT>& infos) const
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		vkCmdBindDescriptorBuffersEXT(m_Handle, static_cast<uint32_t>(infos.size()), infos.data());
+	}
+	
+	void CommandBuffer::SetDescriptorBufferOffset(VkPipelineBindPoint bindPoint, VkPipelineLayout layout, uint32_t set, VkDeviceSize offset) const
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		uint32_t index = 0;
+		
+		vkCmdSetDescriptorBufferOffsetsEXT(m_Handle, bindPoint, layout, set, 1, &index, &offset);
+	}
 
 	void CommandBuffer::SetViewport(const VkViewport& viewport) const
 	{

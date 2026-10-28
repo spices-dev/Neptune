@@ -93,6 +93,21 @@ module.DefineCppStaticLibrary = function(name, callback)
 
 end
 
+-- @brief Define Cpp Shared Library.
+--
+-- @param[in] name Project Name.
+-- @param[in] callback Project specific configs
+module.DefineCppSharedLibrary = function(name, callback)
+
+    TemplateDefineProject({
+        name     = name,
+        kind     = "SharedLib",
+        language = "C++",
+        callback = callback
+    })
+
+end
+
 -- @brief Define Cpp Executable.
 --
 -- @param[in] name Project Name.

@@ -11,7 +11,6 @@
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/DescriptorSetLayout.h"
-#include "Device/Graphics/Backend/Vulkan/Resource/Buffer.h"
 
 #include <map>
 #include <vector>
@@ -20,6 +19,7 @@
 namespace Neptune::Vulkan {
 	
 	class RenderTarget;
+	class Buffer;
 }
 
 namespace Neptune::Vulkan::Resource {
@@ -37,23 +37,12 @@ namespace Neptune::Vulkan::Resource {
 		*
 		* @param[in] context Context.
 		*/
-		explicit DescriptorBuffer(Context& context) 
-			: ContextAccessor(context)
-			, m_DescriptorBuffer(context)
-			, m_StagingBuffer(context)
-		{}
+		explicit DescriptorBuffer(Context& context) : ContextAccessor(context) {}
 
 		/**
 		* @brief Destructor Function.
 		*/
 		~DescriptorBuffer() override = default;
-
-		/**
-		* @brief Get Unit Handle.
-		*
-		* @return Returns Unit Handle.
-		*/
-		const Unit::Buffer::Handle& Handle() const { return m_DescriptorBuffer.Handle(); }
 
 		/**
 		* @brief Add DescriptorSet Binding.
@@ -156,6 +145,15 @@ namespace Neptune::Vulkan::Resource {
 		*/
 		uint64_t GetBindingDescSize(VkDescriptorType type) const;
 		
+		/**
+		* @brief Get Binding DescriptorBuffer.
+		* 
+		* @param[in] type VkDescriptorType.
+		* 
+		* @return Returns Binding DescriptorBuffer.
+		*/
+		Buffer* GetBindingDescriptorBuffer(VkDescriptorType type) const;
+		
 	private:
 
 		/**
@@ -163,8 +161,8 @@ namespace Neptune::Vulkan::Resource {
 		*/
 		struct BufferBindingData 
 		{
-			SP<class Buffer> buffer;                                    // @brief Buffer Reference.
-			VkDescriptorBufferInfo bufferInfo;                          // @brief VkDescriptorBufferInfo.
+			SP<Buffer> buffer;                                    // @brief Buffer Reference.
+			VkDescriptorBufferInfo bufferInfo;                    // @brief VkDescriptorBufferInfo.
 		};										                       
 
 		/**
@@ -185,12 +183,11 @@ namespace Neptune::Vulkan::Resource {
 			std::variant<BufferBindingData, ImageBindingData> data;     // @brief Specific Binding.
 		};
 
-		Buffer                                    m_DescriptorBuffer;   // @brief This DescriptorBuffer.
-		Buffer                                    m_StagingBuffer;      // @brief This StagingBuffer.
-		uint64_t                                  m_LayoutSize = 0;     // @brief This DescriptorSetLayout Size.
-		Unit::DescriptorSetLayout                 m_Layout;             // @brief This DescriptorSetLayout.
-		std::map<uint32_t, BindingData>           m_Bindings;           // @brief This Binding.
-		std::optional<uint32_t>                   m_Offset;             // @brief This Binding Offset.
+		std::unordered_map<VkBufferUsageFlagBits, UP<Buffer>> m_DescriptorBuffer;          // @brief This DescriptorBuffer.
+		uint64_t                                          	  m_LayoutSize = 0;            // @brief This DescriptorSetLayout Size.
+		Unit::DescriptorSetLayout                         	  m_Layout;                    // @brief This DescriptorSetLayout.
+		std::map<uint32_t, BindingData>                   	  m_Bindings;                  // @brief This Binding.
+		std::optional<uint32_t>                           	  m_Offset;                    // @brief This Binding Offset.
 	};
 }
 

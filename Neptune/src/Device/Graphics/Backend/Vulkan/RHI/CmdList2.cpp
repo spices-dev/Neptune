@@ -78,7 +78,7 @@ namespace Neptune::Vulkan {
 		m_BindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
 	}
 
-	void CmdList2::SetTransferCmdList() override
+	void CmdList2::SetTransferCmdList()
 	{
 		VkCommandBufferAllocateInfo            allocInfo{};
 		allocInfo.sType                      = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;

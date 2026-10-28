@@ -88,6 +88,20 @@ namespace Neptune::Vulkan {
         */
         const Unit::Buffer::Handle& Handle() const { return m_Buffer.Handle(); }
         
+        /**
+        * @brief Create Buffer.
+        *
+        * @param[in] info VkBufferCreateInfo.
+        */
+        void CreateBuffer(const VkBufferCreateInfo& info);
+        
+        /**
+        * @brief Get Buffer Host Data.
+        *
+        * @return Returns Buffer Host Data.
+        */
+        void* Data() const;
+        
     private:
 
         Resource::Buffer m_Buffer;                  // @brief This Buffer.

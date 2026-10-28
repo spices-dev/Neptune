@@ -110,6 +110,23 @@ namespace Neptune::Vulkan::Unit {
 		void BindDescriptorSet(VkPipelineBindPoint bindPoint, VkPipelineLayout layout, uint32_t set, VkDescriptorSet descriptorSet, uint32_t offset) const;
 		
 		/**
+		* @brief Bind DescriptorBuffer.
+		*
+		* @param[in] infos VkDescriptorBufferBindingInfoEXT.
+		*/
+		void BindDescriptorBuffer(const std::vector<VkDescriptorBufferBindingInfoEXT>& infos) const;
+		
+		/**
+		* @brief Set DescriptorBuffer Offset.
+		*
+		* @param[in] bindPoint VkPipelineBindPoint.
+		* @param[in] layout VkPipelineLayout.
+		* @param[in] set .
+		* @param[in] offset .
+		*/
+		void SetDescriptorBufferOffset(VkPipelineBindPoint bindPoint, VkPipelineLayout layout, uint32_t set, VkDeviceSize offset) const;
+		
+		/**
 		* @brief Set Viewport.
 		*
 		* @param[in] viewport VkViewport.

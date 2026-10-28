@@ -33,8 +33,6 @@ namespace Neptune::Vulkan {
         createInfo.size                    = info.size;
         createInfo.usage                   = usage;
         createInfo.sharingMode             = VK_SHARING_MODE_EXCLUSIVE;
-        createInfo.queueFamilyIndexCount   = 1;
-        createInfo.pQueueFamilyIndices     = &GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
         
         m_Buffer.CreateBuffer(createInfo, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
     }
@@ -50,8 +48,6 @@ namespace Neptune::Vulkan {
         info.size                          = std::min(size, m_Buffer.Size());
         info.usage                         = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
         info.sharingMode                   = VK_SHARING_MODE_EXCLUSIVE;
-        info.queueFamilyIndexCount         = 1;
-        info.pQueueFamilyIndices           = &GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
     
         m_StagingBuffer->CreateBuffer(info, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
     
@@ -96,6 +92,19 @@ namespace Neptune::Vulkan {
         m_Buffer.SetName(name);
     }
     
+    void Buffer::CreateBuffer(const VkBufferCreateInfo& info)
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        m_Buffer.CreateBuffer(info, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+    }
+    
+    void* Buffer::Data() const
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        return m_StagingBuffer ? m_StagingBuffer->Data() : nullptr;
+    }
 }
 
 #endif

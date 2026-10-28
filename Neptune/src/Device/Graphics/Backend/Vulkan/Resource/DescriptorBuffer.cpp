@@ -17,6 +17,7 @@
 #include "Device/Graphics/Backend/Vulkan/Extension/DescriptorBuffer.h"
 #include "Core/Math/Math.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/CmdList2.h"
+#include "Device/Graphics/Backend/Vulkan/RHI/Buffer.h"
 
 namespace Neptune::Vulkan::Resource {
 
@@ -24,9 +25,12 @@ namespace Neptune::Vulkan::Resource {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		auto buffer = CreateSP<Buffer>(GetContext());
+		auto buffer = CreateSP<Vulkan::Buffer>(GetContext());
 		
-		buffer->CreateBuffer(info, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
+		VkBufferCreateInfo createInfo = info;
+		createInfo.usage             |= VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
+		
+		buffer->CreateBuffer(createInfo);
 
 		buffer->SetName("UniformBuffer");
 
@@ -37,6 +41,11 @@ namespace Neptune::Vulkan::Resource {
 		data.bufferInfo.range           = info.size;
 
 		m_Bindings.emplace(binding.binding, BindingData{ binding, 0, data });
+		
+		if (!m_DescriptorBuffer.contains(VK_BUFFER_USAGE_RESOURCE_DESCRIPTOR_BUFFER_BIT_EXT))
+		{
+			m_DescriptorBuffer.emplace(VK_BUFFER_USAGE_RESOURCE_DESCRIPTOR_BUFFER_BIT_EXT, CreateUP<Vulkan::Buffer>(GetContext()));
+		}
 	}
 
 	void DescriptorBuffer::AddBinding(const VkDescriptorImageInfo& info, const VkDescriptorSetLayoutBinding& binding)
@@ -47,6 +56,11 @@ namespace Neptune::Vulkan::Resource {
 		data.imageInfos.emplace_back(info);
 
 		m_Bindings.emplace(binding.binding, BindingData{ binding, 0, data });
+		
+		if (!m_DescriptorBuffer.contains(VK_BUFFER_USAGE_SAMPLER_DESCRIPTOR_BUFFER_BIT_EXT))
+		{
+			m_DescriptorBuffer.emplace(VK_BUFFER_USAGE_SAMPLER_DESCRIPTOR_BUFFER_BIT_EXT, CreateUP<Vulkan::Buffer>(GetContext()));
+		}
 	}
 
 	void DescriptorBuffer::UpdateBuffer(uint32_t binding, const void* data)
@@ -111,29 +125,18 @@ namespace Neptune::Vulkan::Resource {
 			vkGetDescriptorSetLayoutBindingOffsetEXT(GetContext().Get<IDevice>()->Handle(), m_Layout.GetHandle(), binding, &m_Bindings[binding].offset);
 		}
 		
-		VkBufferCreateInfo                   stagingInfo{};
-		stagingInfo.sType                  = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-		stagingInfo.size                   = m_LayoutSize;
-		stagingInfo.usage                  = VK_BUFFER_USAGE_RESOURCE_DESCRIPTOR_BUFFER_BIT_EXT
-						                   | VK_BUFFER_USAGE_SAMPLER_DESCRIPTOR_BUFFER_BIT_EXT
-						                   | VK_BUFFER_USAGE_PUSH_DESCRIPTORS_DESCRIPTOR_BUFFER_BIT_EXT
-						                   | VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
-		stagingInfo.sharingMode            = VK_SHARING_MODE_EXCLUSIVE;
-		
-		m_StagingBuffer.CreateBuffer(stagingInfo, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-		
-		VkBufferCreateInfo                   createInfo{};
-		createInfo.sType                   = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-		createInfo.size                    = m_LayoutSize;
-		createInfo.usage                   = VK_BUFFER_USAGE_RESOURCE_DESCRIPTOR_BUFFER_BIT_EXT
-							               | VK_BUFFER_USAGE_SAMPLER_DESCRIPTOR_BUFFER_BIT_EXT
-							               | VK_BUFFER_USAGE_PUSH_DESCRIPTORS_DESCRIPTOR_BUFFER_BIT_EXT
-							               | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
-		createInfo.sharingMode             = VK_SHARING_MODE_EXCLUSIVE;
-		
-		m_DescriptorBuffer.CreateBuffer(createInfo, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-		
-		m_DescriptorBuffer.SetName("DescriptorBuffer");
+		for (auto& [bit, buffer] : m_DescriptorBuffer)
+		{
+			VkBufferCreateInfo                   info{};
+			info.sType                         = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+			info.size                          = m_LayoutSize;
+			info.usage                         = bit | VK_BUFFER_USAGE_TRANSFER_DST_BIT;
+			info.sharingMode                   = VK_SHARING_MODE_EXCLUSIVE;
+			
+			buffer->CreateBuffer(info);
+			
+			buffer->SetName("DescriptorBuffer");
+		}
 	}
 
 	void DescriptorBuffer::UpdateDescriptorBuffer()
@@ -145,22 +148,10 @@ namespace Neptune::Vulkan::Resource {
 			UpdateDescriptorStagingBuffer(binding);
 	    }
 		
-		CmdList2 cmdList(GetContext());
-
-		cmdList.SetTransferCmdList();
-
-		cmdList.Begin();
-
-		VkBufferCopy                         region{};
-		region.srcOffset                   = 0;
-		region.dstOffset                   = 0;
-		region.size                        = m_LayoutSize;
-
-		cmdList.CmdCopyBuffer(m_StagingBuffer.Handle(), m_DescriptorBuffer.Handle(), region);
-
-		cmdList.End();
-
-		cmdList.SubmitWait();
+		for (auto& buffer : m_DescriptorBuffer | std::views::values)
+		{
+			buffer->Flush();
+		}
 	}
 
 	void DescriptorBuffer::CreateDescriptorSetLayout()
@@ -209,14 +200,14 @@ namespace Neptune::Vulkan::Resource {
 	void DescriptorBuffer::UpdateDescriptorStagingBuffer(uint32_t binding) const
 	{
 		NEPTUNE_PROFILE_ZONE
-
-		const auto mapped = m_StagingBuffer.Data();
 		
 		const auto& data = m_Bindings.at(binding);
 		
-        auto dst = static_cast<uint8_t*>(mapped) + data.offset;
-		
         const auto& type = data.binding.descriptorType;
+		
+		const auto mapped = GetBindingDescriptorBuffer(type)->Data();
+		
+		auto dst = static_cast<uint8_t*>(mapped) + data.offset;
 		
         for (uint32_t i = 0; i < data.binding.descriptorCount; ++i)
         {
@@ -279,22 +270,7 @@ namespace Neptune::Vulkan::Resource {
 		
 		const auto& type = data.binding.descriptorType;
 		
-		CmdList2 cmdList(GetContext());
-
-		cmdList.SetTransferCmdList();
-
-		cmdList.Begin();
-
-		VkBufferCopy                         region{};
-		region.srcOffset                   = data.offset;
-		region.dstOffset                   = data.offset;
-		region.size                        = GetBindingDescSize(type);
-
-		cmdList.CmdCopyBuffer(m_StagingBuffer.Handle(), m_DescriptorBuffer.Handle(), region);
-
-		cmdList.End();
-
-		cmdList.SubmitWait();
+		GetBindingDescriptorBuffer(type)->Flush();
 	}
 
 	uint64_t DescriptorBuffer::GetBindingDescSize(VkDescriptorType type) const
@@ -315,6 +291,25 @@ namespace Neptune::Vulkan::Resource {
 			case VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT:          return props.inputAttachmentDescriptorSize;
 			case VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER:    return props.combinedImageSamplerDescriptorSize;
 			default:                                           return 0;
+		}
+	}
+	
+	Vulkan::Buffer* DescriptorBuffer::GetBindingDescriptorBuffer(VkDescriptorType type) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		switch (type)
+		{
+			case VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER:
+			case VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC: 
+			case VK_DESCRIPTOR_TYPE_STORAGE_BUFFER:
+			case VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC:    return m_DescriptorBuffer.at(VK_BUFFER_USAGE_RESOURCE_DESCRIPTOR_BUFFER_BIT_EXT).get();
+			case VK_DESCRIPTOR_TYPE_SAMPLER:                   
+			case VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE:             
+			case VK_DESCRIPTOR_TYPE_STORAGE_IMAGE:             
+			case VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT:          
+			case VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER:    return m_DescriptorBuffer.at(VK_BUFFER_USAGE_SAMPLER_DESCRIPTOR_BUFFER_BIT_EXT).get();
+			default:                                           return nullptr;
 		}
 	}
 }

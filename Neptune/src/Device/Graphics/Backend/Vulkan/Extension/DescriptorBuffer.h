@@ -78,7 +78,7 @@ namespace Neptune::Vulkan::Extension {
         
     private:
 
-        VkPhysicalDeviceDescriptorBufferFeaturesEXT m_DescriptorBufferFeatures{ VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_BUFFER_FEATURES_EXT }; // @brief DescriptorBufferFeatures.
+        VkPhysicalDeviceDescriptorBufferFeaturesEXT   m_DescriptorBufferFeatures{ VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_BUFFER_FEATURES_EXT };     // @brief DescriptorBufferFeatures.
         VkPhysicalDeviceDescriptorBufferPropertiesEXT m_DescriptorBufferProperties{ VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_BUFFER_PROPERTIES_EXT }; // @brief DescriptorBufferProperties.
     };
 }
