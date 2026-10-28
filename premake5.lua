@@ -26,6 +26,11 @@ workspace "Neptune"
 	compiler.Initialize()
 	platform.Initialize()
 
+group "Tools"
+	include "Tools"
+group ""
+
+
 solution.LoadProjects()
 
 vendor.LoadThirdPartyProjects()
