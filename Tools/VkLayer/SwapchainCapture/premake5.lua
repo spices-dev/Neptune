@@ -2,10 +2,7 @@
 -- @brief Defines details of the SwapchainCapture Solution Building.
 -- @author Spices.
 
-local layerName = "vk_layer_swapchain_capture"
-local manifest  = layerName .. ".json"
-
-solution.DefineCppSharedLibrary("SwapchainCapture", function()
+solution.DefineCppSharedLibrary("SwapChainCapture", function()
 
 	-- The Solution Target Name.
 	targetname(layerName)
@@ -16,7 +13,6 @@ solution.DefineCppSharedLibrary("SwapchainCapture", function()
 		-- Editor Source Files.
 		"src/**.h",
 		"src/**.cpp",
-		manifest,
 	}
 
 	-- The Solution Additional Include Folder.
@@ -30,11 +26,5 @@ solution.DefineCppSharedLibrary("SwapchainCapture", function()
 	{
 		vendor.Vulkan_Headers.includes,                           -- Library: VulkanSDK Source Folder.
 	}
-
-	-- Configuration: Json.
-	filter("files:" .. manifest)
-
-		-- Build Action: Copy
-        buildaction "Copy"
 
 end)

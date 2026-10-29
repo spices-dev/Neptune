@@ -1,0 +1,11 @@
+{
+    "file_format_version": "1.2.0",
+    "layer": {
+        "name": "VK_LAYER_NEPTUNE_swapchain_capture",
+        "type": "GLOBAL",
+        "library_path": "./VK_LAYER_NEPTUNE_swapchain_capture.dll",
+        "api_version": "1.4.357",
+        "implementation_version": "1",
+        "description": "Capture Swapchain Image to Disk"
+    }
+}

@@ -1,1 +1,1 @@
-include "SwapchainCapture"
+include "SwapChainCapture"
