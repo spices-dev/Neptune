@@ -39,6 +39,7 @@ namespace Neptune::Vulkan {
         
         Sample,                      // @brief Neptune Sample.
         SwapChainCapture,            // @brief Neptune SwapChainCapture.
+        MemoryStatistics,            // @brief Neptune MemoryStatistics.
 
         Count
     };
@@ -73,6 +74,7 @@ namespace Neptune::Vulkan {
             case GvkVirtualSwapchain:        return "GvkVirtualSwapchain";
             case Sample:                     return "Sample";
             case SwapChainCapture:           return "SwapChainCapture";
+            case MemoryStatistics:           return "MemoryStatistics";
             default:                         return "NonNamed";
         }
     }

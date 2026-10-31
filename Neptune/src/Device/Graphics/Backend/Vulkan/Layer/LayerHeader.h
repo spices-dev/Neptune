@@ -30,5 +30,6 @@
 #include "GvkVirtualSwapchain.h"
 #include "Sample.h"
 #include "SwapChainCapture.h"
+#include "MemoryStatistics.h"
 
 #endif
