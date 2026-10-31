@@ -28,6 +28,7 @@
 #include "GvkRestorePoint.h"
 #include "GvkStateTracker.h"
 #include "GvkVirtualSwapchain.h"
+#include "Sample.h"
 #include "SwapChainCapture.h"
 
 #endif

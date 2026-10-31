@@ -9,6 +9,7 @@
 #include <vulkan/vulkan.h>
 #include <vulkan/vk_layer.h>
 #include <memory>
+#include <cassert>
 
 namespace Neptune::VkLayer {
 
@@ -73,5 +74,7 @@ namespace Neptune::VkLayer {
 #endif
     
     constexpr uint32_t LayerInterfaceVersion = 2u;   // @brief Layer Interface Version.
+    
+    #define VULKAN_CHECK(expr)  { auto expr_value = expr; assert(expr_value == VK_SUCCESS); }
     
 }

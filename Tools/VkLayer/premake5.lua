@@ -1,1 +1,2 @@
+include "VK_LAYER_NEPTUNE_sample"
 include "VK_LAYER_NEPTUNE_swapchain_capture"

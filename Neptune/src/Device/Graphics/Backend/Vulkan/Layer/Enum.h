@@ -37,6 +37,7 @@ namespace Neptune::Vulkan {
         GvkStateTracker,             // @brief Intel GvkStateTracker.
         GvkVirtualSwapchain,         // @brief Intel GvkVirtualSwapchain.
         
+        Sample,                      // @brief Neptune Sample.
         SwapChainCapture,            // @brief Neptune SwapChainCapture.
 
         Count
@@ -70,6 +71,7 @@ namespace Neptune::Vulkan {
             case GvkRestorePoint:            return "GvkRestorePoint";
             case GvkStateTracker:            return "GvkStateTracker";
             case GvkVirtualSwapchain:        return "GvkVirtualSwapchain";
+            case Sample:                     return "Sample";
             case SwapChainCapture:           return "SwapChainCapture";
             default:                         return "NonNamed";
         }

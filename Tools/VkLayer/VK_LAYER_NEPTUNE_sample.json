@@ -1,0 +1,12 @@
+{
+    "file_format_version": "1.2.0",
+    "layer": {
+        "name": "VK_LAYER_NEPTUNE_sample",
+        "type": "GLOBAL",
+        "library_path": "../Tools/VkLayer/VK_LAYER_NEPTUNE_sample.dll",
+        "api_version": "1.4.357",
+        "implementation_version": "1",
+        "description": "Neptune Sample Layer",
+        "platforms": [ "WINDOWS" ]
+    }
+}

@@ -15,15 +15,20 @@ solution.DefineCppSharedLibrary(layerName, function()
 	-- The Solution Files.
 	files
 	{
-		-- Editor Source Files.
+		-- Source Files.
 		"src/**.h",
 		"src/**.cpp",
+
+		-- Core Source Files.
+		"../src/**.h",
+		"../src/**.cpp",
 	}
 
 	-- The Solution Additional Include Folder.
 	includedirs
 	{
-		"src",                                                     -- Library: Editor Source Folder.
+		"src",                                                     -- Library: Source Folder.
+		"../src",                                                  -- Library: Core Source Folder.
 	}
 
 	-- The Solution Additional External Include Folder.
