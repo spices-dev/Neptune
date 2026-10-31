@@ -171,4 +171,7 @@ module.LoadProjects = function()
 
 end
 
+-- @brief Solution Output Directory.
+module.OutputDirectory = output_dir
+
 return module

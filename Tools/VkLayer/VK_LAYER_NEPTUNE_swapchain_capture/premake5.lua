@@ -1,8 +1,13 @@
--- @file SwapchainCapture Premake.
--- @brief Defines details of the SwapchainCapture Solution Building.
+-- @file VK_LAYER_NEPTUNE_swapchain_capture Premake.
+-- @brief Defines details of the VK_LAYER_NEPTUNE_swapchain_capture Solution Building.
 -- @author Spices.
 
-solution.DefineCppSharedLibrary("SwapChainCapture", function()
+local layerName = "VK_LAYER_NEPTUNE_swapchain_capture"
+
+solution.DefineCppSharedLibrary(layerName, function()
+
+ 	-- Building Output Folder.
+	targetdir("%{wks.location}/bin/" .. solution.OutputDirectory .. "/Tools/VkLayer")
 
 	-- The Solution Target Name.
 	targetname(layerName)

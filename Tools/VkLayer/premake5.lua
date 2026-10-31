@@ -1,1 +1,1 @@
-include "SwapChainCapture"
+include "VK_LAYER_NEPTUNE_swapchain_capture"

@@ -3,9 +3,10 @@
     "layer": {
         "name": "VK_LAYER_NEPTUNE_swapchain_capture",
         "type": "GLOBAL",
-        "library_path": "./VK_LAYER_NEPTUNE_swapchain_capture.dll",
+        "library_path": "../Tools/VkLayer/VK_LAYER_NEPTUNE_swapchain_capture.dll",
         "api_version": "1.4.357",
         "implementation_version": "1",
-        "description": "Capture Swapchain Image to Disk"
+        "description": "Neptune Swapchain Capture Layer",
+        "platforms": [ "WINDOWS" ]
     }
 }
