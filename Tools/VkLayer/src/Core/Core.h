@@ -11,7 +11,7 @@
 #include <memory>
 #include <cassert>
 
-namespace Neptune::VkLayer {
+namespace Neptune::Vulkan {
 
 #define NONE_COPY(T)                    \
     T(const T&) = delete;               \

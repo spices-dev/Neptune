@@ -5,82 +5,52 @@
 */
 
 #pragma once
-#include "Core.h"
-#include "Concept.h"
-#include "Log.h"
+#include "Core/Core.h"
+#include "vulkan/Infrastructure/InstanceTable.h"
+#include "vulkan/Infrastructure/DeviceTable.h"
+#include "Core/Log.h"
 
 #include <mutex>
 #include <unordered_map>
 
-namespace Neptune::VkLayer::Core {
+namespace Neptune::Vulkan {
     
-#define DISPATCH_SCOPE(name)                                                 \
-    if (strcmp(pName, #name) == 0)                                           \
-    {                                                                        \
-        return reinterpret_cast<PFN_vkVoidFunction>(Scope::name);            \
+#define DISPATCH_SCOPE(name)                                                                 \
+    if (strcmp(pName, #name) == 0)                                                           \
+    {                                                                                        \
+        return reinterpret_cast<PFN_vkVoidFunction>(Scope::name);                            \
     }
     
-#define EXPLAIN_INSTANCE_FN(name)                             \
-    table.name = reinterpret_cast<PFN_##name>(std::invoke(table.vkGetInstanceProcAddr, table.vkInstance, #name));
+#define ACCURE_INSTANCE_FN(name, handle)                                                      \
+    PFN_##name name = nullptr;                                                                \
+                                                                                              \
+    {                                                                                         \
+        std::unique_lock lock(s_Mutex);                                                       \
+                                                                                              \
+        name = s_Context.at(GetKey(handle))->template Get<Vulkan::IInstanceTable>()->name;    \
+    }
     
-#define EXPLAIN_DEVICE_FN(name)                               \
-    table.name = reinterpret_cast<PFN_##name>(std::invoke(table.vkGetDeviceProcAddr, table.vkDevice, #name));
-
-#define ACCURE_INSTANCE_FN(name, handle)                              \
-    PFN_##name name = nullptr;                                        \
-                                                                      \
-    {                                                                 \
-        std::unique_lock lock(s_Mutex);                               \
-                                                                      \
-        name = s_InstanceTable.at(GetKey(handle)).name;               \
-    } 
-    
-#define ACCURE_DEVICE_FN(name, handle)                                \
-    PFN_##name name = nullptr;                                        \
-                                                                      \
-    {                                                                 \
-        std::unique_lock lock(s_Mutex);                               \
-                                                                      \
-        name = s_DeviceTable.at(GetKey(handle)).name;                 \
-    } 
-    
-    /**
-    * @brief Instance Dispatch Table(Sample)
-    */
-    struct InstanceTable
-    {
-        PFN_vkGetInstanceProcAddr        vkGetInstanceProcAddr;         // @brief PFN_vkGetInstanceProcAddr.
-        VkInstance                       vkInstance;                    // @brief VkInstance.
-        PFN_vkDestroyInstance            vkDestroyInstance;             // @brief PFN_vkDestroyInstance.
-        PFN_vkCreateDevice               vkCreateDevice;                // @brief PFN_vkCreateDevice.
-        PFN_vkSubmitDebugUtilsMessageEXT vkSubmitDebugUtilsMessageEXT;  // @brief PFN_vkSubmitDebugUtilsMessageEXT
-    };
-    
-    /**
-    * @brief Device Dispatch Table(Sample)
-    */
-    struct DeviceTable
-    {
-        PFN_vkGetDeviceProcAddr vkGetDeviceProcAddr;            // @brief PFN_vkGetDeviceProcAddr.
-        VkPhysicalDevice        vkPhysicalDevice;               // @brief VkPhysicalDevice.
-        VkDevice                vkDevice;                       // @brief VkDevice.
-        PFN_vkDestroyDevice     vkDestroyDevice;                // @brief PFN_vkDestroyDevice.
-    };
+#define ACCURE_DEVICE_FN(name, handle)                                                        \
+    PFN_##name name = nullptr;                                                                \
+                                                                                              \
+    {                                                                                         \
+        std::unique_lock lock(s_Mutex);                                                       \
+                                                                                              \
+        name = s_Context.at(GetKey(handle))->template Get<Vulkan::IDeviceTable>()->name;      \
+    }
     
     /**
     * @brief DispatchTable
     * 
-    * @tparam ITable IsITable.
-    * @tparam DTable IsDTable.
+    * @tparam E EInfrastructure
     */
-    template<IsITable ITable, IsDTable DTable>
+    template<typename E>
     class DispatchTable
     {
     public:
         
-        using This   = DispatchTable;
-        using ITable = ITable;
-        using DTable = DTable;
+        using This    = DispatchTable;
+        using Context = Context<Infrastructure, E>;
         
     public:
         
@@ -208,35 +178,31 @@ namespace Neptune::VkLayer::Core {
         /**
         * @brief Interface of Get Instance Table.
         * 
-        * @param[in] table ITable.
+        * @param[in] table InstanceTable.
         */
-        static void GetInstanceTable(ITable& table) {}
+        static void GetInstanceTable(InstanceTable* table);
         
         /**
         * @brief Interface of Get Device Table.
         * 
-        * @param[in] table DTable.
+        * @param[in] table DeviceTable.
         */
-        static void GetDeviceTable(DTable& table) {}
+        static void GetDeviceTable(DeviceTable* table);
         
     protected:
         
-        static std::unordered_map<void*, ITable> s_InstanceTable;   // @brief Instance Dispatch Table.
-        static std::unordered_map<void*, DTable> s_DeviceTable;     // @brief Device Dispatch Table.
-        static std::mutex                        s_Mutex;           // @brief This Mutex.
+        static std::unordered_map<void*, UP<Context>> s_Context;   // @brief Dispatch Table Context.
+        static std::mutex                             s_Mutex;     // @brief This Mutex.
     };
 
-    template <IsITable ITable, IsDTable DTable>
-    std::unordered_map<void*, ITable> DispatchTable<ITable, DTable>::s_InstanceTable;
+    template<typename E>
+    std::unordered_map<void*, UP<typename DispatchTable<E>::Context>> DispatchTable<E>::s_Context;
     
-    template <IsITable ITable, IsDTable DTable>
-    std::unordered_map<void*, DTable> DispatchTable<ITable, DTable>::s_DeviceTable;
-    
-    template <IsITable ITable, IsDTable DTable>
-    std::mutex DispatchTable<ITable, DTable>::s_Mutex;
+    template<typename E>
+    std::mutex DispatchTable<E>::s_Mutex;
 
-    template <IsITable ITable, IsDTable DTable>
-    inline PFN_vkVoidFunction DispatchTable<ITable, DTable>::vkGetInstanceProcAddr(VkInstance instance, const char* pName)
+    template<typename E>
+    inline PFN_vkVoidFunction DispatchTable<E>::vkGetInstanceProcAddr(VkInstance instance, const char* pName)
     {
         using Scope = This;
         
@@ -256,8 +222,8 @@ namespace Neptune::VkLayer::Core {
         return std::invoke(vkGetInstanceProcAddr, instance, pName);
     }
 
-    template <IsITable ITable, IsDTable DTable>
-    inline PFN_vkVoidFunction DispatchTable<ITable, DTable>::vkGetDeviceProcAddr(VkDevice device, const char* pName)
+    template<typename E>
+    inline PFN_vkVoidFunction DispatchTable<E>::vkGetDeviceProcAddr(VkDevice device, const char* pName)
     {
         using Scope = This;
         
@@ -275,8 +241,8 @@ namespace Neptune::VkLayer::Core {
         return std::invoke(vkGetDeviceProcAddr, device, pName);
     }
 
-    template <IsITable ITable, IsDTable DTable>
-    inline VkResult DispatchTable<ITable, DTable>::vkCreateInstance(const VkInstanceCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkInstance* pInstance)
+    template<typename E>
+    inline VkResult DispatchTable<E>::vkCreateInstance(const VkInstanceCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkInstance* pInstance)
     {
         auto* chainInfo = static_cast<VkLayerInstanceCreateInfo*>(const_cast<void*>(pCreateInfo->pNext));
         
@@ -290,65 +256,73 @@ namespace Neptune::VkLayer::Core {
             return VK_ERROR_INITIALIZATION_FAILED;
         }
         
-        auto nextGipa = chainInfo->u.pLayerInfo->pfnNextGetInstanceProcAddr;
+        auto vkGetInstanceProcAddr = chainInfo->u.pLayerInfo->pfnNextGetInstanceProcAddr;
         
-        auto nextvkCreateInstance = reinterpret_cast<PFN_vkCreateInstance>(std::invoke(nextGipa, VK_NULL_HANDLE, "vkCreateInstance"));
+        auto vkCreateInstance  = reinterpret_cast<PFN_vkCreateInstance>(std::invoke(vkGetInstanceProcAddr, VK_NULL_HANDLE, "vkCreateInstance"));
+        auto vkDestroyInstance = reinterpret_cast<PFN_vkDestroyInstance>(std::invoke(vkGetInstanceProcAddr, VK_NULL_HANDLE, "vkDestroyInstance"));
         
-        if (!nextvkCreateInstance)
+        if (!vkCreateInstance)
         {
             return VK_ERROR_INITIALIZATION_FAILED;
         }
 
         chainInfo->u.pLayerInfo = chainInfo->u.pLayerInfo->pNext;
-
-        auto result = std::invoke(nextvkCreateInstance, pCreateInfo, pAllocator, pInstance);
         
-        if (result != VK_SUCCESS)
-        {
-            return result;
-        }
-        
-        ITable                               table{};
-        table.vkGetInstanceProcAddr        = nextGipa;
-        table.vkInstance                   = *pInstance;
-
-        EXPLAIN_INSTANCE_FN(vkDestroyInstance)
-        EXPLAIN_INSTANCE_FN(vkCreateDevice)
-        EXPLAIN_INSTANCE_FN(vkSubmitDebugUtilsMessageEXT)
-        
+        VULKAN_CHECK(std::invoke(vkCreateInstance, pCreateInfo, pAllocator, pInstance))
+    
+        auto unit = CreateSP<Unit::Instance>();
+    
+        unit->SetLife({ vkCreateInstance, vkDestroyInstance, pAllocator });
+    
+        unit->SetHandle(*pInstance);
+    
+        auto context = CreateUP<Context>(unit);
+    
+        auto* table = context->template Registry<IInstanceTable>();
+    
+        table->vkGetInstanceProcAddr = vkGetInstanceProcAddr;
+    
         GetInstanceTable(table);
-        
+
         std::unique_lock lock(s_Mutex);
-        
-        auto instance = *pInstance;
-        
-        s_InstanceTable.emplace(GetKey(instance), table);
-        
+    
+        auto instance = table->Handle();
+    
+        s_Context.emplace(GetKey(instance), table);
+    
         SetLogFunctor([=](LogStream::LogLevel level, const char* message){ Log(instance, level, message); });
         
         return VK_SUCCESS;
     }
 
-    template <IsITable ITable, IsDTable DTable>
-    inline void DispatchTable<ITable, DTable>::vkDestroyInstance(VkInstance instance, const VkAllocationCallbacks* pAllocator)
+    template <typename E>
+    void DispatchTable<E>::GetInstanceTable(InstanceTable* table)
+    {
+        
+#define EXPLAIN_INSTANCE_FN(name)                             \
+    table->name = reinterpret_cast<PFN_##name>(std::invoke(table->vkGetInstanceProcAddr, table->Handle(), #name));
+        
+        EXPLAIN_INSTANCE_FN(vkCreateDevice)
+        EXPLAIN_INSTANCE_FN(vkSubmitDebugUtilsMessageEXT)
+        
+#undef EXPLAIN_INSTANCE_FN
+        
+    }
+
+    template <typename E>
+    inline void DispatchTable<E>::vkDestroyInstance(VkInstance instance, const VkAllocationCallbacks* pAllocator)
     {
         auto* key = GetKey(instance);
-
-        PFN_vkDestroyInstance next = nullptr;
         
         {
             std::unique_lock lock(s_Mutex);
             
-            next = s_InstanceTable.at(key).vkDestroyInstance;
-            
-            s_InstanceTable.erase(key);
+            s_Context.erase(key);
         }
-        
-        std::invoke(next, instance, pAllocator);
     }
 
-    template <IsITable ITable, IsDTable DTable>
-    inline VkResult DispatchTable<ITable, DTable>::vkCreateDevice(VkPhysicalDevice physicalDevice, const VkDeviceCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDevice* pDevice)
+    template <typename E>
+    inline VkResult DispatchTable<E>::vkCreateDevice(VkPhysicalDevice physicalDevice, const VkDeviceCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDevice* pDevice)
     {
         auto* chainInfo = static_cast<VkLayerDeviceCreateInfo*>(const_cast<void*>(pCreateInfo->pNext));
         
@@ -362,60 +336,68 @@ namespace Neptune::VkLayer::Core {
             return VK_ERROR_INITIALIZATION_FAILED;
         }
         
-        PFN_vkGetDeviceProcAddr nextGdpa = chainInfo->u.pLayerInfo->pfnNextGetDeviceProcAddr;
-        
-        ACCURE_INSTANCE_FN(vkCreateDevice, physicalDevice)
+        auto vkGetDeviceProcAddr = chainInfo->u.pLayerInfo->pfnNextGetDeviceProcAddr;
         
         chainInfo->u.pLayerInfo = chainInfo->u.pLayerInfo->pNext;
         
-        auto result = std::invoke(vkCreateDevice, physicalDevice, pCreateInfo, pAllocator, pDevice);
+        ACCURE_INSTANCE_FN(vkCreateDevice, physicalDevice)
         
-        if (result != VK_SUCCESS)
-        {
-            return result;
-        }
+        VULKAN_CHECK(std::invoke(vkCreateDevice, physicalDevice, pCreateInfo, pAllocator, pDevice))
         
-        DTable                         table{};
-        table.vkGetDeviceProcAddr    = nextGdpa;
-        table.vkPhysicalDevice       = physicalDevice;
-        table.vkDevice               = *pDevice;
+        auto vkDestroyDevice = reinterpret_cast<PFN_vkDestroyDevice>(std::invoke(vkGetDeviceProcAddr, *pDevice, "vkDestroyDevice"));
         
-        EXPLAIN_DEVICE_FN(vkDestroyDevice)
+        auto unit = CreateSP<Unit::Device>();
+        
+        unit->SetLife({ vkCreateDevice, vkDestroyDevice, pAllocator });
+        
+        unit->SetHandle(*pDevice);
+        
+        std::unique_lock lock(s_Mutex);
+        
+        auto context = s_Context.at(GetKey(*pDevice));
+        
+        auto* table = context->template Registry<IDeviceTable>(unit);
+        
+        table->vkGetDeviceProcAddr = vkGetDeviceProcAddr;
+        table->vkPhysicalDevice    = physicalDevice;
         
         GetDeviceTable(table);
-
-        {
-            std::unique_lock lock(s_Mutex);
-            
-            s_DeviceTable.emplace(GetKey(*pDevice), table);
-        }
         
         return VK_SUCCESS;
     }
 
-    template <IsITable ITable, IsDTable DTable>
-    inline void DispatchTable<ITable, DTable>::vkDestroyDevice(VkDevice device, const VkAllocationCallbacks* pAllocator)
+    template <typename E>
+    void DispatchTable<E>::GetDeviceTable(DeviceTable* table)
+    {
+        
+#define EXPLAIN_DEVICE_FN(name)                             \
+    table->name = reinterpret_cast<PFN_##name>(std::invoke(table->vkGetDeviceProcAddr, table->Handle(), #name));
+        
+        EXPLAIN_DEVICE_FN(vkCreateSwapchainKHR)
+        EXPLAIN_DEVICE_FN(vkDestroySwapchainKHR)
+        EXPLAIN_DEVICE_FN(vkQueuePresentKHR)
+        EXPLAIN_DEVICE_FN(vkGetSwapchainImagesKHR)
+        
+#undef EXPLAIN_DEVICE_FN
+    }
+    
+    template <typename E>
+    inline void DispatchTable<E>::vkDestroyDevice(VkDevice device, const VkAllocationCallbacks* pAllocator)
     {
         auto* key = GetKey(device);
-        
-        PFN_vkDestroyDevice next = nullptr;
         
         {
             std::unique_lock lock(s_Mutex);
             
-            next = s_DeviceTable.at(key).vkDestroyDevice;
-            
-            s_DeviceTable.erase(key);
+            s_Context.at(key)->template UnRegistry<IDeviceTable>();
         }
-
-        std::invoke(next, device, pAllocator);
     }
 
-    template <IsITable ITable, IsDTable DTable>
-    void DispatchTable<ITable, DTable>::Log(VkInstance instance, LogStream::LogLevel level, const char* message)
+    template <typename E>
+    void DispatchTable<E>::Log(VkInstance instance, LogStream::LogLevel level, const char* message)
     {
         ACCURE_INSTANCE_FN(vkSubmitDebugUtilsMessageEXT, instance)
-
+        
         if (!vkSubmitDebugUtilsMessageEXT) return;
         
         VkDebugUtilsMessengerCallbackDataEXT    data{};
@@ -434,7 +416,7 @@ namespace Neptune::VkLayer::Core {
             case LogStream::LogLevel::T : severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT;
             default:                      severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT;
         }
-        
+
         std::invoke(vkSubmitDebugUtilsMessageEXT, instance, severity, VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT, &data);
     }
 }

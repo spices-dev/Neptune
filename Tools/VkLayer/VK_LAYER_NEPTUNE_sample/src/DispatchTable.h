@@ -5,14 +5,15 @@
 */
 
 #pragma once
-#include "Core/DispatchTable.h"
+#include "Vulkan/DispatchTable.h"
+#include "Enum.h"
 
-namespace Neptune::VkLayer {
+namespace Neptune {
     
     /**
     * @brief DispatchTable
     */
-    using DispatchTable = Core::DispatchTable<Core::InstanceTable, Core::DeviceTable>;
+    using DispatchTable = Vulkan::DispatchTable<EInfrastructure>;
     
     /**
     * @brief Get Layer Name.
@@ -41,20 +42,4 @@ namespace Neptune::VkLayer {
     */
     template <>
     inline PFN_vkVoidFunction DispatchTable::DeviceDispatch(const char* pName) { NEPTUNE_LOG_CORE(I) << "DeviceDispatch"; return nullptr; }
-        
-    /**
-    * @brief Interface of Get Instance Table.
-    * 
-    * @param[in] table ITable.
-    */
-    template <>
-    inline void DispatchTable::GetInstanceTable(ITable& table) { NEPTUNE_LOG_CORE(I) << "GetInstanceTable"; }
-        
-    /**
-    * @brief Interface of Get Device Table.
-    * 
-    * @param[in] table ITable.
-    */
-    template <>
-    inline void DispatchTable::GetDeviceTable(DTable& table) { NEPTUNE_LOG_CORE(I) << "GetDeviceTable"; }
 }

@@ -9,10 +9,10 @@
 
 PFN_vkVoidFunction vkGetInstanceProcAddr(VkInstance instance, const char* pName)
 {
-    return Neptune::VkLayer::DispatchTable::vkGetInstanceProcAddr(instance, pName);
+    return Neptune::DispatchTable::vkGetInstanceProcAddr(instance, pName);
 }
 
 PFN_vkVoidFunction vkGetDeviceProcAddr(VkDevice device, const char* pName)
 {
-    return Neptune::VkLayer::DispatchTable::vkGetDeviceProcAddr(device, pName);
+    return Neptune::DispatchTable::vkGetDeviceProcAddr(device, pName);
 }

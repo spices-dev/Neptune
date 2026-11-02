@@ -41,7 +41,7 @@ DLL_EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkNegotiateLoaderLayerInterfaceVersion
         return VK_ERROR_INITIALIZATION_FAILED;
     }
 
-    pVersionStruct->loaderLayerInterfaceVersion  = Neptune::VkLayer::LayerInterfaceVersion;
+    pVersionStruct->loaderLayerInterfaceVersion  = Neptune::Vulkan::LayerInterfaceVersion;
     pVersionStruct->pfnGetInstanceProcAddr       = vkGetInstanceProcAddr;
     pVersionStruct->pfnGetDeviceProcAddr         = vkGetDeviceProcAddr;
     pVersionStruct->pfnGetPhysicalDeviceProcAddr = nullptr;

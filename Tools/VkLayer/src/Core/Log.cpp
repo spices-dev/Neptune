@@ -7,7 +7,7 @@
 #include "Log.h"
 #include "DispatchTable.h"
 
-namespace Neptune::VkLayer {
+namespace Neptune::Vulkan {
 
     namespace {
         

@@ -5,25 +5,15 @@
 */
 
 #pragma once
-#include "Core/DispatchTable.h"
+#include "Vulkan/DispatchTable.h"
+#include "Enum.h"
 
-namespace Neptune::VkLayer {
-    
-    /**
-    * @brief Device Dispatch Table
-    */
-    struct DeviceTable : public Core::DeviceTable
-    {
-        PFN_vkCreateSwapchainKHR     vkCreateSwapchainKHR;       // @brief PFN_vkCreateSwapchainKHR.
-        PFN_vkDestroySwapchainKHR    vkDestroySwapchainKHR;      // @brief PFN_vkDestroySwapchainKHR.
-        PFN_vkQueuePresentKHR        vkQueuePresentKHR;          // @brief PFN_vkQueuePresentKHR.
-        PFN_vkGetSwapchainImagesKHR  vkGetSwapchainImagesKHR;    // @brief PFN_vkGetSwapchainImagesKHR.
-    };
+namespace Neptune {
     
     /**
     * @brief DispatchTable
     */
-    class DispatchTable : public Core::DispatchTable<Core::InstanceTable, DeviceTable>
+    class DispatchTable : public Vulkan::DispatchTable<EInfrastructure>
     {
     public:
         
@@ -104,34 +94,12 @@ namespace Neptune::VkLayer {
     template <>
     inline PFN_vkVoidFunction DispatchTable::Super::DeviceDispatch(const char* pName)
     {
-        using Scope = VkLayer::DispatchTable;
+        using Scope = Neptune::DispatchTable;
         
         DISPATCH_SCOPE(vkCreateSwapchainKHR)
         DISPATCH_SCOPE(vkDestroySwapchainKHR)
         DISPATCH_SCOPE(vkQueuePresentKHR)
         
         return nullptr;
-    }
-        
-    /**
-    * @brief Interface of Get Instance Table.
-    * 
-    * @param[in] table ITable.
-    */
-    template <>
-    inline void DispatchTable::Super::GetInstanceTable(ITable& table) {}
-        
-    /**
-    * @brief Interface of Get Device Table.
-    * 
-    * @param[in] table ITable.
-    */
-    template <>
-    inline void DispatchTable::Super::GetDeviceTable(DTable& table)
-    {
-        EXPLAIN_DEVICE_FN(vkCreateSwapchainKHR)
-        EXPLAIN_DEVICE_FN(vkDestroySwapchainKHR)
-        EXPLAIN_DEVICE_FN(vkQueuePresentKHR)
-        EXPLAIN_DEVICE_FN(vkGetSwapchainImagesKHR)
     }
 }

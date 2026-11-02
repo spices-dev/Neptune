@@ -11,7 +11,7 @@
 #include <sstream>
 #include <functional>
 
-namespace Neptune::VkLayer {
+namespace Neptune::Vulkan {
     
     /**
     * @brief LogStream Class.
@@ -91,5 +91,5 @@ namespace Neptune::VkLayer {
 
 // Core log macros
 #define NEPTUNE_LOG_CORE(level)                                              \
-    if constexpr (!Neptune::VkLayer::IsLogLevelEnabled<Neptune::VkLayer::LogStream::LogLevel::level>()) {} \
-    else Neptune::VkLayer::LogStream(Neptune::VkLayer::LogStream::LogLevel::level)
+    if constexpr (!Neptune::Vulkan::IsLogLevelEnabled<Neptune::Vulkan::LogStream::LogLevel::level>()) {} \
+    else Neptune::Vulkan::LogStream(Neptune::Vulkan::LogStream::LogLevel::level)
