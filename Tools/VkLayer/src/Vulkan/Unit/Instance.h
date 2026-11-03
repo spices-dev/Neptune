@@ -31,5 +31,12 @@ namespace Neptune::Vulkan::Unit {
         * @brief Destructor Function.
         */
         ~Instance() override;
+        
+        /**
+        * @brief Create Instance.
+        *
+        * @param[in] info VkInstanceCreateInfo.
+        */
+        void CreateInstance(const VkInstanceCreateInfo& info);
     };
 }

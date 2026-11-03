@@ -31,5 +31,13 @@ namespace Neptune::Vulkan::Unit {
         * @brief Destructor Function.
         */
         ~Device() override;
+        
+        /**
+        * @brief Create Device.
+        *
+        * @param[in] physicalDevice VkPhysicalDevice.
+        * @param[in] info VkDeviceCreateInfo.
+        */
+        void CreateDevice(VkPhysicalDevice physicalDevice, const VkDeviceCreateInfo& info);
     };
 }

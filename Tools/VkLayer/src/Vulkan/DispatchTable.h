@@ -11,6 +11,7 @@
 #include "Core/Log.h"
 
 #include <mutex>
+#include <shared_mutex>
 #include <unordered_map>
 
 namespace Neptune::Vulkan {
@@ -25,7 +26,7 @@ namespace Neptune::Vulkan {
     PFN_##name name = nullptr;                                                                \
                                                                                               \
     {                                                                                         \
-        std::unique_lock lock(s_Mutex);                                                       \
+        std::shared_lock lock(s_Mutex);                                                       \
                                                                                               \
         name = s_Context.at(GetKey(handle))->template Get<Vulkan::IInstanceTable>()->name;    \
     }
@@ -34,9 +35,18 @@ namespace Neptune::Vulkan {
     PFN_##name name = nullptr;                                                                \
                                                                                               \
     {                                                                                         \
-        std::unique_lock lock(s_Mutex);                                                       \
+        std::shared_lock lock(s_Mutex);                                                       \
                                                                                               \
         name = s_Context.at(GetKey(handle))->template Get<Vulkan::IDeviceTable>()->name;      \
+    }
+    
+#define ACCURE_DEVICE(name, handle)                                                           \
+    Vulkan::DeviceTable* name = nullptr;                                                      \
+                                                                                              \
+    {                                                                                         \
+        std::shared_lock lock(s_Mutex);                                                       \
+                                                                                              \
+        name = s_Context.at(GetKey(handle))->template Get<Vulkan::IDeviceTable>();            \
     }
     
     /**
@@ -192,14 +202,14 @@ namespace Neptune::Vulkan {
     protected:
         
         static std::unordered_map<void*, UP<Context>> s_Context;   // @brief Dispatch Table Context.
-        static std::mutex                             s_Mutex;     // @brief This Mutex.
+        static std::shared_mutex                      s_Mutex;     // @brief This Mutex.
     };
 
     template<typename E>
     std::unordered_map<void*, UP<typename DispatchTable<E>::Context>> DispatchTable<E>::s_Context;
     
     template<typename E>
-    std::mutex DispatchTable<E>::s_Mutex;
+    std::shared_mutex DispatchTable<E>::s_Mutex;
 
     template<typename E>
     inline PFN_vkVoidFunction DispatchTable<E>::vkGetInstanceProcAddr(VkInstance instance, const char* pName)
@@ -268,29 +278,38 @@ namespace Neptune::Vulkan {
 
         chainInfo->u.pLayerInfo = chainInfo->u.pLayerInfo->pNext;
         
-        VULKAN_CHECK(std::invoke(vkCreateInstance, pCreateInfo, pAllocator, pInstance))
+        auto unit = CreateUP<Unit::Instance>();
     
-        auto unit = CreateSP<Unit::Instance>();
+        {
+            unit->SetHandle(*pInstance);
+        
+            unit->SetLife({ vkCreateInstance, vkDestroyInstance, pAllocator });
     
-        unit->SetLife({ vkCreateInstance, vkDestroyInstance, pAllocator });
+            unit->CreateInstance(*pCreateInfo);
     
-        unit->SetHandle(*pInstance);
-    
-        auto context = CreateUP<Context>(unit);
-    
+            *pInstance = unit->GetHandle();
+        }
+        
+        auto context = CreateUP<Context>();
+        
         auto* table = context->template Registry<IInstanceTable>();
+        
+        {
+            table->m_Instance            = std::move(unit);
+            table->vkGetInstanceProcAddr = vkGetInstanceProcAddr;
     
-        table->vkGetInstanceProcAddr = vkGetInstanceProcAddr;
+            GetInstanceTable(table);
+        }
+        
+        {
+            std::unique_lock lock(s_Mutex);
     
-        GetInstanceTable(table);
-
-        std::unique_lock lock(s_Mutex);
+            auto instance = table->Handle();
     
-        auto instance = table->Handle();
+            s_Context.emplace(GetKey(instance), std::move(context));
     
-        s_Context.emplace(GetKey(instance), table);
-    
-        SetLogFunctor([=](LogStream::LogLevel level, const char* message){ Log(instance, level, message); });
+            SetLogFunctor([=](LogStream::LogLevel level, const char* message) { Log(instance, level, message); });
+        }
         
         return VK_SUCCESS;
     }
@@ -339,29 +358,40 @@ namespace Neptune::Vulkan {
         auto vkGetDeviceProcAddr = chainInfo->u.pLayerInfo->pfnNextGetDeviceProcAddr;
         
         chainInfo->u.pLayerInfo = chainInfo->u.pLayerInfo->pNext;
-        
+    
         ACCURE_INSTANCE_FN(vkCreateDevice, physicalDevice)
         
-        VULKAN_CHECK(std::invoke(vkCreateDevice, physicalDevice, pCreateInfo, pAllocator, pDevice))
+        auto unit = CreateUP<Unit::Device>();
         
-        auto vkDestroyDevice = reinterpret_cast<PFN_vkDestroyDevice>(std::invoke(vkGetDeviceProcAddr, *pDevice, "vkDestroyDevice"));
+        {
+            unit->SetHandle(*pDevice);
         
-        auto unit = CreateSP<Unit::Device>();
+            unit->SetLife({ vkCreateDevice, nullptr, pAllocator });
         
-        unit->SetLife({ vkCreateDevice, vkDestroyDevice, pAllocator });
+            unit->CreateDevice(physicalDevice, *pCreateInfo);
+        }
         
-        unit->SetHandle(*pDevice);
+        {
+            *pDevice = unit->GetHandle();
         
-        std::unique_lock lock(s_Mutex);
+            auto vkDestroyDevice = reinterpret_cast<PFN_vkDestroyDevice>(std::invoke(vkGetDeviceProcAddr, *pDevice, "vkDestroyDevice"));
         
-        auto context = s_Context.at(GetKey(*pDevice));
+            unit->SetLife({ vkCreateDevice, vkDestroyDevice, pAllocator });
+        }
         
-        auto* table = context->template Registry<IDeviceTable>(unit);
+        {
+            std::unique_lock lock(s_Mutex);
         
-        table->vkGetDeviceProcAddr = vkGetDeviceProcAddr;
-        table->vkPhysicalDevice    = physicalDevice;
+            auto& context = s_Context.at(GetKey(physicalDevice));
+            
+            auto* table = context->template Registry<IDeviceTable>();
         
-        GetDeviceTable(table);
+            table->m_Device            = std::move(unit);
+            table->vkGetDeviceProcAddr = vkGetDeviceProcAddr;
+            table->vkPhysicalDevice    = physicalDevice;
+        
+            GetDeviceTable(table);
+        }
         
         return VK_SUCCESS;
     }
@@ -377,6 +407,16 @@ namespace Neptune::Vulkan {
         EXPLAIN_DEVICE_FN(vkDestroySwapchainKHR)
         EXPLAIN_DEVICE_FN(vkQueuePresentKHR)
         EXPLAIN_DEVICE_FN(vkGetSwapchainImagesKHR)
+        EXPLAIN_DEVICE_FN(vkCreateCommandPool)
+        EXPLAIN_DEVICE_FN(vkDestroyCommandPool)
+        EXPLAIN_DEVICE_FN(vkAllocateCommandBuffers)
+        EXPLAIN_DEVICE_FN(vkFreeCommandBuffers)
+        EXPLAIN_DEVICE_FN(vkBeginCommandBuffer)
+        EXPLAIN_DEVICE_FN(vkEndCommandBuffer)
+        EXPLAIN_DEVICE_FN(vkQueueSubmit)
+        EXPLAIN_DEVICE_FN(vkDeviceWaitIdle)
+        EXPLAIN_DEVICE_FN(vkCreateSemaphore)
+        EXPLAIN_DEVICE_FN(vkDestroySemaphore)
         
 #undef EXPLAIN_DEVICE_FN
     }

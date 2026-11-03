@@ -240,7 +240,7 @@ namespace Neptune::Graphic::Common {
 
         const auto position = static_cast<uint8_t>(I::E);
 
-        return static_cast<I::T*>(m_Infrastructures[position].get());
+        return static_cast<typename I::T*>(m_Infrastructures[position].get());
     }
 
     template <typename Element, typename E> requires IsEnum<E>

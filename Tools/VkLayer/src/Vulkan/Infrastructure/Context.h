@@ -7,6 +7,8 @@
 #pragma once
 #include "Core/Core.h"
 
+#include <array>
+
 namespace Neptune::Vulkan {
     
     /**
@@ -66,15 +68,6 @@ namespace Neptune::Vulkan {
         bool UnRegistry();
         
         /**
-        * @brief Unregister Infrastructure.
-        *
-        * @param[in] e E.
-        * 
-        * @return Returns true if succeeded.
-        */
-        bool UnRegistry(E e);
-        
-        /**
         * @brief Unregister All Infrastructure.
         */
         void UnRegistry();
@@ -110,7 +103,7 @@ namespace Neptune::Vulkan {
     {
         const auto position = static_cast<uint8_t>(I::E);
 
-        m_Infrastructures[position] = CreateUP<typename I::T>(*this, I::E, std::forward<Args>(args)...);
+        m_Infrastructures[position] = CreateUP<typename I::T>(std::forward<Args>(args)...);
         
         return Get<I>();
     }
@@ -119,18 +112,12 @@ namespace Neptune::Vulkan {
     template <typename I> 
     inline bool Context<Element, E>::UnRegistry()
     {
-        return UnRegistry(I::E);
-    }
-
-    template<typename Element, typename E>
-    inline bool Context<Element, E>::UnRegistry(E e)
-    {
-        const auto position = static_cast<uint8_t>(e);
+        const auto position = static_cast<uint8_t>(I::E);
 
         if (!m_Infrastructures[position]) return false;
 
         m_Infrastructures[position].reset();
-        
+
         return true;
     }
 
@@ -149,7 +136,7 @@ namespace Neptune::Vulkan {
     {
         const auto position = static_cast<uint8_t>(I::E);
 
-        return static_cast<I::T*>(m_Infrastructures[position].get());
+        return static_cast<typename I::T*>(m_Infrastructures[position].get());
     }
 
     template<typename Element, typename E>

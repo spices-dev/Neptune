@@ -14,4 +14,9 @@ namespace Neptune::Vulkan::Unit {
 
         std::invoke(m_Life.destructor, m_Handle, m_Life.allocator);
     }
+    
+    void Instance::CreateInstance(const VkInstanceCreateInfo& info)
+    {
+        VULKAN_CHECK(std::invoke(m_Life.constructor, &info, m_Life.allocator, &m_Handle))
+    }
 }

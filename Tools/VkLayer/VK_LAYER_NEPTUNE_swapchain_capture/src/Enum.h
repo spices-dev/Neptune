@@ -18,6 +18,7 @@ namespace Neptune {
         InstanceTable = 0,                       // @brief InstanceTable.
         DeviceTable,                             // @brief DeviceTable.
         SwapChain,                               // @brief SwapChain.
+        CommandBuffer,                           // @brief CommandBuffer.
 
         Count
     };

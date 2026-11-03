@@ -9,8 +9,6 @@
 #include "Infrastructure.h"
 #include "Vulkan/Unit/Device.h"
 
-#include <vector>
-
 namespace Neptune::Vulkan {
 
     using IDeviceTable = IInfrastructure<class DeviceTable, 1u>;
@@ -25,10 +23,8 @@ namespace Neptune::Vulkan {
 
         /**
         * @brief Constructor Function.
-        * 
-        * @param[in] device Unit::Device.
         */
-        DeviceTable(const SP<Unit::Device>& device) : m_Device(device) {}
+        DeviceTable() = default;
 
         /**
         * @brief Destructor Function.
@@ -42,12 +38,9 @@ namespace Neptune::Vulkan {
         */
         const Unit::Device::Handle& Handle() const { return m_Device->GetHandle(); }
 
-    private:
-
-        SP<Unit::Device>                 m_Device;                      // @brief this unit Device.
-
     public:
         
+        UP<Unit::Device>                 m_Device;                      // @brief this unit Device.
         PFN_vkGetDeviceProcAddr          vkGetDeviceProcAddr;           // @brief PFN_vkGetDeviceProcAddr.
         VkPhysicalDevice                 vkPhysicalDevice;              // @brief VkPhysicalDevice.
         
@@ -55,6 +48,16 @@ namespace Neptune::Vulkan {
         PFN_vkDestroySwapchainKHR        vkDestroySwapchainKHR;         // @brief PFN_vkDestroySwapchainKHR.
         PFN_vkQueuePresentKHR            vkQueuePresentKHR;             // @brief PFN_vkQueuePresentKHR.
         PFN_vkGetSwapchainImagesKHR      vkGetSwapchainImagesKHR;       // @brief PFN_vkGetSwapchainImagesKHR.
+        PFN_vkCreateCommandPool          vkCreateCommandPool;           // @brief PFN_vkCreateCommandPool.
+        PFN_vkDestroyCommandPool         vkDestroyCommandPool;          // @brief PFN_vkDestroyCommandPool.
+        PFN_vkAllocateCommandBuffers     vkAllocateCommandBuffers;      // @brief PFN_vkAllocateCommandBuffers.
+        PFN_vkFreeCommandBuffers         vkFreeCommandBuffers;          // @brief PFN_vkFreeCommandBuffers.
+        PFN_vkBeginCommandBuffer         vkBeginCommandBuffer;          // @brief PFN_vkBeginCommandBuffer.
+        PFN_vkEndCommandBuffer           vkEndCommandBuffer;            // @brief PFN_vkEndCommandBuffer.
+        PFN_vkQueueSubmit                vkQueueSubmit;                 // @brief PFN_vkQueueSubmit.
+        PFN_vkDeviceWaitIdle             vkDeviceWaitIdle;              // @brief PFN_vkDeviceWaitIdle.
+        PFN_vkCreateSemaphore            vkCreateSemaphore;             // @brief PFN_vkCreateSemaphore.
+        PFN_vkDestroySemaphore           vkDestroySemaphore;            // @brief PFN_vkDestroySemaphore.
     };
 
 }

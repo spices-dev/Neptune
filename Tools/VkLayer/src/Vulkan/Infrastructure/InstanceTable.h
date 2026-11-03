@@ -9,8 +9,6 @@
 #include "Infrastructure.h"
 #include "Vulkan/Unit/Instance.h"
 
-#include <vector>
-
 namespace Neptune::Vulkan {
 
 	using IInstanceTable = IInfrastructure<class InstanceTable, 0u>;
@@ -25,10 +23,8 @@ namespace Neptune::Vulkan {
 
 		/**
 		* @brief Constructor Function.
-		* 
-		* @param[in] instance Unit::Instance.
 		*/
-		InstanceTable(const SP<Unit::Instance>& instance) : m_Instance(instance) {}
+		InstanceTable() = default;
 
 		/**
 		* @brief Destructor Function.
@@ -42,12 +38,9 @@ namespace Neptune::Vulkan {
 		*/
 		const Unit::Instance::Handle& Handle() const { return m_Instance->GetHandle(); }
 
-	private:
-
-		SP<Unit::Instance>               m_Instance;                    // @brief this unit Instance.
-
 	public:
 		
+		SP<Unit::Instance>               m_Instance;                    // @brief this unit Instance.
 		PFN_vkGetInstanceProcAddr        vkGetInstanceProcAddr;         // @brief PFN_vkGetInstanceProcAddr.
 		PFN_vkCreateDevice               vkCreateDevice;                // @brief PFN_vkCreateDevice.
 		PFN_vkSubmitDebugUtilsMessageEXT vkSubmitDebugUtilsMessageEXT;  // @brief PFN_vkSubmitDebugUtilsMessageEXT.
