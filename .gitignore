@@ -57,6 +57,10 @@ Makefile
 /Nepnep/package-lock.json
 /Nepnep/prisma/migrations
 
+/Tools/VkLayer/VK_LAYER_NEPTUNE_memory_statistics/*.xcodeproj
+/Tools/VkLayer/VK_LAYER_NEPTUNE_sample/*.xcodeproj
+/Tools/VkLayer/VK_LAYER_NEPTUNE_swapchain_capture/*.xcodeproj
+
 /Neptune/assets/Shaders/src/*.spv
 /Neptune/assets/Shaders/spv
 /Neptune/assets/Shaders/dxil
