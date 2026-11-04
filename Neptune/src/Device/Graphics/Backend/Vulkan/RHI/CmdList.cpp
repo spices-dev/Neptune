@@ -80,7 +80,7 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		auto sharedRhi = dynamic_cast<const DescriptorList*>(descriptorList->GetSharedImpl());
+        auto sharedRhi = static_cast<const DescriptorList*>(descriptorList->GetSharedImpl());
 
 		auto rhi = descriptorList->GetRHIImpl<DescriptorList>();
 

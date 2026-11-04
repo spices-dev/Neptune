@@ -110,6 +110,7 @@ namespace Neptune::Vulkan {
 				waitInfo0.sType                  = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
 				waitInfo0.stageMask              = VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT;
 				waitInfo0.semaphore              = context.Get<IGraphicTimeLine>()->Semaphore(clock.m_FrameId- MaxFrameInFlight);
+                waitInfo0.value                  = clock.m_FrameId - MaxFrameInFlight;
 			}
 			
 			VkSemaphoreSubmitInfo                  signalInfo{};

@@ -61,8 +61,10 @@ namespace Neptune::Vulkan::Unit {
         Unit(Unit&& other) noexcept
         {
             SetHandle(other.GetHandle());
-			
+            SetLife(other.m_Life);
+            
             other.ResetHandle();
+            other.ResetLife();
         }
 
         /**
@@ -75,9 +77,11 @@ namespace Neptune::Vulkan::Unit {
         Unit& operator=(Unit&& other) noexcept
         {
             SetHandle(other.GetHandle());
+            SetLife(other.m_Life);
 			
             other.ResetHandle();
-			
+            other.ResetLife();
+            
             return *this;
         }
 
@@ -106,6 +110,11 @@ namespace Neptune::Vulkan::Unit {
         * @param[in] life LifeDelegate.
         */
         void SetLife(const LifeDelegate& life) { m_Life = life; }
+        
+        /**
+        * @brief Reset Unit Life.
+        */
+        void ResetLife() { m_Life = {}; }
         
     protected:
 

@@ -200,10 +200,8 @@ namespace Neptune::Vulkan {
 		{
 			return false;
 		}
-    	if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
-		{
-			NEPTUNE_LOG_CORE(E) << "Failed to Present SwapChain Image.";
-		}
+        
+        VULKAN_CHECK(result)
 
 		return true;
 	}

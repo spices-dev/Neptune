@@ -156,7 +156,7 @@ namespace Neptune {
 #endif
 
 #ifdef NEPTUNE_DEBUG
-#define NEPTUNE_ASSERT(v)  if (!v) { NEPTUNE_BREAK }
+#define NEPTUNE_ASSERT(v)  do{if (!(v)) { NEPTUNE_BREAK }} while(0);
 #endif
 
 #ifdef NEPTUNE_RELEASE
