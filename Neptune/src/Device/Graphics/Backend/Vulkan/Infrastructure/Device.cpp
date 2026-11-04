@@ -16,6 +16,7 @@
 #include "Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/DebugUtils.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/DeviceAddressBindingReport.h"
 
 namespace Neptune::Vulkan {
 
@@ -118,6 +119,8 @@ namespace Neptune::Vulkan {
     	
 		DEBUGUTILS_SETOBJECTNAME(m_Device, physicalDevice->GetProperties().deviceName)
     	
+        if (!GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IDeviceAddressBindingReport>()) return;
+        
     	VkDebugUtilsMessengerCreateInfoEXT         debugInfo {};
     	debugInfo.sType                          = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
     	debugInfo.messageSeverity                = VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT 

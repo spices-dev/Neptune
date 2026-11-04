@@ -42,14 +42,7 @@ namespace Neptune::Vulkan::Extension {
         if (!((m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_BASIC_BIT) && 
               (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_VOTE_BIT) &&
               (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_ARITHMETIC_BIT) &&
-              (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_BALLOT_BIT) &&
-              (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_SHUFFLE_BIT) &&
-              (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_SHUFFLE_RELATIVE_BIT) &&
-              (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_CLUSTERED_BIT) &&
-              (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_QUAD_BIT) &&
-              (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_ROTATE_BIT) &&
-              (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_ROTATE_CLUSTERED_BIT) &&
-              (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_PARTITIONED_BIT_EXT)))
+              (m_SubgroupProperties.supportedOperations & VK_SUBGROUP_FEATURE_BALLOT_BIT)))
         {
             return false;
         }

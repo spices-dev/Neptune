@@ -1,4 +1,4 @@
-﻿/**
+/**
 * @file HDR.cpp.
 * @brief The HDR Class Implementation.
 * @author Spices.
@@ -18,7 +18,7 @@ namespace Neptune::Vulkan::Extension {
             { Graphic::EHDRSurface::PQ,     { VK_FORMAT_A2R10G10B10_UNORM_PACK32, VK_COLOR_SPACE_HDR10_ST2084_EXT } },
             { Graphic::EHDRSurface::HLG,    { VK_FORMAT_A2R10G10B10_UNORM_PACK32, VK_COLOR_SPACE_BT2020_LINEAR_EXT } },
             { Graphic::EHDRSurface::P3,     { VK_FORMAT_A2R10G10B10_UNORM_PACK32, VK_COLOR_SPACE_DISPLAY_P3_LINEAR_EXT } },
-            { Graphic::EHDRSurface::ExSRGB, { VK_FORMAT_R16G16B16A16_SNORM, VK_COLOR_SPACE_EXTENDED_SRGB_NONLINEAR_EXT } },
+            { Graphic::EHDRSurface::ExSRGB, { VK_FORMAT_R16G16B16A16_SFLOAT, VK_COLOR_SPACE_EXTENDED_SRGB_NONLINEAR_EXT } },
         };
         
     }
@@ -39,19 +39,17 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
         
-        bool satisfy = false;
-        
         for (auto& [e, hdrSurface] : s_HDRSurface)
         {
-            satisfy &= std::ranges::any_of(formats.begin(), formats.end(), [&](const auto& format) {
+            if(!std::ranges::any_of(formats.begin(), formats.end(), [&](const auto& format) {
             
                 return format.format == hdrSurface.format && format.colorSpace == hdrSurface.colorSpace;
-            });
+            })) continue;
             
             m_Formats.insert({ e, hdrSurface });
         }
         
-        return satisfy;
+        return !m_Formats.empty();
     }
     
 }
