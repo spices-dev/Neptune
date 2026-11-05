@@ -64,7 +64,7 @@ namespace Neptune::Metal {
         return nullptr;
 	}
     
-    AInfrastructures GraphicsBackend::AccessInfrastructure() const
+    std::any GraphicsBackend::AccessInfrastructure() const
     {
         NEPTUNE_PROFILE_ZONE
 
@@ -72,7 +72,7 @@ namespace Neptune::Metal {
         
         context.Registry<ADevice>(m_Context->Get<IDevice>()->Handle());
         
-        return context.GetInfrastructures();
+        return context;
     }
     
 }

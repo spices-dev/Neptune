@@ -129,7 +129,7 @@ namespace Neptune::Direct3D11 {
         return m_GraphicsBackend->CreateRHI(e, payload);
 	}
 
-    AInfrastructures RenderBackend::AccessInfrastructure() const
+    std::any RenderBackend::AccessInfrastructure() const
     {
         NEPTUNE_PROFILE_ZONE
         

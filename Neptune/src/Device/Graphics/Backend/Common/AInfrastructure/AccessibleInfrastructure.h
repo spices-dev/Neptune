@@ -6,7 +6,7 @@
 
 #pragma once
 #include "Core/Core.h"
-#include "Device/Graphics/Frontend/Core.h"
+#include "Core/Container/Tuple.h"
 #include "Device/Graphics/Backend/Common/Context/Context.h"
 
 namespace Neptune::Graphic::Common {
@@ -20,43 +20,26 @@ namespace Neptune::Graphic::Common {
     template<typename T_, auto E_>
     requires IsEnum<decltype(E_)>
     using AccessibleInfrastructure = Graphic::Common::IContextElement<T_, E_>;
-
-    /**
-    * @brief Link Mergeable type info(address).
-    * 
-    * @tparam A AInfrastructure.
-    */
-    template<IsAInfrastructure A>
-    struct MergeableTypeInfo
-    {
-        typename A::T Value;
-    };
     
     /**
     * @brief RenderBackend AccessibleContext.
     * 
     * @tparam E EAccessibleInfrastructure.
+    * @tparam T AccessibleInfrastructureTuple.
     */
-    template<typename E>
-    requires IsEnum<E>
+    template<IsEnum E, IsTuple T>
     class AccessibleContext final
     {
     public:
         
-        NONE_COPY(AccessibleContext)
+        using AInfrastructures = Container::wrap_tuple_t<std::optional, T>;
         
     public:
         
         /**
         * @brief Constructor Function.
         */
-        AccessibleContext()
-        {
-            if constexpr (static_cast<uint8_t>(E::Count) != 0)
-            {
-                m_Infrastructures = std::vector<std::any>(static_cast<uint8_t>(E::Count));
-            }
-        }
+        AccessibleContext() = default;
 
         /**
         * @brief Constructor Function.
@@ -65,9 +48,7 @@ namespace Neptune::Graphic::Common {
         */
         AccessibleContext(const AInfrastructures& infrastructures)
             : m_Infrastructures(infrastructures)
-        {
-            assert(infrastructures.size() == static_cast<uint8_t>(E::Count));
-        }
+        {}
         
         /**
         * @brief Destructor Function.
@@ -106,27 +87,6 @@ namespace Neptune::Graphic::Common {
         requires IsNotEmptyEnum<E>
         bool Has();
         
-        /**
-        * @brief Get All AccessibleInfrastructure.
-        * 
-        * @return Returns All AccessibleInfrastructure.
-        */
-        const AInfrastructures& GetInfrastructures() const
-        {
-            NEPTUNE_PROFILE_ZONE
-
-            static AInfrastructures null = {};
-
-            if constexpr (static_cast<uint8_t>(E::Count) == 0)
-            {
-                return null;
-            }
-            else
-            {
-                return m_Infrastructures;
-            }
-        }
-        
     private:
 
         MetaProperty(TEST)
@@ -138,38 +98,32 @@ namespace Neptune::Graphic::Common {
 
     };
 
-    template<typename E> requires IsEnum<E>
+    template<IsEnum E, IsTuple T>
     template<IsAInfrastructure A>
     requires IsNotEmptyEnum<E>
-    inline void AccessibleContext<E>::Registry(const typename A::T& t)
+    inline void AccessibleContext<E, T>::Registry(const typename A::T& t)
     {
-        NEPTUNE_PROFILE_ZONE
+        constexpr auto position = static_cast<uint8_t>(A::E);
 
-        const auto position = static_cast<uint8_t>(A::E);
-
-        m_Infrastructures[position] = MergeableTypeInfo<A> { t };
+        std::get<position>(m_Infrastructures) = { t };
     }
 
-    template<typename E> requires IsEnum<E>
+    template<IsEnum E, IsTuple T>
     template<IsAInfrastructure A>
     requires IsNotEmptyEnum<E>
-    typename A::T AccessibleContext<E>::Get()
+    typename A::T AccessibleContext<E, T>::Get()
     {
-        NEPTUNE_PROFILE_ZONE
+        constexpr auto position = static_cast<uint8_t>(A::E);
 
-        const auto position = static_cast<uint8_t>(A::E);
-
-        return std::any_cast<const MergeableTypeInfo<A>&>(m_Infrastructures.at(position)).Value;
+        return std::get<position>(m_Infrastructures).value();
     }
     
-    template <typename E> requires IsEnum<E>
+    template <IsEnum E, IsTuple T>
     template <IsAInfrastructure A> requires IsNotEmptyEnum<E>
-    bool AccessibleContext<E>::Has()
+    bool AccessibleContext<E, T>::Has()
     {
-        NEPTUNE_PROFILE_ZONE
+        constexpr auto position = static_cast<uint8_t>(A::E);
         
-        const auto position = static_cast<uint8_t>(A::E);
-        
-        return m_Infrastructures.at(position).has_value();
+        return std::get<position>(m_Infrastructures).has_value();
     }
 }

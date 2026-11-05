@@ -25,7 +25,11 @@ namespace Neptune::OpenGL {
     
     using AApiVersionName         = Graphic::Common::AccessibleInfrastructure<const char*, EAccessibleInfrastructure::ApiVersionName>;
     
-    using AContext                = Graphic::Common::AccessibleContext<EAccessibleInfrastructure>;
+    using AInfrastructures = std::tuple<
+        AApiVersionName::T
+    >;
+    
+    using AContext                = Graphic::Common::AccessibleContext<EAccessibleInfrastructure, AInfrastructures>;
     
 }
 

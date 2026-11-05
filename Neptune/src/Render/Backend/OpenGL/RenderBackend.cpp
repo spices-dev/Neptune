@@ -106,7 +106,7 @@ namespace Neptune::OpenGL {
         return m_GraphicsBackend->CreateRHI(e, payload);
 	}
 
-    AInfrastructures RenderBackend::AccessInfrastructure() const
+    std::any RenderBackend::AccessInfrastructure() const
 	{
         NEPTUNE_PROFILE_ZONE
 

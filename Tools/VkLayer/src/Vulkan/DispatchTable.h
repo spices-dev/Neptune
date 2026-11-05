@@ -6,8 +6,8 @@
 
 #pragma once
 #include "Core/Core.h"
-#include "vulkan/Infrastructure/InstanceTable.h"
-#include "vulkan/Infrastructure/DeviceTable.h"
+#include "Vulkan/Infrastructure/InstanceTable.h"
+#include "Vulkan/Infrastructure/DeviceTable.h"
 #include "Core/Log.h"
 
 #include <mutex>

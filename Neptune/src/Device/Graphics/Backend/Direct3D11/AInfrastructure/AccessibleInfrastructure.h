@@ -28,7 +28,12 @@ namespace Neptune::Direct3D11 {
     using ADevice               = Graphic::Common::AccessibleInfrastructure<ID3D11Device*,          EAccessibleInfrastructure::Device>;
     using ADeviceContext        = Graphic::Common::AccessibleInfrastructure<ID3D11DeviceContext*,   EAccessibleInfrastructure::DeviceContext>;
 
-    using AContext              = Graphic::Common::AccessibleContext<EAccessibleInfrastructure>;
+    using AInfrastructures = std::tuple<
+        ADevice::T, 
+        ADeviceContext::T
+    >;
+    
+    using AContext              = Graphic::Common::AccessibleContext<EAccessibleInfrastructure, AInfrastructures>;
     
 }
 

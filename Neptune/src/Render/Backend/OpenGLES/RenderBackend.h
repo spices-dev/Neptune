@@ -81,7 +81,7 @@ namespace Neptune::OpenGLES {
         *
         * @return Returns Infrastructure.
         */
-        AInfrastructures AccessInfrastructure() const override;
+        std::any AccessInfrastructure() const override;
 
     private:
 

@@ -93,7 +93,7 @@ namespace Neptune::Direct3D12 {
 		}
 	}
 
-    AInfrastructures GraphicsBackend::AccessInfrastructure() const
+    std::any GraphicsBackend::AccessInfrastructure() const
     {
         NEPTUNE_PROFILE_ZONE
 
@@ -107,7 +107,7 @@ namespace Neptune::Direct3D12 {
         context.Registry<ASRVCPUHandle>(m_Context->Get<ISRVDescriptorHeap>()->GetCPUDescriptorHandleForHeapStart());
         context.Registry<ASRVGPUHandle>(m_Context->Get<ISRVDescriptorHeap>()->GetGPUDescriptorHandleForHeapStart());
 
-        return context.GetInfrastructures();
+        return context;
     }
 }
 

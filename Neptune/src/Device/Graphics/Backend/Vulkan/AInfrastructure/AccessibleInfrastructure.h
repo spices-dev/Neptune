@@ -50,7 +50,23 @@ namespace Neptune::Vulkan {
     using APipelineRenderingCreateInfo          = Graphic::Common::AccessibleInfrastructure<VkPipelineRenderingCreateInfoKHR, EAccessibleInfrastructure::PipelineRenderingCreateInfo>;
     using ACheckResultFn                        = Graphic::Common::AccessibleInfrastructure<void(*)(VkResult),                EAccessibleInfrastructure::CheckResultFn>;
     
-    using AContext                              = Graphic::Common::AccessibleContext<EAccessibleInfrastructure>;
+    using AInfrastructures = std::tuple<
+        AInstance::T, 
+        AApiVersion::T, 
+        APhysicalDevice::T, 
+        ADevice::T, 
+        AGraphicQueueFamily::T, 
+        AGraphicQueue::T, 
+        ADescriptorPool::T, 
+        ASwapChainRenderPass::T, 
+        ASwapChainImageUsage::T, 
+        AMSAASamples::T, 
+        AAllocator::T, 
+        APipelineRenderingCreateInfo::T, 
+        ACheckResultFn::T
+    >;
+    
+    using AContext                              = Graphic::Common::AccessibleContext<EAccessibleInfrastructure, AInfrastructures>;
     
 }
 

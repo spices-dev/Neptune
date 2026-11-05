@@ -45,11 +45,15 @@ namespace Neptune::Render {
 			
 			for (uint32_t i = 0; i < MaxFrameInFlight; ++i)
 			{
+				std::stringstream ss;
+				
+				ss << "GS3DScene_" << i;
+				
 				auto GS3DScene = CreateSP<RenderTarget>(info);
 				
-				renderTargetPool.Registry("GS3DScene_" + i, GS3DScene);
+				renderTargetPool.Registry(ss.str(), GS3DScene);
 				
-				GS3DScene->SetName("GS3DScene_" + i);
+				GS3DScene->SetName(ss.str());
 			}
 		}
 		
@@ -200,9 +204,13 @@ namespace Neptune::Render {
 		{
 			for (uint32_t i = 0; i < MaxFrameInFlight; ++i)
 			{
+				std::stringstream ss;
+				
+				ss << "GS3DScene_" << i;
+				
 				m_TileRenderDescriptorList.Get(i) = CreateSP<RHI::DescriptorList>();
 				m_TileRenderDescriptorList.Get(i)->AddShaderConstant(sizeof(TileRenderPush));
-				m_TileRenderDescriptorList.Get(i)->AddStorageTexture(1, 0, ResourcePool<RenderTarget>::Instance().Access("GS3DScene_" + i)->GetRHIResource());
+				m_TileRenderDescriptorList.Get(i)->AddStorageTexture(1, 0, ResourcePool<RenderTarget>::Instance().Access(ss.str())->GetRHIResource());
 
 				m_TileRenderDescriptorList.Get(i)->CombineSharedLayout();
 				m_TileRenderDescriptorList.Get(i)->Build();
@@ -265,19 +273,29 @@ namespace Neptune::Render {
 		uint64_t infoAddr               = m_InfoBuffer  .Get(frame)->GetDeviceAddress();
 		uint64_t rangeAddr              = m_RangeBuffer .Get(frame)->GetDeviceAddress();
 		
+		RHI::CmdList cmdList;
+
+		cmdList.SetComputeCmdList(clock);
+		
+		{
+			MemoryBarrierDesc                 barrier{};
+			barrier.srcAccess            = EPipelineAccess::TransferWrite;
+			barrier.dstAccess            = EPipelineAccess::ShaderWrite;
+			barrier.srcStage             = EPipelineStage::Transfer;
+			barrier.dstStage             = EPipelineStage::ComputeShader;
+			
+			cmdList.CmdFillBuffer(m_InfoBuffer.Get(frame), 0, sizeof(uint32_t), 0);
+		
+			cmdList.CmdFillBuffer(m_RangeBuffer.Get(frame), 0, static_cast<uint64_t>(MAXTILES) * 8, 0);
+			
+			cmdList.CmdInsertBarrier(barrier);
+		}
+		
 		MemoryBarrierDesc                 barrier{};
 		barrier.srcAccess            = EPipelineAccess::ShaderWrite;
 		barrier.dstAccess            = { EPipelineAccess::ShaderRead, EPipelineAccess::ShaderWrite };
 		barrier.srcStage             = EPipelineStage::ComputeShader;
 		barrier.dstStage             = EPipelineStage::ComputeShader;
-		
-		RHI::CmdList cmdList;
-
-		cmdList.SetComputeCmdList(clock);
-		
-		cmdList.CmdFillBuffer(m_InfoBuffer.Get(frame), 0, sizeof(uint32_t), 0);
-		
-		cmdList.CmdFillBuffer(m_RangeBuffer.Get(frame), 0, static_cast<uint64_t>(MAXTILES) * 8, 0);
 		
 		{
 			m_PreProcessDescriptorList.Get(frame)->UpdateUniformTexture(1, 0, item->GetDesc().means_0->GetRHIResource());
@@ -398,7 +416,11 @@ namespace Neptune::Render {
 		}
 		
 		{
-			auto GS3DScene = ResourcePool<RenderTarget>::Instance().Access("GS3DScene_" + frame)->GetRHIResource();
+			std::stringstream ss;
+				
+			ss << "GS3DScene_" << frame;
+			
+			auto GS3DScene = ResourcePool<RenderTarget>::Instance().Access(ss.str())->GetRHIResource();
 			
 			TileRenderPush               push{};
 			push.splatAddress          = splatAddr;

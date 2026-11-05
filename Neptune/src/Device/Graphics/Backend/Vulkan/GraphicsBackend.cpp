@@ -153,7 +153,7 @@ namespace Neptune::Vulkan {
 		}
 	}
 
-	AInfrastructures GraphicsBackend::AccessInfrastructure() const
+	std::any GraphicsBackend::AccessInfrastructure() const
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -170,7 +170,7 @@ namespace Neptune::Vulkan {
 		context.Registry<AAllocator>           (GetAllocator());
 		context.Registry<ACheckResultFn>       (+[](VkResult result) { std::invoke(HandleResultDelegate::GetHandler(), result); });
 
-		return context.GetInfrastructures();
+		return context;
 	}
 
 }

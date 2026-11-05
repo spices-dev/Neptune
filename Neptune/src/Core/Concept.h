@@ -9,6 +9,7 @@
 #include <concepts>
 #include <type_traits>
 #include <utility>
+#include <tuple>
 
 namespace Neptune {
     
@@ -58,6 +59,22 @@ namespace Neptune {
         */
         template<typename T>
         using WrapperMemberType = typename WrapperMemberTypeTrait<T>::type;
+        
+        /**
+        * @brief is_tuple base.
+        * 
+        * @tparam T .
+        */
+        template <typename T>
+        struct is_tuple : std::false_type {};
+
+        /**
+        * @brief is_tuple true type.
+        * 
+        * @tparam T .
+        */
+        template <typename... T>
+        struct is_tuple<std::tuple<T...>> : std::true_type {};
 
     }
     
@@ -97,6 +114,14 @@ namespace Neptune {
     concept IsEnum = std::is_enum_v<T> && requires {
         { T::Count } -> std::convertible_to<T>;
     };
+    
+    /**
+    * @brief Concept: Is Tuple.
+    * 
+    * @tparam T .
+    */
+    template <typename T>
+    concept IsTuple = detail::is_tuple<T>::value;
     
     /**
     * @brief Concept: Is Empty Enum.

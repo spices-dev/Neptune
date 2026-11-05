@@ -30,7 +30,13 @@ namespace Neptune::WebGPU {
     using ARTVFormat        = Graphic::Common::AccessibleInfrastructure<WGPUTextureFormat,   EAccessibleInfrastructure::RTVFormat>;
     using ADSVFormat        = Graphic::Common::AccessibleInfrastructure<WGPUTextureFormat,   EAccessibleInfrastructure::DSVFormat>;
 
-    using AContext          = Graphic::Common::AccessibleContext<EAccessibleInfrastructure>;
+    using AInfrastructures = std::tuple<
+        ADevice::T
+        ARTVFormat::T
+        ADSVFormat::T
+    >;
+    
+    using AContext          = Graphic::Common::AccessibleContext<EAccessibleInfrastructure, AInfrastructures>;
     
 }
 

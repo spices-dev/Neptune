@@ -86,7 +86,7 @@ namespace Neptune::WebGPU {
 		}
 	}
 
-    AInfrastructures GraphicsBackend::AccessInfrastructure() const
+    std::any GraphicsBackend::AccessInfrastructure() const
 	{
         NEPTUNE_PROFILE_ZONE
 
@@ -96,7 +96,7 @@ namespace Neptune::WebGPU {
         context.Registry<ARTVFormat>(WGPUTextureFormat_RGBA8Unorm);
         context.Registry<ADSVFormat>(WGPUTextureFormat_Undefined);
         
-        return context.GetInfrastructures();
+        return context;
 	}
     
 }

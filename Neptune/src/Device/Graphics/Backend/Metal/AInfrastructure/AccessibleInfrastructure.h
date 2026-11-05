@@ -28,7 +28,12 @@ namespace Neptune::Metal {
     using ADevice                = Graphic::Common::AccessibleInfrastructure<MTL::Device*,               EAccessibleInfrastructure::Device>;
     using ARenderPassDescriptor  = Graphic::Common::AccessibleInfrastructure<MTL::RenderPassDescriptor*, EAccessibleInfrastructure::RenderPassDescriptor>;
     
-    using AContext = Graphic::Common::AccessibleContext<EAccessibleInfrastructure>;
+    using AInfrastructures = std::tuple<
+        ADevice::T, 
+        ARenderPassDescriptor::T
+    >;
+    
+    using AContext = Graphic::Common::AccessibleContext<EAccessibleInfrastructure, AInfrastructures>;
     
 }
 

@@ -38,7 +38,17 @@ namespace Neptune::Direct3D12 {
     using ASRVCPUHandle         = Graphic::Common::AccessibleInfrastructure<D3D12_CPU_DESCRIPTOR_HANDLE,  EAccessibleInfrastructure::SRVCPUHandle>;
     using ASRVGPUHandle         = Graphic::Common::AccessibleInfrastructure<D3D12_GPU_DESCRIPTOR_HANDLE,  EAccessibleInfrastructure::SRVGPUHandle>;
 
-    using AContext              = Graphic::Common::AccessibleContext<EAccessibleInfrastructure>;
+    using AInfrastructures = std::tuple<
+        ADevice::T, 
+        ACommandQueue::T,
+        ARTVFormat::T,
+        ADSVFormat::T,
+        ASRVDescriptorHeap::T,
+        ASRVCPUHandle::T,
+        ASRVGPUHandle::T
+    >;
+    
+    using AContext              = Graphic::Common::AccessibleContext<EAccessibleInfrastructure, AInfrastructures>;
     
 }
 

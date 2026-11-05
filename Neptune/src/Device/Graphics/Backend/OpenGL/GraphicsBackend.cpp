@@ -80,7 +80,7 @@ namespace Neptune::OpenGL {
 		}
 	}
 
-    AInfrastructures GraphicsBackend::AccessInfrastructure() const
+    std::any GraphicsBackend::AccessInfrastructure() const
 	{
         NEPTUNE_PROFILE_ZONE
 
@@ -88,7 +88,7 @@ namespace Neptune::OpenGL {
 
     	context.Registry<AApiVersionName>(m_Context->Get<IExtensions>()->GetApiVersionName());
     	
-		return context.GetInfrastructures();
+		return context;
 	}
 }
 

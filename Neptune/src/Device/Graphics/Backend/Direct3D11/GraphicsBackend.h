@@ -69,7 +69,7 @@ namespace Neptune::Direct3D11 {
         *
         * @return Returns Infrastructure.
         */
-        AInfrastructures AccessInfrastructure() const override;
+        std::any AccessInfrastructure() const override;
 
         /**
         * @brief Get Context.

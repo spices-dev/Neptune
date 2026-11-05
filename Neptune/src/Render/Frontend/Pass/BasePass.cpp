@@ -116,7 +116,11 @@ namespace Neptune::Render {
 		
 		const auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
 
-		m_DescriptorList->UpdateUniformTexture(1, 0, ResourcePool<RenderTarget>::Instance().Access("GS3DScene_" + clock.m_FrameIndex)->GetRHIResource());
+		std::stringstream ss;
+				
+		ss << "GS3DScene_" << clock.m_FrameIndex;
+		
+		m_DescriptorList->UpdateUniformTexture(1, 0, ResourcePool<RenderTarget>::Instance().Access(ss.str())->GetRHIResource());
 
 		RHI::CmdList cmdList;
 

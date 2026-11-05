@@ -60,7 +60,7 @@ namespace Neptune {
         *
         * @return Returns Infrastructure.
         */
-        virtual AInfrastructures AccessInfrastructure() const = 0;
+        virtual std::any AccessInfrastructure() const = 0;
 
     protected:
 

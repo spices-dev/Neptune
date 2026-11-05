@@ -22,7 +22,10 @@ namespace Neptune::OpenGLES {
         Count
     };
     
-    using AContext                = Graphic::Common::AccessibleContext<EAccessibleInfrastructure>;
+    using AInfrastructures = std::tuple<
+    >;
+    
+    using AContext                = Graphic::Common::AccessibleContext<EAccessibleInfrastructure, AInfrastructures>;
     
 }
 

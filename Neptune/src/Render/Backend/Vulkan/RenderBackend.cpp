@@ -225,11 +225,11 @@ namespace Neptune::Vulkan {
 	    return m_GraphicsBackend->CreateRHI(e, payload);
     }
 	
-	AInfrastructures RenderBackend::AccessInfrastructure() const
+	std::any RenderBackend::AccessInfrastructure() const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		auto context = AContext(m_GraphicsBackend->AccessInfrastructure());
+		auto context = std::any_cast<AContext>(m_GraphicsBackend->AccessInfrastructure());
 
     	auto pass = std::dynamic_pointer_cast<Render::SlatePass>(m_RenderPasses.back());
     	
@@ -244,7 +244,7 @@ namespace Neptune::Vulkan {
 			context.Registry<ASwapChainRenderPass>(handle);
 		}
     	
-		return context.GetInfrastructures();
+		return context;
 	}
 
 	void RenderBackend::RecreateSwapChain() const

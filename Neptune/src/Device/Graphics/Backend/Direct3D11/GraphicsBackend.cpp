@@ -81,7 +81,7 @@ namespace Neptune::Direct3D11 {
 		}
 	}
 
-    AInfrastructures GraphicsBackend::AccessInfrastructure() const
+    std::any GraphicsBackend::AccessInfrastructure() const
     {
         NEPTUNE_PROFILE_ZONE
 
@@ -90,7 +90,7 @@ namespace Neptune::Direct3D11 {
         context.Registry<ADevice>(m_Context->Get<IDevice>()->Handle());
         context.Registry<ADeviceContext>(m_Context->Get<IDeviceContext>()->Handle());
         
-        return context.GetInfrastructures();
+        return context;
     }
 }
 

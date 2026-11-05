@@ -58,13 +58,13 @@ namespace Neptune::WebGL {
 		}
 	}
 
-    AInfrastructures GraphicsBackend::AccessInfrastructure() const
+    std::any GraphicsBackend::AccessInfrastructure() const
 	{
         NEPTUNE_PROFILE_ZONE
 
         AContext context;
 
-		return context.GetInfrastructures();
+		return context;
 	}
 }
 

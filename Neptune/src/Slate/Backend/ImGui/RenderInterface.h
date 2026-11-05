@@ -28,7 +28,7 @@ namespace Neptune::imgui {
         * 
         * @param[in] infrastructure RenderFrontend Infrastructure.
         */
-        virtual void OnInitialize(const AInfrastructures& infrastructure) = 0;
+        virtual void OnInitialize(const std::any& infrastructure) = 0;
 
         /**
         * @brief Interface of ShutDown.
@@ -76,7 +76,7 @@ namespace Neptune::imgui {
         *
         * @param[in] infrastructure RenderFrontend Infrastructure.
         */
-        void OnInitialize(const AInfrastructures& infrastructure) override;
+        void OnInitialize(const std::any& infrastructure) override;
 
         /**
         * @brief Interface of ShutDown.
@@ -118,7 +118,7 @@ namespace Neptune::imgui {
         * 
         * @param[in] infrastructure RenderFrontend Infrastructure.
         */
-        void OnInitialize(const AInfrastructures& infrastructure) override;
+        void OnInitialize(const std::any& infrastructure) override;
 
         /**
         * @brief Interface of ShutDown.
@@ -160,7 +160,7 @@ namespace Neptune::imgui {
         *
         * @param[in] infrastructure RenderFrontend Infrastructure.
         */
-        void OnInitialize(const AInfrastructures& infrastructure) override;
+        void OnInitialize(const std::any& infrastructure) override;
 
         /**
         * @brief Interface of ShutDown.
@@ -202,7 +202,7 @@ namespace Neptune::imgui {
         *
         * @param[in] infrastructure RenderFrontend Infrastructure.
         */
-        void OnInitialize(const AInfrastructures& infrastructure) override;
+        void OnInitialize(const std::any& infrastructure) override;
 
         /**
         * @brief Interface of ShutDown.
@@ -244,7 +244,7 @@ namespace Neptune::imgui {
         *
         * @param[in] infrastructure RenderFrontend Infrastructure.
         */
-        void OnInitialize(const AInfrastructures& infrastructure) override;
+        void OnInitialize(const std::any& infrastructure) override;
 
         /**
         * @brief Interface of ShutDown.
@@ -289,7 +289,7 @@ namespace Neptune::imgui {
         *
         * @param[in] infrastructure RenderFrontend Infrastructure.
         */
-        void OnInitialize(const AInfrastructures& infrastructure) override;
+        void OnInitialize(const std::any& infrastructure) override;
 
         /**
         * @brief Interface of ShutDown.
