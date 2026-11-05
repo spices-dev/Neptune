@@ -55,6 +55,8 @@ namespace Neptune::Direct3D12 {
         m_Context->Registry<IDSVDescriptorHeap>();
         m_Context->Registry<ISRVDescriptorHeap>();
         m_Context->Registry<IUAVDescriptorHeap>();
+        
+        m_Context->Registry<IAccessibleInfrastructures>();
     }
 
     void GraphicsBackend::OnShutDown()
@@ -95,19 +97,7 @@ namespace Neptune::Direct3D12 {
 
     std::any GraphicsBackend::AccessInfrastructure() const
     {
-        NEPTUNE_PROFILE_ZONE
-
-    	AContext context;
-
-        context.Registry<ADevice>(m_Context->Get<IDevice>()->Handle());
-		context.Registry<ACommandQueue>(m_Context->Get<IGraphicQueue>()->Handle());
-		context.Registry<ARTVFormat>(DXGI_FORMAT_B8G8R8A8_UNORM);
-		context.Registry<ADSVFormat>(DXGI_FORMAT_B8G8R8A8_UNORM);
-		context.Registry<ASRVDescriptorHeap>(m_Context->Get<ISRVDescriptorHeap>()->Handle());
-        context.Registry<ASRVCPUHandle>(m_Context->Get<ISRVDescriptorHeap>()->GetCPUDescriptorHandleForHeapStart());
-        context.Registry<ASRVGPUHandle>(m_Context->Get<ISRVDescriptorHeap>()->GetGPUDescriptorHandleForHeapStart());
-
-        return context;
+        return m_Context->Get<IAccessibleInfrastructures>()->GetContext();
     }
 }
 

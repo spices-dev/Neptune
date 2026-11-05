@@ -41,6 +41,8 @@ namespace Neptune::Direct3D11 {
         
         m_Context->Registry<IGraphicCommandList>(MaxFrameInFlight);
         m_Context->Registry<IComputeCommandList>(MaxFrameInFlight);
+        
+        m_Context->Registry<IAccessibleInfrastructures>();
     }
 
     void GraphicsBackend::OnShutDown()
@@ -83,14 +85,7 @@ namespace Neptune::Direct3D11 {
 
     std::any GraphicsBackend::AccessInfrastructure() const
     {
-        NEPTUNE_PROFILE_ZONE
-
-        AContext context;
-
-        context.Registry<ADevice>(m_Context->Get<IDevice>()->Handle());
-        context.Registry<ADeviceContext>(m_Context->Get<IDeviceContext>()->Handle());
-        
-        return context;
+        return m_Context->Get<IAccessibleInfrastructures>()->GetContext();
     }
 }
 

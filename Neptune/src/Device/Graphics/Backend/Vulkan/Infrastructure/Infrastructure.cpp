@@ -65,6 +65,8 @@ namespace Neptune::Vulkan {
             case OpticalFlowThreadCommandPool:       return "OpticalFlowThreadCommandPool";
 
             case DescriptorPool:                     return "DescriptorPool";
+        	
+            case AccessibleInfrastructures:          return "AccessibleInfrastructures";
 
             default:                                 return "NonNamed";
         }

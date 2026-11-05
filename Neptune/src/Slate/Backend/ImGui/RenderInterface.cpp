@@ -89,9 +89,9 @@ namespace Neptune::imgui {
 
 		using enum EAccessibleInfrastructure;
 
-		auto context = std::any_cast<AContext>(infrastructure);
+		auto context = std::any_cast<SP<AContext>>(infrastructure);
 		
-		ImGui_ImplOpenGL3_Init(context.Get<AApiVersionName>());
+		ImGui_ImplOpenGL3_Init(context->Get<AApiVersionName>());
 	}
 
 	void OpenGLInterface::OnShutDown() const
@@ -135,35 +135,35 @@ namespace Neptune::imgui {
 
 		using enum EAccessibleInfrastructure;
 
-		auto context = std::any_cast<AContext>(infrastructure);
+		auto context = std::any_cast<SP<AContext>>(infrastructure);
 
 		ImGui_ImplVulkan_InitInfo                                               init_info{};
-		init_info.ApiVersion                                                  = context.Get<AApiVersion>();
-		init_info.Instance                                                    = context.Get<AInstance>();
-		init_info.PhysicalDevice                                              = context.Get<APhysicalDevice>();
-		init_info.Device                                                      = context.Get<ADevice>();
-		init_info.QueueFamily                                                 = context.Get<AGraphicQueueFamily>();
-		init_info.Queue                                                       = context.Get<AGraphicQueue>();
+		init_info.ApiVersion                                                  = context->Get<AApiVersion>();
+		init_info.Instance                                                    = context->Get<AInstance>();
+		init_info.PhysicalDevice                                              = context->Get<APhysicalDevice>();
+		init_info.Device                                                      = context->Get<ADevice>();
+		init_info.QueueFamily                                                 = context->Get<AGraphicQueueFamily>();
+		init_info.Queue                                                       = context->Get<AGraphicQueue>();
 		init_info.PipelineCache                                               = VK_NULL_HANDLE;						       
-		init_info.DescriptorPool                                              = context.Get<ADescriptorPool>();
+		init_info.DescriptorPool                                              = context->Get<ADescriptorPool>();
 		init_info.PipelineInfoMain.Subpass                                    = 0;
-		init_info.PipelineInfoForViewports.SwapChainImageUsage                = context.Get<ASwapChainImageUsage>();
+		init_info.PipelineInfoForViewports.SwapChainImageUsage                = context->Get<ASwapChainImageUsage>();
 		init_info.MinImageCount                                               = std::min(2u, Neptune::MaxFrameInFlight);
 		init_info.ImageCount                                                  = std::min(2u, Neptune::MaxFrameInFlight);
-		init_info.PipelineInfoMain.MSAASamples                                = context.Get<AMSAASamples>();
-		init_info.Allocator                                                   = context.Get<AAllocator>();
-		init_info.CheckVkResultFn                                             = context.Get<ACheckResultFn>();
+		init_info.PipelineInfoMain.MSAASamples                                = context->Get<AMSAASamples>();
+		init_info.Allocator                                                   = context->Get<AAllocator>();
+		init_info.CheckVkResultFn                                             = context->Get<ACheckResultFn>();
 
-		if (context.Has<APipelineRenderingCreateInfo>())
+		if (context->Has<APipelineRenderingCreateInfo>())
 		{
 			init_info.UseDynamicRendering                                     = true;
-			init_info.PipelineInfoMain.PipelineRenderingCreateInfo            = context.Get<APipelineRenderingCreateInfo>();
-			init_info.PipelineInfoForViewports.PipelineRenderingCreateInfo    = context.Get<APipelineRenderingCreateInfo>();
+			init_info.PipelineInfoMain.PipelineRenderingCreateInfo            = context->Get<APipelineRenderingCreateInfo>();
+			init_info.PipelineInfoForViewports.PipelineRenderingCreateInfo    = context->Get<APipelineRenderingCreateInfo>();
 		}
 		else
 		{
 			init_info.UseDynamicRendering                                     = false;
-			init_info.PipelineInfoMain.RenderPass                             = context.Get<ASwapChainRenderPass>();
+			init_info.PipelineInfoMain.RenderPass                             = context->Get<ASwapChainRenderPass>();
 		}
 		
 		ImGui_ImplVulkan_Init(&init_info);
@@ -210,10 +210,10 @@ namespace Neptune::imgui {
 
 		using enum EAccessibleInfrastructure;
 
-		auto context = std::any_cast<AContext>(infrastructure);
+		auto context = std::any_cast<SP<AContext>>(infrastructure);
 		
-		const auto device = context.Get<ADevice>();
-		const auto deviceContext = context.Get<ADeviceContext>();
+		const auto device = context->Get<ADevice>();
+		const auto deviceContext = context->Get<ADeviceContext>();
 
 		ImGui_ImplDX11_Init(device, deviceContext);
 	}
@@ -259,17 +259,17 @@ namespace Neptune::imgui {
 
 		using enum EAccessibleInfrastructure;
 
-		auto context = std::any_cast<AContext>(infrastructure);
+		auto context = std::any_cast<SP<AContext>>(infrastructure);
 		
-		const auto CPUHandle = context.Get<ASRVCPUHandle>();
-		const auto GPUHandle = context.Get<ASRVGPUHandle>();
+		const auto CPUHandle = context->Get<ASRVCPUHandle>();
+		const auto GPUHandle = context->Get<ASRVGPUHandle>();
 
 		ImGui_ImplDX12_InitInfo                       init_info{};
-		init_info.Device                            = context.Get<ADevice>();
-		init_info.CommandQueue                      = context.Get<ACommandQueue>();				                                                               
-		init_info.RTVFormat                         = context.Get<ARTVFormat>();
-		init_info.DSVFormat                         = context.Get<ADSVFormat>();      
-		init_info.SrvDescriptorHeap                 = context.Get<ASRVDescriptorHeap>();
+		init_info.Device                            = context->Get<ADevice>();
+		init_info.CommandQueue                      = context->Get<ACommandQueue>();				                                                               
+		init_info.RTVFormat                         = context->Get<ARTVFormat>();
+		init_info.DSVFormat                         = context->Get<ADSVFormat>();      
+		init_info.SrvDescriptorHeap                 = context->Get<ASRVDescriptorHeap>();
 		init_info.SrvDescriptorAllocFn              = [](ImGui_ImplDX12_InitInfo*, D3D12_CPU_DESCRIPTOR_HANDLE* , D3D12_GPU_DESCRIPTOR_HANDLE* ){};
 		init_info.SrvDescriptorFreeFn               = [](ImGui_ImplDX12_InitInfo*, D3D12_CPU_DESCRIPTOR_HANDLE, D3D12_GPU_DESCRIPTOR_HANDLE){};
 		init_info.LegacySingleSrvCpuDescriptor      = CPUHandle;
@@ -321,11 +321,11 @@ namespace Neptune::imgui {
 
 		using enum EAccessibleInfrastructure;
 
-		auto context = std::any_cast<AContext>(infrastructure);
+		auto context = std::any_cast<SP<AContext>>(infrastructure);
 
-		m_RenderPassDescriptor = context.Get<ARenderPassDescriptor>();
+		m_RenderPassDescriptor = context->Get<ARenderPassDescriptor>();
 		
-		ImGui_ImplMetal_Init(context.Get<ADevice>());
+		ImGui_ImplMetal_Init(context->Get<ADevice>());
 	}
 	
 	void MetalInterface::OnShutDown() const
@@ -371,13 +371,13 @@ namespace Neptune::imgui {
 
 		using enum EAccessibleInfrastructure;
 
-		auto context = std::any_cast<AContext>(infrastructure);
+		auto context = std::any_cast<SP<AContext>>(infrastructure);
 		
 		ImGui_ImplWGPU_InitInfo                      init_info{};
-		init_info.Device                           = context.Get<ADevice>();
+		init_info.Device                           = context->Get<ADevice>();
 		init_info.NumFramesInFlight                = Neptune::MaxFrameInFlight;
-		init_info.RenderTargetFormat               = context.Get<ARTVFormat>();
-		init_info.DepthStencilFormat               = context.Get<ADSVFormat>();
+		init_info.RenderTargetFormat               = context->Get<ARTVFormat>();
+		init_info.DepthStencilFormat               = context->Get<ADSVFormat>();
 		
 		ImGui_ImplWGPU_Init(&init_info);
 	}

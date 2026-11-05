@@ -17,5 +17,6 @@
 #include "Queue.h"
 #include "TimeLine.h"
 #include "CommandEncoder.h"
+#include "AccessibleInfrastructures.h"
 
 #endif

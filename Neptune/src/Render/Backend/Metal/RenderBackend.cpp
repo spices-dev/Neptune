@@ -65,34 +65,27 @@ namespace Neptune::Metal {
 
     void RenderBackend::Wait() const
     {
-        NEPTUNE_PROFILE_ZONE
     }
     
     GraphicsBackend::Context& RenderBackend::GetContext() const
     {
-        NEPTUNE_PROFILE_ZONE
-    	
         return m_GraphicsBackend->GetContext();
     }
 
     UP<RHI::RHIImplEmpty> RenderBackend::CreateRHI(RHI::ERHI e, void* payload) const
 	{
-        NEPTUNE_PROFILE_ZONE
-
         return m_GraphicsBackend->CreateRHI(e, payload);
 	}
     
     std::any RenderBackend::AccessInfrastructure() const
     {
-        NEPTUNE_PROFILE_ZONE
-
-        auto context = std::any_cast<AContext>(m_GraphicsBackend->AccessInfrastructure());
+        auto context = std::any_cast<SP<AContext>>(m_GraphicsBackend->AccessInfrastructure());
 
         auto pass = std::dynamic_pointer_cast<Render::SlatePass>(m_RenderPasses.back());
         
         auto desc = pass->GetRenderPass()->GetRHIImpl<RenderPass>()->GetDescriptor();
         
-        context.Registry<ARenderPassDescriptor>(*desc);
+        context->Registry<ARenderPassDescriptor>(*desc);
     	
         return context;
     }

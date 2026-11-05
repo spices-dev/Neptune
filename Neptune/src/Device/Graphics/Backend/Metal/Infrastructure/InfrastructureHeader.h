@@ -8,11 +8,12 @@
 
 #ifdef NP_GRAPHICS_METAL
 
-#include "Device/Graphics/Backend/Metal/Infrastructure/AutoreleasePool.h"
-#include "Device/Graphics/Backend/Metal/Infrastructure/Device.h"
-#include "Device/Graphics/Backend/Metal/Infrastructure/Layer.h"
-#include "Device/Graphics/Backend/Metal/Infrastructure/CommandQueue.h"
-#include "Device/Graphics/Backend/Metal/Infrastructure/CommandBuffer.h"
-#include "Device/Graphics/Backend/Metal/Infrastructure/DispatchSemaphore.h"
+#include "AutoreleasePool.h"
+#include "Device.h"
+#include "Layer.h"
+#include "CommandQueue.h"
+#include "CommandBuffer.h"
+#include "DispatchSemaphore.h"
+#include "AccessibleInfrastructures.h"
 
 #endif

@@ -20,6 +20,8 @@ namespace Neptune::OpenGL {
         DebugUtilsObject,                    // @brief Label/Name Functors.
 
         TimeLine,                            // @brief Main Thread TimeLine.
+        
+        AccessibleInfrastructures,           // @brief AccessibleInfrastructures.
 
         Count
     };

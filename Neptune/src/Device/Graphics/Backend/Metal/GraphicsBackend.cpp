@@ -38,6 +38,8 @@ namespace Neptune::Metal {
         m_Context->Registry<ICommandQueue>();
         m_Context->Registry<ICommandBuffer>();
         m_Context->Registry<IGraphicDispatchSemaphore>(MaxFrameInFlight);
+        
+        m_Context->Registry<IAccessibleInfrastructures>();
     }
 
     void GraphicsBackend::OnShutDown()
@@ -66,13 +68,7 @@ namespace Neptune::Metal {
     
     std::any GraphicsBackend::AccessInfrastructure() const
     {
-        NEPTUNE_PROFILE_ZONE
-
-        AContext context;
-        
-        context.Registry<ADevice>(m_Context->Get<IDevice>()->Handle());
-        
-        return context;
+        return m_Context->Get<IAccessibleInfrastructures>()->GetContext();
     }
     
 }

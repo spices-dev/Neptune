@@ -46,6 +46,8 @@ namespace Neptune::WebGPU {
         
         m_Context->Registry<IGraphicCommandEncoder>();
         m_Context->Registry<IComputeCommandEncoder>();
+        
+        m_Context->Registry<IAccessibleInfrastructures>();
     }
 
     void GraphicsBackend::OnShutDown()
@@ -88,15 +90,7 @@ namespace Neptune::WebGPU {
 
     std::any GraphicsBackend::AccessInfrastructure() const
 	{
-        NEPTUNE_PROFILE_ZONE
-
-        AContext context;
-
-        context.Registry<ADevice>(m_Context->Get<IDevice>()->Handle());
-        context.Registry<ARTVFormat>(WGPUTextureFormat_RGBA8Unorm);
-        context.Registry<ADSVFormat>(WGPUTextureFormat_Undefined);
-        
-        return context;
+        return m_Context->Get<IAccessibleInfrastructures>()->GetContext();
 	}
     
 }

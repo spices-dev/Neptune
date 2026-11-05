@@ -206,42 +206,34 @@ namespace Neptune::Vulkan {
 
 	void RenderBackend::Wait() const
 	{
-		NEPTUNE_PROFILE_ZONE
-
 		m_GraphicsBackend->Wait();
 	}
 
 	GraphicsBackend::Context& RenderBackend::GetContext() const
     {
-    	NEPTUNE_PROFILE_ZONE
-    	
     	return m_GraphicsBackend->GetContext();
     }
 	
 	UP<RHI::RHIImplEmpty> RenderBackend::CreateRHI(RHI::ERHI e, void* payload) const
     {
-    	NEPTUNE_PROFILE_ZONE
-    	
 	    return m_GraphicsBackend->CreateRHI(e, payload);
     }
 	
 	std::any RenderBackend::AccessInfrastructure() const
 	{
-		NEPTUNE_PROFILE_ZONE
-
-		auto context = std::any_cast<AContext>(m_GraphicsBackend->AccessInfrastructure());
+		auto context = std::any_cast<SP<AContext>>(m_GraphicsBackend->AccessInfrastructure());
 
     	auto pass = std::dynamic_pointer_cast<Render::SlatePass>(m_RenderPasses.back());
     	
-    	context.Registry<ASwapChainImageUsage>(VK_IMAGE_USAGE_TRANSFER_DST_BIT);
+    	context->Registry<ASwapChainImageUsage>(VK_IMAGE_USAGE_TRANSFER_DST_BIT);
 
 		if (auto info = pass->GetRenderPass()->GetRHIImpl<RenderPass>()->GetMiddleware()->GetRenderingInfo())
 		{
-			context.Registry<APipelineRenderingCreateInfo>(*info);
+			context->Registry<APipelineRenderingCreateInfo>(*info);
 		}
 		else if (auto handle = pass->GetRenderPass()->GetRHIImpl<RenderPass>()->GetMiddleware()->Handle())
 		{
-			context.Registry<ASwapChainRenderPass>(handle);
+			context->Registry<ASwapChainRenderPass>(handle);
 		}
     	
 		return context;

@@ -12,5 +12,6 @@
 #include "Extensions.h"
 #include "DebugUtilsObject.h"
 #include "TimeLine.h"
+#include "AccessibleInfrastructures.h"
 
 #endif

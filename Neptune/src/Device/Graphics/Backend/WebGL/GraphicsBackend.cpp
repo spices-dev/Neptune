@@ -62,9 +62,7 @@ namespace Neptune::WebGL {
 	{
         NEPTUNE_PROFILE_ZONE
 
-        AContext context;
-
-		return context;
+		return nullptr;
 	}
 }
 

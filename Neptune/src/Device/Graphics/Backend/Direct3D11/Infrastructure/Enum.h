@@ -30,6 +30,8 @@ namespace Neptune::Direct3D11 {
 
         GraphicThreadCommandList,            // @brief Sub Thread Graphic CommandList.
         ComputeThreadCommandList,            // @brief Sub Thread Compute CommandList.
+        
+        AccessibleInfrastructures,           // @brief AccessibleInfrastructures.
 
         Count
     };

@@ -26,5 +26,6 @@
 #include "ThreadCommandPool.h"
 #include "Queue.h"
 #include "TimeLine.h"
+#include "AccessibleInfrastructures.h"
 
 #endif

@@ -109,6 +109,8 @@ namespace Neptune::Vulkan {
 		m_Context->Registry<IVideoEncodeThreadCommandPool>();
 		m_Context->Registry<IVideoDecodeThreadCommandPool>();
 		m_Context->Registry<IOpticalFlowThreadCommandPool>();
+		
+		m_Context->Registry<IAccessibleInfrastructures>();
 	}
 
 	void GraphicsBackend::OnShutDown()
@@ -155,22 +157,7 @@ namespace Neptune::Vulkan {
 
 	std::any GraphicsBackend::AccessInfrastructure() const
 	{
-		NEPTUNE_PROFILE_ZONE
-
-		AContext context;
-
-		context.Registry<AInstance>            (m_Context->Get<IInstance>()->Handle());
-		context.Registry<AApiVersion>          (m_Context->Get<IInstance>()->GetApiVersion());
-		context.Registry<APhysicalDevice>      (m_Context->Get<IPhysicalDevice>()->Handle());
-		context.Registry<ADevice>              (m_Context->Get<IDevice>()->Handle());
-		context.Registry<AGraphicQueueFamily>  (m_Context->Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT));
-		context.Registry<AGraphicQueue>        (m_Context->Get<IGraphicQueue>()->Handle());
-		context.Registry<ADescriptorPool>      (m_Context->Get<IDescriptorPool>()->Handle());
-		context.Registry<AMSAASamples>         (VK_SAMPLE_COUNT_1_BIT);
-		context.Registry<AAllocator>           (GetAllocator());
-		context.Registry<ACheckResultFn>       (+[](VkResult result) { std::invoke(HandleResultDelegate::GetHandler(), result); });
-
-		return context;
+		return m_Context->Get<IAccessibleInfrastructures>()->GetContext();
 	}
 
 }

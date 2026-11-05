@@ -37,6 +37,7 @@ namespace Neptune::Direct3D12 {
             case DSVDescriptorHeap:                  return "DSVDescriptorHeap";
             case SRVDescriptorHeap:                  return "SRVDescriptorHeap";
             case UAVDescriptorHeap:                  return "UAVDescriptorHeap";
+            case AccessibleInfrastructures:          return "AccessibleInfrastructures";
 
             default:                                 return "NonNamed";
         }

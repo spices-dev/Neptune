@@ -17,5 +17,6 @@
 #include "TimeLine.h"
 #include "SwapChain.h"
 #include "DescriptorHeap.h"
+#include "AccessibleInfrastructures.h"
 
 #endif

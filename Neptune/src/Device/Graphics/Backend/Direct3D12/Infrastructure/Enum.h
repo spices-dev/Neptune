@@ -35,6 +35,8 @@ namespace Neptune::Direct3D12 {
         DSVDescriptorHeap,                   // @brief Depth Stencil View DescriptorHeap.
         SRVDescriptorHeap,                   // @brief Shader Resource View DescriptorHeap.
         UAVDescriptorHeap,                   // @brief Unordered Access View DescriptorHeap.
+        
+        AccessibleInfrastructures,           // @brief AccessibleInfrastructures.
 
         Count
     };

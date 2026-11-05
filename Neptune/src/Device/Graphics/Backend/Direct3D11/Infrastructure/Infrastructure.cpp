@@ -33,7 +33,8 @@ namespace Neptune::Direct3D11 {
             case ComputeCommandList:                 return "ComputeCommandList";
             case GraphicThreadCommandList:           return "GraphicThreadCommandList";
             case ComputeThreadCommandList:           return "ComputeThreadCommandList";
-            default:                                                  return "NonNamed";
+            case AccessibleInfrastructures:          return "AccessibleInfrastructures";
+            default:                                 return "NonNamed";
         }
     }
 }

@@ -37,6 +37,8 @@ namespace Neptune::OpenGL {
         m_Context->Registry<IDebugUtilsObject>();
 
         m_Context->Registry<ITimeLine>(MaxFrameInFlight);
+    	
+        m_Context->Registry<IAccessibleInfrastructures>();
     }
 
     void GraphicsBackend::OnShutDown()
@@ -82,13 +84,7 @@ namespace Neptune::OpenGL {
 
     std::any GraphicsBackend::AccessInfrastructure() const
 	{
-        NEPTUNE_PROFILE_ZONE
-
-    	AContext context;
-
-    	context.Registry<AApiVersionName>(m_Context->Get<IExtensions>()->GetApiVersionName());
-    	
-		return context;
+    	return m_Context->Get<IAccessibleInfrastructures>()->GetContext();
 	}
 }
 

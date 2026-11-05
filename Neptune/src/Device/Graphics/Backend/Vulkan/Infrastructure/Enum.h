@@ -58,6 +58,8 @@ namespace Neptune::Vulkan {
         OpticalFlowThreadCommandPool,        // @brief Sub Thread OpticalFlow CommandPool.
 
         DescriptorPool,                      // @brief DescriptorPool.
+        
+        AccessibleInfrastructures,           // @brief AccessibleInfrastructures.
 
         Count
     };

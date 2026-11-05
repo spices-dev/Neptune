@@ -116,29 +116,21 @@ namespace Neptune::WebGPU {
 
     void RenderBackend::Wait() const
     {
-        NEPTUNE_PROFILE_ZONE
-        
         m_GraphicsBackend->Wait();
     }
 
     GraphicsBackend::Context& RenderBackend::GetContext() const
     {
-        NEPTUNE_PROFILE_ZONE
-        
         return m_GraphicsBackend->GetContext();
     }
     
     UP<RHI::RHIImplEmpty> RenderBackend::CreateRHI(RHI::ERHI e, void* payload) const
 	{
-        NEPTUNE_PROFILE_ZONE
-
         return m_GraphicsBackend->CreateRHI(e, payload);
 	}
 
     std::any RenderBackend::AccessInfrastructure() const
 	{
-        NEPTUNE_PROFILE_ZONE
-        
 		return m_GraphicsBackend->AccessInfrastructure();
 	}
 }

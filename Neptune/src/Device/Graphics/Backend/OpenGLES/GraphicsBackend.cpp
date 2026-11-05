@@ -69,11 +69,7 @@ namespace Neptune::OpenGLES {
 
     std::any GraphicsBackend::AccessInfrastructure() const
 	{
-        NEPTUNE_PROFILE_ZONE
-
-    	AContext context;
-
-		return context;
+		return nullptr;
 	}
 }
 
