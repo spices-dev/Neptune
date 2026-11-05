@@ -29,8 +29,6 @@ namespace Neptune {
         */
         explicit EventProducer(EventType bit)
         {
-            NEPTUNE_PROFILE_ZONE
-            
             Registry(bit);
         }
         
@@ -46,8 +44,6 @@ namespace Neptune {
         */
         void Registry(EventType bit)
         {
-            NEPTUNE_PROFILE_ZONE
-
             m_Interested.Set(bit, true);
         }
         
@@ -58,8 +54,6 @@ namespace Neptune {
         */
         void UnRegistry(EventType bit)
         {
-            NEPTUNE_PROFILE_ZONE
-
             m_Interested.Set(bit, false);
         }
         

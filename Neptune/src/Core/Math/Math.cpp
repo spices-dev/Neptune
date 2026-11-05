@@ -19,10 +19,6 @@ namespace Neptune {
         glm::vec3& scale
     )
     {
-        // From glm::decompose in matrix_decompose.ini
-
-        NEPTUNE_PROFILE_ZONE
-
         using namespace glm;
         using T = float;
 
@@ -102,8 +98,6 @@ namespace Neptune {
 
     glm::mat4 PerspectiveMatrix(float fov, float nearPlane, float farPlane, float aspectRatio)
     {
-        NEPTUNE_PROFILE_ZONE
-
         const float tanHalfFovy = tan(glm::radians(fov) / 2.0f);
 
         glm::mat4 mat = glm::mat4{ 0.0f };
@@ -118,8 +112,6 @@ namespace Neptune {
 
     glm::mat4 OrthographicMatrix(float left, float right, float top, float bottom, float nearPlane, float farPlane)
     {
-        NEPTUNE_PROFILE_ZONE
-
         glm::mat4 mat = glm::mat4{ 1.0f };
         mat[0][0] = 2.0f / (right - left);
         mat[1][1] = 2.0f / (bottom - top);
@@ -133,8 +125,6 @@ namespace Neptune {
 
     glm::mat4 PerspectiveMatrixInverseZ(float fov, float nearPlane, float aspectRatio)
     {
-        NEPTUNE_PROFILE_ZONE
-
         const float tanHalfFovy = tan(glm::radians(fov) / 2.0f);
 
         glm::mat4 mat = glm::mat4{ 0.0f };

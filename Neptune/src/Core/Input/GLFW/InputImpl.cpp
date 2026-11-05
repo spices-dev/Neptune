@@ -17,8 +17,6 @@ namespace Neptune::GLFW {
 
     bool InputImpl::IsKeyPressedImpl(const int& keycode)
     {
-        NEPTUNE_PROFILE_ZONE
-
         // Get GLFW Window Pointer.
         const auto window = static_cast<GLFWwindow*>(Window::Instance().NativeWindow());
 
@@ -30,8 +28,6 @@ namespace Neptune::GLFW {
 
     bool InputImpl::IsMouseButtonPressedImpl(const int& button)
     {
-        NEPTUNE_PROFILE_ZONE
-
         // Get GLFW Window Pointer.
         const auto window = static_cast<GLFWwindow*>(Window::Instance().NativeWindow());
 
@@ -43,8 +39,6 @@ namespace Neptune::GLFW {
 
     std::pair<float, float> InputImpl::GetMousePositionImpl()
     {
-        NEPTUNE_PROFILE_ZONE
-
         // Get GLFW Window Pointer.
         const auto window = static_cast<GLFWwindow*>(Window::Instance().NativeWindow());
 
@@ -59,8 +53,6 @@ namespace Neptune::GLFW {
 
     float InputImpl::GetMouseXImpl()
     {
-        NEPTUNE_PROFILE_ZONE
-
         auto [x, y] = GetMousePositionImpl();
 
         return x;
@@ -68,8 +60,6 @@ namespace Neptune::GLFW {
 
     float InputImpl::GetMouseYImpl()
     {
-        NEPTUNE_PROFILE_ZONE
-
         auto [x, y] = GetMousePositionImpl();
 
         return y;

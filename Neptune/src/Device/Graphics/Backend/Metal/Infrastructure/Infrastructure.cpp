@@ -18,8 +18,6 @@ namespace Neptune::Metal {
 
 	std::string Infrastructure::ToString() const
     {
-        NEPTUNE_PROFILE_ZONE
-
 	    using enum EInfrastructure;
 		
         switch (GetEInfrastructure())

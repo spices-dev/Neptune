@@ -18,8 +18,6 @@ namespace Neptune::Direct3D11 {
 
 	std::string Infrastructure::ToString() const
     {
-        NEPTUNE_PROFILE_ZONE
-
 	    using enum EInfrastructure;
 	    
         switch (GetEInfrastructure())

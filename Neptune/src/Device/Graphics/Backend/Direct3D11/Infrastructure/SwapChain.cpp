@@ -33,6 +33,8 @@ namespace Neptune::Direct3D11 {
 
     void SwapChain::Create(DXGI_SWAP_CHAIN_DESC1& desc, uint32_t count, HWND hwnd)
     {
+		NEPTUNE_PROFILE_ZONE
+		
 		const auto factory = GetContext().Get<IFactory>()->Handle();
 
 		factory->CheckFeatureSupport(DXGI_FEATURE_PRESENT_ALLOW_TEARING, &m_AllowTearing, sizeof(m_AllowTearing));

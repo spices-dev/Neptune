@@ -31,8 +31,6 @@ namespace Neptune {
 
     std::string UUID::ToString() const
     {
-        NEPTUNE_PROFILE_ZONE
-
         std::stringstream ss;
         ss << m_UUID;
 

@@ -92,8 +92,6 @@ namespace Neptune {
         */
         std::string ToString() const override
         {
-            NEPTUNE_PROFILE_ZONE
-
             std::stringstream ss;
             ss << "KeyPressedEvent: " << Key::ToString(GetKeyCode()) << " (" << m_RepeatCount << " repeats)";
 
@@ -141,8 +139,6 @@ namespace Neptune {
         */
         std::string ToString() const override
         {
-            NEPTUNE_PROFILE_ZONE
-
             std::stringstream ss;
             ss << "KeyReleasedEvent: " << Key::ToString(GetKeyCode());
 
@@ -183,8 +179,6 @@ namespace Neptune {
         */
         std::string ToString() const override
         {
-            NEPTUNE_PROFILE_ZONE
-
             std::stringstream ss;
             ss << "KeyTypedEvent: " << Key::ToString(GetKeyCode());
 

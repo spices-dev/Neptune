@@ -91,8 +91,6 @@ namespace Neptune {
 	template<typename Fn>
 	inline uint64_t Delegate_Basic<Args...>::Bind(Fn&& func)
 	{
-		NEPTUNE_PROFILE_ZONE
-
 		auto& handle = *m_Handle;
 
 		m_Agents->PushBack(handle, func);
@@ -103,8 +101,6 @@ namespace Neptune {
 	template<typename ...Args>
 	inline bool Delegate_Basic<Args...>::UnBind(uint64_t handle)
 	{
-		NEPTUNE_PROFILE_ZONE
-
 		if (!m_Agents->Contains(handle)) return false;
 		
 		m_Agents->Erase(handle);

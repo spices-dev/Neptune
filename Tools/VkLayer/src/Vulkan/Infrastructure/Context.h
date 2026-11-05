@@ -101,7 +101,7 @@ namespace Neptune::Vulkan {
     template<typename I, typename... Args>
     inline typename I::T* Context<Element, E>::Registry(Args&&... args)
     {
-        const auto position = static_cast<uint8_t>(I::E);
+        constexpr auto position = static_cast<uint8_t>(I::E);
 
         m_Infrastructures[position] = CreateUP<typename I::T>(std::forward<Args>(args)...);
         
@@ -112,7 +112,7 @@ namespace Neptune::Vulkan {
     template <typename I> 
     inline bool Context<Element, E>::UnRegistry()
     {
-        const auto position = static_cast<uint8_t>(I::E);
+        constexpr auto position = static_cast<uint8_t>(I::E);
 
         if (!m_Infrastructures[position]) return false;
 
@@ -134,7 +134,7 @@ namespace Neptune::Vulkan {
     template<typename I>
     typename I::T* Context<Element, E>::Get() const
     {
-        const auto position = static_cast<uint8_t>(I::E);
+        constexpr auto position = static_cast<uint8_t>(I::E);
 
         return static_cast<typename I::T*>(m_Infrastructures[position].get());
     }
@@ -143,7 +143,7 @@ namespace Neptune::Vulkan {
     template<typename I>
     bool Context<Element, E>::Has() const
     {
-        const auto position = static_cast<uint8_t>(I::E);
+        constexpr auto position = static_cast<uint8_t>(I::E);
 
         return m_Infrastructures[position] != nullptr;
     }

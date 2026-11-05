@@ -13,8 +13,6 @@ namespace Neptune::Library {
 
     std::vector<std::string> SplitString(const std::string& input, char delimiter)
     {
-        NEPTUNE_PROFILE_ZONE
-
         std::vector<std::string> result;
         size_t start = 0;
         size_t end   = 0;
@@ -32,8 +30,6 @@ namespace Neptune::Library {
 
     std::vector<std::string> SplitKeepString(const std::string& input, char delimiter)
     {
-        NEPTUNE_PROFILE_ZONE
-        
         std::vector<std::string> result;
         size_t start = 0;
         size_t end = 0;
@@ -51,8 +47,6 @@ namespace Neptune::Library {
 
     std::wstring CharToWChar(const char* c)
     {
-        NEPTUNE_PROFILE_ZONE
-        
         std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 
         return converter.from_bytes(c);
@@ -60,8 +54,6 @@ namespace Neptune::Library {
 
     std::string WCharToChar(const wchar_t* wc)
     {
-        NEPTUNE_PROFILE_ZONE
-        
         std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 
         return converter.to_bytes(wc);

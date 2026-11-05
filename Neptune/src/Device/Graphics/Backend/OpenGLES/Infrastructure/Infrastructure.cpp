@@ -18,8 +18,6 @@ namespace Neptune::OpenGLES {
 
 	std::string Infrastructure::ToString() const
     {
-        NEPTUNE_PROFILE_ZONE
-
         switch (GetEInfrastructure())
         {
             default:                                                  return "NonNamed";

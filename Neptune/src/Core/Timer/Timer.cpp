@@ -11,8 +11,6 @@ namespace Neptune {
 
 	Timer::Timer()
 	{
-		NEPTUNE_PROFILE_ZONE
-		
 		m_StartTime = std::chrono::steady_clock::now();
 		
 		m_LastTime  = std::chrono::steady_clock::now();
@@ -20,8 +18,6 @@ namespace Neptune {
 
 	void Timer::Flush()
 	{
-		NEPTUNE_PROFILE_ZONE
-		
 		const auto nowTime = std::chrono::steady_clock::now();
 
 		m_SegmentTime = std::chrono::duration<float>(nowTime - m_LastTime).count();

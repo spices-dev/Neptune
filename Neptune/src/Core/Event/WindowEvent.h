@@ -56,8 +56,6 @@ namespace Neptune {
         */
         std::string ToString() const override
         {
-            NEPTUNE_PROFILE_ZONE
-
             std::stringstream ss;
             ss << "WindowResizeEvent: " << m_Width << ", " << m_Height;
 
@@ -161,8 +159,6 @@ namespace Neptune {
         */
         std::string ToString() const override
         {
-            NEPTUNE_PROFILE_ZONE
-
             std::stringstream ss;
             ss << "WindowResizeOverEvent: " << m_Width << ", " << m_Height;
 

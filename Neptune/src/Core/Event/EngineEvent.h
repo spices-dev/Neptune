@@ -72,8 +72,6 @@ namespace Neptune {
         */
         std::string ToString() const override
         {
-            NEPTUNE_PROFILE_ZONE
-
             using enum EngineEventBit;
 
             std::stringstream ss;

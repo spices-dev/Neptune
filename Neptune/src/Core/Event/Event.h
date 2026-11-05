@@ -73,8 +73,6 @@ namespace Detail {
     template<typename... T>
     void SetEventCategories(Container::BitSet<EventCategory>& flags, T... categories)
     {
-        NEPTUNE_PROFILE_ZONE
-        
         (flags.Set(categories, true), ...);
     }
 
@@ -152,8 +150,6 @@ namespace Detail {
         */
         [[nodiscard]] bool IsInCategory(EventCategory category) const
         {
-            NEPTUNE_PROFILE_ZONE
-
             return GetCategoryFlags().Test(category);
         }
 

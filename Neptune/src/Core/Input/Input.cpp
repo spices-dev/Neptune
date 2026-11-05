@@ -22,8 +22,6 @@ namespace Neptune {
     
     void Input::Create(WindowImplement implement)
     {
-        NEPTUNE_PROFILE_ZONE
-        
         switch (implement)
         {
             case WindowImplement::GLFW:
@@ -44,36 +42,26 @@ namespace Neptune {
 
     bool Input::IsKeyPressed(const int& keycode)
     {
-        NEPTUNE_PROFILE_ZONE
-
         return s_Instance->IsKeyPressedImpl(keycode);
     }
 
     bool Input::IsMouseButtonPressed(const int& button)
     {
-        NEPTUNE_PROFILE_ZONE
-        
         return s_Instance->IsMouseButtonPressedImpl(button);
     }
 
     std::pair<float, float> Input::GetMousePosition()
     {
-        NEPTUNE_PROFILE_ZONE
-
         return s_Instance->GetMousePositionImpl();
     }
 
     float Input::GetMouseX()
     {
-        NEPTUNE_PROFILE_ZONE
-        
         return s_Instance->GetMouseXImpl();
     }
 
     float Input::GetMouseY()
     {
-        NEPTUNE_PROFILE_ZONE
-        
         return s_Instance->GetMouseYImpl();
     }
 }

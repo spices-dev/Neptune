@@ -13,8 +13,6 @@ namespace Neptune {
 
     glm::mat4 GetRotationMatrix(const glm::vec3& rotation)
     {
-        NEPTUNE_PROFILE_ZONE
-
         return
         glm::toMat4(
             glm::quat({
@@ -27,8 +25,6 @@ namespace Neptune {
 
     glm::mat4 ToMatrix(const Transform& transform)
     {
-        NEPTUNE_PROFILE_ZONE
-
         return
         glm::translate(glm::mat4(1.0f), transform.position) *
         GetRotationMatrix(transform.rotation) *

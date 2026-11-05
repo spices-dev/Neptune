@@ -187,7 +187,7 @@ namespace Neptune::Graphic::Common {
     {
         NEPTUNE_PROFILE_ZONE
 
-        const auto position = static_cast<uint8_t>(I::E);
+        constexpr auto position = static_cast<uint8_t>(I::E);
 
         m_Infrastructures[position] = ContextElementFactory<Element, typename I::T>(*this, I::E, std::forward<Args>(args)...);
         
@@ -236,9 +236,7 @@ namespace Neptune::Graphic::Common {
              IsNotEmptyEnum<E>
     typename I::T* Context<Element, E>::Get() const
     {
-        NEPTUNE_PROFILE_ZONE
-
-        const auto position = static_cast<uint8_t>(I::E);
+        constexpr auto position = static_cast<uint8_t>(I::E);
 
         return static_cast<typename I::T*>(m_Infrastructures[position].get());
     }
@@ -246,8 +244,6 @@ namespace Neptune::Graphic::Common {
     template <typename Element, typename E> requires IsEnum<E>
     bool Context<Element, E>::Has(E e) const requires IsNotEmptyEnum<E>
     {
-        NEPTUNE_PROFILE_ZONE
-        
         const auto position = static_cast<uint8_t>(e);
 
         return m_Infrastructures[position] != nullptr;
@@ -259,9 +255,7 @@ namespace Neptune::Graphic::Common {
              IsNotEmptyEnum<E>
     bool Context<Element, E>::Has() const
     {
-        NEPTUNE_PROFILE_ZONE
-
-        const auto position = static_cast<uint8_t>(I::E);
+        constexpr auto position = static_cast<uint8_t>(I::E);
 
         return m_Infrastructures[position] != nullptr;
     }
