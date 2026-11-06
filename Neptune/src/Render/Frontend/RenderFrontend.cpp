@@ -154,8 +154,6 @@ namespace Neptune {
         NEPTUNE_PROFILE_ZONE
 
         m_RenderPasses = {};
-
-#ifdef NP_PLATFORM_WINDOWS
         
         {
             auto pass = CreateSP<Render::PrePass>();
@@ -183,8 +181,6 @@ namespace Neptune {
 
             AddPass(pass);
         }
-
-#endif
 
         {
             auto pass = CreateSP<Render::SlatePass>();

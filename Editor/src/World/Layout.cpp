@@ -19,14 +19,10 @@ namespace Neptune::Editor::Layout {
         Console console;
             
         console.OnSubmitRHI();
-            
-#ifdef NP_PLATFORM_WINDOWS
         
         ViewPort viewPort;
         
         viewPort.OnSubmitRHI();
-        
-#endif
         
         return [](){};
     }

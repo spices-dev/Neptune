@@ -84,8 +84,6 @@ namespace Neptune::Editor {
             entity.AddComponent<TransformComponent>();
         }
         
-#ifdef NP_PLATFORM_WINDOWS
-        
         /*{
             auto entity = scene->Create("video_plane");
             auto& component = entity.AddComponent<ScriptComponent>();
@@ -101,8 +99,6 @@ namespace Neptune::Editor {
             auto entity = scene->Create("gs3d");
             entity.AddComponent<SOPComponent>(gs3d);
         }
-        
-#endif
         
     }
 }
