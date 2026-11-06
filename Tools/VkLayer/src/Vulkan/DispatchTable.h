@@ -49,12 +49,12 @@ namespace Neptune::Vulkan {
         /**
         * @brief Constructor Function.
         */
-        DispatchTable();
+        DispatchTable() = default;
         
         /**
         * @brief Destructor Function.
         */
-        virtual ~DispatchTable();
+        virtual ~DispatchTable() = default;
         
         NONE_COPY(DispatchTable)
         
@@ -89,13 +89,6 @@ namespace Neptune::Vulkan {
         */
         template <typename T>
         static void* GetKey(T&& handle) { return *reinterpret_cast<void**>(std::forward<T>(handle)); }
-        
-        /**
-        * @brief Get Layer Name.
-        * 
-        * @return Returns Layer Name.
-        */
-        static char* GetName() { static char name[] = ""; return name; }
         
     private:
         
@@ -150,6 +143,18 @@ namespace Neptune::Vulkan {
     private:
         
         /**
+        * @brief Interface of Get Layer Name.
+        * 
+        * @return Returns Layer Name.
+        */
+        static char* GetName() { static char name[] = ""; return name; }
+        
+        /**
+        * @brief Interface of InitContext.
+        */
+        static void InitContext() {}
+        
+        /**
         * @brief Interface of Dispatch Instance Function.
         * 
         * @param[in] pName Function Name.
@@ -167,6 +172,8 @@ namespace Neptune::Vulkan {
         */
         static PFN_vkVoidFunction DeviceDispatch(const char* pName) { return nullptr; }
         
+    private:
+        
         /**
         * @brief Interface of Get Instance Table.
         * 
@@ -181,6 +188,11 @@ namespace Neptune::Vulkan {
         */
         static void GetDeviceTable(UP<DeviceTable>& table);
         
+        /**
+        * @brief Init Table Context.
+        */
+        static void InitTableContext();
+        
     protected:
         
         static Context s_Context;   // @brief Dispatch Table Context.
@@ -189,23 +201,12 @@ namespace Neptune::Vulkan {
     template<typename E>
     typename DispatchTable<E>::Context DispatchTable<E>::s_Context;
 
-    template <typename E>
-    DispatchTable<E>::DispatchTable()
-    {
-        s_Context.template Registry<IInstanceTable>();
-        s_Context.template Registry<IDeviceTable>();
-    }
-
-    template <typename E>
-    DispatchTable<E>::~DispatchTable()
-    {
-        s_Context.UnRegistry();
-    }
-
     template<typename E>
     inline PFN_vkVoidFunction DispatchTable<E>::vkGetInstanceProcAddr(VkInstance instance, const char* pName)
     {
         using Scope = This;
+        
+        InitTableContext();
         
         DISPATCH_SCOPE(vkGetInstanceProcAddr)
         
@@ -414,6 +415,20 @@ namespace Neptune::Vulkan {
         s_Context.template Get<IDeviceTable>()->UnRegistry(GetKey(device));
     }
 
+    template <typename E>
+    void DispatchTable<E>::InitTableContext()
+    {
+        static std::once_flag flag;
+            
+        std::call_once(flag, []()
+        {
+            s_Context.template Registry<IInstanceTable>();
+            s_Context.template Registry<IDeviceTable>();
+                
+            InitContext();
+        });
+    }
+    
     template <typename E>
     void DispatchTable<E>::Log(VkInstance instance, LogStream::LogLevel level, const char* message)
     {

@@ -5,17 +5,8 @@
 */
 
 #include "DispatchTable.h"
-#include "Infrastructure/SwapChain.h"
-#include "Infrastructure/CommandBuffer.h"
 
 namespace Neptune {
-    
-    DispatchTable::DispatchTable()
-        : Super()
-    {
-        s_Context.Registry<Vulkan::ISwapChain>();
-        s_Context.Registry<Vulkan::ICommandBuffer>();
-    }
 
     VkResult DispatchTable::vkCreateSwapchainKHR(VkDevice device, const VkSwapchainCreateInfoKHR* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkSwapchainKHR* pSwapchain)
     {

@@ -6,6 +6,8 @@
 
 #pragma once
 #include "Vulkan/DispatchTable.h"
+#include "Infrastructure/SwapChain.h"
+#include "Infrastructure/CommandBuffer.h"
 #include "Enum.h"
 
 namespace Neptune {
@@ -24,7 +26,7 @@ namespace Neptune {
         /**
         * @brief Constructor Function.
         */
-        DispatchTable();
+        DispatchTable() = default;
         
         /**
         * @brief Destructor Function.
@@ -75,14 +77,14 @@ namespace Neptune {
     inline char* DispatchTable::Super::GetName() { static char name[] = "VK_LAYER_NEPTUNE_swapchain_capture"; return name; }
     
     /**
-    * @brief Interface of Dispatch Instance Function.
-    * 
-    * @param[in] pName Function Name.
-    * 
-    * @return Returns PFN_vkVoidFunction.
+    * @brief Interface of InitContext.
     */
     template <>
-    inline PFN_vkVoidFunction DispatchTable::Super::InstanceDispatch(const char* pName) { return nullptr; }
+    inline void DispatchTable::Super::InitContext()
+    {
+        s_Context.Registry<Vulkan::ISwapChain>();
+        s_Context.Registry<Vulkan::ICommandBuffer>();
+    }
         
     /**
     * @brief Interface of Dispatch Device Function.

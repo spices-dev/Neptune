@@ -68,20 +68,6 @@ namespace Neptune::Vulkan {
         bool UnRegistry();
         
         /**
-        * @brief Unregister Infrastructure.
-        *
-        * @param[in] e E.
-        *
-        * @return Returns true if succeeded.
-        */
-        bool UnRegistry(E e);
-
-        /**
-        * @brief Unregister All Infrastructure.
-        */
-        void UnRegistry();
-        
-        /**
         * @brief Get registry IContextElement.
         *
         * @tparam I IContextElement Definitions.
@@ -121,28 +107,13 @@ namespace Neptune::Vulkan {
     template <typename I> 
     inline bool Context<Element, E>::UnRegistry()
     {
-        return UnRegistry(I::E);
-    }
-
-    template<typename Element, typename E>
-    inline bool Context<Element, E>::UnRegistry(E e)
-    {
-        const auto position = static_cast<uint8_t>(e);
+        const auto position = static_cast<uint8_t>(I::E);
 
         if (!m_Infrastructures[position]) return false;
 
         m_Infrastructures[position].reset();
 
         return true;
-    }
-
-    template <typename Element, typename E>
-    inline void Context<Element, E>::UnRegistry()
-    {
-        for (int i = static_cast<int>(E::Count) - 1; i >= 0; --i)
-        {
-            UnRegistry(static_cast<E>(i));
-        }
     }
 
     template<typename Element, typename E>
