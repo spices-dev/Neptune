@@ -269,7 +269,6 @@ namespace Neptune::Vulkan {
         auto vkGetInstanceProcAddr = chainInfo->u.pLayerInfo->pfnNextGetInstanceProcAddr;
         
         auto vkCreateInstance  = reinterpret_cast<PFN_vkCreateInstance>(std::invoke(vkGetInstanceProcAddr, VK_NULL_HANDLE, "vkCreateInstance"));
-        auto vkDestroyInstance = reinterpret_cast<PFN_vkDestroyInstance>(std::invoke(vkGetInstanceProcAddr, VK_NULL_HANDLE, "vkDestroyInstance"));
         
         if (!vkCreateInstance)
         {
@@ -283,11 +282,15 @@ namespace Neptune::Vulkan {
         {
             unit->SetHandle(*pInstance);
         
-            unit->SetLife({ vkCreateInstance, vkDestroyInstance, pAllocator });
+            unit->SetLife({ vkCreateInstance, nullptr, pAllocator });
     
             unit->CreateInstance(*pCreateInfo);
     
             *pInstance = unit->GetHandle();
+            
+            auto vkDestroyInstance = reinterpret_cast<PFN_vkDestroyInstance>(std::invoke(vkGetInstanceProcAddr, *pInstance, "vkDestroyInstance"));
+            
+            unit->SetLife({ vkCreateInstance, vkDestroyInstance, pAllocator });
         }
         
         auto context = CreateUP<Context>();
@@ -301,15 +304,15 @@ namespace Neptune::Vulkan {
             GetInstanceTable(table);
         }
         
+        auto instance = table->Handle();
+        
         {
             std::unique_lock lock(s_Mutex);
-    
-            auto instance = table->Handle();
-    
+
             s_Context.emplace(GetKey(instance), std::move(context));
-    
-            SetLogFunctor([=](LogStream::LogLevel level, const char* message) { Log(instance, level, message); });
         }
+        
+        SetLogFunctor([=](LogStream::LogLevel level, const char* message) { Log(instance, level, message); });
         
         return VK_SUCCESS;
     }
@@ -449,12 +452,12 @@ namespace Neptune::Vulkan {
         
         switch (level)
         {
-            case LogStream::LogLevel::C : severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
-            case LogStream::LogLevel::E : severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
-            case LogStream::LogLevel::W : severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT;
-            case LogStream::LogLevel::I : severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT;
-            case LogStream::LogLevel::T : severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT;
-            default:                      severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT;
+            case LogStream::LogLevel::C : severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT; break;
+            case LogStream::LogLevel::E : severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT; break;
+            case LogStream::LogLevel::W : severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT; break;
+            case LogStream::LogLevel::I : severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT; break;
+            case LogStream::LogLevel::T : severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT; break;
+            default:                      severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT; break;
         }
 
         std::invoke(vkSubmitDebugUtilsMessageEXT, instance, severity, VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT, &data);

@@ -6,7 +6,18 @@
 
 #pragma once
 
+#define VK_NO_PROTOTYPES
+
+#ifdef _MSC_VER
+#define DLL_EXPORT __declspec(dllexport)
+#else
+#define DLL_EXPORT __attribute__((visibility("default")))
+#endif
+
 #include <vulkan/vulkan.h>
+
+extern "C" { DLL_EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkNegotiateLoaderLayerInterfaceVersion(struct VkNegotiateLayerInterface* pVersionStruct); }
+
 #include <vulkan/vk_layer.h>
 #include <memory>
 #include <cassert>
@@ -66,12 +77,6 @@ namespace Neptune::Vulkan {
     {
         return std::make_unique<T>(std::forward<Args>(args)...);
     }
-    
-#ifdef _MSC_VER
-#define DLL_EXPORT __declspec(dllexport)
-#else
-#define DLL_EXPORT __attribute__((visibility("default")))
-#endif
     
     constexpr uint32_t LayerInterfaceVersion = 2u;   // @brief Layer Interface Version.
     

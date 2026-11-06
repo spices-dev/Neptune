@@ -71,8 +71,8 @@ void main(uint3 groupThreadID : SV_GroupThreadID, uint3 groupID : SV_GroupID)
         uint tile = sTile[s];
         if (tile >= push.numTiles) continue;
             
-        if (sTile[s - 1u] != tile) r[tile].x = idx;
-        if (sTile[s + 1u] != tile) r[tile].y = idx + 1u;
+        if (sTile[s - 1u] != tile) r[tile * 2u + 0u] = idx;
+        if (sTile[s + 1u] != tile) r[tile * 2u + 1u] = idx + 1u;
     }
 }
 

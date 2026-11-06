@@ -7,12 +7,12 @@
 #include "Core/EntryPoint.h"
 #include "DispatchTable.h"
 
-PFN_vkVoidFunction vkGetInstanceProcAddr(VkInstance instance, const char* pName)
+VKAPI_ATTR PFN_vkVoidFunction VKAPI_CALL vkGetInstanceProcAddr(VkInstance instance, const char* pName)
 {
     return Neptune::DispatchTable::vkGetInstanceProcAddr(instance, pName);
 }
 
-PFN_vkVoidFunction vkGetDeviceProcAddr(VkDevice device, const char* pName)
+VKAPI_ATTR PFN_vkVoidFunction VKAPI_CALL vkGetDeviceProcAddr(VkDevice device, const char* pName)
 {
     return Neptune::DispatchTable::vkGetDeviceProcAddr(device, pName);
 }

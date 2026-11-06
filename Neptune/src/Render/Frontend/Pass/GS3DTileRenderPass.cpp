@@ -280,7 +280,7 @@ namespace Neptune::Render {
 		{
 			MemoryBarrierDesc                 barrier{};
 			barrier.srcAccess            = EPipelineAccess::TransferWrite;
-			barrier.dstAccess            = EPipelineAccess::ShaderWrite;
+			barrier.dstAccess            = { EPipelineAccess::ShaderWrite, EPipelineAccess::ShaderRead };
 			barrier.srcStage             = EPipelineStage::Transfer;
 			barrier.dstStage             = EPipelineStage::ComputeShader;
 			

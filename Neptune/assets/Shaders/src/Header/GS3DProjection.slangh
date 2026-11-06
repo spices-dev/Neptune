@@ -16,8 +16,8 @@
 
 /**************************************Constant*******************************************/
 
-static const float kGSMaxRadiusRatio    = 0.35f;
-static const float kDistanceScaleCutOff = 0.05f;
+static const float kGSMaxRadiusRatio = 0.35f;
+static const float kMinScreenRadius  = 1.3f;
 
 /*****************************************************************************************/
 
@@ -76,17 +76,18 @@ bool ProjectGaussian(float3 p, float3 s, float4 q,
 
     if (viewPos.z <= 0.01) return false;
             
+    float focalX = view.projection[0][0] * (view.sceneTextureSize.x * 0.5);
+    float focalY = view.projection[1][1] * (view.sceneTextureSize.y * 0.5);
+
     // Distance Cutoff.
     float ms = max(s.x, max(s.y, s.z));
-    if (ms < kDistanceScaleCutOff && ms * 1000.0f < viewPos.z) return false;
+    if (ms * max(focalX, focalY) < kMinScreenRadius * viewPos.z) return false;
 
     float3x3 R     = QuatToMat3(q);
     float3x3 S     = float3x3(s.x,0,0, 0,s.y,0, 0,0,s.z);
     float3x3 Sigma = mul(mul(mul(R, S), S), transpose(R));
 
     float3x3 W   = (float3x3)view.view;
-    float focalX = view.projection[0][0] * (view.sceneTextureSize.x * 0.5);
-    float focalY = view.projection[1][1] * (view.sceneTextureSize.y * 0.5);
 
     float invZ  = 1.0 / viewPos.z;
     float invZ2 = invZ * invZ;

@@ -103,8 +103,9 @@ void main(uint3 groupID : SV_GroupID, uint tid : SV_GroupIndex)
     bool inside = pix.x < int(push.width) && pix.y < int(push.height);
     bool done = !inside;
 
-    uint2 range = ((TileRanges)push.rangeAddress)[tile];
-    uint  total = (range.y > range.x) ? (range.y - range.x) : 0u;
+    uint rangex = ((TileRanges)push.rangeAddress)[tile * 2u + 0u];
+    uint rangey = ((TileRanges)push.rangeAddress)[tile * 2u + 1u];
+    uint  total = (rangey > rangex) ? (rangey - rangex) : 0u;
 
     TileEntries  entries = (TileEntries)push.sortedAddress;
     TileSplats   splats  = (TileSplats)push.splatAddress;
@@ -119,11 +120,11 @@ void main(uint3 groupID : SV_GroupID, uint tid : SV_GroupIndex)
     {
         if (lane < total)
         {
-            uint gid = uint(entries[range.x + lane]) & GID_MASK;
+            uint gid = uint(entries[rangex + lane]) & GID_MASK;
             u = splats[gid];
         }
         if (WAVE_SIZE + lane < total)
-            rawN = entries[range.x + WAVE_SIZE + lane];
+            rawN = entries[rangex + WAVE_SIZE + lane];
     }
 
     for (uint base = 0u; base < total; base += WAVE_SIZE)
@@ -164,7 +165,7 @@ void main(uint3 groupID : SV_GroupID, uint tid : SV_GroupIndex)
             u = splats[gidN];
         }
         if (i + 2u * WAVE_SIZE < total)
-            rawN = entries[range.x + i + 2u * WAVE_SIZE];
+            rawN = entries[rangex + i + 2u * WAVE_SIZE];
             
         uint hm = WaveActiveBallot(hit).x;
         if (hm != 0u)

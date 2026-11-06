@@ -19,7 +19,7 @@ typealias TileSortInfos = TileSortInfo*;   // @brief TileSortInfo Buffer.
 typealias TileEntries   = uint64_t*;       // @brief Sort Buffer.
 typealias TileUints     = uint*;           // @brief hist Buffer.
 typealias TileSplats    = uint4*;          // @brief Splats Buffer. @see Splat.
-typealias TileRanges    = uint2*;          // @brief Range Buffer.
+typealias TileRanges    = uint*;           // @brief Range Buffer.
 
 /*****************************************************************************************/
 
