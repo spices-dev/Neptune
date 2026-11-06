@@ -68,6 +68,15 @@ namespace Neptune::Vulkan {
         bool UnRegistry();
         
         /**
+        * @brief Unregister Infrastructure.
+        *
+        * @param[in] e E.
+        *
+        * @return Returns true if succeeded.
+        */
+        bool UnRegistry(E e);
+
+        /**
         * @brief Unregister All Infrastructure.
         */
         void UnRegistry();
@@ -112,7 +121,13 @@ namespace Neptune::Vulkan {
     template <typename I> 
     inline bool Context<Element, E>::UnRegistry()
     {
-        constexpr auto position = static_cast<uint8_t>(I::E);
+        return UnRegistry(I::E);
+    }
+
+    template<typename Element, typename E>
+    inline bool Context<Element, E>::UnRegistry(E e)
+    {
+        const auto position = static_cast<uint8_t>(e);
 
         if (!m_Infrastructures[position]) return false;
 

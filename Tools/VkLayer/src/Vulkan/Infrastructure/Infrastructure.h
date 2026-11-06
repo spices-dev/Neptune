@@ -24,19 +24,6 @@ namespace Neptune::Vulkan {
         * @brief Destructor Function.
         */
         virtual ~Infrastructure() = default;
-
-    public:
-
-        /**
-        * @brief Turn EInfrastructure to string.
-        * 
-        * @return Returns string EInfrastructure.
-        */
-        std::string ToString() const { return ""; }
-        
-    private:
-        
-        uint32_t m_EInfrastructure;  // @brief EInfrastructure;
     };
 
 }

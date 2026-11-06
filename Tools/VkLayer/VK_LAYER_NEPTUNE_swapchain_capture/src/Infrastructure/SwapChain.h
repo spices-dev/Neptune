@@ -14,7 +14,7 @@
 
 namespace Neptune::Vulkan {
 
-    using ISwapChain = IInfrastructure<class SwapChain, EInfrastructure::SwapChain>;
+    using ISwapChain = IInfrastructure<MultiInstance<VkSwapchainKHR, class SwapChain>, EInfrastructure::SwapChain>;
 	
     /**
     * @brief Vulkan::SwapChain Class.
@@ -34,11 +34,19 @@ namespace Neptune::Vulkan {
         */
         ~SwapChain() override = default;
         
+        /**
+        * @brief Get Unit Handle.
+        *
+        * @return Returns Unit Handle.
+        */
+        const Unit::SwapChain::Handle& Handle() const { return m_SwapChain->GetHandle(); }
+        
     public:
 		
         UP<Unit::SwapChain>              m_SwapChain;                   // @brief SwapChain.
         std::vector<VkImage>             m_Images;                      // @brief SwapChain Images.
         VkSwapchainCreateInfoKHR         m_Info{};                      // @brief VkSwapchainCreateInfoKHR.
+        uint32_t                         m_Family;                      // @brief Queue Family.
     };
 
 }

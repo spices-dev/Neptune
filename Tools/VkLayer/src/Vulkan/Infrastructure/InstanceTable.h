@@ -7,11 +7,12 @@
 #pragma once
 #include "Core/Core.h"
 #include "Infrastructure.h"
+#include "MultiInstance.h"
 #include "Vulkan/Unit/Instance.h"
 
 namespace Neptune::Vulkan {
 
-	using IInstanceTable = IInfrastructure<class InstanceTable, 0u>;
+	using IInstanceTable = IInfrastructure<MultiInstance<void*, class InstanceTable>, 0u>;
 	
 	/**
 	* @brief Vulkan::InstanceTable Class.
@@ -40,7 +41,7 @@ namespace Neptune::Vulkan {
 
 	public:
 		
-		SP<Unit::Instance>               m_Instance;                    // @brief this unit Instance.
+		UP<Unit::Instance>               m_Instance;                    // @brief this unit Instance.
 		PFN_vkGetInstanceProcAddr        vkGetInstanceProcAddr;         // @brief PFN_vkGetInstanceProcAddr.
 		PFN_vkCreateDevice               vkCreateDevice;                // @brief PFN_vkCreateDevice.
 		PFN_vkSubmitDebugUtilsMessageEXT vkSubmitDebugUtilsMessageEXT;  // @brief PFN_vkSubmitDebugUtilsMessageEXT.

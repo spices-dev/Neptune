@@ -10,6 +10,13 @@
 
 namespace Neptune {
     
+    DispatchTable::DispatchTable()
+        : Super()
+    {
+        s_Context.Registry<Vulkan::ISwapChain>();
+        s_Context.Registry<Vulkan::ICommandBuffer>();
+    }
+
     VkResult DispatchTable::vkCreateSwapchainKHR(VkDevice device, const VkSwapchainCreateInfoKHR* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkSwapchainKHR* pSwapchain)
     {
         ACCURE_DEVICE(deviceTable, device)
@@ -24,44 +31,48 @@ namespace Neptune {
             {
                 unit->SetHandle(*pSwapchain);
                 
-                unit->SetLife({deviceTable->vkCreateSwapchainKHR, deviceTable->vkDestroySwapchainKHR, pAllocator });
+                unit->SetLife({deviceTable.vkCreateSwapchainKHR, deviceTable.vkDestroySwapchainKHR, pAllocator });
 
                 unit->CreateSwapchain(device, info);
                 
                 *pSwapchain = unit->GetHandle();
             }
         
-            Vulkan::SwapChain* swapChain = nullptr;
+            auto swapChain = Vulkan::CreateUP<Vulkan::SwapChain>();
         
             {
-                std::unique_lock lock(s_Mutex);
-            
-                swapChain = s_Context.at(GetKey(device))->Registry<Vulkan::ISwapChain>();
-                
                 swapChain->m_SwapChain = std::move(unit);
-            }
-        
-            {
+                
+                swapChain->m_Info = info;
+                
+                swapChain->m_Family = *info.pQueueFamilyIndices;
+                
                 uint32_t imageCount = 0;
 
-                VULKAN_CHECK(deviceTable->vkGetSwapchainImagesKHR(device, *pSwapchain, &imageCount, nullptr))
+                VULKAN_CHECK(deviceTable.vkGetSwapchainImagesKHR(device, *pSwapchain, &imageCount, nullptr))
         
                 swapChain->m_Images.resize(imageCount);
 
-                VULKAN_CHECK(deviceTable->vkGetSwapchainImagesKHR(device, *pSwapchain, &imageCount, swapChain->m_Images.data()))
+                VULKAN_CHECK(deviceTable.vkGetSwapchainImagesKHR(device, *pSwapchain, &imageCount, swapChain->m_Images.data()))
             }
+            
+            s_Context.Get<Vulkan::ISwapChain>()->Registry(swapChain->Handle(), std::move(swapChain));
         }
+        
+        uint32_t family = *info.pQueueFamilyIndices;
+        
+        if (s_Context.Get<Vulkan::ICommandBuffer>()->Has(family)) return VK_SUCCESS;
         
         {
             auto unitCommandPool = Vulkan::CreateUP<Vulkan::Unit::CommandPool>();
         
             {
-                unitCommandPool->SetLife({deviceTable->vkCreateCommandPool, deviceTable->vkDestroyCommandPool, pAllocator });
+                unitCommandPool->SetLife({deviceTable.vkCreateCommandPool, deviceTable.vkDestroyCommandPool, pAllocator });
 
                 VkCommandPoolCreateInfo               poolInfo{};
                 poolInfo.sType                      = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
                 poolInfo.flags                      = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
-                poolInfo.queueFamilyIndex           = 0;
+                poolInfo.queueFamilyIndex           = family;
                 
                 unitCommandPool->CreateCommandPool(device, poolInfo);
             }
@@ -69,7 +80,7 @@ namespace Neptune {
             auto unitCommandBuffer = Vulkan::CreateUP<Vulkan::Unit::CommandBuffer>();
         
             {
-                unitCommandBuffer->SetLife({deviceTable->vkAllocateCommandBuffers, deviceTable->vkFreeCommandBuffers, pAllocator });
+                unitCommandBuffer->SetLife({deviceTable.vkAllocateCommandBuffers, deviceTable.vkFreeCommandBuffers, pAllocator });
 
                 VkCommandBufferAllocateInfo             allocInfo{};
                 allocInfo.sType                       = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
@@ -83,7 +94,7 @@ namespace Neptune {
             auto unitSemaphore = Vulkan::CreateUP<Vulkan::Unit::Semaphore>();
         
             {
-                unitSemaphore->SetLife({deviceTable->vkCreateSemaphore, deviceTable->vkDestroySemaphore, pAllocator });
+                unitSemaphore->SetLife({deviceTable.vkCreateSemaphore, deviceTable.vkDestroySemaphore, pAllocator });
 
                 VkSemaphoreCreateInfo              semaphoreInfo {};
                 semaphoreInfo.sType              = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
@@ -91,17 +102,15 @@ namespace Neptune {
                 unitSemaphore->CreateSemaphore(device, semaphoreInfo);
             }
             
-            Vulkan::CommandBuffer* commandBuffer = nullptr;
+            auto commandBuffer = Vulkan::CreateUP<Vulkan::CommandBuffer>();
         
             {
-                std::unique_lock lock(s_Mutex);
-            
-                commandBuffer = s_Context.at(GetKey(device))->Registry<Vulkan::ICommandBuffer>();
-                
                 commandBuffer->m_CommandPool   = std::move(unitCommandPool);
                 commandBuffer->m_CommandBuffer = std::move(unitCommandBuffer);
                 commandBuffer->m_Semaphore     = std::move(unitSemaphore);
             }
+
+            s_Context.Get<Vulkan::ICommandBuffer>()->Registry(family, std::move(commandBuffer));
         }
         
         return VK_SUCCESS;
@@ -109,22 +118,34 @@ namespace Neptune {
 
     void DispatchTable::vkDestroySwapchainKHR(VkDevice device, VkSwapchainKHR swapchain, const VkAllocationCallbacks* pAllocator)
     {
-        std::unique_lock lock(s_Mutex);
+        auto family = s_Context.Get<Vulkan::ISwapChain>()->Get(swapchain).m_Family;
         
-        s_Context.at(GetKey(device))->UnRegistry<Vulkan::ISwapChain>();
+        s_Context.Get<Vulkan::ISwapChain>()->UnRegistry(swapchain);
+        
+        bool inuse = false;
+        
+        s_Context.Get<Vulkan::ISwapChain>()->View([&](const auto& instance) {
+            if (instance->m_Family == family && instance->Handle() != swapchain) inuse |= true;
+        });
+        
+        if (inuse) return;
+        
+        s_Context.Get<Vulkan::ICommandBuffer>()->UnRegistry(family);
     }
 
     VkResult DispatchTable::vkQueuePresentKHR(VkQueue queue, const VkPresentInfoKHR* pPresentInfo)
     {
-        Vulkan::DeviceTable*   device        = nullptr;
-        Vulkan::CommandBuffer* commandBuffer = nullptr;
+        ACCURE_DEVICE(device, queue)
+        
+        uint32_t family = 0;
         
         {
-            std::shared_lock lock(s_Mutex);
-            
-            device        = s_Context.at(GetKey(queue))->Get<Vulkan::IDeviceTable>();
-            commandBuffer = s_Context.at(GetKey(queue))->Get<Vulkan::ICommandBuffer>();
+            s_Context.Get<Vulkan::ISwapChain>()->View([&](const auto& instance) {
+                if (instance->Handle() == *pPresentInfo->pSwapchains) family = instance->m_Family;
+            });
         }
+        
+        const auto& commandBuffer = s_Context.Get<Vulkan::ICommandBuffer>()->Get(family);
         
         {
             VkCommandBufferBeginInfo          info{};
@@ -132,7 +153,7 @@ namespace Neptune {
             info.flags                      = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
             info.pInheritanceInfo           = nullptr;
         
-            std::invoke(device->vkBeginCommandBuffer, commandBuffer->Handle(), &info);
+            std::invoke(device.vkBeginCommandBuffer, commandBuffer.Handle(), &info);
         }
         
         /*{
@@ -149,7 +170,7 @@ namespace Neptune {
         }*/
         
         {
-            std::invoke(device->vkEndCommandBuffer, commandBuffer->Handle());
+            std::invoke(device.vkEndCommandBuffer, commandBuffer.Handle());
         }
         
         {
@@ -161,20 +182,20 @@ namespace Neptune {
             info.pWaitSemaphores           = pPresentInfo->pWaitSemaphores;
             info.pWaitDstStageMask         = &flag;
             info.commandBufferCount        = 1;
-            info.pCommandBuffers           = &commandBuffer->Handle();
+            info.pCommandBuffers           = &commandBuffer.Handle();
             info.signalSemaphoreCount      = 1;
-            info.pSignalSemaphores         = &commandBuffer->Semaphore();
+            info.pSignalSemaphores         = &commandBuffer.Semaphore();
             
-            std::invoke(device->vkQueueSubmit, queue, 1, &info, VK_NULL_HANDLE);
+            std::invoke(device.vkQueueSubmit, queue, 1, &info, VK_NULL_HANDLE);
         }
         
         VkPresentInfoKHR presentInfo       = *pPresentInfo;
         presentInfo.waitSemaphoreCount     = 1;
-        presentInfo.pWaitSemaphores        = &commandBuffer->Semaphore();
+        presentInfo.pWaitSemaphores        = &commandBuffer.Semaphore();
         
-        VULKAN_CHECK(std::invoke(device->vkQueuePresentKHR, queue, &presentInfo))
+        VULKAN_CHECK(std::invoke(device.vkQueuePresentKHR, queue, &presentInfo))
         
-        VULKAN_CHECK(std::invoke(device->vkDeviceWaitIdle, device->Handle()))
+        VULKAN_CHECK(std::invoke(device.vkDeviceWaitIdle, device.Handle()))
         
         return VK_SUCCESS;
     }

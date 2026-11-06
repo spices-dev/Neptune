@@ -7,11 +7,12 @@
 #pragma once
 #include "Core/Core.h"
 #include "Infrastructure.h"
+#include "MultiInstance.h"
 #include "Vulkan/Unit/Device.h"
 
 namespace Neptune::Vulkan {
 
-    using IDeviceTable = IInfrastructure<class DeviceTable, 1u>;
+    using IDeviceTable = IInfrastructure<MultiInstance<void*, class DeviceTable>, 1u>;
     
     /**
     * @brief Vulkan::DeviceTable Class.

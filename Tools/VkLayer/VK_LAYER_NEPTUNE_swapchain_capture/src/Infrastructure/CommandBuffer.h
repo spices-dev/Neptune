@@ -14,7 +14,7 @@
 
 namespace Neptune::Vulkan {
 
-    using ICommandBuffer = IInfrastructure<class CommandBuffer, EInfrastructure::SwapChain>;
+    using ICommandBuffer = IInfrastructure<MultiInstance<uint32_t, class CommandBuffer>, EInfrastructure::SwapChain>;
 	
     /**
     * @brief Vulkan::CommandBuffer Class.

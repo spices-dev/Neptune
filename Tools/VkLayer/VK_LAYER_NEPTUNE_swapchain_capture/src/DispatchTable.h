@@ -24,7 +24,7 @@ namespace Neptune {
         /**
         * @brief Constructor Function.
         */
-        DispatchTable() = default;
+        DispatchTable();
         
         /**
         * @brief Destructor Function.
