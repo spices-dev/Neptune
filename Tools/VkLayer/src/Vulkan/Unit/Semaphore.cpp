@@ -11,13 +11,13 @@ namespace Neptune::Vulkan::Unit {
     {
         if (!m_Handle) return;
 
-        std::invoke(m_Life.destructor, m_Device, m_Handle, m_Life.allocator);
+        m_Life.destructor(m_Device, m_Handle, m_Life.allocator);
     }
 
-    void Semaphore::CreateSemaphore(VkDevice device, const VkSemaphoreCreateInfo& info)
+    VkResult Semaphore::CreateSemaphore(VkDevice device, const VkSemaphoreCreateInfo& info)
     {
         m_Device = device;
 
-        VULKAN_CHECK(std::invoke(m_Life.constructor, m_Device, &info, m_Life.allocator, &m_Handle))
+        return m_Life.constructor(m_Device, &info, m_Life.allocator, &m_Handle);
     }
 }

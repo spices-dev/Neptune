@@ -5,8 +5,6 @@
 */
 
 #pragma once
-#include "Core.h"
-
 #include <iostream>
 #include <sstream>
 #include <functional>

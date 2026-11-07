@@ -41,10 +41,11 @@ namespace Neptune::Vulkan {
 
 	public:
 		
-		UP<Unit::Instance>               m_Instance;                    // @brief this unit Instance.
-		PFN_vkGetInstanceProcAddr        vkGetInstanceProcAddr;         // @brief PFN_vkGetInstanceProcAddr.
-		PFN_vkCreateDevice               vkCreateDevice;                // @brief PFN_vkCreateDevice.
-		PFN_vkSubmitDebugUtilsMessageEXT vkSubmitDebugUtilsMessageEXT;  // @brief PFN_vkSubmitDebugUtilsMessageEXT.
+		UP<Unit::Instance>                            m_Instance;                               // @brief this unit Instance.
+		PFN_vkGetInstanceProcAddr                     vkGetInstanceProcAddr;                    // @brief PFN_vkGetInstanceProcAddr.
+		PFN_vkCreateDevice                            vkCreateDevice;                           // @brief PFN_vkCreateDevice.
+		PFN_vkSubmitDebugUtilsMessageEXT              vkSubmitDebugUtilsMessageEXT;             // @brief PFN_vkSubmitDebugUtilsMessageEXT.
+		PFN_vkGetPhysicalDeviceMemoryProperties       vkGetPhysicalDeviceMemoryProperties;      // @brief PFN_vkGetPhysicalDeviceMemoryProperties.
 	};
 
 }

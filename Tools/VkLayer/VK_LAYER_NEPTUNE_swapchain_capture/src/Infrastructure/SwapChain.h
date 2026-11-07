@@ -8,6 +8,7 @@
 #include "Core/Core.h"
 #include "Vulkan/Infrastructure/Infrastructure.h"
 #include "Vulkan/Unit/SwapChain.h"
+#include "Vulkan/Resource/Buffer.h"
 #include "Enum.h"
 
 #include <vector>
@@ -44,6 +45,7 @@ namespace Neptune::Vulkan {
     public:
 		
         UP<Unit::SwapChain>              m_SwapChain;                   // @brief SwapChain.
+        UP<Resource::Buffer>             m_StagingBuffer;               // @brief StagingBuffer.
         std::vector<VkImage>             m_Images;                      // @brief SwapChain Images.
         VkSwapchainCreateInfoKHR         m_Info{};                      // @brief VkSwapchainCreateInfoKHR.
         uint32_t                         m_Family;                      // @brief Queue Family.

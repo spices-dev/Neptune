@@ -37,8 +37,10 @@ namespace Neptune::Vulkan::Unit {
 		*
 		* @param[in] device VkDevice.
 		* @param[in] info VkCommandPoolCreateInfo.
+		* 
+		* @return Returns VkResult.
 		*/
-		void CreateCommandPool(VkDevice device, const VkCommandPoolCreateInfo& info);
+		VkResult CreateCommandPool(VkDevice device, const VkCommandPoolCreateInfo& info);
 
 	private:
 

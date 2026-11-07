@@ -43,7 +43,7 @@ extern "C" {
             return VK_ERROR_INITIALIZATION_FAILED;
         }
 
-        pVersionStruct->loaderLayerInterfaceVersion  = Neptune::Vulkan::LayerInterfaceVersion;
+        pVersionStruct->loaderLayerInterfaceVersion  = Neptune::LayerInterfaceVersion;
         pVersionStruct->pfnGetInstanceProcAddr       = vkGetInstanceProcAddr;
         pVersionStruct->pfnGetDeviceProcAddr         = vkGetDeviceProcAddr;
         pVersionStruct->pfnGetPhysicalDeviceProcAddr = nullptr;

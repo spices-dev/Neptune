@@ -37,8 +37,10 @@ namespace Neptune::Vulkan::Unit {
         *
         * @param[in] device VkDevice.
         * @param[in] info VkBufferCreateInfo.
+        * 
+        * @return Returns VkResult.
         */
-        void CreateBuffer(VkDevice device, const VkBufferCreateInfo& info);
+        VkResult CreateBuffer(VkDevice device, const VkBufferCreateInfo& info);
 
     private:
 

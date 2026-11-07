@@ -36,7 +36,9 @@ namespace Neptune::Vulkan::Unit {
         * @brief Create Instance.
         *
         * @param[in] info VkInstanceCreateInfo.
+        * 
+        * @return Returns VkResult.
         */
-        void CreateInstance(const VkInstanceCreateInfo& info);
+        VkResult CreateInstance(const VkInstanceCreateInfo& info);
     };
 }

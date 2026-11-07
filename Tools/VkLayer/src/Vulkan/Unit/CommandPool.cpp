@@ -11,13 +11,13 @@ namespace Neptune::Vulkan::Unit {
 	{
 		if (!m_Handle) return;
 
-		std::invoke(m_Life.destructor, m_Device, m_Handle, m_Life.allocator);
+		m_Life.destructor(m_Device, m_Handle, m_Life.allocator);
 	}
 
-	void CommandPool::CreateCommandPool(VkDevice device, const VkCommandPoolCreateInfo& info)
+	VkResult CommandPool::CreateCommandPool(VkDevice device, const VkCommandPoolCreateInfo& info)
 	{
 		m_Device = device;
 
-		VULKAN_CHECK(std::invoke(m_Life.constructor, device, &info, m_Life.allocator, &m_Handle))
+		return m_Life.constructor(device, &info, m_Life.allocator, &m_Handle);
 	}
 }

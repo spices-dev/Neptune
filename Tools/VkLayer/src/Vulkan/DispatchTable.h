@@ -28,6 +28,9 @@ namespace Neptune::Vulkan {
 #define ACCURE_DEVICE_FN(name, handle) \
     const PFN_##name name = s_Context.template Get<Vulkan::IDeviceTable>()->Get(GetKey(handle)).name;
     
+#define ACCURE_INSTANCE(name, handle) \
+    const Vulkan::InstanceTable& name = s_Context.template Get<Vulkan::IInstanceTable>()->Get(GetKey(handle));
+    
 #define ACCURE_DEVICE(name, handle) \
     const Vulkan::DeviceTable& name = s_Context.template Get<Vulkan::IDeviceTable>()->Get(GetKey(handle));
     
@@ -221,7 +224,7 @@ namespace Neptune::Vulkan {
         
         ACCURE_INSTANCE_FN(vkGetInstanceProcAddr, instance)
         
-        return std::invoke(vkGetInstanceProcAddr, instance, pName);
+        return vkGetInstanceProcAddr(instance, pName);
     }
 
     template<typename E>
@@ -240,7 +243,7 @@ namespace Neptune::Vulkan {
 
         ACCURE_DEVICE_FN(vkGetDeviceProcAddr, device)
 
-        return std::invoke(vkGetDeviceProcAddr, device, pName);
+        return vkGetDeviceProcAddr(device, pName);
     }
 
     template<typename E>
@@ -260,7 +263,7 @@ namespace Neptune::Vulkan {
         
         auto vkGetInstanceProcAddr = chainInfo->u.pLayerInfo->pfnNextGetInstanceProcAddr;
         
-        auto vkCreateInstance  = reinterpret_cast<PFN_vkCreateInstance>(std::invoke(vkGetInstanceProcAddr, VK_NULL_HANDLE, "vkCreateInstance"));
+        auto vkCreateInstance  = reinterpret_cast<PFN_vkCreateInstance>(vkGetInstanceProcAddr(VK_NULL_HANDLE, "vkCreateInstance"));
         
         if (!vkCreateInstance)
         {
@@ -276,11 +279,13 @@ namespace Neptune::Vulkan {
         
             unit->SetLife({ vkCreateInstance, nullptr, pAllocator });
     
-            unit->CreateInstance(*pCreateInfo);
-    
+            VULKAN_CHECK(unit->CreateInstance(*pCreateInfo))
+        }
+
+        {
             *pInstance = unit->GetHandle();
             
-            auto vkDestroyInstance = reinterpret_cast<PFN_vkDestroyInstance>(std::invoke(vkGetInstanceProcAddr, *pInstance, "vkDestroyInstance"));
+            auto vkDestroyInstance = reinterpret_cast<PFN_vkDestroyInstance>(vkGetInstanceProcAddr(*pInstance, "vkDestroyInstance"));
             
             unit->SetLife({ vkCreateInstance, vkDestroyInstance, pAllocator });
         }
@@ -310,10 +315,11 @@ namespace Neptune::Vulkan {
     {
         
 #define EXPLAIN_INSTANCE_FN(name)                             \
-    table->name = reinterpret_cast<PFN_##name>(std::invoke(table->vkGetInstanceProcAddr, table->Handle(), #name));
+    table->name = reinterpret_cast<PFN_##name>(table->vkGetInstanceProcAddr(table->Handle(), #name));
         
         EXPLAIN_INSTANCE_FN(vkCreateDevice)
         EXPLAIN_INSTANCE_FN(vkSubmitDebugUtilsMessageEXT)
+        EXPLAIN_INSTANCE_FN(vkGetPhysicalDeviceMemoryProperties)
         
 #undef EXPLAIN_INSTANCE_FN
         
@@ -353,13 +359,13 @@ namespace Neptune::Vulkan {
         
             unit->SetLife({ vkCreateDevice, nullptr, pAllocator });
         
-            unit->CreateDevice(physicalDevice, *pCreateInfo);
+            VULKAN_CHECK(unit->CreateDevice(physicalDevice, *pCreateInfo))
         }
         
         {
             *pDevice = unit->GetHandle();
         
-            auto vkDestroyDevice = reinterpret_cast<PFN_vkDestroyDevice>(std::invoke(vkGetDeviceProcAddr, *pDevice, "vkDestroyDevice"));
+            auto vkDestroyDevice = reinterpret_cast<PFN_vkDestroyDevice>(vkGetDeviceProcAddr(*pDevice, "vkDestroyDevice"));
         
             unit->SetLife({ vkCreateDevice, vkDestroyDevice, pAllocator });
         }
@@ -388,7 +394,7 @@ namespace Neptune::Vulkan {
     {
         
 #define EXPLAIN_DEVICE_FN(name)                             \
-    table->name = reinterpret_cast<PFN_##name>(std::invoke(table->vkGetDeviceProcAddr, table->Handle(), #name));
+    table->name = reinterpret_cast<PFN_##name>(table->vkGetDeviceProcAddr(table->Handle(), #name));
         
         EXPLAIN_DEVICE_FN(vkCreateSwapchainKHR)
         EXPLAIN_DEVICE_FN(vkDestroySwapchainKHR)
@@ -404,6 +410,19 @@ namespace Neptune::Vulkan {
         EXPLAIN_DEVICE_FN(vkDeviceWaitIdle)
         EXPLAIN_DEVICE_FN(vkCreateSemaphore)
         EXPLAIN_DEVICE_FN(vkDestroySemaphore)
+        EXPLAIN_DEVICE_FN(vkQueueWaitIdle)
+        EXPLAIN_DEVICE_FN(vkCmdPipelineBarrier)
+        EXPLAIN_DEVICE_FN(vkCmdCopyImageToBuffer)
+        EXPLAIN_DEVICE_FN(vkCreateBuffer)
+        EXPLAIN_DEVICE_FN(vkDestroyBuffer)
+        EXPLAIN_DEVICE_FN(vkGetBufferMemoryRequirements2)
+        EXPLAIN_DEVICE_FN(vkBindBufferMemory)
+        EXPLAIN_DEVICE_FN(vkGetBufferDeviceAddress)
+        EXPLAIN_DEVICE_FN(vkAllocateMemory)
+        EXPLAIN_DEVICE_FN(vkFreeMemory)
+        EXPLAIN_DEVICE_FN(vkMapMemory)
+        EXPLAIN_DEVICE_FN(vkUnmapMemory)
+        EXPLAIN_DEVICE_FN(vkFlushMappedMemoryRanges)
         
 #undef EXPLAIN_DEVICE_FN
         
@@ -453,6 +472,6 @@ namespace Neptune::Vulkan {
             default:                      severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT; break;
         }
 
-        std::invoke(vkSubmitDebugUtilsMessageEXT, instance, severity, VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT, &data);
+        vkSubmitDebugUtilsMessageEXT(instance, severity, VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT, &data);
     }
 }

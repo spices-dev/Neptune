@@ -37,8 +37,10 @@ namespace Neptune::Vulkan::Unit {
         *
         * @param[in] device VkDevice.
         * @param[in] info VkSemaphoreCreateInfo.
+        * 
+        * @return Returns VkResult.
         */
-        void CreateSemaphore(VkDevice device, const VkSemaphoreCreateInfo& info);
+        VkResult CreateSemaphore(VkDevice device, const VkSemaphoreCreateInfo& info);
 
     private:
 

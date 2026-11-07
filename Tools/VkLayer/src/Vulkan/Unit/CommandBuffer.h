@@ -37,8 +37,10 @@ namespace Neptune::Vulkan::Unit {
 		*
 		* @param[in] device VkDevice.
 		* @param[in] info VkCommandBufferAllocateInfo.
+		* 
+		* @return Returns VkResult.
 		*/
-		void CreateCommandBuffer(VkDevice device, const VkCommandBufferAllocateInfo& info);
+		VkResult CreateCommandBuffer(VkDevice device, const VkCommandBufferAllocateInfo& info);
 
 	private:
 

@@ -37,7 +37,9 @@ namespace Neptune::Vulkan::Unit {
         *
         * @param[in] physicalDevice VkPhysicalDevice.
         * @param[in] info VkDeviceCreateInfo.
+        * 
+        * @return Returns VkResult.
         */
-        void CreateDevice(VkPhysicalDevice physicalDevice, const VkDeviceCreateInfo& info);
+        VkResult CreateDevice(VkPhysicalDevice physicalDevice, const VkDeviceCreateInfo& info);
     };
 }

@@ -37,8 +37,10 @@ namespace Neptune::Vulkan::Unit {
         *
         * @param[in] device VkDevice.
         * @param[in] createInfo VkSwapchainCreateInfoKHR.
+        * 
+        * @return Returns VkResult.
         */
-        void CreateSwapchain(VkDevice device, const VkSwapchainCreateInfoKHR& createInfo);
+        VkResult CreateSwapchain(VkDevice device, const VkSwapchainCreateInfoKHR& createInfo);
         
     private:
         

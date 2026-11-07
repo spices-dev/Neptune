@@ -5,7 +5,6 @@
 */
 
 #include "Log.h"
-#include "DispatchTable.h"
 
 namespace Neptune::Vulkan {
 
