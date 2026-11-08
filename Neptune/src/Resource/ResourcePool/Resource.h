@@ -40,8 +40,8 @@ namespace Neptune {
 		* @param[in] fn function pointer of create resource instance.
 		*/
 		explicit Resource(const std::function<std::any()>& fn)
-			: m_Creator(fn)
-			, m_State(ResourceStateEnum::UnLoad)
+			: m_State(ResourceStateEnum::UnLoad)
+			, m_Creator(fn)
 		{}
 
 		/**
@@ -51,9 +51,9 @@ namespace Neptune {
 		* @param[in] resource Resource instance.
 		*/
 		explicit Resource(const std::any& resource)
-			: m_Creator(nullptr)
+			: m_Resource(resource)
 			, m_State(ResourceStateEnum::Loaded)
-			, m_Resource(resource)
+			, m_Creator(nullptr)
 		{}
 
 		/**

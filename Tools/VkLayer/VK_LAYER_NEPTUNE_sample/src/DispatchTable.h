@@ -38,7 +38,7 @@ namespace Neptune {
     * @return Returns VkResult.
     */
     template <>
-    inline VkResult DispatchTable::InitSettings(UP<Resource::LayerSetting>& setting)
+    inline VkResult DispatchTable::InitSettings(UP<Vulkan::Resource::LayerSetting>& setting)
     {
         auto data = CreateSP<Settings>();
         

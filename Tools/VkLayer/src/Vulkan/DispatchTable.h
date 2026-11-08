@@ -136,11 +136,12 @@ namespace Neptune::Vulkan {
         /**
         * @brief Log to DebugUtils.
         * 
+        * @param[in] submit PFN_vkSubmitDebugUtilsMessageEXT.
         * @param[in] instance VkInstance.
         * @param[in] level LogStream::LogLevel.
         * @param[in] message .
         */
-        static void Log(VkInstance instance, LogStream::LogLevel level, const char* message);
+        static void Log(PFN_vkSubmitDebugUtilsMessageEXT submit, VkInstance instance, LogStream::LogLevel level, const char* message);
         
     private:
         
@@ -284,6 +285,13 @@ namespace Neptune::Vulkan {
             unit->SetLife({ vkCreateInstance, vkDestroyInstance, pAllocator });
         }
         
+        {
+            auto instance = *pInstance;
+            auto submit   = reinterpret_cast<PFN_vkSubmitDebugUtilsMessageEXT>(vkGetInstanceProcAddr(instance, "vkSubmitDebugUtilsMessageEXT"));
+        
+            SetLogFunctor([=](LogStream::LogLevel level, const char* message) { Log(submit, instance, level, message); });
+        }
+        
         auto table = CreateUP<InstanceTable>();
         
         {
@@ -293,21 +301,19 @@ namespace Neptune::Vulkan {
         }
         
         {
-            auto instance = table->Handle();
-        
-            SetLogFunctor([=](LogStream::LogLevel level, const char* message) { Log(instance, level, message); });
-        
-            s_Context.template Get<IInstanceTable>()->Registry(GetKey(instance), std::move(table));
-        }
-        
-        {
-            auto layerSetting = CreateUP<Resource::LayerSetting>(table.get());
+            auto layerSetting = CreateUP<Resource::LayerSetting>();
             
             layerSetting->CreateLayerSettingSet(GetName(), *pCreateInfo, pAllocator);
             
             VULKAN_CHECK(InitSettings(layerSetting))
 
-            s_Context.template Get<IInstanceTable>()->Get(GetKey(instance)->m_Setting = std::move(layerSetting);
+            table->m_Setting = std::move(layerSetting);
+        }
+        
+        {
+            auto instance = *pInstance;
+            
+            s_Context.template Get<IInstanceTable>()->Registry(GetKey(instance), std::move(table));
         }
         
         return VK_SUCCESS;
@@ -397,11 +403,9 @@ namespace Neptune::Vulkan {
     }
     
     template <typename E>
-    void DispatchTable<E>::Log(VkInstance instance, LogStream::LogLevel level, const char* message)
+    void DispatchTable<E>::Log(PFN_vkSubmitDebugUtilsMessageEXT submit, VkInstance instance, LogStream::LogLevel level, const char* message)
     {
-        ACCURE_INSTANCE_FN(SubmitDebugUtilsMessageEXT, instance)
-        
-        if (!SubmitDebugUtilsMessageEXT) return;
+        if (!submit || !instance) return;
         
         VkDebugUtilsMessengerCallbackDataEXT    data{};
         data.sType                            = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CALLBACK_DATA_EXT;
@@ -420,6 +424,6 @@ namespace Neptune::Vulkan {
             default:                      severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT; break;
         }
 
-        SubmitDebugUtilsMessageEXT(instance, severity, VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT, &data);
+        submit(instance, severity, VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT, &data);
     }
 }

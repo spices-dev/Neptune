@@ -38,4 +38,10 @@ solution.DefineCppSharedLibrary(layerName, function()
 		vendor.Vulkan_Utility_Libraries.includes,                 -- Library: Vulkan Utility Libraries Source Folder.
 	}
 
+	-- The Solution Dependency.
+	links
+	{
+		"Vulkan-Utility-Libraries",                                -- Dependency: Vulkan-Utility-Libraries.
+	}
+
 end)

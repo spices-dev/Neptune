@@ -6,7 +6,6 @@
 
 #pragma once
 #include "Vulkan/Core.h"
-#include "Vulkan/Infrastructure/InstanceTable.h"
 #include "Vulkan/Unit/LayerSettingSet.h"
 
 namespace Neptune::Vulkan::Resource {
@@ -21,10 +20,8 @@ namespace Neptune::Vulkan::Resource {
 
 		/**
 		* @brief Constructor Function.
-		*
-		* @param[in] instance InstanceTable.
 		*/
-		explicit LayerSetting(const InstanceTable& instance) : m_InstanceTable(&instance) {}
+		LayerSetting() = default;
 
 		/**
 		* @brief Destructor Function.
@@ -66,7 +63,7 @@ namespace Neptune::Vulkan::Resource {
 		template<typename T>
 		T* As()
 		{
-			return dynamic_cast<T*>(m_Setting.get());
+			return std::static_pointer_cast<T>(m_Setting).get();
 		}
 		
 		/**
@@ -113,8 +110,7 @@ namespace Neptune::Vulkan::Resource {
 		
 	private:
 
-		const InstanceTable*  m_InstanceTable;              // @brief InstanceTable.
 		Unit::LayerSettingSet m_LayerSettingSet;            // @brief This LayerSettingSet.
-		SP<void*>             m_Setting;                    // @brief Setting Data.      
+		SP<void>              m_Setting;                    // @brief Setting Data.      
 	};
 }

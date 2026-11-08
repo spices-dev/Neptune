@@ -18,6 +18,7 @@ module.Initialize = function()
 											  --   #define _DBJ_CONCATENATE(a, b)  _DBJ_CONCATENATE_(a, b)
                                               --   #define CONSTEXPR_LINE long(_DBJ_CONCATENATE(__LINE__,U)) 
 		editAndContinue "Off"				  -- 2.Use DebugInfoFormat: Zi (Program Database).
+		conformancemode "On"                  -- /permissive-
 
 		-- MSVC Specific Solution Macro Definitions.
 		defines 
@@ -30,6 +31,18 @@ module.Initialize = function()
 		{
 			"/utf-8",                                      -- Using utf-8 encode
 		}
+
+		-- MSVC Specific Solution disable warnings
+		disablewarnings
+        {
+            "4324",                                        -- Structure alignment.
+        }
+
+		-- MSVC Specific Solution fatalwarnings
+        fatalwarnings
+        {
+            "5038",                                        -- Initializer list order mismatch.
+        }
 
 	-- Configuration: GCC
     filter { "toolset:gcc" }
@@ -87,10 +100,12 @@ module.EnableMoreWarning = function()
     -- Configuration: MSVC
 	filter { "toolset:msc*" }
 
+		-- Enable warn.
+		warnings "Extra"
+
 		-- MSVC Specific Solution build options
 		buildoptions 
-		{
-            "/W4",                                         -- Enable warn.
+		{                                       
 			"/utf-8",                                      -- Using utf-8 encode
 		}
 
@@ -101,8 +116,23 @@ module.EnableMoreWarning = function()
 		buildoptions 
 		{ 
 			"-Wall",                                       -- Enable warn.
-			"-Wextra",                                     -- Enable warn.
+			"-Wall",
+            "-Wextra",
+            "-Wpedantic",
+            "-Wpointer-arith",
+            "-Wunused-function",
+            "-Wextra-semi",
 		}
+
+	-- Configuration: Clang
+    filter { "toolset:clang" }
+
+        buildoptions
+        {
+            "-Wimplicit-fallthrough",
+            "-Wunreachable-code-return",
+         -- "-Wconversion",
+        }
 
 	filter {}
 

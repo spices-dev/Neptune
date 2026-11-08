@@ -26,4 +26,7 @@ if os.target() ~= "emscripten" then
 
 end
 
+-- Project
+module.project = solution_root .. "/Neptune/vendor/Vulkan-Utility-Libraries"
+
 return module

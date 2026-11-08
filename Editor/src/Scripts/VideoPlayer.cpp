@@ -14,7 +14,7 @@
 
 namespace Neptune::Editor {
 
-	VideoPlayer::VideoPlayer(const std::filesystem::path& path) : m_InFile{ path } , NativeScript(path) {}
+	VideoPlayer::VideoPlayer(const std::filesystem::path& path) : NativeScript(path), m_InFile(path) {}
 
 	VideoPlayer::~VideoPlayer() = default;
 
