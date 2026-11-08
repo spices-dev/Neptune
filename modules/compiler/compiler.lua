@@ -115,7 +115,6 @@ module.EnableMoreWarning = function()
 		-- Not MSVC Specific Solution build options
 		buildoptions 
 		{ 
-			"-Wall",                                       -- Enable warn.
 			"-Wall",
             "-Wextra",
             "-Wpedantic",
