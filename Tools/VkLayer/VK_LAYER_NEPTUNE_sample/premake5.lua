@@ -35,6 +35,7 @@ solution.DefineCppSharedLibrary(layerName, function()
 	externalincludedirs
 	{
 		vendor.Vulkan_Headers.includes,                           -- Library: VulkanSDK Source Folder.
+		vendor.Vulkan_Utility_Libraries.includes,                 -- Library: Vulkan Utility Libraries Source Folder.
 	}
 
 end)

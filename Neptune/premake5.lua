@@ -102,6 +102,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		{
 			vendor.GLFW.includes,                                 -- Library: GLFW Source Folder.
 			vendor.Vulkan_Headers.includes,                       -- Library: VulkanSDK Source Folder.
+			vendor.Vulkan_Utility_Libraries.includes,             -- Library: Vulkan Utility Libraries Source Folder.
 			vendor.volk.includes,                                 -- Library: volk Source Folder.
 			vendor.Glad.includes,                                 -- Library: Glad Source Folder.
 			vendor.DirectX_Headers.includes,                      -- Library: DirectX-Headers Source Folder.
@@ -145,6 +146,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		{
 			vendor.GLFW.includes,                                      -- Library: GLFW Source Folder.
 			vendor.Vulkan_Headers.includes,                            -- Library: VulkanSDK Source Folder.
+			vendor.Vulkan_Utility_Libraries.includes,                  -- Library: Vulkan Utility Libraries Source Folder.
 			vendor.volk.includes,                                      -- Library: volk Source Folder.
 			vendor.Glad.includes,                                      -- Library: Glad Source Folder.
 			vendor.RenderDoc.includes,                                 -- Library: RenderDoc Source Folder.
@@ -180,6 +182,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		{
 			vendor.GLFW.includes,                                      -- Library: GLFW Source Folder.
 			vendor.Vulkan_Headers.includes,                            -- Library: VulkanSDK Source Folder.
+			vendor.Vulkan_Utility_Libraries.includes,                  -- Library: Vulkan Utility Libraries Source Folder.
 			vendor.volk.includes,                                      -- Library: volk Source Folder.
 			vendor.Glad.includes,                                      -- Library: Glad Source Folder.
 			vendor.metal_cpp.includes,                                 -- Library: metal-cpp Source Folder.
@@ -248,6 +251,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 		externalincludedirs
 		{
 			vendor.Vulkan_Headers.includes,                            -- Library: VulkanSDK Source Folder.
+			vendor.Vulkan_Utility_Libraries.includes,                  -- Library: Vulkan Utility Libraries Source Folder.
 			vendor.volk.includes,                                      -- Library: volk Source Folder.
 		}
 

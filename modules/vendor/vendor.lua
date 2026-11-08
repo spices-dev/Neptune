@@ -30,6 +30,7 @@ local module                          = {
     ["DirectX12AgilitySDK"]           = loadfile(current_dir .. "DirectX12AgilitySDK.lua")(),                          -- Third Party: DirectX12AgilitySDK
     ["DirectX_Headers"]               = loadfile(current_dir .. "DirectX-Headers.lua")(),                              -- Third Party: DirectX-Headers
     ["Vulkan_Headers"]                = loadfile(current_dir .. "Vulkan-Headers.lua")(),                               -- Third Party: Vulkan-Headers
+    ["Vulkan_Utility_Libraries"]      = loadfile(current_dir .. "Vulkan-Utility-Libraries.lua")(),                     -- Third Party: Vulkan-Utility-Libraries
     ["volk"]                          = loadfile(current_dir .. "volk.lua")(),                                         -- Third Party: volk
     ["WinPixEventRuntime"]            = loadfile(current_dir .. "WinPixEventRuntime.lua")(),                           -- Third Party: WinPixEventRuntime
     ["metal_cpp"]                     = loadfile(current_dir .. "metal-cpp.lua")(),                                    -- Third Party: metal-cpp
