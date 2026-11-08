@@ -5,7 +5,8 @@
 */
 
 #pragma once
-#include "Core/Core.h"
+#include "Vulkan/Core.h"
+#include "Vulkan/Concept.h"
 
 namespace Neptune::Vulkan::Unit {
 
@@ -15,7 +16,7 @@ namespace Neptune::Vulkan::Unit {
     * @tparam C Construct Function.
     * @tparam D Destruct Function.
     */
-    template<typename C, typename D>
+    template<IsUnitLifeFunction C, IsUnitLifeFunction D>
     struct LifeDelegate
     {
         C                            constructor = nullptr;
@@ -24,14 +25,24 @@ namespace Neptune::Vulkan::Unit {
     };
     
     /**
-    * @brief Common::Unit Class.
-    * This class defines the Common::Unit behaves.
+    * @brief LifeDelegate.
+    */
+    template<>
+    struct LifeDelegate<void, void>
+    {
+        const VkAllocationCallbacks* allocator   = nullptr;
+    };
+    
+    /**
+    * @brief Vulkan::Unit Class.
+    * This class defines the Vulkan::Unit behaves.
     * 
     * @tparam H Handle.
     * @tparam C Construct Function.
     * @tparam D Destruct Function.
     */
-    template<typename H, typename C, typename D>
+    template<IsUnitHandle H, IsUnitLifeFunction C, IsUnitLifeFunction D>
+    requires (IsVoid<C> == IsVoid<D>)
     class Unit
     {
     public:
@@ -76,11 +87,14 @@ namespace Neptune::Vulkan::Unit {
         */
         Unit& operator=(Unit&& other) noexcept
         {
-            SetHandle(other.GetHandle());
-            SetLife(other.m_Life);
+            if (this != &other)
+            {
+                SetHandle(other.GetHandle());
+                SetLife(other.m_Life);
 			
-            other.ResetHandle();
-            other.ResetLife();
+                other.ResetHandle();
+                other.ResetLife();
+            }
             
             return *this;
         }

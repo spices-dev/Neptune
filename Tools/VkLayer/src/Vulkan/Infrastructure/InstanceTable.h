@@ -5,10 +5,13 @@
 */
 
 #pragma once
-#include "Core/Core.h"
+#include "Vulkan/Core.h"
 #include "Infrastructure.h"
 #include "MultiInstance.h"
 #include "Vulkan/Unit/Instance.h"
+#include "Vulkan/Resource/LayerSetting.h"
+
+#include <vulkan/utility/vk_dispatch_table.h>
 
 namespace Neptune::Vulkan {
 
@@ -41,11 +44,9 @@ namespace Neptune::Vulkan {
 
 	public:
 		
-		UP<Unit::Instance>                            m_Instance;                               // @brief this unit Instance.
-		PFN_vkGetInstanceProcAddr                     vkGetInstanceProcAddr;                    // @brief PFN_vkGetInstanceProcAddr.
-		PFN_vkCreateDevice                            vkCreateDevice;                           // @brief PFN_vkCreateDevice.
-		PFN_vkSubmitDebugUtilsMessageEXT              vkSubmitDebugUtilsMessageEXT;             // @brief PFN_vkSubmitDebugUtilsMessageEXT.
-		PFN_vkGetPhysicalDeviceMemoryProperties       vkGetPhysicalDeviceMemoryProperties;      // @brief PFN_vkGetPhysicalDeviceMemoryProperties.
+		UP<Unit::Instance>            m_Instance;  // @brief This Unit Instance.
+		UP<Resource::LayerSetting>    m_Setting;   // @brief This Resource LayerSetting.
+		VkuInstanceDispatchTable_     m_Table;     // @brief VkuInstanceDispatchTable_.
 	};
 
 }

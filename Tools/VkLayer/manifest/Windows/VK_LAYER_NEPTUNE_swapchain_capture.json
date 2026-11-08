@@ -1,0 +1,42 @@
+{
+    "file_format_version": "1.2.0",
+    "layer": {
+        "name": "VK_LAYER_NEPTUNE_swapchain_capture",
+        "type": "GLOBAL",
+        "library_path": "../Tools/VkLayer/VK_LAYER_NEPTUNE_swapchain_capture.dll",
+        "api_version": "1.4.357",
+        "implementation_version": "1",
+        "description": "Neptune Swapchain Capture Layer",
+        "platforms": [ "WINDOWS" ],
+        "features": {
+            "settings": [
+                {
+                    "key": "save_path",
+                    "env": "VK_NEPTUNE_SAVE_PATH",
+                    "label": "Save Path",
+                    "description": "Directory where captured swapchain images are saved.",
+                    "type": "SAVE_FOLDER",
+                    "default": "./swapchain_capture"
+                },
+                {
+                    "key": "capture_every_n_frames",
+                    "env": "VK_NEPTUNE_EVERY_N_FRAMES",
+                    "label": "Capture Every N Frames",
+                    "description": "Capture every N presented frames.",
+                    "type": "INT",
+                    "default": 60,
+                    "range": { "min": 1, "max": 100000 }
+                },
+                {
+                    "key": "max_captures",
+                    "env": "VK_NEPTUNE_MAX_CAPTURES",
+                    "label": "Max Captures",
+                    "description": "Stop after this many captures. 0 means unlimited.",
+                    "type": "INT",
+                    "default": 0,
+                    "range": { "min": 0 }
+                }
+            ]
+        }
+    }
+}

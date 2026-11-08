@@ -36,7 +36,7 @@ namespace Neptune {
             {
                 unitSwapChain->SetHandle(*pSwapchain);
                 
-                unitSwapChain->SetLife({deviceTable.vkCreateSwapchainKHR, deviceTable.vkDestroySwapchainKHR, pAllocator });
+                unitSwapChain->SetLife({deviceTable.m_Table.CreateSwapchainKHR, deviceTable.m_Table.DestroySwapchainKHR, pAllocator });
 
                 VULKAN_CHECK(unitSwapChain->CreateSwapchain(device, info))
                 
@@ -75,11 +75,11 @@ namespace Neptune {
             {
                 uint32_t imageCount = 0;
 
-                VULKAN_CHECK(deviceTable.vkGetSwapchainImagesKHR(device, *pSwapchain, &imageCount, nullptr))
+                VULKAN_CHECK(deviceTable.m_Table.GetSwapchainImagesKHR(device, *pSwapchain, &imageCount, nullptr))
         
                 swapChain->m_Images.resize(imageCount);
 
-                VULKAN_CHECK(deviceTable.vkGetSwapchainImagesKHR(device, *pSwapchain, &imageCount, swapChain->m_Images.data()))
+                VULKAN_CHECK(deviceTable.m_Table.GetSwapchainImagesKHR(device, *pSwapchain, &imageCount, swapChain->m_Images.data()))
             }
             
             s_Context.Get<Vulkan::ISwapChain>()->Registry(swapChain->Handle(), std::move(swapChain));
@@ -93,7 +93,7 @@ namespace Neptune {
             auto unitCommandPool = CreateUP<Vulkan::Unit::CommandPool>();
         
             {
-                unitCommandPool->SetLife({deviceTable.vkCreateCommandPool, deviceTable.vkDestroyCommandPool, pAllocator });
+                unitCommandPool->SetLife({deviceTable.m_Table.CreateCommandPool, deviceTable.m_Table.DestroyCommandPool, pAllocator });
 
                 VkCommandPoolCreateInfo               poolInfo{};
                 poolInfo.sType                      = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
@@ -106,7 +106,7 @@ namespace Neptune {
             auto unitCommandBuffer = CreateUP<Vulkan::Unit::CommandBuffer>();
         
             {
-                unitCommandBuffer->SetLife({deviceTable.vkAllocateCommandBuffers, deviceTable.vkFreeCommandBuffers, pAllocator });
+                unitCommandBuffer->SetLife({deviceTable.m_Table.AllocateCommandBuffers, deviceTable.m_Table.FreeCommandBuffers, pAllocator });
 
                 VkCommandBufferAllocateInfo             allocInfo{};
                 allocInfo.sType                       = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
@@ -120,7 +120,7 @@ namespace Neptune {
             auto unitSemaphore = CreateUP<Vulkan::Unit::Semaphore>();
         
             {
-                unitSemaphore->SetLife({deviceTable.vkCreateSemaphore, deviceTable.vkDestroySemaphore, pAllocator });
+                unitSemaphore->SetLife({deviceTable.m_Table.CreateSemaphore, deviceTable.m_Table.DestroySemaphore, pAllocator });
 
                 VkSemaphoreCreateInfo              semaphoreInfo {};
                 semaphoreInfo.sType              = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
@@ -172,7 +172,7 @@ namespace Neptune {
             info.flags                      = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
             info.pInheritanceInfo           = nullptr;
         
-            device.vkBeginCommandBuffer(commandBuffer.Handle(), &info);
+            device.m_Table.BeginCommandBuffer(commandBuffer.Handle(), &info);
         }
         
         {
@@ -199,7 +199,7 @@ namespace Neptune {
             region.imageOffset       = { 0, 0, 0 };
             region.imageExtent       = { swapChain.m_Info.imageExtent.width, swapChain.m_Info.imageExtent.height, 1 };
             
-            device.vkCmdCopyImageToBuffer(commandBuffer.Handle(), swapChain.m_Images[*pPresentInfo->pImageIndices], VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, swapChain.m_StagingBuffer->Handle(), 1, &region);
+            device.m_Table.CmdCopyImageToBuffer(commandBuffer.Handle(), swapChain.m_Images[*pPresentInfo->pImageIndices], VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, swapChain.m_StagingBuffer->Handle(), 1, &region);
             
             /*{
                 VkImageMemoryBarrier             memory{};
@@ -218,7 +218,7 @@ namespace Neptune {
         }
         
         {
-            device.vkEndCommandBuffer(commandBuffer.Handle());
+            device.m_Table.EndCommandBuffer(commandBuffer.Handle());
         }
         
         {
@@ -234,14 +234,14 @@ namespace Neptune {
             info.signalSemaphoreCount      = 1;
             info.pSignalSemaphores         = &commandBuffer.Semaphore();
             
-            device.vkQueueSubmit(queue, 1, &info, VK_NULL_HANDLE);
+            device.m_Table.QueueSubmit(queue, 1, &info, VK_NULL_HANDLE);
         }
         
         VkPresentInfoKHR presentInfo       = *pPresentInfo;
         presentInfo.waitSemaphoreCount     = 1;
         presentInfo.pWaitSemaphores        = &commandBuffer.Semaphore();
         
-        auto result = device.vkQueuePresentKHR(queue, &presentInfo);
+        auto result = device.m_Table.QueuePresentKHR(queue, &presentInfo);
         
         if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR)
         {
@@ -250,7 +250,7 @@ namespace Neptune {
         
         VULKAN_CHECK(result)
         
-        VULKAN_CHECK(device.vkQueueWaitIdle(queue))
+        VULKAN_CHECK(device.m_Table.QueueWaitIdle(queue))
         
         auto w = swapChain.m_Info.imageExtent.width;
         auto h = swapChain.m_Info.imageExtent.height;

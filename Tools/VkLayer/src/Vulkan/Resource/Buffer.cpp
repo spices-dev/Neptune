@@ -10,7 +10,7 @@ namespace Neptune::Vulkan::Resource {
 
     VkResult Buffer::CreateBuffer(const VkBufferCreateInfo& info, VkMemoryPropertyFlags properties, const VkAllocationCallbacks* pAllocator)
     {
-    	m_Buffer.SetLife({m_DeviceTable->vkCreateBuffer, m_DeviceTable->vkDestroyBuffer, pAllocator });
+    	m_Buffer.SetLife({m_DeviceTable->m_Table.CreateBuffer, m_DeviceTable->m_Table.DestroyBuffer, pAllocator });
     	
         VULKAN_CHECK(m_Buffer.CreateBuffer(m_DeviceTable->Handle(), info))
         
@@ -25,7 +25,7 @@ namespace Neptune::Vulkan::Resource {
 		bufferReqs.sType                                  = VK_STRUCTURE_TYPE_BUFFER_MEMORY_REQUIREMENTS_INFO_2;
 		bufferReqs.buffer                                 = Handle();
 
-		m_DeviceTable->vkGetBufferMemoryRequirements2(m_DeviceTable->Handle(), &bufferReqs, &memReqs);
+		m_DeviceTable->m_Table.GetBufferMemoryRequirements2(m_DeviceTable->Handle(), &bufferReqs, &memReqs);
 
 		VkMemoryAllocateInfo                                allocInfo{};
 		allocInfo.sType                                   = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
@@ -41,7 +41,7 @@ namespace Neptune::Vulkan::Resource {
 		}
 
 		VkPhysicalDeviceMemoryProperties memProperties{};
-		m_InstanceTable->vkGetPhysicalDeviceMemoryProperties(m_DeviceTable->vkPhysicalDevice, &memProperties);
+		m_InstanceTable->m_Table.GetPhysicalDeviceMemoryProperties(m_DeviceTable->vkPhysicalDevice, &memProperties);
 
 		for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++)
 		{
@@ -52,9 +52,9 @@ namespace Neptune::Vulkan::Resource {
 			}
 		}
 
-    	VULKAN_CHECK(m_DeviceTable->vkAllocateMemory(m_DeviceTable->Handle(), &allocInfo, pAllocator, &m_DeviceMemory))
+    	VULKAN_CHECK(m_DeviceTable->m_Table.AllocateMemory(m_DeviceTable->Handle(), &allocInfo, pAllocator, &m_DeviceMemory))
 		
-		VULKAN_CHECK(m_DeviceTable->vkBindBufferMemory(m_DeviceTable->Handle(), Handle(), m_DeviceMemory, 0))
+		VULKAN_CHECK(m_DeviceTable->m_Table.BindBufferMemory(m_DeviceTable->Handle(), Handle(), m_DeviceMemory, 0))
 
 		if (info.usage & VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT)
 		{
@@ -62,12 +62,12 @@ namespace Neptune::Vulkan::Resource {
 			info.sType                        = VK_STRUCTURE_TYPE_BUFFER_DEVICE_ADDRESS_INFO;
 			info.buffer                       = Handle();
 
-			m_Address = m_DeviceTable->vkGetBufferDeviceAddress(m_DeviceTable->Handle(), &info);
+			m_Address = m_DeviceTable->m_Table.GetBufferDeviceAddress(m_DeviceTable->Handle(), &info);
 		}
 
 		if (properties & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT)
 		{
-			VULKAN_CHECK(m_DeviceTable->vkMapMemory(m_DeviceTable->Handle(), m_DeviceMemory, 0, info.size, 0, &m_HostMemory))
+			VULKAN_CHECK(m_DeviceTable->m_Table.MapMemory(m_DeviceTable->Handle(), m_DeviceMemory, 0, info.size, 0, &m_HostMemory))
 		}
     	
     	m_Size  = info.size;
@@ -101,7 +101,7 @@ namespace Neptune::Vulkan::Resource {
     	range.offset                       = offset;
     	range.size                         = size;
     	
-    	return m_DeviceTable->vkFlushMappedMemoryRanges(m_DeviceTable->Handle(), 1, &range);
+    	return m_DeviceTable->m_Table.FlushMappedMemoryRanges(m_DeviceTable->Handle(), 1, &range);
     }
     
 }

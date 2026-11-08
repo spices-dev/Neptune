@@ -5,6 +5,7 @@
 */
 
 #pragma once
+#include "Vulkan/Core.h"
 #include "Core/Core.h"
 #include "Infrastructure.h"
 

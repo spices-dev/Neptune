@@ -6,6 +6,7 @@
 
 #pragma once
 #include "Vulkan/DispatchTable.h"
+#include "LayerSetting.h"
 #include "Enum.h"
 
 namespace Neptune {
@@ -22,6 +23,31 @@ namespace Neptune {
     */
     template <>
     inline char* DispatchTable::GetName() { static char name[] = "VK_LAYER_NEPTUNE_sample"; return name; }
+    
+    /**
+    * @brief Interface of Init Context.
+    */
+    template <>
+    inline void DispatchTable::InitContext() {}
+    
+    /**
+    * @brief Interface of Init Settings.
+    * 
+    * @param[in] setting Resource::LayerSetting.
+    * 
+    * @return Returns VkResult.
+    */
+    template <>
+    inline VkResult DispatchTable::InitSettings(UP<Resource::LayerSetting>& setting)
+    {
+        auto data = CreateSP<Settings>();
+        
+        VULKAN_CHECK(setting->GetValue("welcome", data->welcome, std::string("not find")))
+        
+        setting->SetSetting(data);
+        
+        return VK_SUCCESS;
+    }
     
     /**
     * @brief Interface of Dispatch Instance Function.

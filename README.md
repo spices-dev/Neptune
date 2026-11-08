@@ -5,8 +5,6 @@
 2. TransparentSortPass SortBuffer declared as VK_SHARING_MODE_EXCLUSIVE, needs to be repare.
 3. Offscreen FrameBuffer needs real InFlightResource.
 4. Abstract RenderBackend BeginFrame EndFrame as RHI.
-5. RHI Indirect Draw.
-6. GPU Cull in 3DGS.
 7. Mesh Pipeline.
 8. Ray Tracing with 3DGS.
 9. Descriptor Buffer/Heap.
@@ -23,5 +21,4 @@
 20. Houdini Link.
 21. CI: Android Windows(msvc) MacOS.
 22. GPU Driven: DGC
-23. Dynamic Rendering.
 24. BSDF.

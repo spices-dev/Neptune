@@ -5,10 +5,9 @@
 */
 
 #pragma once
-#include "Core/Core.h"
+#include "Core.h"
 #include "Vulkan/Infrastructure/InstanceTable.h"
 #include "Vulkan/Infrastructure/DeviceTable.h"
-#include "Core/Log.h"
 
 #include <mutex>
 #include <shared_mutex>
@@ -23,10 +22,10 @@ namespace Neptune::Vulkan {
     }
     
 #define ACCURE_INSTANCE_FN(name, handle) \
-    const PFN_##name name = s_Context.template Get<Vulkan::IInstanceTable>()->Get(GetKey(handle)).name;
+    const PFN_vk##name name = s_Context.template Get<Vulkan::IInstanceTable>()->Get(GetKey(handle)).m_Table.name;
     
 #define ACCURE_DEVICE_FN(name, handle) \
-    const PFN_##name name = s_Context.template Get<Vulkan::IDeviceTable>()->Get(GetKey(handle)).name;
+    const PFN_vk##name name = s_Context.template Get<Vulkan::IDeviceTable>()->Get(GetKey(handle)).m_Table.name;
     
 #define ACCURE_INSTANCE(name, handle) \
     const Vulkan::InstanceTable& name = s_Context.template Get<Vulkan::IInstanceTable>()->Get(GetKey(handle));
@@ -153,9 +152,18 @@ namespace Neptune::Vulkan {
         static char* GetName() { static char name[] = ""; return name; }
         
         /**
-        * @brief Interface of InitContext.
+        * @brief Interface of Init Context.
         */
         static void InitContext() {}
+        
+        /**
+        * @brief Interface of Init Settings.
+        * 
+        * @param[in] setting Resource::LayerSetting.
+        * 
+        * @return Returns VkResult.
+        */
+        static VkResult InitSettings(UP<Resource::LayerSetting>& setting) { return VK_SUCCESS; }
         
         /**
         * @brief Interface of Dispatch Instance Function.
@@ -176,20 +184,6 @@ namespace Neptune::Vulkan {
         static PFN_vkVoidFunction DeviceDispatch(const char* pName) { return nullptr; }
         
     private:
-        
-        /**
-        * @brief Interface of Get Instance Table.
-        * 
-        * @param[in] table InstanceTable.
-        */
-        static void GetInstanceTable(UP<InstanceTable>& table);
-        
-        /**
-        * @brief Interface of Get Device Table.
-        * 
-        * @param[in] table DeviceTable.
-        */
-        static void GetDeviceTable(UP<DeviceTable>& table);
         
         /**
         * @brief Init Table Context.
@@ -222,9 +216,9 @@ namespace Neptune::Vulkan {
             return fn;
         }
         
-        ACCURE_INSTANCE_FN(vkGetInstanceProcAddr, instance)
+        ACCURE_INSTANCE_FN(GetInstanceProcAddr, instance)
         
-        return vkGetInstanceProcAddr(instance, pName);
+        return GetInstanceProcAddr(instance, pName);
     }
 
     template<typename E>
@@ -241,7 +235,7 @@ namespace Neptune::Vulkan {
             return fn;
         }
 
-        ACCURE_DEVICE_FN(vkGetDeviceProcAddr, device)
+        ACCURE_DEVICE_FN(GetDeviceProcAddr, device)
 
         return vkGetDeviceProcAddr(device, pName);
     }
@@ -290,13 +284,12 @@ namespace Neptune::Vulkan {
             unit->SetLife({ vkCreateInstance, vkDestroyInstance, pAllocator });
         }
         
-        auto table = CreateUP<InstanceTable>();;
+        auto table = CreateUP<InstanceTable>();
         
         {
-            table->m_Instance            = std::move(unit);
-            table->vkGetInstanceProcAddr = vkGetInstanceProcAddr;
+            table->m_Instance = std::move(unit);
     
-            GetInstanceTable(table);
+            vkuInitInstanceDispatchTable(table->Handle(), &table->m_Table, vkGetInstanceProcAddr);
         }
         
         {
@@ -307,22 +300,17 @@ namespace Neptune::Vulkan {
             s_Context.template Get<IInstanceTable>()->Registry(GetKey(instance), std::move(table));
         }
         
-        return VK_SUCCESS;
-    }
+        {
+            auto layerSetting = CreateUP<Resource::LayerSetting>(table.get());
+            
+            layerSetting->CreateLayerSettingSet(GetName(), *pCreateInfo, pAllocator);
+            
+            VULKAN_CHECK(InitSettings(layerSetting))
 
-    template <typename E>
-    void DispatchTable<E>::GetInstanceTable(UP<InstanceTable>& table)
-    {
+            s_Context.template Get<IInstanceTable>()->Get(GetKey(instance)->m_Setting = std::move(layerSetting);
+        }
         
-#define EXPLAIN_INSTANCE_FN(name)                             \
-    table->name = reinterpret_cast<PFN_##name>(table->vkGetInstanceProcAddr(table->Handle(), #name));
-        
-        EXPLAIN_INSTANCE_FN(vkCreateDevice)
-        EXPLAIN_INSTANCE_FN(vkSubmitDebugUtilsMessageEXT)
-        EXPLAIN_INSTANCE_FN(vkGetPhysicalDeviceMemoryProperties)
-        
-#undef EXPLAIN_INSTANCE_FN
-        
+        return VK_SUCCESS;
     }
 
     template <typename E>
@@ -350,14 +338,14 @@ namespace Neptune::Vulkan {
         
         chainInfo->u.pLayerInfo = chainInfo->u.pLayerInfo->pNext;
     
-        ACCURE_INSTANCE_FN(vkCreateDevice, physicalDevice)
+        ACCURE_INSTANCE_FN(CreateDevice, physicalDevice)
         
         auto unit = CreateUP<Unit::Device>();
         
         {
             unit->SetHandle(*pDevice);
         
-            unit->SetLife({ vkCreateDevice, nullptr, pAllocator });
+            unit->SetLife({ CreateDevice, nullptr, pAllocator });
         
             VULKAN_CHECK(unit->CreateDevice(physicalDevice, *pCreateInfo))
         }
@@ -367,17 +355,16 @@ namespace Neptune::Vulkan {
         
             auto vkDestroyDevice = reinterpret_cast<PFN_vkDestroyDevice>(vkGetDeviceProcAddr(*pDevice, "vkDestroyDevice"));
         
-            unit->SetLife({ vkCreateDevice, vkDestroyDevice, pAllocator });
+            unit->SetLife({ CreateDevice, vkDestroyDevice, pAllocator });
         }
         
         auto table = CreateUP<DeviceTable>();
         
         {
             table->m_Device            = std::move(unit);
-            table->vkGetDeviceProcAddr = vkGetDeviceProcAddr;
             table->vkPhysicalDevice    = physicalDevice;
         
-            GetDeviceTable(table);
+            vkuInitDeviceDispatchTable(table->Handle(), &table->m_Table, vkGetDeviceProcAddr);
         }
         
         {
@@ -387,45 +374,6 @@ namespace Neptune::Vulkan {
         }
         
         return VK_SUCCESS;
-    }
-
-    template <typename E>
-    void DispatchTable<E>::GetDeviceTable(UP<DeviceTable>& table)
-    {
-        
-#define EXPLAIN_DEVICE_FN(name)                             \
-    table->name = reinterpret_cast<PFN_##name>(table->vkGetDeviceProcAddr(table->Handle(), #name));
-        
-        EXPLAIN_DEVICE_FN(vkCreateSwapchainKHR)
-        EXPLAIN_DEVICE_FN(vkDestroySwapchainKHR)
-        EXPLAIN_DEVICE_FN(vkQueuePresentKHR)
-        EXPLAIN_DEVICE_FN(vkGetSwapchainImagesKHR)
-        EXPLAIN_DEVICE_FN(vkCreateCommandPool)
-        EXPLAIN_DEVICE_FN(vkDestroyCommandPool)
-        EXPLAIN_DEVICE_FN(vkAllocateCommandBuffers)
-        EXPLAIN_DEVICE_FN(vkFreeCommandBuffers)
-        EXPLAIN_DEVICE_FN(vkBeginCommandBuffer)
-        EXPLAIN_DEVICE_FN(vkEndCommandBuffer)
-        EXPLAIN_DEVICE_FN(vkQueueSubmit)
-        EXPLAIN_DEVICE_FN(vkDeviceWaitIdle)
-        EXPLAIN_DEVICE_FN(vkCreateSemaphore)
-        EXPLAIN_DEVICE_FN(vkDestroySemaphore)
-        EXPLAIN_DEVICE_FN(vkQueueWaitIdle)
-        EXPLAIN_DEVICE_FN(vkCmdPipelineBarrier)
-        EXPLAIN_DEVICE_FN(vkCmdCopyImageToBuffer)
-        EXPLAIN_DEVICE_FN(vkCreateBuffer)
-        EXPLAIN_DEVICE_FN(vkDestroyBuffer)
-        EXPLAIN_DEVICE_FN(vkGetBufferMemoryRequirements2)
-        EXPLAIN_DEVICE_FN(vkBindBufferMemory)
-        EXPLAIN_DEVICE_FN(vkGetBufferDeviceAddress)
-        EXPLAIN_DEVICE_FN(vkAllocateMemory)
-        EXPLAIN_DEVICE_FN(vkFreeMemory)
-        EXPLAIN_DEVICE_FN(vkMapMemory)
-        EXPLAIN_DEVICE_FN(vkUnmapMemory)
-        EXPLAIN_DEVICE_FN(vkFlushMappedMemoryRanges)
-        
-#undef EXPLAIN_DEVICE_FN
-        
     }
     
     template <typename E>
@@ -451,9 +399,9 @@ namespace Neptune::Vulkan {
     template <typename E>
     void DispatchTable<E>::Log(VkInstance instance, LogStream::LogLevel level, const char* message)
     {
-        ACCURE_INSTANCE_FN(vkSubmitDebugUtilsMessageEXT, instance)
+        ACCURE_INSTANCE_FN(SubmitDebugUtilsMessageEXT, instance)
         
-        if (!vkSubmitDebugUtilsMessageEXT) return;
+        if (!SubmitDebugUtilsMessageEXT) return;
         
         VkDebugUtilsMessengerCallbackDataEXT    data{};
         data.sType                            = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CALLBACK_DATA_EXT;
@@ -472,6 +420,6 @@ namespace Neptune::Vulkan {
             default:                      severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT; break;
         }
 
-        vkSubmitDebugUtilsMessageEXT(instance, severity, VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT, &data);
+        SubmitDebugUtilsMessageEXT(instance, severity, VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT, &data);
     }
 }

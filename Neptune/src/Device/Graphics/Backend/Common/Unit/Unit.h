@@ -59,9 +59,12 @@ namespace Neptune::Graphic::Common {
 		*/
 		Unit& operator=(Unit&& other) noexcept
 		{
-			SetHandle(other.GetHandle());
+			if (this != &other)
+			{
+				SetHandle(other.GetHandle());
 			
-			other.ResetHandle();
+				other.ResetHandle();
+			}
 			
 			return *this;
 		}

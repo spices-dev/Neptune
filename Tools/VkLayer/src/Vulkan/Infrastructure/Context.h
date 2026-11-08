@@ -5,19 +5,21 @@
 */
 
 #pragma once
-#include "Core/Core.h"
+#include "Vulkan/Core.h"
+#include "Vulkan/Concept.h"
 
 #include <array>
 
 namespace Neptune::Vulkan {
     
     /**
-    * @brief Template of ContextElement Class Definitions.
+    * @brief Template of Infrastructure Class Definitions.
     * 
-    * @tparam T_ ContextElement Class.
-    * @tparam E_ EExtension.
+    * @tparam T_ Infrastructure Class.
+    * @tparam E_ EInfrastructure.
     */
     template<typename T_, auto E_>
+    requires(IsEInfrastructure<Decay<decltype(E_)>>)
     struct IInfrastructure
     {
         using T = T_;
@@ -29,9 +31,9 @@ namespace Neptune::Vulkan {
     * @brief Context.
     * 
     * @tparam Element Element.
-    * @tparam E EExtension.
+    * @tparam E EInfrastructure.
     */
-    template<typename Element, typename E>
+    template<typename Element, IsEInfrastructure E>
     class Context final
     {
     public:
@@ -51,40 +53,40 @@ namespace Neptune::Vulkan {
         /**
         * @brief Registry IContextElement.
         *
-        * @tparam I IContextElement Definitions.
+        * @tparam I IInfrastructure Definitions.
         * @param[in] args IContextElement::T Construct Params.
         */
-        template<typename I, typename... Args>
+        template<IsIInfrastructure I, typename... Args>
         typename I::T* Registry(Args&&... args);
         
         /**
         * @brief Unregister Infrastructure.
         *
-        * @tparam I IContextElement Definitions
+        * @tparam I IInfrastructure Definitions
         * 
         * @return Returns true if succeeded.
         */
-        template<typename I>
+        template<IsIInfrastructure I>
         bool UnRegistry();
         
         /**
-        * @brief Get registry IContextElement.
+        * @brief Get registry IInfrastructure.
         *
-        * @tparam I IContextElement Definitions.
+        * @tparam I IInfrastructure Definitions.
         * 
-        * @return Returns registry IContextElement.
+        * @return Returns registry IInfrastructure.
         */
-        template<typename I>
+        template<IsIInfrastructure I>
         typename I::T* Get() const;
         
         /**
-        * @brief Is registry IContextElement.
+        * @brief Is registry IInfrastructure.
         *
-        * @tparam I IContextElement Definitions.
+        * @tparam I IInfrastructure Definitions.
         * 
         * @return Returns true if registry.
         */
-        template<typename I>
+        template<IsIInfrastructure I>
         bool Has() const;
         
     private:
@@ -92,8 +94,8 @@ namespace Neptune::Vulkan {
         std::array<UP<Element>, static_cast<uint8_t>(E::Count)> m_Infrastructures; // @brief Container of EContext.
     };
 
-    template<typename Element, typename E>
-    template<typename I, typename... Args>
+    template<typename Element, IsEInfrastructure E>
+    template<IsIInfrastructure I, typename... Args>
     inline typename I::T* Context<Element, E>::Registry(Args&&... args)
     {
         constexpr auto position = static_cast<uint8_t>(I::E);
@@ -103,11 +105,11 @@ namespace Neptune::Vulkan {
         return Get<I>();
     }
 
-    template <typename Element, typename E>
-    template <typename I> 
+    template <typename Element, IsEInfrastructure E>
+    template <IsIInfrastructure I> 
     inline bool Context<Element, E>::UnRegistry()
     {
-        const auto position = static_cast<uint8_t>(I::E);
+        constexpr auto position = static_cast<uint8_t>(I::E);
 
         if (!m_Infrastructures[position]) return false;
 
@@ -116,8 +118,8 @@ namespace Neptune::Vulkan {
         return true;
     }
 
-    template<typename Element, typename E>
-    template<typename I>
+    template<typename Element, IsEInfrastructure E>
+    template<IsIInfrastructure I>
     typename I::T* Context<Element, E>::Get() const
     {
         constexpr auto position = static_cast<uint8_t>(I::E);
@@ -125,8 +127,8 @@ namespace Neptune::Vulkan {
         return static_cast<typename I::T*>(m_Infrastructures[position].get());
     }
 
-    template<typename Element, typename E>
-    template<typename I>
+    template<typename Element, IsEInfrastructure E>
+    template<IsIInfrastructure I>
     bool Context<Element, E>::Has() const
     {
         constexpr auto position = static_cast<uint8_t>(I::E);

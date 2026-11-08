@@ -5,7 +5,7 @@
 */
 
 #pragma once
-#include "Core.h"
+#include "Vulkan/Core.h"
 
 extern "C" {
 
@@ -38,12 +38,14 @@ extern "C" {
     */
     DLL_EXPORT VKAPI_ATTR VkResult VKAPI_CALL vkNegotiateLoaderLayerInterfaceVersion(VkNegotiateLayerInterface* pVersionStruct)
     {
+        static constexpr uint32_t LayerInterfaceVersion = 2u;
+        
         if (!pVersionStruct || pVersionStruct->sType != LAYER_NEGOTIATE_INTERFACE_STRUCT)
         {
             return VK_ERROR_INITIALIZATION_FAILED;
         }
 
-        pVersionStruct->loaderLayerInterfaceVersion  = Neptune::LayerInterfaceVersion;
+        pVersionStruct->loaderLayerInterfaceVersion  = LayerInterfaceVersion;
         pVersionStruct->pfnGetInstanceProcAddr       = vkGetInstanceProcAddr;
         pVersionStruct->pfnGetDeviceProcAddr         = vkGetDeviceProcAddr;
         pVersionStruct->pfnGetPhysicalDeviceProcAddr = nullptr;
