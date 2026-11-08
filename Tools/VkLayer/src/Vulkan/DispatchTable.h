@@ -187,6 +187,13 @@ namespace Neptune::Vulkan {
     private:
         
         /**
+        * @brief Interface of Get Instance Table.
+        * 
+        * @param[in] table InstanceTable.
+        */
+        static void GetInstanceTable(UP<InstanceTable>& table);
+        
+        /**
         * @brief Init Table Context.
         */
         static void InitTableContext();
@@ -238,7 +245,7 @@ namespace Neptune::Vulkan {
 
         ACCURE_DEVICE_FN(GetDeviceProcAddr, device)
 
-        return vkGetDeviceProcAddr(device, pName);
+        return GetDeviceProcAddr(device, pName);
     }
 
     template<typename E>
@@ -298,6 +305,8 @@ namespace Neptune::Vulkan {
             table->m_Instance = std::move(unit);
     
             vkuInitInstanceDispatchTable(table->Handle(), &table->m_Table, vkGetInstanceProcAddr);
+            
+            GetInstanceTable(table);
         }
         
         {
@@ -386,6 +395,19 @@ namespace Neptune::Vulkan {
     inline void DispatchTable<E>::vkDestroyDevice(VkDevice device, const VkAllocationCallbacks* pAllocator)
     {
         s_Context.template Get<IDeviceTable>()->UnRegistry(GetKey(device));
+    }
+
+    template <typename E>
+    void DispatchTable<E>::GetInstanceTable(UP<InstanceTable>& table)
+    {
+        
+#define EXPLAIN_INSTANCE_FN(name)                             \
+    table->m_Table.name = reinterpret_cast<PFN_vk##name>(table->m_Table.GetInstanceProcAddr(table->Handle(), "vk" #name));
+
+        EXPLAIN_INSTANCE_FN(CreateDevice)
+        
+#undef EXPLAIN_INSTANCE_FN
+        
     }
 
     template <typename E>

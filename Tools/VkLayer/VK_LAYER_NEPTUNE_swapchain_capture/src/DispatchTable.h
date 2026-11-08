@@ -8,6 +8,7 @@
 #include "Vulkan/DispatchTable.h"
 #include "Infrastructure/SwapChain.h"
 #include "Infrastructure/CommandBuffer.h"
+#include "LayerSetting.h"
 #include "Enum.h"
 
 namespace Neptune {
@@ -86,6 +87,27 @@ namespace Neptune {
         s_Context.Registry<Vulkan::ICommandBuffer>();
     }
         
+    /**
+    * @brief Interface of Init Settings.
+    * 
+    * @param[in] setting Resource::LayerSetting.
+    * 
+    * @return Returns VkResult.
+    */
+    template <>
+    inline VkResult DispatchTable::Super::InitSettings(UP<Vulkan::Resource::LayerSetting>& setting)
+    {
+        auto data = CreateSP<Settings>();
+        
+        VULKAN_CHECK(setting->GetValue("save_path", data->save_path, std::string("not find")))
+        VULKAN_CHECK(setting->GetValue("capture_every_n_frames", data->capture_every_n_frames, 60u))
+        VULKAN_CHECK(setting->GetValue("max_captures", data->max_captures, 0u))
+        
+        setting->SetSetting(data);
+        
+        return VK_SUCCESS;
+    }
+    
     /**
     * @brief Interface of Dispatch Device Function.
     * 

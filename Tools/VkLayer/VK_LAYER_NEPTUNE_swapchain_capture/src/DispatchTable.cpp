@@ -162,6 +162,11 @@ namespace Neptune {
     VkResult DispatchTable::vkQueuePresentKHR(VkQueue queue, const VkPresentInfoKHR* pPresentInfo)
     {
         ACCURE_DEVICE(device, queue)
+        ACCURE_INSTANCE(instance, device.vkPhysicalDevice)
+        
+        auto* setting     = instance.m_Setting->As<Settings>();
+        
+        if (setting->max_captures && setting->captured_frames >= setting->max_captures) return VK_SUCCESS;
         
         const auto& swapChain     = s_Context.Get<Vulkan::ISwapChain>()->Get(*pPresentInfo->pSwapchains);
         const auto& commandBuffer = s_Context.Get<Vulkan::ICommandBuffer>()->Get(swapChain.m_Family);
@@ -255,13 +260,15 @@ namespace Neptune {
         auto w = swapChain.m_Info.imageExtent.width;
         auto h = swapChain.m_Info.imageExtent.height;
         
-        static uint64_t frameId = 0;
-        
-        if (frameId++ % 30 == 0)
+        if (setting->frameId++ % setting->capture_every_n_frames == 0)
         {
-            if (!SavePng(MakePath("C:/Users/spices/Desktop/save", frameId, w, h), swapChain.m_StagingBuffer->Data(), w, h, Vulkan::ToSize(swapChain.m_Info.imageFormat)))
+            if (!SavePng(MakePath(setting->save_path, setting->frameId, w, h), swapChain.m_StagingBuffer->Data(), w, h, Vulkan::ToSize(swapChain.m_Info.imageFormat)))
             {
                NEPTUNE_LOG_CORE(E) << "SwapChain Image Save ad Png Failed.";
+            }
+            else
+            {
+                ++setting->captured_frames;
             }
         }
         
