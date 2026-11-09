@@ -6,42 +6,83 @@
 
 #pragma once
 #include "Core/Core.h"
-#include "Core/Container/Empty.h"
 #include "Enum.h"
-
-#include <functional>
-#include <any>
 
 namespace Neptune::RHI {
 
-	using RHIImplEmpty = Container::Empty;
-	
 	/**
-	* @brief Delegate of RHI.
+	* @brief RHIImplEmpty
+	*/
+	struct RHIImplEmpty
+	{
+		/**
+		* @brief Destructor Function.
+		*/
+		virtual ~RHIImplEmpty() = default;
+	};
+
+	/**
+	* @brief RHIDelegate
 	*/
 	struct RHIDelegate
 	{
+		/**
+		* @brief RHIDelegate Scope
+		*/
+		struct Scope
+		{
+			/**
+			* @brief Constructor Function.
+			*/
+			Scope() = default;
+			
+			/**
+			* @brief Constructor Function.
+			* 
+			* @param[in] delegate RHIDelegate.
+			*/
+			Scope(RHIDelegate* delegate);
+			
+			/**
+			* @brief Destructor Function.
+			*/
+			~Scope();
+			
+			NONE_COPY(Scope)
+			
+			/**
+			* @brief Operation () override.
+			* 
+			* @return Returns in scope RHIDelegate.
+			*/
+			RHIDelegate* operator()() const;
+			
+		private:
+			
+			RHIDelegate* m_Prev  = nullptr;  // @brief Previous RHIDelegate.
+		};
+		
+		/**
+		* @brief Constructor Function.
+		*/
+		RHIDelegate() : m_Scope(this) {}
+		
+		/**
+		* @brief Destructor Function.
+		*/
+		virtual ~RHIDelegate() = default;
+		
 		/**
 		* @brief RHI Creator Functor.
 		* 
 		* @param[in] e ERHI.
 		* @param[in] payload payload of rhi.
 		*/
-		using Creator = std::function<UP<RHIImplEmpty>(ERHI e, void* payload)>;
+		virtual UP<RHIImplEmpty> CreateRHI(ERHI e, void* payload) const = 0;
 
-		/**
-		* @brief Set Creator Functor.
-		*
-		* @param[in] fn Creator.
-		*/
-		static void SetCreator(const Creator& fn);
+	protected:
 
-		/**
-		* @brief Get Creator Functor.
-		*
-		* @return Returns Creator Functor.
-		*/
-		static const Creator& GetCreator();
+		Scope m_Scope;  // @brief Delegate Scope.
 	};
 
 	/**
@@ -55,20 +96,7 @@ namespace Neptune::RHI {
 		/**
 		* @brief Template of RHI Implement Class.
 		*/
-		class Impl : public RHIImplEmpty
-		{	
-		public:
-
-			/**
-			* @brief Constructor Function.
-			*/
-			Impl() = default;
-
-			/**
-			* @brief Destructor Function.
-			*/
-			virtual ~Impl() = default;
-		};
+		class Impl : public RHIImplEmpty {};
 
 	public:
 
@@ -78,7 +106,7 @@ namespace Neptune::RHI {
 		* @param[in] payload RHI Construct payload.
 		*/
 		explicit RHI(void* payload = nullptr)
-			: m_Impl(static_cast<Impl*>(std::invoke(RHIDelegate::GetCreator(), E, payload).release()))
+			: m_Impl(ConstructRHI(payload))
 		{}
 
 		/**
@@ -99,6 +127,30 @@ namespace Neptune::RHI {
 			return static_cast<T*>(m_Impl.get());
 		}
 
+	private:
+		
+		/**
+		* @brief Construct RHI.
+		* 
+		* @param[in] payload RHI Construct payload.
+		*/
+		Impl* ConstructRHI(void* payload)
+		{
+			if (auto* delegate = RHIDelegate::Scope()())
+			{
+				if (auto rhi = delegate->CreateRHI(E, payload))
+				{
+					return static_cast<Impl*>(rhi.release());
+				}
+				
+				NEPTUNE_ASSERT(false)
+			}
+			
+			NEPTUNE_LOG_CORE(E) << "RHIDelegate not in scope.";
+			
+			NEPTUNE_ASSERT(false)
+		}
+		
 	protected:
 
 		UP<Impl> m_Impl = nullptr;     // @brief RHI Implement.

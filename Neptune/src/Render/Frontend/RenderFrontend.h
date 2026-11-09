@@ -32,7 +32,7 @@ namespace Neptune {
     * @brief RenderFrontend Class.
     * This class defines the RenderFrontEnd behaves.
     */
-    class RenderFrontend : public NonCopyable, public EventProducer
+    class RenderFrontend : public NonCopyable, public EventProducer, public RHI::RHIDelegate
     {
     public:
 
@@ -80,16 +80,6 @@ namespace Neptune {
         * @brief Interface of Wait RenderBackend idle.
         */
         virtual void Wait() const = 0;
-
-        /**
-        * @brief Interface of CreateRHI.
-        * 
-        * @param[in] e ERHI.
-        * @param[in] payload RHI Payload.
-        * 
-        * @return Returns RHI::Impl
-        */
-        virtual UP<RHI::RHIImplEmpty> CreateRHI(RHI::ERHI e, void* payload) const = 0;
 
         /**
         * @brief Interface of Access Infrastructure.

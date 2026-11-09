@@ -43,6 +43,7 @@ namespace Neptune::Render {
 		* @brief Interface of CollectRHI.
 		*
 		* @param[in] scene Scene.
+		* @param[in] cmdList RHI::CmdList.
 		*/
 		void OnCollectRHI(Scene* scene, RHI::CmdList& cmdList) override;
 

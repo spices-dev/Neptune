@@ -103,8 +103,6 @@ namespace Neptune {
             }
         }
 
-        RHI::RHIDelegate::SetCreator([p = sp.get()](RHI::ERHI e, void* payload) { return p->CreateRHI(e, payload); });
-
         sp->OnInitialize();
 
         return sp;
@@ -122,8 +120,6 @@ namespace Neptune {
     void RenderFrontend::OnShutDown()
     {
         NEPTUNE_PROFILE_ZONE
-
-        RHI::RHIDelegate::SetCreator(nullptr);
 
         m_RenderPasses.clear();
         m_CmdList.reset();

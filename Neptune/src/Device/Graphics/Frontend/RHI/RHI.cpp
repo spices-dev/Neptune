@@ -10,21 +10,26 @@
 namespace Neptune::RHI {
 
 	namespace {
+
+		thread_local RHIDelegate* s_Delegate;   // @brief Thread RHIDelegate.
+	}
 	
-		RHIDelegate::Creator s_Creator;    // @brief RHI Creator Functor instance.
+	RHIDelegate::Scope::Scope(RHIDelegate* delegate)
+		: m_Prev(s_Delegate)
+	{
+		s_Delegate = delegate;
 	}
 
-	void RHIDelegate::SetCreator(const Creator& fn)
+	RHIDelegate::Scope::~Scope()
 	{
-		NEPTUNE_PROFILE_ZONE
-
-		s_Creator = fn;
+		if (m_Prev)
+		{
+			s_Delegate = m_Prev;
+		}
 	}
 
-	const RHIDelegate::Creator& RHIDelegate::GetCreator()
+	RHIDelegate* RHIDelegate::Scope::operator()() const
 	{
-		NEPTUNE_PROFILE_ZONE
-
-		return s_Creator;
+		return s_Delegate;
 	}
 }
