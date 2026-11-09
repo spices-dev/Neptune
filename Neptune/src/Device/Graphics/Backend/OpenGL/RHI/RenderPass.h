@@ -14,11 +14,6 @@
 #include "Device/Graphics/Backend/OpenGL/Unit/RenderBuffer.h"
 #include "Device/Graphics/Frontend/RHI/RenderPass.h"
 
-namespace Neptune::RHI {
-
-	class RenderTarget;
-}
-
 namespace Neptune::OpenGL {
 
 	/**

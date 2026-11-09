@@ -13,13 +13,6 @@
 #include "Device/Graphics/Backend/OpenGL/Unit/Program.h"
 #include "Device/Graphics/Frontend/RHI/Pipeline.h"
 
-namespace Neptune::RHI {
-
-	class RenderPass;
-	class DescriptorList;
-	class Shader;
-}
-
 namespace Neptune::OpenGL {
 
 	/**

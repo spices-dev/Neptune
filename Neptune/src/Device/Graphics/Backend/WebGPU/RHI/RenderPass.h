@@ -18,12 +18,6 @@ namespace Neptune::WebGPU::Unit {
 	class CommandEncoder;
 }
 
-namespace Neptune::RHI {
-
-	class RenderTarget;
-	class Pipeline;
-}
-
 namespace Neptune::WebGPU {
 
 	class DescriptorList;

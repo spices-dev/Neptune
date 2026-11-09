@@ -17,11 +17,6 @@ namespace Neptune::Metal::Unit {
 	class CommandEncoder;
 }
 
-namespace Neptune::RHI {
-
-	class RenderTarget;
-}
-
 namespace Neptune::Metal {
 
 	/**

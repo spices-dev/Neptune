@@ -15,16 +15,6 @@
 #include "Device/Graphics/Backend/Vulkan/Middleware/IIndirect.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/IImageLayout.h"
 
-namespace Neptune::RHI {
-
-	class RenderPass;
-	class Pipeline;
-	class DescriptorList;
-	class IndexBuffer;
-	class Buffer;
-	class RenderTarget;
-}
-
 namespace Neptune::Vulkan {
 
 	namespace Resource {

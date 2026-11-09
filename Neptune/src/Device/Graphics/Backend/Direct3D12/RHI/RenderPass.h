@@ -18,12 +18,6 @@ namespace Neptune::Direct3D12::Unit {
 	class CommandEncoder;
 }
 
-namespace Neptune::RHI {
-
-	class RenderTarget;
-	class Pipeline;
-}
-
 namespace Neptune::Direct3D12 {
 
 	class DescriptorList;

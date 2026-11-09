@@ -11,6 +11,9 @@
 #include "Render/Frontend/Core.h"
 
 namespace Neptune::RHI {
+
+	class RenderTarget;
+	class Pipeline;
 	
 	using RHIRenderPass = RHI<ERHI::RenderPass>;
 
@@ -43,7 +46,7 @@ namespace Neptune::RHI {
 		* @param[in] renderTarget RenderTarget.
 		* @param[in] info RenderTargetAttachmentInfo.
 		*/
-		virtual void AddColorAttachment(const SP<class RenderTarget>& renderTarget, const RenderTargetAttachmentInfo& info) = 0;
+		virtual void AddColorAttachment(const SP<RenderTarget>& renderTarget, const RenderTargetAttachmentInfo& info) = 0;
 
 		/**
 		* @brief Interface of Build RenderPass.
@@ -81,7 +84,7 @@ namespace Neptune::RHI {
 		* @param[in] renderTarget RenderTarget.
 		* @param[in] info RenderTargetAttachmentInfo.
 		*/
-		void AddColorAttachment(const SP<class RenderTarget>& renderTarget, const RenderTargetAttachmentInfo& info) const { m_Impl->AddColorAttachment(renderTarget, info); }
+		void AddColorAttachment(const SP<RenderTarget>& renderTarget, const RenderTargetAttachmentInfo& info) const { m_Impl->AddColorAttachment(renderTarget, info); }
 
 		/**
 		* @brief Interface of Build RenderPass.

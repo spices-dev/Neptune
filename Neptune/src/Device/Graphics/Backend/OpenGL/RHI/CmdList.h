@@ -12,16 +12,6 @@
 #include "Device/Graphics/Backend/OpenGL/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Frontend/RHI/CmdList.h"
 
-namespace Neptune::RHI {
-
-	class RenderPass;
-	class Pipeline;
-	class DescriptorList;
-	class IndexBuffer;
-	class Buffer;
-	class RenderTarget;
-}
-
 namespace Neptune::OpenGL {
 
 	class RenderPass;

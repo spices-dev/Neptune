@@ -13,13 +13,6 @@
 #include "Device/Graphics/Backend/Direct3D12/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Frontend/RHI/Pipeline.h"
 
-namespace Neptune::RHI {
-
-	class RenderPass;
-	class DescriptorList;
-	class Shader;
-}
-
 namespace Neptune::Direct3D12 {
 
 	/**

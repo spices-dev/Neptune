@@ -17,16 +17,6 @@ namespace Neptune::Metal::Unit {
 	class CommandEncoder;
 }
 
-namespace Neptune::RHI {
-
-	class RenderPass;
-	class Pipeline;
-	class DescriptorList;
-	class IndexBuffer;
-	class Buffer;
-	class RenderTarget;;
-}
-
 namespace Neptune::Metal {
 
 	class RenderPass;

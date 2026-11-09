@@ -14,13 +14,6 @@
 #include "Device/Graphics/Backend/WebGPU/Unit/PipelineLayout.h"
 #include "Device/Graphics/Frontend/RHI/Pipeline.h"
 
-namespace Neptune::RHI {
-
-	class RenderPass;
-	class DescriptorList;
-	class Shader;
-}
-
 namespace Neptune::WebGPU {
 
 	/**
