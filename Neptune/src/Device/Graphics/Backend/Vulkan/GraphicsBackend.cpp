@@ -155,7 +155,7 @@ namespace Neptune::Vulkan {
 		}
 	}
 
-	std::any GraphicsBackend::AccessInfrastructure() const
+	Graphic::AInfrastructures GraphicsBackend::AccessInfrastructure() const
 	{
 		return m_Context->Get<IAccessibleInfrastructures>()->GetContext();
 	}

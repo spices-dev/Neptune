@@ -129,7 +129,7 @@ namespace Neptune::WebGPU {
         return m_GraphicsBackend->CreateRHI(e, payload);
 	}
 
-    std::any RenderBackend::AccessInfrastructure() const
+    Graphic::AInfrastructures RenderBackend::AccessInfrastructure() const
 	{
 		return m_GraphicsBackend->AccessInfrastructure();
 	}

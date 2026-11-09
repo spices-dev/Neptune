@@ -58,7 +58,7 @@ namespace Neptune::WebGL {
 		}
 	}
 
-    std::any GraphicsBackend::AccessInfrastructure() const
+    Graphic::AInfrastructures GraphicsBackend::AccessInfrastructure() const
 	{
         NEPTUNE_PROFILE_ZONE
 

@@ -11,6 +11,7 @@
 #include "Core/Event/Event.h"
 #include "Core/Event/EventProducer.h"
 #include "Device/Graphics/Frontend/RHI/RHI.h"
+#include "Device/Graphics/Frontend/AInfrastructure/AccessibleInfrastructure.h"
 #include "Enum.h"
 
 #include <vector>
@@ -86,7 +87,7 @@ namespace Neptune {
         *
         * @return Returns Infrastructure.
         */
-        virtual std::any AccessInfrastructure() const = 0;
+        virtual Graphic::AInfrastructures AccessInfrastructure() const = 0;
 
         /**
         * @brief Render a frame.

@@ -81,7 +81,7 @@ namespace Neptune::imgui {
 
 #ifdef NP_GRAPHICS_OPENGL
 	
-	void OpenGLInterface::OnInitialize(const std::any& infrastructure)
+	void OpenGLInterface::OnInitialize(const Graphic::AInfrastructures& infrastructure)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -89,7 +89,7 @@ namespace Neptune::imgui {
 
 		using enum EAccessibleInfrastructure;
 
-		auto context = std::any_cast<SP<AContext>>(infrastructure);
+		auto context = Graphic::GetContext<AContext>(infrastructure);
 		
 		ImGui_ImplOpenGL3_Init(context->Get<AApiVersionName>());
 	}
@@ -127,7 +127,7 @@ namespace Neptune::imgui {
     
 #ifdef NP_GRAPHICS_VULKAN
 	
-	void VulkanInterface::OnInitialize(const std::any& infrastructure)
+	void VulkanInterface::OnInitialize(const Graphic::AInfrastructures& infrastructure)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -135,7 +135,7 @@ namespace Neptune::imgui {
 
 		using enum EAccessibleInfrastructure;
 
-		auto context = std::any_cast<SP<AContext>>(infrastructure);
+		auto context = Graphic::GetContext<AContext>(infrastructure);
 
 		ImGui_ImplVulkan_InitInfo                                               init_info{};
 		init_info.ApiVersion                                                  = context->Get<AApiVersion>();
@@ -202,7 +202,7 @@ namespace Neptune::imgui {
 
 #ifdef NP_GRAPHICS_DIRECT3D11
 	
-	void Direct3D11Interface::OnInitialize(const std::any& infrastructure)
+	void Direct3D11Interface::OnInitialize(const Graphic::AInfrastructures& infrastructure)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -210,7 +210,7 @@ namespace Neptune::imgui {
 
 		using enum EAccessibleInfrastructure;
 
-		auto context = std::any_cast<SP<AContext>>(infrastructure);
+		auto context = Graphic::GetContext<AContext>(infrastructure);
 		
 		const auto device = context->Get<ADevice>();
 		const auto deviceContext = context->Get<ADeviceContext>();
@@ -251,7 +251,7 @@ namespace Neptune::imgui {
     
 #ifdef NP_GRAPHICS_DIRECT3D12
 	
-	void Direct3D12Interface::OnInitialize(const std::any& infrastructure)
+	void Direct3D12Interface::OnInitialize(const Graphic::AInfrastructures& infrastructure)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -259,7 +259,7 @@ namespace Neptune::imgui {
 
 		using enum EAccessibleInfrastructure;
 
-		auto context = std::any_cast<SP<AContext>>(infrastructure);
+		auto context = Graphic::GetContext<AContext>(infrastructure);
 		
 		const auto CPUHandle = context->Get<ASRVCPUHandle>();
 		const auto GPUHandle = context->Get<ASRVGPUHandle>();
@@ -313,7 +313,7 @@ namespace Neptune::imgui {
 	
 #ifdef NP_GRAPHICS_METAL
 	
-	void MetalInterface::OnInitialize(const std::any& infrastructure)
+	void MetalInterface::OnInitialize(const Graphic::AInfrastructures& infrastructure)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -321,7 +321,7 @@ namespace Neptune::imgui {
 
 		using enum EAccessibleInfrastructure;
 
-		auto context = std::any_cast<SP<AContext>>(infrastructure);
+		auto context = Graphic::GetContext<AContext>(infrastructure);
 
 		m_RenderPassDescriptor = context->Get<ARenderPassDescriptor>();
 		
@@ -363,7 +363,7 @@ namespace Neptune::imgui {
 	
 #ifdef NP_GRAPHICS_WEBGPU
 	
-	void WebGPUInterface::OnInitialize(const std::any& infrastructure)
+	void WebGPUInterface::OnInitialize(const Graphic::AInfrastructures& infrastructure)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -371,7 +371,7 @@ namespace Neptune::imgui {
 
 		using enum EAccessibleInfrastructure;
 
-		auto context = std::any_cast<SP<AContext>>(infrastructure);
+		auto context = Graphic::GetContext<AContext>(infrastructure);
 		
 		ImGui_ImplWGPU_InitInfo                      init_info{};
 		init_info.Device                           = context->Get<ADevice>();

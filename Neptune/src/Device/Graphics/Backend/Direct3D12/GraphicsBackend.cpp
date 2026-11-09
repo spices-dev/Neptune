@@ -95,7 +95,7 @@ namespace Neptune::Direct3D12 {
 		}
 	}
 
-    std::any GraphicsBackend::AccessInfrastructure() const
+    Graphic::AInfrastructures GraphicsBackend::AccessInfrastructure() const
     {
         return m_Context->Get<IAccessibleInfrastructures>()->GetContext();
     }

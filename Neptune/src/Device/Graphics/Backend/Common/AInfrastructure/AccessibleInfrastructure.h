@@ -28,7 +28,7 @@ namespace Neptune::Graphic::Common {
     * @tparam T AccessibleInfrastructureTuple.
     */
     template<IsEnum E, IsTuple T>
-    class AccessibleContext final
+    class AccessibleContext
     {
     public:
         

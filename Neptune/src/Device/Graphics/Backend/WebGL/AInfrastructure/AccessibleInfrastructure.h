@@ -25,7 +25,7 @@ namespace Neptune::WebGL {
     using AInfrastructures = std::tuple<
     >;
     
-    using AContext = Graphic::Common::AccessibleContext<EAccessibleInfrastructure, AInfrastructures>;
+    struct AContext : Graphic::Common::AccessibleContext<EAccessibleInfrastructure, AInfrastructures> {};
     
 }
 

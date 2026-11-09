@@ -33,7 +33,7 @@ namespace Neptune::Metal {
         ARenderPassDescriptor::T
     >;
     
-    using AContext = Graphic::Common::AccessibleContext<EAccessibleInfrastructure, AInfrastructures>;
+    struct AContext : Graphic::Common::AccessibleContext<EAccessibleInfrastructure, AInfrastructures> {};
     
 }
 

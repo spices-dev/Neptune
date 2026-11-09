@@ -77,9 +77,9 @@ namespace Neptune::Metal {
         return m_GraphicsBackend->CreateRHI(e, payload);
 	}
     
-    std::any RenderBackend::AccessInfrastructure() const
+    Graphic::AInfrastructures RenderBackend::AccessInfrastructure() const
     {
-        auto context = std::any_cast<SP<AContext>>(m_GraphicsBackend->AccessInfrastructure());
+        auto context = Graphic::GetContext<AContext>(m_GraphicsBackend->AccessInfrastructure());
 
         auto pass = std::dynamic_pointer_cast<Render::SlatePass>(m_RenderPasses.back());
         

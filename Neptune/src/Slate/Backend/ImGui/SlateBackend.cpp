@@ -25,7 +25,7 @@ namespace Neptune::imgui {
 
     SlateBackend::~SlateBackend() = default;
 
-    void SlateBackend::OnInitialize(const std::any& infrastructure) const
+    void SlateBackend::OnInitialize(const Graphic::AInfrastructures& infrastructure) const
     {
         NEPTUNE_PROFILE_ZONE
         

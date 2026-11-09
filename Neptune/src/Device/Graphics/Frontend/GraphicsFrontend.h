@@ -10,6 +10,7 @@
 #include "Core/NonCopyable.h"
 #include "RHI/RHI.h"
 #include "Enum.h"
+#include "Device/Graphics/Frontend/AInfrastructure/AccessibleInfrastructure.h"
 
 #include <any>
 
@@ -60,7 +61,7 @@ namespace Neptune {
         *
         * @return Returns Infrastructure.
         */
-        virtual std::any AccessInfrastructure() const = 0;
+        virtual Graphic::AInfrastructures AccessInfrastructure() const = 0;
 
     protected:
 

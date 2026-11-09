@@ -48,7 +48,7 @@ namespace Neptune::Direct3D12 {
         ASRVGPUHandle::T
     >;
     
-    using AContext              = Graphic::Common::AccessibleContext<EAccessibleInfrastructure, AInfrastructures>;
+    struct AContext : Graphic::Common::AccessibleContext<EAccessibleInfrastructure, AInfrastructures> {};
     
 }
 

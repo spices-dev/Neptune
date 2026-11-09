@@ -66,7 +66,7 @@ namespace Neptune::Vulkan {
         ACheckResultFn::T
     >;
     
-    using AContext                              = Graphic::Common::AccessibleContext<EAccessibleInfrastructure, AInfrastructures>;
+    struct AContext : Graphic::Common::AccessibleContext<EAccessibleInfrastructure, AInfrastructures> {};
     
 }
 

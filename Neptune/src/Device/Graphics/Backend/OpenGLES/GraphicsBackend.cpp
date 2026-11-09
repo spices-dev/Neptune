@@ -67,7 +67,7 @@ namespace Neptune::OpenGLES {
 		}
 	}
 
-    std::any GraphicsBackend::AccessInfrastructure() const
+    Graphic::AInfrastructures GraphicsBackend::AccessInfrastructure() const
 	{
 		return nullptr;
 	}

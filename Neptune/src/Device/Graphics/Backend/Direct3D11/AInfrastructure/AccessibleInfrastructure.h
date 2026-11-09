@@ -33,7 +33,7 @@ namespace Neptune::Direct3D11 {
         ADeviceContext::T
     >;
     
-    using AContext              = Graphic::Common::AccessibleContext<EAccessibleInfrastructure, AInfrastructures>;
+    struct AContext : Graphic::Common::AccessibleContext<EAccessibleInfrastructure, AInfrastructures> {};
     
 }
 
