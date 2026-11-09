@@ -24,13 +24,11 @@ namespace Neptune::Render {
 		m_RenderPass->Build();
 	}
 
-	void SlatePass::OnCollectRHI(Scene* scene)
+	void SlatePass::OnCollectRHI(Scene* scene, RHI::CmdList& cmdList)
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		const auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
-
-		RHI::CmdList cmdList;
 
 		cmdList.SetGraphicCmdList(clock);
 

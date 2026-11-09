@@ -233,7 +233,7 @@ namespace Neptune::Render {
 		}
 	}
 
-	void GS3DTileRenderPass::OnCollectRHI(Scene* scene)
+	void GS3DTileRenderPass::OnCollectRHI(Scene* scene, RHI::CmdList& cmdList)
 	{
 		NEPTUNE_PROFILE_ZONE
 
@@ -272,8 +272,6 @@ namespace Neptune::Render {
 		uint64_t histAddr               = m_HistBuffer  .Get(frame)->GetDeviceAddress();
 		uint64_t infoAddr               = m_InfoBuffer  .Get(frame)->GetDeviceAddress();
 		uint64_t rangeAddr              = m_RangeBuffer .Get(frame)->GetDeviceAddress();
-		
-		RHI::CmdList cmdList;
 
 		cmdList.SetComputeCmdList(clock);
 		

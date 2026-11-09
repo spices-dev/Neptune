@@ -45,7 +45,7 @@ namespace Neptune::Render {
 		*
 		* @param[in] scene Scene.
 		*/
-		void OnCollectRHI(Scene* scene) override;
+		void OnCollectRHI(Scene* scene, RHI::CmdList& cmdList) override;
 
 		/**
 		* @brief Set this Pass FrameBuffer Attachment Size.

@@ -78,13 +78,11 @@ namespace Neptune::Render {
 		m_Pipeline->BuildGraphicPipeline();
 	}
 
-	void FPSPass::OnCollectRHI(Scene* scene)
+	void FPSPass::OnCollectRHI(Scene* scene, RHI::CmdList& cmdList)
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		const auto& clock = scene->GetComponent<Component<Data::Clock>>(scene->GetRoot()).GetModel();
-
-		RHI::CmdList cmdList;
 
 		cmdList.SetGraphicCmdList(clock);
 

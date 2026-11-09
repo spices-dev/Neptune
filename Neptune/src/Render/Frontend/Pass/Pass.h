@@ -13,6 +13,11 @@ namespace Neptune {
 	class Scene;
 }
 
+namespace Neptune::RHI {
+
+	class CmdList;
+}
+
 namespace Neptune::Render { 
 
 	/**
@@ -73,7 +78,8 @@ namespace Neptune::Render {
 		* @brief Interface of CollectRHI.
 		*
 		* @param[in] scene Scene.
+		* @param[in] cmdList RHI::CmdList.
 		*/
-		virtual void OnCollectRHI(Scene* scene) = 0;
+		virtual void OnCollectRHI(Scene* scene, RHI::CmdList& cmdList) = 0;
 	};
 }

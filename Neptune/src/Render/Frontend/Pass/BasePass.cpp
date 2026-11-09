@@ -110,7 +110,7 @@ namespace Neptune::Render {
 		m_Pipeline->BuildGraphicPipeline();
 	}
 
-	void BasePass::OnCollectRHI(Scene* scene)
+	void BasePass::OnCollectRHI(Scene* scene, RHI::CmdList& cmdList)
 	{
 		NEPTUNE_PROFILE_ZONE
 		
@@ -121,8 +121,6 @@ namespace Neptune::Render {
 		ss << "GS3DScene_" << clock.m_FrameIndex;
 		
 		m_DescriptorList->UpdateUniformTexture(1, 0, ResourcePool<RenderTarget>::Instance().Access(ss.str())->GetRHIResource());
-
-		RHI::CmdList cmdList;
 
 		cmdList.SetGraphicCmdList(clock);
 

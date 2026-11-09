@@ -24,6 +24,10 @@ namespace Neptune {
         class Pass;
     }
 
+    namespace RHI {
+        class CmdList;
+    }
+    
     /**
     * @brief RenderFrontend Class.
     * This class defines the RenderFrontEnd behaves.
@@ -150,8 +154,10 @@ namespace Neptune {
 
     protected:
 
-        RenderBackendEnum m_RenderBackendEnum;                 // @brief RenderBackendEnum.
-        std::vector<SP<Render::Pass>> m_RenderPasses;          // @brief Container of Passes.
-        RenderDelegate m_RenderDelegate;                       // @brief RenderDelegate.
+        RenderBackendEnum             m_RenderBackendEnum;         // @brief RenderBackendEnum.
+        std::vector<SP<Render::Pass>> m_RenderPasses;              // @brief Container of Passes.
+        SP<RHI::CmdList>              m_CmdList;                   // @brief CmdList.
+        RenderDelegate                m_RenderDelegate;            // @brief RenderDelegate.
+        
     };
 }

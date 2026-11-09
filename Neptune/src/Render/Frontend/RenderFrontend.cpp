@@ -6,6 +6,7 @@
 
 #include "Pchheader.h"
 #include "RenderFrontend.h"
+#include "Device/Graphics/Frontend/RHI/CmdList.h"
 
 #ifdef NP_GRAPHICS_DIRECT3D11
 #include "Render/Backend/Direct3D11/RenderBackend.h"
@@ -113,6 +114,8 @@ namespace Neptune {
     {
         NEPTUNE_PROFILE_ZONE
 
+        m_CmdList = CreateSP<RHI::CmdList>();
+        
         ConstructDefaultPasses();
     }
 
@@ -123,6 +126,7 @@ namespace Neptune {
         RHI::RHIDelegate::SetCreator(nullptr);
 
         m_RenderPasses.clear();
+        m_CmdList.reset();
 
         ResourcePool<RenderTarget>::Instance().Destroy();
         ResourcePool<Shader>::Instance().Destroy();
@@ -134,7 +138,7 @@ namespace Neptune {
         NEPTUNE_PROFILE_ZONE
 
         std::ranges::for_each(m_RenderPasses, [&](const auto& renderPass) {
-            renderPass->OnCollectRHI(scene);
+            renderPass->OnCollectRHI(scene, *m_CmdList);
         });
     }
 
