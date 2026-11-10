@@ -14,7 +14,6 @@
 #include "Memory.h"
 #include "Render/Frontend/Core.h"
 
-#include <volk.h>
 #include <functional>
 
 namespace Neptune::Vulkan {
