@@ -51,6 +51,18 @@ namespace Neptune::RHI {
 			NONE_COPY(Scope)
 			
 			/**
+			* @brief Move Constructor Function.
+			*
+			* @param[in] other Scope.
+			*/
+			Scope(Scope&& other) noexcept;
+			
+			/**
+			* @brief Move Assignment Operation.
+			*/
+			Scope& operator=(Scope&&) = delete;
+			
+			/**
 			* @brief Operation () override.
 			* 
 			* @return Returns in scope RHIDelegate.
@@ -60,17 +72,18 @@ namespace Neptune::RHI {
 		private:
 			
 			RHIDelegate* m_Prev  = nullptr;  // @brief Previous RHIDelegate.
+			bool         m_Owned = false;    // @brief Owned RHIDelegate.
 		};
 		
 		/**
 		* @brief Constructor Function.
 		*/
-		RHIDelegate() : m_Scope(this) {}
+		RHIDelegate();
 		
 		/**
 		* @brief Destructor Function.
 		*/
-		virtual ~RHIDelegate() = default;
+		virtual ~RHIDelegate();
 		
 		/**
 		* @brief RHI Creator Functor.
