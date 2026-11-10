@@ -29,6 +29,8 @@ namespace Neptune::WebGPU {
 
         GraphicCommandEncoder,               // @brief GraphicCommandEncoder.
         ComputeCommandEncoder,               // @brief ComputeCommandEncoder.
+        
+        GarbageCollection,                   // @brief GarbageCollection.
         AccessibleInfrastructures,           // @brief AccessibleInfrastructures.
         
         Count

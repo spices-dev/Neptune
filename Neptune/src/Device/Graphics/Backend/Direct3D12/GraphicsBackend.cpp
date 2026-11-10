@@ -56,6 +56,7 @@ namespace Neptune::Direct3D12 {
         m_Context->Registry<ISRVDescriptorHeap>();
         m_Context->Registry<IUAVDescriptorHeap>();
         
+        m_Context->Registry<IGarbageCollection>();
         m_Context->Registry<IAccessibleInfrastructures>();
     }
 

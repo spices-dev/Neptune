@@ -21,6 +21,7 @@ namespace Neptune::OpenGL {
 
         TimeLine,                            // @brief Main Thread TimeLine.
         
+        GarbageCollection,                   // @brief GarbageCollection.
         AccessibleInfrastructures,           // @brief AccessibleInfrastructures.
 
         Count

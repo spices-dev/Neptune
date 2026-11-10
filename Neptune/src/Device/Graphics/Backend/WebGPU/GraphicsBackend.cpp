@@ -47,6 +47,7 @@ namespace Neptune::WebGPU {
         m_Context->Registry<IGraphicCommandEncoder>();
         m_Context->Registry<IComputeCommandEncoder>();
         
+        m_Context->Registry<IGarbageCollection>();
         m_Context->Registry<IAccessibleInfrastructures>();
     }
 

@@ -53,11 +53,15 @@ namespace Neptune::WebGPU {
 
         auto& context = m_GraphicsBackend->GetContext();
         
+        context.Get<IGarbageCollection>()->SetFrameId(clock.m_FrameId);
+        
         if (clock.m_FrameId > MaxFrameInFlight)
         {
             context.Get<IComputeTimeLine>()->Wait(clock.m_FrameId - MaxFrameInFlight);
             
             context.Get<IGraphicTimeLine>()->Wait(clock.m_FrameId - MaxFrameInFlight);
+            
+            context.Get<IGarbageCollection>()->Flush(clock.m_FrameId - MaxFrameInFlight);
         }
 
         {

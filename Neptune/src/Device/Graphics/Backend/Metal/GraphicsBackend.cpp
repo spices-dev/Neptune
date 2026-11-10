@@ -39,6 +39,7 @@ namespace Neptune::Metal {
         m_Context->Registry<ICommandBuffer>();
         m_Context->Registry<IGraphicDispatchSemaphore>(MaxFrameInFlight);
         
+        m_Context->Registry<IGarbageCollection>();
         m_Context->Registry<IAccessibleInfrastructures>();
     }
 

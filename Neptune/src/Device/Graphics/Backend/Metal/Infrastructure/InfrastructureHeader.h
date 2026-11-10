@@ -14,6 +14,7 @@
 #include "CommandQueue.h"
 #include "CommandBuffer.h"
 #include "DispatchSemaphore.h"
+#include "GarbageCollection.h"
 #include "AccessibleInfrastructures.h"
 
 #endif

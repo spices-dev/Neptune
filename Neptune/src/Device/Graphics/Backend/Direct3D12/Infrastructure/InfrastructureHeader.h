@@ -17,6 +17,7 @@
 #include "TimeLine.h"
 #include "SwapChain.h"
 #include "DescriptorHeap.h"
+#include "GarbageCollection.h"
 #include "AccessibleInfrastructures.h"
 
 #endif

@@ -66,6 +66,7 @@ namespace Neptune::Vulkan {
 
             case DescriptorPool:                     return "DescriptorPool";
         	
+            case GarbageCollection:                  return "GarbageCollection";
             case AccessibleInfrastructures:          return "AccessibleInfrastructures";
 
             default:                                 return "NonNamed";

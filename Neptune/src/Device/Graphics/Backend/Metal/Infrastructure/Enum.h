@@ -21,6 +21,7 @@ namespace Neptune::Metal {
         CommandQueue,                        // @brief CommandQueue.
         CommandBuffer,                       // @brief CommandBuffer.
         GraphicDispatchSemaphore,            // @brief GraphicDispatchSemaphore.
+        GarbageCollection,                   // @brief GarbageCollection.
         AccessibleInfrastructures,           // @brief AccessibleInfrastructures.
         
         Count

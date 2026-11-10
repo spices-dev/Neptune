@@ -38,6 +38,7 @@ namespace Neptune::OpenGL {
 
         m_Context->Registry<ITimeLine>(MaxFrameInFlight);
     	
+        m_Context->Registry<IGarbageCollection>();
         m_Context->Registry<IAccessibleInfrastructures>();
     }
 

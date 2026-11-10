@@ -110,6 +110,7 @@ namespace Neptune::Vulkan {
 		m_Context->Registry<IVideoDecodeThreadCommandPool>();
 		m_Context->Registry<IOpticalFlowThreadCommandPool>();
 		
+		m_Context->Registry<IGarbageCollection>();
 		m_Context->Registry<IAccessibleInfrastructures>();
 	}
 

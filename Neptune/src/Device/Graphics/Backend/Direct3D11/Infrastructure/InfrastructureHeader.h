@@ -15,6 +15,7 @@
 #include "CommandList.h"
 #include "Fence.h"
 #include "SwapChain.h"
+#include "GarbageCollection.h"
 #include "AccessibleInfrastructures.h"
 
 #endif

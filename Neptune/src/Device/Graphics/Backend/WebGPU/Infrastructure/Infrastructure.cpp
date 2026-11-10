@@ -33,6 +33,7 @@ namespace Neptune::WebGPU {
 			case ComputeTimeLine:                                     return "ComputeTimeLine";
 			case GraphicCommandEncoder:                               return "GraphicCommandEncoder";
 			case ComputeCommandEncoder:                               return "ComputeCommandEncoder";
+			case GarbageCollection:                                   return "GarbageCollection";
 			case AccessibleInfrastructures:                           return "AccessibleInfrastructures";
             default:                                                  return "NonNamed";
         }

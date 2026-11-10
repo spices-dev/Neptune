@@ -97,6 +97,22 @@ namespace Neptune {
     concept IsSame = std::same_as<T1, T2>;
     
     /**
+    * @brief Concept: Is Invocable.
+    * 
+    * @tparam T .
+    */
+    template<typename T>
+    concept IsInvocable = std::is_invocable_v<T>;
+    
+    /**
+    * @brief Concept: Is MoveConstructible.
+    * 
+    * @tparam T .
+    */
+    template<typename T>
+    concept IsMoveConstructible = std::is_move_constructible_v<T>;
+    
+    /**
     * @brief Concept: Is Convertible to.
     * 
     * @tparam T1 One Class.

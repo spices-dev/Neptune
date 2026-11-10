@@ -59,6 +59,7 @@ namespace Neptune::Vulkan {
 
         DescriptorPool,                      // @brief DescriptorPool.
         
+        GarbageCollection,                   // @brief GarbageCollection.
         AccessibleInfrastructures,           // @brief AccessibleInfrastructures.
 
         Count
