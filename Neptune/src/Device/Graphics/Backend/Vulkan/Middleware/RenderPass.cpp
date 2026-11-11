@@ -9,7 +9,6 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "RenderPass.h"
-
 #include "Device/Graphics/Backend/Vulkan/Converter.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Device.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/PhysicalDevice.h"
@@ -18,12 +17,14 @@
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderTarget.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/CommandBuffer.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/FrameBuffer.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Middlewares.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/IImageLayout.h"
 
 namespace Neptune::Vulkan::Middleware {
 	
 	RenderPass::RenderPass(Context& context)
 		: ContextAccessor(context)
-		, m_ImageLayout(IImageLayout::Create(context))
+		, m_ImageLayout(context.Get<IMiddlewares>()->GetContext()->Get<IIImageLayout>())
 	{}
 
 	void RenderPass::AddSwapChainAttachment()

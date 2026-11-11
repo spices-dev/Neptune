@@ -17,12 +17,14 @@
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/SwapChain.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderTarget.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/CommandBuffer.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Middlewares.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/IImageLayout.h"
 
 namespace Neptune::Vulkan::Middleware {
 	
 	RenderPass2::RenderPass2(Context& context)
 		: ContextAccessor(context)
-		, m_ImageLayout(IImageLayout::Create(context))
+		, m_ImageLayout(context.Get<IMiddlewares>()->GetContext()->Get<IIImageLayout>())
 	{}
 
 	void RenderPass2::AddSwapChainAttachment()

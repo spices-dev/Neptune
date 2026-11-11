@@ -9,15 +9,14 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "Core/Core.h"
-#include "Device/Graphics/Backend/Vulkan/Core.h"
-#include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
+#include "Context.h"
 
 namespace Neptune::Vulkan::Middleware {
 	
 	/**
 	* @brief Interface of DescriptorList.
 	*/
-	class IDescriptorList
+	class IDescriptorList : public Middleware
 	{
 	public:
 
@@ -33,7 +32,7 @@ namespace Neptune::Vulkan::Middleware {
 		/**
 		* @brief Destructor Function.
 		*/
-		virtual ~IDescriptorList() = default;
+		~IDescriptorList() override = default;
 	};
 }
 

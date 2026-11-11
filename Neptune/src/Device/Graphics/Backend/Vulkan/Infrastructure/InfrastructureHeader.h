@@ -26,6 +26,7 @@
 #include "ThreadCommandPool.h"
 #include "Queue.h"
 #include "TimeLine.h"
+#include "Middlewares.h"
 #include "GarbageCollection.h"
 #include "AccessibleInfrastructures.h"
 

@@ -10,8 +10,6 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
-#include "Device/Graphics/Backend/Vulkan/Middleware/IImageLayout.h"
-#include "Device/Graphics/Backend/Vulkan/Middleware/ISynchronization.h"
 #include "IRenderPass.h"
 
 namespace Neptune::Vulkan::Middleware {
@@ -112,8 +110,8 @@ namespace Neptune::Vulkan::Middleware {
 		std::vector<VkImageMemoryBarrier2>                m_AttachmentOutBarriers;           // @brief VkImageMemoryBarrier2.
 		std::vector<VkPipelineColorBlendAttachmentState>  m_ColorBlends;					 // @brief VkPipelineColorBlendAttachmentState.
 		std::optional<uint32_t>                           m_SwapChainImageIndex;		     // @brief SwapChainImageIndex.
-		UP<IImageLayout>                                  m_ImageLayout;		        	 // @brief IImageLayout.
-		UP<ISynchronization>                              m_Synchronization;		         // @brief ISynchronization.
+		class IImageLayout*                               m_ImageLayout;		        	 // @brief IImageLayout.
+		class ISynchronization*                           m_Synchronization;		         // @brief ISynchronization.
 		std::optional<VkExtent2D>                         m_Extent;							 // @brief VkExtent2D.
 	};
 }

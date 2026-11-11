@@ -10,8 +10,13 @@
 namespace Neptune::Container {
 
     /**
+    * @brief Pure Empty struct.
+    */
+    struct PureEmpty {};
+ 
+    /**
     * @brief Empty struct.
     */
-    struct Empty {};
+    struct Empty { virtual ~Empty() = default; };
     
 }

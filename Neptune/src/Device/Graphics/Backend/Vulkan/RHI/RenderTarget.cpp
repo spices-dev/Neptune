@@ -13,13 +13,15 @@
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/PhysicalDevice.h"
 #include "Device/Graphics/Backend/Vulkan/Converter.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/CmdList2.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Middlewares.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/IImageLayout.h"
 
 namespace Neptune::Vulkan {
 	
 	RenderTarget::RenderTarget(Context& context)
 		: ContextAccessor(context)
 		, m_DescriptorSet(context)
-		, m_ImageLayout(Middleware::IImageLayout::Create(context))
+		, m_ImageLayout(context.Get<IMiddlewares>()->GetContext()->Get<Middleware::IIImageLayout>())
 	{}
 
 	void RenderTarget::CreateRenderTarget(const RenderTargetCreateInfo& info)

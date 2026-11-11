@@ -7,19 +7,14 @@
 #pragma once
 #include "Core/Core.h"
 #include "Enum.h"
+#include "Core/Container/Empty.h"
 
 namespace Neptune::RHI {
 
 	/**
 	* @brief RHIImplEmpty
 	*/
-	struct RHIImplEmpty
-	{
-		/**
-		* @brief Destructor Function.
-		*/
-		virtual ~RHIImplEmpty() = default;
-	};
+	using RHIImplEmpty = Container::Empty;
 
 	/**
 	* @brief RHIDelegate

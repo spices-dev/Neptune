@@ -9,11 +9,16 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "Core/Core.h"
+#include "Device/Graphics/Backend/Vulkan/Core.h"
 #include "Infrastructure.h"
-#include "Device/Graphics/Backend/Vulkan/Middleware/ITimeLine.h"
 
 namespace Neptune::Vulkan {
 
+    namespace Middleware {
+		
+        class ITimeLine;
+    }
+    
     using IGraphicTimeLine     = IInfrastructure<class TimeLine, EInfrastructure::GraphicTimeLine>;
     using IComputeTimeLine     = IInfrastructure<class TimeLine, EInfrastructure::ComputeTimeLine>;
 
@@ -73,7 +78,7 @@ namespace Neptune::Vulkan {
         
     private:
 
-        UP<Middleware::ITimeLine> m_TimeLine;    // @brief this TimeLine.
+        Middleware::ITimeLine* m_TimeLine;    // @brief this TimeLine.
 
     };
 	

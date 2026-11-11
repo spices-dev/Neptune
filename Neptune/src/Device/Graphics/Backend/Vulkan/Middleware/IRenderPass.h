@@ -10,7 +10,7 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Core.h"
-#include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
+#include "Context.h"
 
 namespace Neptune {
 	
@@ -32,7 +32,7 @@ namespace Neptune::Vulkan::Middleware {
 	/**
 	* @brief Interface of RenderPass.
 	*/
-	class IRenderPass
+	class IRenderPass : public Middleware
 	{
 	public:
 
@@ -48,7 +48,7 @@ namespace Neptune::Vulkan::Middleware {
 		/**
 		* @brief Destructor Function.
 		*/
-		virtual ~IRenderPass() = default;
+		~IRenderPass() override = default;
 		
 		/**
 		* @brief Interface of Add SwapChain Attachment.

@@ -11,12 +11,14 @@
 #include "TimeLine.h"
 #include "Device.h"
 #include "DebugUtilsObject.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Middlewares.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/ITimeLine.h"
 
 namespace Neptune::Vulkan {
 
     TimeLine::TimeLine(Context& context, EInfrastructure e, uint32_t count)
         : Infrastructure(context, e)
-        , m_TimeLine(Middleware::ITimeLine::Create(context, count))
+        , m_TimeLine(context.Get<IMiddlewares>()->GetContext()->Get<Middleware::IITimeLine>())
     {
         NEPTUNE_PROFILE_ZONE
         

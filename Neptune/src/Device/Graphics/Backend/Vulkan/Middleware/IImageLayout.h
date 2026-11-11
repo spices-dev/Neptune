@@ -10,14 +10,16 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Core.h"
-#include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
+#include "Context.h"
 
 namespace Neptune::Vulkan::Middleware {
+	
+	using IIImageLayout = IMiddleware<class IImageLayout, EMiddleware::ImageLayout>;
 	
     /**
     * @brief Interface of ImageLayout.
     */
-    class IImageLayout
+    class IImageLayout : public Middleware
     {
     public:
 		
@@ -33,7 +35,7 @@ namespace Neptune::Vulkan::Middleware {
         /**
         * @brief Destructor Function.
         */
-        virtual ~IImageLayout() = default;
+    	~IImageLayout() override = default;
 
         /**
         * @brief Interface of Transform VkImageLayout to VkImageLayout.

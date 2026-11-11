@@ -10,7 +10,7 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Core.h"
-#include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
+#include "Context.h"
 
 namespace Neptune::Vulkan::Unit {
 	
@@ -19,10 +19,12 @@ namespace Neptune::Vulkan::Unit {
 
 namespace Neptune::Vulkan::Middleware {
 	
+	using IISynchronization = IMiddleware<class ISynchronization, EMiddleware::Synchronization>;
+	
 	/**
 	* @brief Interface of Synchronization.
 	*/
-	class ISynchronization
+	class ISynchronization : public Middleware
 	{
 	public:
 		
@@ -38,7 +40,7 @@ namespace Neptune::Vulkan::Middleware {
 		/**
 		* @brief Destructor Function.
 		*/
-		virtual ~ISynchronization() = default;
+		~ISynchronization() override = default;
 
 		/**
 		* @brief Interface of Insert Image Barrier.

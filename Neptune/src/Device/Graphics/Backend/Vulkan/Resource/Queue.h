@@ -11,8 +11,12 @@
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/ITimeLine.h"
-#include "Device/Graphics/Backend/Vulkan/Middleware/IQueueSubmit.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/Queue.h"
+
+namespace Neptune::Vulkan::Middleware {
+		
+    class IQueueSubmit;
+}
 
 namespace Neptune::Vulkan::Resource {
 
@@ -78,7 +82,7 @@ namespace Neptune::Vulkan::Resource {
         
         Unit::Queue                  m_Queue;            // @brief This Queue.
         UP<Middleware::ITimeLine>    m_TimeLine;         // @brief This TimeLine.
-        UP<Middleware::IQueueSubmit> m_QueueSubmit;      // @brief This QueueSubmit.
+        Middleware::IQueueSubmit*    m_QueueSubmit;      // @brief This QueueSubmit.
         uint64_t                     m_Time = 0;         // @brief This TimeLine Time.
     };
 }

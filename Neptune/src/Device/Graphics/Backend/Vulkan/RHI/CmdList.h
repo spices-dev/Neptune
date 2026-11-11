@@ -11,9 +11,7 @@
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Frontend/RHI/CmdList.h"
-#include "Device/Graphics/Backend/Vulkan/Middleware/ISynchronization.h"
-#include "Device/Graphics/Backend/Vulkan/Middleware/IIndirect.h"
-#include "Device/Graphics/Backend/Vulkan/Middleware/IImageLayout.h"
+#include "Device/Graphics/Backend/Vulkan/Unit/CommandBuffer.h"
 
 namespace Neptune::Vulkan {
 
@@ -24,6 +22,13 @@ namespace Neptune::Vulkan {
 		class QueryPool;
 	}
 
+	namespace Middleware {
+		
+		class ISynchronization;
+		class IIndirect;
+		class IImageLayout;
+	}
+	
 	class RenderPass;
 	
 	/**
@@ -286,9 +291,9 @@ namespace Neptune::Vulkan {
 		const Resource::QueryPool*           m_QueryPool      = nullptr;                               // @brief QueryPool reference.
 		VkPipelineBindPoint                  m_BindPoint      = VK_PIPELINE_BIND_POINT_MAX_ENUM;       // @brief VkPipelineBindPoint.
 		VkPipelineLayout                     m_PipelineLayout = VK_NULL_HANDLE;                        // @brief VkPipelineLayout.
-		UP<Middleware::ISynchronization>     m_Synchronization;                                        // @brief ISynchronization.
-		UP<Middleware::IIndirect>            m_Indirect;                                               // @brief IIndirect.
-		UP<Middleware::IImageLayout>         m_ImageLayout;		        	                           // @brief IImageLayout.
+		Middleware::ISynchronization*        m_Synchronization;                                        // @brief ISynchronization.
+		Middleware::IIndirect*               m_Indirect;                                               // @brief IIndirect.
+		Middleware::IImageLayout*            m_ImageLayout;		        	                           // @brief IImageLayout.
 	};
 }
 

@@ -10,14 +10,16 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Core.h"
-#include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
+#include "Context.h"
 
 namespace Neptune::Vulkan::Middleware {
+	
+	using IITimeLine          = IMiddleware<class ITimeLine, EMiddleware::TimeLine>;
 	
 	/**
 	* @brief ITimeLine of RenderPass.
 	*/
-	class ITimeLine
+	class ITimeLine : public Middleware
 	{
 	public:
 
@@ -34,7 +36,7 @@ namespace Neptune::Vulkan::Middleware {
 		/**
 		* @brief Destructor Function.
 		*/
-		virtual ~ITimeLine() = default;
+		~ITimeLine() override = default;
 		
 		/**
 		* @brief Interface of Wait TimeLine.

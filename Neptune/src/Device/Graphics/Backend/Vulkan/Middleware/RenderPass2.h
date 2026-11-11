@@ -12,7 +12,6 @@
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/RenderPass.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/FrameBuffer.h"
-#include "Device/Graphics/Backend/Vulkan/Middleware/IImageLayout.h"
 #include "IRenderPass.h"
 
 namespace Neptune::Vulkan::Middleware {
@@ -123,7 +122,7 @@ namespace Neptune::Vulkan::Middleware {
 		std::vector<VkPipelineColorBlendAttachmentState>  m_ColorBlends;					 // @brief VkPipelineColorBlendAttachmentState.
 		std::vector<VkClearValue>                         m_ClearValues;					 // @brief VkClearValue.
 		std::vector<VkImageView>                          m_ImageViews;						 // @brief VkImageView.
-		UP<IImageLayout>                                  m_ImageLayout;		        	 // @brief IImageLayout.
+		class IImageLayout*                               m_ImageLayout;		        	 // @brief IImageLayout.
 		std::optional<VkExtent2D>                         m_Extent;							 // @brief VkExtent2D.
 	};
 }

@@ -13,12 +13,14 @@
 #include "DebugUtilsObject.h"
 #include "Device.h"
 #include "Extensions.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Middlewares.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/IQueueSubmit.h"
 
 namespace Neptune::Vulkan {
 
     Queue::Queue(Context& context, EInfrastructure e)
         : Infrastructure(context, e)
-        , m_QueueSubmit(Middleware::IQueueSubmit::Create(context))
+        , m_QueueSubmit(context.Get<IMiddlewares>()->GetContext()->Get<Middleware::IIQueueSubmit>())
     {
         NEPTUNE_PROFILE_ZONE
 

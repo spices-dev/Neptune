@@ -23,14 +23,18 @@
 #include "Data/Clock.h"
 #include "Device/Graphics/Backend/Vulkan/Converter.h"
 #include "Device/Graphics/Frontend/RHI/Buffer.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Middlewares.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/IImageLayout.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/IIndirect.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/ISynchronization.h"
 
 namespace Neptune::Vulkan {
 	
 	CmdList::CmdList(Context& context)
 		: ContextAccessor(context)
-		, m_Synchronization(Middleware::ISynchronization::Create(context))
-		, m_Indirect(Middleware::IIndirect::Create(context))
-		, m_ImageLayout(Middleware::IImageLayout::Create(context))
+		, m_Synchronization(context.Get<IMiddlewares>()->GetContext()->Get<Middleware::IISynchronization>())
+		, m_Indirect(context.Get<IMiddlewares>()->GetContext()->Get<Middleware::IIIndirect>())
+		, m_ImageLayout(context.Get<IMiddlewares>()->GetContext()->Get<Middleware::IIImageLayout>())
 	{}
 
 	void CmdList::SetGraphicCmdList(const Data::Clock& clock)

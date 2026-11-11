@@ -11,10 +11,14 @@
 #include "Core/Core.h"
 #include "Infrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/Queue.h"
-#include "Device/Graphics/Backend/Vulkan/Middleware/IQueueSubmit.h"
 
 namespace Neptune::Vulkan {
 
+	namespace Middleware {
+		
+		class IQueueSubmit;
+	}
+	
 	using IGraphicQueue     = IInfrastructure<class Queue, EInfrastructure::GraphicQueue>;
 	using IPresentQueue     = IInfrastructure<class Queue, EInfrastructure::PresentQueue>;
 	using IComputeQueue     = IInfrastructure<class Queue, EInfrastructure::ComputeQueue>;
@@ -77,7 +81,7 @@ namespace Neptune::Vulkan {
 	private:
 
 		Unit::Queue m_Queue;                           // @brief This Queue.
-		UP<Middleware::IQueueSubmit> m_QueueSubmit;    // @brief This QueueSubmit.
+		Middleware::IQueueSubmit* m_QueueSubmit;       // @brief This QueueSubmit.
 	};
 
 }

@@ -10,7 +10,7 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Core.h"
-#include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
+#include "Context.h"
 
 namespace Neptune::Vulkan::Unit {
 	
@@ -24,10 +24,12 @@ namespace Neptune::Vulkan {
 
 namespace Neptune::Vulkan::Middleware {
 	
+	using IIIndirect = IMiddleware<class IIndirect, EMiddleware::Indirect>;
+	
     /**
     * @brief Interface of IIndirect.
     */
-    class IIndirect
+    class IIndirect : public Middleware
     {
     public:
 		
@@ -43,7 +45,7 @@ namespace Neptune::Vulkan::Middleware {
         /**
         * @brief Destructor Function.
         */
-        virtual ~IIndirect() = default;
+    	~IIndirect() override = default;
     	
     	/**
 		* @brief Interface of CmdDispatchIndirect.

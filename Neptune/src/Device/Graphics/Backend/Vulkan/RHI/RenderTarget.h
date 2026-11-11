@@ -14,10 +14,14 @@
 #include "Device/Graphics/Frontend/RHI/Buffer.h"
 #include "Device/Graphics/Frontend/RHI/RenderTarget.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/DescriptorSet.h"
-#include "Device/Graphics/Backend/Vulkan/Middleware/IImageLayout.h"
 
 namespace Neptune::Vulkan {
 
+	namespace Middleware {
+		
+		class IImageLayout;
+	}
+	
 	/**
 	* @brief Vulkan::RenderTarget Class.
 	* This class defines the Vulkan::RenderTarget behaves.
@@ -164,7 +168,7 @@ namespace Neptune::Vulkan {
 
 		SP<Resource::Image>           m_Image;                      // @brief This Image.
 		Resource::DescriptorSet       m_DescriptorSet;              // @brief This DescriptorSet.
-		UP<Middleware::IImageLayout>  m_ImageLayout;		        // @brief IImageLayout.
+		Middleware::IImageLayout*     m_ImageLayout;		        // @brief IImageLayout.
 	};
 }
 

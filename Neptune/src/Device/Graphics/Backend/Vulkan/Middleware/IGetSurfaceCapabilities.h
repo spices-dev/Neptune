@@ -10,7 +10,7 @@
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Vulkan/Core.h"
-#include "Device/Graphics/Backend/Vulkan/Infrastructure/Infrastructure.h"
+#include "Context.h"
 
 namespace Neptune::Vulkan {
 	
@@ -19,10 +19,12 @@ namespace Neptune::Vulkan {
 
 namespace Neptune::Vulkan::Middleware {
 	
+	using IIGetSurfaceCapabilities = IMiddleware<class IGetSurfaceCapabilities, EMiddleware::GetSurfaceCapabilities>;
+	
     /**
     * @brief Interface of IGetSurfaceCapabilities.
     */
-    class IGetSurfaceCapabilities
+    class IGetSurfaceCapabilities : public Middleware
     {
     public:
 		
@@ -47,7 +49,7 @@ namespace Neptune::Vulkan::Middleware {
         /**
         * @brief Destructor Function.
         */
-        virtual ~IGetSurfaceCapabilities() = default;
+    	~IGetSurfaceCapabilities() override = default;
     	
     	/**
 		* @brief Interface of GetSurfaceCapabilities.

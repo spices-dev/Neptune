@@ -11,13 +11,15 @@
 #include "Queue.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Device.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/DebugUtilsObject.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Middlewares.h"
+#include "Device/Graphics/Backend/Vulkan/Middleware/IQueueSubmit.h"
 
 namespace Neptune::Vulkan::Resource {
 	
 	Queue::Queue(Context& context)
 		: ContextAccessor(context)
 		, m_TimeLine(Middleware::ITimeLine::Create(context, 1))
-		, m_QueueSubmit(Middleware::IQueueSubmit::Create(context))
+		, m_QueueSubmit(context.Get<IMiddlewares>()->GetContext()->Get<Middleware::IIQueueSubmit>())
 	{}
 
     void Queue::CreateQueue(Unit::Queue::Handle queue)
