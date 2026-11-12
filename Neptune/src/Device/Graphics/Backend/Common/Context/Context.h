@@ -67,7 +67,7 @@ namespace Neptune::Graphic::Common {
     * @brief Context.
     * 
     * @tparam Element Element.
-    * @tparam E EExtension.
+    * @tparam E Enum.
     */
     template<typename Element, typename E>
     requires IsEnum<E>
@@ -85,13 +85,15 @@ namespace Neptune::Graphic::Common {
         /**
         * @brief Destructor Function.
         */
-        ~Context() = default;
+        virtual ~Context() = default;
 
         /**
         * @brief Registry IContextElement.
         *
         * @tparam I IContextElement Definitions.
         * @param[in] args IContextElement::T Construct Params.
+        * 
+        * @return Returns IContextElement::T.
         */
         template<typename I, typename... Args>
         requires IsIContextElement<Element, I> && 

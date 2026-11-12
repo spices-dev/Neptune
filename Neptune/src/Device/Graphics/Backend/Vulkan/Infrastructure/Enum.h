@@ -5,6 +5,7 @@
 */
 
 #pragma once
+#include "Device/Graphics/Backend/Common/Infrastructure/DirectedAcyclicGraph.h"
 
 #ifdef NP_GRAPHICS_VULKAN
 
@@ -66,6 +67,46 @@ namespace Neptune::Vulkan {
         Count
     };
 
+    inline constexpr Graphic::Common::DirectedAcyclicGraph<EInfrastructure> g{{
+        { EInfrastructure::Functions,{} },
+        { EInfrastructure::Layers,{} },
+        { EInfrastructure::Extensions,{} },
+        { EInfrastructure::Instance,{ EInfrastructure::Functions, EInfrastructure::Layers, EInfrastructure::Extensions } },
+        { EInfrastructure::DebugUtilsObject,{} },
+        { EInfrastructure::Surface,{} },
+        { EInfrastructure::PhysicalDevice,{} },
+        { EInfrastructure::Device,{} },
+        { EInfrastructure::GraphicQueue,{} },
+        { EInfrastructure::PresentQueue,{} },
+        { EInfrastructure::ComputeQueue,{} },
+        { EInfrastructure::GraphicThreadQueue,{} },
+        { EInfrastructure::ComputeThreadQueue,{} },
+        { EInfrastructure::TransferThreadQueue,{} },
+        { EInfrastructure::VideoEncodeThreadQueue,{} },
+        { EInfrastructure::VideoDecodeThreadQueue,{} },
+        { EInfrastructure::OpticalFlowThreadQueue,{} },
+        { EInfrastructure::MemoryAllocator,{} },
+        { EInfrastructure::SwapChain,{} },
+        { EInfrastructure::GraphicTimeLine,{} },
+        { EInfrastructure::ComputeTimeLine,{} },
+        { EInfrastructure::GraphicImageSemaphore,{} },
+        { EInfrastructure::GraphicQueueSemaphore,{} },
+        { EInfrastructure::GraphicCommandPool,{} },
+        { EInfrastructure::GraphicCommandBuffer,{} },
+        { EInfrastructure::ComputeCommandPool,{} },
+        { EInfrastructure::ComputeCommandBuffer,{} },
+        { EInfrastructure::GraphicThreadCommandPool,{} },
+        { EInfrastructure::ComputeThreadCommandPool,{} },
+        { EInfrastructure::TransferThreadCommandPool,{} },
+        { EInfrastructure::VideoEncodeThreadCommandPool,{} },
+        { EInfrastructure::OpticalFlowThreadCommandPool,{} },
+        { EInfrastructure::DescriptorPool,{} },
+        { EInfrastructure::Middlewares,{} },
+        { EInfrastructure::GarbageCollection,{} },
+        { EInfrastructure::AccessibleInfrastructures,{} }
+    }};
+    
+    static_assert(g.Execute());
 }
 
 #endif
