@@ -27,7 +27,7 @@ local TemplateDefineProject = function(config)
         -- Language Config.
         if config.language == "C++" then
             language "C++"                       -- Use C++.
-            cppdialect "C++20"                   -- Use C++20.
+            cppdialect "C++23"                   -- Use C++23.
         elseif config.language == "C" then
             language "C"                         -- Use C.
         end
