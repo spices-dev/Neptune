@@ -5,9 +5,10 @@
 */
 
 #pragma once
-#include "Device/Graphics/Backend/Common/Infrastructure/DirectedAcyclicGraph.h"
 
 #ifdef NP_GRAPHICS_VULKAN
+
+#include "Device/Graphics/Backend/Common/Context/DirectedAcyclicGraph.h"
 
 namespace Neptune::Vulkan {
 
@@ -66,47 +67,48 @@ namespace Neptune::Vulkan {
 
         Count
     };
+}
 
-    inline constexpr Graphic::Common::DirectedAcyclicGraph<EInfrastructure> g{{
-        { EInfrastructure::Functions,{} },
-        { EInfrastructure::Layers,{} },
-        { EInfrastructure::Extensions,{} },
-        { EInfrastructure::Instance,{ EInfrastructure::Functions, EInfrastructure::Layers, EInfrastructure::Extensions } },
-        { EInfrastructure::DebugUtilsObject,{} },
-        { EInfrastructure::Surface,{} },
-        { EInfrastructure::PhysicalDevice,{} },
-        { EInfrastructure::Device,{} },
-        { EInfrastructure::GraphicQueue,{} },
-        { EInfrastructure::PresentQueue,{} },
-        { EInfrastructure::ComputeQueue,{} },
-        { EInfrastructure::GraphicThreadQueue,{} },
-        { EInfrastructure::ComputeThreadQueue,{} },
-        { EInfrastructure::TransferThreadQueue,{} },
-        { EInfrastructure::VideoEncodeThreadQueue,{} },
-        { EInfrastructure::VideoDecodeThreadQueue,{} },
-        { EInfrastructure::OpticalFlowThreadQueue,{} },
-        { EInfrastructure::MemoryAllocator,{} },
-        { EInfrastructure::SwapChain,{} },
-        { EInfrastructure::GraphicTimeLine,{} },
-        { EInfrastructure::ComputeTimeLine,{} },
-        { EInfrastructure::GraphicImageSemaphore,{} },
-        { EInfrastructure::GraphicQueueSemaphore,{} },
-        { EInfrastructure::GraphicCommandPool,{} },
-        { EInfrastructure::GraphicCommandBuffer,{} },
-        { EInfrastructure::ComputeCommandPool,{} },
-        { EInfrastructure::ComputeCommandBuffer,{} },
-        { EInfrastructure::GraphicThreadCommandPool,{} },
-        { EInfrastructure::ComputeThreadCommandPool,{} },
-        { EInfrastructure::TransferThreadCommandPool,{} },
-        { EInfrastructure::VideoEncodeThreadCommandPool,{} },
-        { EInfrastructure::OpticalFlowThreadCommandPool,{} },
-        { EInfrastructure::DescriptorPool,{} },
-        { EInfrastructure::Middlewares,{} },
-        { EInfrastructure::GarbageCollection,{} },
-        { EInfrastructure::AccessibleInfrastructures,{} }
-    }};
+namespace Neptune::Graphic::Common {
     
-    static_assert(g.Execute());
+    /**
+    * @brief EInfrastructure Infrastructure DAG.
+    */
+    template<>
+    inline constexpr DirectedAcyclicGraph<Vulkan::EInfrastructure> s_InfrastructureDAG<Vulkan::EInfrastructure>{{
+        { Vulkan::EInfrastructure::Instance,                      { Vulkan::EInfrastructure::Functions, Vulkan::EInfrastructure::Layers, Vulkan::EInfrastructure::Extensions } },
+        { Vulkan::EInfrastructure::DebugUtilsObject,              { Vulkan::EInfrastructure::Instance } },
+        { Vulkan::EInfrastructure::Surface,                       { Vulkan::EInfrastructure::Instance } },
+        { Vulkan::EInfrastructure::PhysicalDevice,                { Vulkan::EInfrastructure::Instance } },
+        { Vulkan::EInfrastructure::Device,                        { Vulkan::EInfrastructure::PhysicalDevice } },
+        { Vulkan::EInfrastructure::GraphicQueue,                  { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::PresentQueue,                  { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::ComputeQueue,                  { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::GraphicThreadQueue,            { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::ComputeThreadQueue,            { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::TransferThreadQueue,           { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::VideoEncodeThreadQueue,        { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::VideoDecodeThreadQueue,        { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::OpticalFlowThreadQueue,        { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::MemoryAllocator,               { Vulkan::EInfrastructure::Instance } },
+        { Vulkan::EInfrastructure::SwapChain,                     { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::GraphicTimeLine,               { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::ComputeTimeLine,               { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::GraphicImageSemaphore,         { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::GraphicQueueSemaphore,         { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::GraphicCommandPool,            { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::GraphicCommandBuffer,          { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::ComputeCommandPool,            { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::ComputeCommandBuffer,          { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::GraphicThreadCommandPool,      { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::ComputeThreadCommandPool,      { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::TransferThreadCommandPool,     { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::VideoEncodeThreadCommandPool,  { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::OpticalFlowThreadCommandPool,  { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::DescriptorPool,                { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::Middlewares,                   { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::AccessibleInfrastructures,     { Vulkan::EInfrastructure::PhysicalDevice } },
+    }};
 }
 
 #endif

@@ -8,6 +8,8 @@
 
 #ifdef NP_GRAPHICS_WEBGPU
 
+#include "Device/Graphics/Backend/Common/Context/DirectedAcyclicGraph.h"
+
 namespace Neptune::WebGPU {
 
     /**
@@ -36,6 +38,28 @@ namespace Neptune::WebGPU {
         Count
     };
 
+}
+
+namespace Neptune::Graphic::Common {
+    
+    /**
+    * @brief EInfrastructure Infrastructure DAG.
+    */
+    template<>
+    inline constexpr DirectedAcyclicGraph<EInfrastructure> s_InfrastructureDAG<EInfrastructure>{{
+        { WebGPU::EInfrastructure::Instance,                      { WebGPU::EInfrastructure::Extensions } },
+        { WebGPU::EInfrastructure::DebugUtilsObject,              { WebGPU::EInfrastructure::Instance } },
+        { WebGPU::EInfrastructure::Adapter,                       { WebGPU::EInfrastructure::Instance } },
+        { WebGPU::EInfrastructure::Device,                        { WebGPU::EInfrastructure::Adapter } },
+        { WebGPU::EInfrastructure::Surface,                       { WebGPU::EInfrastructure::Device } },
+        { WebGPU::EInfrastructure::Queue,                         { WebGPU::EInfrastructure::Device } },
+        { WebGPU::EInfrastructure::GraphicTimeLine,               { WebGPU::EInfrastructure::Device } },
+        { WebGPU::EInfrastructure::ComputeTimeLine,               { WebGPU::EInfrastructure::Device } },
+        { WebGPU::EInfrastructure::GraphicCommandEncoder,         { WebGPU::EInfrastructure::Device } },
+        { WebGPU::EInfrastructure::ComputeCommandEncoder,         { WebGPU::EInfrastructure::Device } },
+        { WebGPU::EInfrastructure::AccessibleInfrastructures,     { WebGPU::EInfrastructure::Device } },
+
+    }};
 }
 
 #endif

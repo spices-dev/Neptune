@@ -8,6 +8,7 @@
 #include "Core/Core.h"
 #include "Core/Container/KVTuple.h"
 #include "Device/Graphics/Backend/Common/Concept.h"
+#include "DirectedAcyclicGraph.h"
 
 namespace Neptune::Graphic::Common {
     
@@ -191,6 +192,25 @@ namespace Neptune::Graphic::Common {
 
         constexpr auto position = static_cast<uint8_t>(I::E);
 
+        static_assert(s_InfrastructureDAG<E>.Execute());
+        
+        constexpr auto dependencies = s_InfrastructureDAG<E>.template Dependencies<position>();
+        
+        if constexpr (dependencies.any())
+        {
+            for (uint8_t i = 0; i < position; ++i)
+            {
+                if (dependencies.test(i) && !m_Infrastructures[i])
+                {
+                    NEPTUNE_LOG_CORE(E) << "Context::Registry in bad dependencies";
+                
+                    NEPTUNE_ASSERT(false)
+                
+                    return nullptr;
+                }
+            }
+        }
+        
         m_Infrastructures[position] = ContextElementFactory<Element, typename I::T>(*this, I::E, std::forward<Args>(args)...);
         
         return Get<I>();

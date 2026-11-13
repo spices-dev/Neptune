@@ -8,6 +8,8 @@
 
 #ifdef NP_GRAPHICS_METAL
 
+#include "Device/Graphics/Backend/Common/Context/DirectedAcyclicGraph.h"
+
 namespace Neptune::Metal {
 
     /**
@@ -27,6 +29,22 @@ namespace Neptune::Metal {
         Count
     };
 
+}
+
+namespace Neptune::Graphic::Common {
+    
+    /**
+    * @brief EInfrastructure Infrastructure DAG.
+    */
+    template<>
+    inline constexpr DirectedAcyclicGraph<Metal::EInfrastructure> s_InfrastructureDAG<Metal::EInfrastructure>{{
+        { Metal::EInfrastructure::Device,                        { Metal::EInfrastructure::FrameAutoreleasePool } },
+        { Metal::EInfrastructure::Layer,                         { Metal::EInfrastructure::Device } },
+        { Metal::EInfrastructure::CommandQueue,                  { Metal::EInfrastructure::Device } },
+        { Metal::EInfrastructure::CommandBuffer,                 { Metal::EInfrastructure::Device } },
+        { Metal::EInfrastructure::GraphicDispatchSemaphore,      { Metal::EInfrastructure::Device } },
+        { Metal::EInfrastructure::AccessibleInfrastructures,     { Metal::EInfrastructure::Device } },
+    }};
 }
 
 #endif

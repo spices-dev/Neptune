@@ -8,6 +8,8 @@
 
 #ifdef NP_GRAPHICS_DIRECT3D12
 
+#include "Device/Graphics/Backend/Common/Context/DirectedAcyclicGraph.h"
+
 namespace Neptune::Direct3D12 {
 
     /**
@@ -42,6 +44,29 @@ namespace Neptune::Direct3D12 {
         Count
     };
 
+}
+
+namespace Neptune::Graphic::Common {
+    
+    /**
+    * @brief EInfrastructure Infrastructure DAG.
+    */
+    template<>
+    inline constexpr DirectedAcyclicGraph<Direct3D12::EInfrastructure> s_InfrastructureDAG<Direct3D12::EInfrastructure>{{
+        { Direct3D12::EInfrastructure::Device,                        { Direct3D12::EInfrastructure::Factory } },
+        { Direct3D12::EInfrastructure::GraphicQueue,                  { Direct3D12::EInfrastructure::Device } },
+        { Direct3D12::EInfrastructure::ComputeQueue,                  { Direct3D12::EInfrastructure::Device } },
+        { Direct3D12::EInfrastructure::SwapChain,                     { Direct3D12::EInfrastructure::Device } },
+        { Direct3D12::EInfrastructure::GraphicTimeLine,               { Direct3D12::EInfrastructure::Device } },
+        { Direct3D12::EInfrastructure::ComputeTimeLine,               { Direct3D12::EInfrastructure::Device } },
+        { Direct3D12::EInfrastructure::GraphicCommandList,            { Direct3D12::EInfrastructure::Device } },
+        { Direct3D12::EInfrastructure::ComputeCommandList,            { Direct3D12::EInfrastructure::Device } },
+        { Direct3D12::EInfrastructure::RTVDescriptorHeap,             { Direct3D12::EInfrastructure::Device } },
+        { Direct3D12::EInfrastructure::DSVDescriptorHeap,             { Direct3D12::EInfrastructure::Device } },
+        { Direct3D12::EInfrastructure::SRVDescriptorHeap,             { Direct3D12::EInfrastructure::Device } },
+        { Direct3D12::EInfrastructure::UAVDescriptorHeap,             { Direct3D12::EInfrastructure::Device } },
+        { Direct3D12::EInfrastructure::AccessibleInfrastructures,     { Direct3D12::EInfrastructure::Device } },
+    }};
 }
 
 #endif

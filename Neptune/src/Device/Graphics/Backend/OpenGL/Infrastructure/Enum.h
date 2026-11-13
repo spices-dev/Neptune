@@ -8,6 +8,8 @@
 
 #ifdef NP_GRAPHICS_OPENGL
 
+#include "Device/Graphics/Backend/Common/Context/DirectedAcyclicGraph.h"
+
 namespace Neptune::OpenGL {
 
     /**
@@ -27,6 +29,20 @@ namespace Neptune::OpenGL {
         Count
     };
 
+}
+
+namespace Neptune::Graphic::Common {
+    
+    /**
+    * @brief EInfrastructure Infrastructure DAG.
+    */
+    template<>
+    inline constexpr DirectedAcyclicGraph<OpenGL::EInfrastructure> s_InfrastructureDAG<OpenGL::EInfrastructure>{{
+        { OpenGL::EInfrastructure::Extensions,                    { OpenGL::EInfrastructure::WindowContext } },
+        { OpenGL::EInfrastructure::DebugUtilsObject,              { OpenGL::EInfrastructure::Extensions } },
+        { OpenGL::EInfrastructure::TimeLine,                      { OpenGL::EInfrastructure::WindowContext } },
+        { OpenGL::EInfrastructure::AccessibleInfrastructures,     { OpenGL::EInfrastructure::WindowContext } },
+    }};
 }
 
 #endif
