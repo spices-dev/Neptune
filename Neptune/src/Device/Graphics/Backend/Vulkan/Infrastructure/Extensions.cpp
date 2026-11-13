@@ -67,11 +67,13 @@ namespace Neptune::Vulkan {
 		m_Context->Registry<Extension::IMaintenance1>                     (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IMaintenance4>                     (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IMaintenance5>                     (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IMaintenance6>                     (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IBufferDeviceAddress>              (Extension::EExtensionState::Core);
 		m_Context->Registry<Extension::IDescriptorIndexing>               (Extension::EExtensionState::Core);
 		m_Context->Registry<Extension::IVulkan11>                         (Extension::EExtensionState::Core);
 		m_Context->Registry<Extension::IVulkan12>                         (Extension::EExtensionState::Core);
 		m_Context->Registry<Extension::IVulkan13>                         (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IVulkan14>                         (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IPortability>                      (Extension::EExtensionState::Extent);          // @brief Done.
 		m_Context->Registry<Extension::IQueue>                            (Extension::EExtensionState::Core);            // @brief Done.
 		m_Context->Registry<Extension::IDynamicRendering>                 (Extension::EExtensionState::Extent);          // @brief Done.
@@ -95,6 +97,8 @@ namespace Neptune::Vulkan {
 		m_Context->Registry<Extension::ISubgroupPartitioned>              (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::ISubgroupRotate>                   (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IDeviceGroup>                      (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IHostImageCopy>                    (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IPushDescriptor>                   (Extension::EExtensionState::Extent);
 	}
 	
 	SP<Extensions> Extensions::Copy() const

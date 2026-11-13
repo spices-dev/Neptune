@@ -26,16 +26,16 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        LinkToChain(pNext, filter, m_DynamicRenderingLocalReadFeatures);
+        LinkToChain(pNext, filter, m_Vulkan14Features);
     }
     
     bool DynamicRenderingLocalRead::IsFeaturesSatisfied()
     {
         NEPTUNE_PROFILE_ZONE
         
-        NEPTUNE_LOG_CORE(I) << "DynamicRenderingLocalRead [ dynamicRenderingLocalRead ] : " << m_DynamicRenderingLocalReadFeatures.dynamicRenderingLocalRead;
+        NEPTUNE_LOG_CORE(I) << "DynamicRenderingLocalRead [ dynamicRenderingLocalRead ] : " << m_Vulkan14Features.dynamicRenderingLocalRead;
         
-        if (!m_DynamicRenderingLocalReadFeatures.dynamicRenderingLocalRead)
+        if (!m_Vulkan14Features.dynamicRenderingLocalRead)
         {
             return false;
         }

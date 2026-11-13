@@ -26,16 +26,16 @@ namespace Neptune::Vulkan::Extension {
     {
         NEPTUNE_PROFILE_ZONE
 
-        LinkToChain(pNext, filter, m_SubgroupRotateFeatures);
+        LinkToChain(pNext, filter, m_Vulkan14Features);
     }
     
     bool SubgroupRotate::IsFeaturesSatisfied()
     {
         NEPTUNE_PROFILE_ZONE
         
-        NEPTUNE_LOG_CORE(I) << "SubgroupRotate [ shaderSubgroupRotate ] : " << m_SubgroupRotateFeatures.shaderSubgroupRotate;
+        NEPTUNE_LOG_CORE(I) << "SubgroupRotate [ shaderSubgroupRotate ] : " << m_Vulkan14Features.shaderSubgroupRotate;
         
-        if (!m_SubgroupRotateFeatures.shaderSubgroupRotate)
+        if (!m_Vulkan14Features.shaderSubgroupRotate)
         {
             return false;
         }

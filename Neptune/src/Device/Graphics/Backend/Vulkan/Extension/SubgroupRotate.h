@@ -18,6 +18,10 @@ namespace Neptune::Vulkan::Extension {
     class SubgroupRotate : public Extension
     {
     public:
+        
+        static constexpr uint32_t CoreVersion = VK_MAKE_VERSION(1, 4, 0);
+        
+    public:
 
         /**
         * @brief Constructor Function.
@@ -48,7 +52,7 @@ namespace Neptune::Vulkan::Extension {
 
     private:
 
-        VkPhysicalDeviceShaderSubgroupRotateFeatures m_SubgroupRotateFeatures{ VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SHADER_SUBGROUP_ROTATE_FEATURES }; // @brief SubgroupRotateFeatures.
+        VkPhysicalDeviceVulkan14Features m_Vulkan14Features { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_4_FEATURES };  // @brief Vulkan14Features.
     
     };
 }

@@ -22,6 +22,26 @@ namespace Neptune::Vulkan::Extension {
         AddDeviceExtensions(VK_KHR_MAINTENANCE_4_EXTENSION_NAME);
     }
     
+    void Maintenance4::BuildFeatureChain(void**& pNext, const std::function<bool(VkStructureType)>& filter)
+    {
+        NEPTUNE_PROFILE_ZONE
+
+        LinkToChain(pNext, filter, m_Vulkan13Features);
+    }
+    
+    bool Maintenance4::IsFeaturesSatisfied()
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        NEPTUNE_LOG_CORE(I) << "Maintenance4 [ maintenance4 ] : " << m_Vulkan13Features.maintenance4;
+
+        if (!m_Vulkan13Features.maintenance4)
+        {
+            return false;
+        }
+        
+        return true;
+    }
 }
 
 #endif

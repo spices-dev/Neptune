@@ -29,12 +29,14 @@ namespace Neptune::Vulkan {
         Maintenance1,                               // @brief Maintenance1.
         Maintenance4,                               // @brief Maintenance4.
         Maintenance5,                               // @brief Maintenance5.
+        Maintenance6,                               // @brief Maintenance6.
         DebugUtils,                                 // @brief DebugUtils.
         BufferDeviceAddress,                        // @brief BufferDeviceAddress.
         DescriptorIndexing,                         // @brief DescriptorIndexing.
         Vulkan11,                                   // @brief Vulkan11.
         Vulkan12,                                   // @brief Vulkan12.
         Vulkan13,                                   // @brief Vulkan13.
+        Vulkan14,                                   // @brief Vulkan14.
         Portability,                                // @brief Portability.
         Queue,                                      // @brief Queue.
         LayerSetting,                               // @brief LayerSetting.
@@ -60,6 +62,8 @@ namespace Neptune::Vulkan {
         SubgroupRotate,                             // @brief SubgroupRotate.
         DeviceGroup,                                // @brief DeviceGroup.
         DeviceAddressBindingReport,                 // @brief DeviceAddressBindingReport.
+        HostImageCopy,                              // @brief HostImageCopy.
+        PushDescriptor,                             // @brief PushDescriptor.
 
         Count
     };
@@ -85,12 +89,15 @@ namespace Neptune::Vulkan {
             case SamplerYcbcrConversion:          return "SamplerYcbcrConversion";
             case Maintenance1:                    return "Maintenance1";
             case Maintenance4:                    return "Maintenance4";
+            case Maintenance5:                    return "Maintenance5";
+            case Maintenance6:                    return "Maintenance6";
             case DebugUtils:                      return "DebugUtils";
             case BufferDeviceAddress:             return "BufferDeviceAddress";
             case DescriptorIndexing:              return "DescriptorIndexing";
             case Vulkan11:                        return "Vulkan11";
             case Vulkan12:                        return "Vulkan12";
             case Vulkan13:                        return "Vulkan13";
+            case Vulkan14:                        return "Vulkan14";
             case Portability:                     return "Portability";
             case Queue:                           return "Queue";
             case LayerSetting:                    return "LayerSetting";
@@ -116,6 +123,8 @@ namespace Neptune::Vulkan {
             case SubgroupRotate:                  return "SubgroupRotate";
             case DeviceGroup:                     return "DeviceGroup";
             case DeviceAddressBindingReport:      return "DeviceAddressBindingReport";
+            case HostImageCopy:                   return "HostImageCopy";
+            case PushDescriptor:                  return "PushDescriptor";
             default:                              return "NonNamed";
         }
     }

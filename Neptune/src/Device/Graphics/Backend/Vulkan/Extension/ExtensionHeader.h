@@ -21,6 +21,7 @@
 #include "Maintenance1.h"
 #include "Maintenance4.h"
 #include "Maintenance5.h"
+#include "maintenance6.h"
 #include "MemoryBudget.h"
 #include "DebugUtils.h"
 #include "BufferDeviceAddress.h"
@@ -28,6 +29,7 @@
 #include "Vulkan11.h"
 #include "Vulkan12.h"
 #include "Vulkan13.h"
+#include "Vulkan14.h"
 #include "Portability.h"
 #include "Queue.h"
 #include "LayerSetting.h"
@@ -53,6 +55,8 @@
 #include "SubgroupRotate.h"
 #include "DeviceGroup.h"
 #include "DeviceAddressBindingReport.h"
+#include "HostImageCopy.h"
+#include "PushDescriptor.h"
 
 // Device
 //m_ExtensionProperties.push_back(VK_KHR_SHADER_CLOCK_EXTENSION_NAME);

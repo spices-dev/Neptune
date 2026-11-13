@@ -56,7 +56,7 @@ namespace Neptune::Vulkan::Extension {
 
     private:
 
-        VkPhysicalDeviceDynamicRenderingLocalReadFeatures m_DynamicRenderingLocalReadFeatures{ VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DYNAMIC_RENDERING_LOCAL_READ_FEATURES }; // @brief DynamicRenderingLocalReadFeatures.
+        VkPhysicalDeviceVulkan14Features m_Vulkan14Features { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_4_FEATURES };  // @brief Vulkan14Features.
     };
 }
 
