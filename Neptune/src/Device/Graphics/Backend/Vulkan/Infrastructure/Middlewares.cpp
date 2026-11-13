@@ -13,15 +13,15 @@
 
 namespace Neptune::Vulkan {
 
-    Middlewares::Middlewares(Context& context, EInfrastructure e, uint32_t count)
+    Middlewares::Middlewares(Context& context, EInfrastructure e)
         : Infrastructure(context, e)
     {
         NEPTUNE_PROFILE_ZONE
 
-        Create(count);
+        Create();
     }
 
-    void Middlewares::Create(uint32_t count)
+    void Middlewares::Create()
     {
         NEPTUNE_PROFILE_ZONE
         
@@ -33,7 +33,6 @@ namespace Neptune::Vulkan {
         m_Context->Registry<Middleware::IIIndirect>                    (Infrastructure::GetContext());
         m_Context->Registry<Middleware::IIQueueSubmit>                 (Infrastructure::GetContext());
         m_Context->Registry<Middleware::IISynchronization>             (Infrastructure::GetContext());
-        m_Context->Registry<Middleware::IITimeLine>                    (Infrastructure::GetContext(), count);
     }
 }
 

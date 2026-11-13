@@ -21,7 +21,6 @@ namespace Neptune::Vulkan {
         Indirect,                             // @brief Indirect.
         QueueSubmit,                          // @brief QueueSubmit.
         Synchronization,                      // @brief Synchronization.
-        TimeLine,                             // @brief TimeLine.
 
         Count
     };

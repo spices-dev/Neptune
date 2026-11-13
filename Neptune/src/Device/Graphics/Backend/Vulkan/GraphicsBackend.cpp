@@ -57,7 +57,7 @@ namespace Neptune::Vulkan {
 		m_Context->Registry<IPhysicalDevice>();
 		m_Context->Registry<IDevice>();
 		
-		m_Context->Registry<IMiddlewares>(MaxFrameInFlight);
+		m_Context->Registry<IMiddlewares>();
 
 		if (m_Context->Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->HasPresentQueueFamily())
 		{

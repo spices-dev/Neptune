@@ -30,9 +30,8 @@ namespace Neptune::Vulkan {
         *
         * @param[in] context Context.
         * @param[in] e EInfrastructure.
-        * @param[in] count Timeline count.
         */
-        Middlewares(Context& context, EInfrastructure e, uint32_t count);
+        Middlewares(Context& context, EInfrastructure e);
 
         /**
         * @brief Destructor Function.
@@ -50,10 +49,8 @@ namespace Neptune::Vulkan {
 
         /**
         * @brief Create Queue.
-        * 
-        * @param[in] count Timeline count.
         */
-        void Create(uint32_t count);
+        void Create();
         
     private:
     

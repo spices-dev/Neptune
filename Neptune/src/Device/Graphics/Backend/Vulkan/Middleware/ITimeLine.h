@@ -14,8 +14,6 @@
 
 namespace Neptune::Vulkan::Middleware {
 	
-	using IITimeLine          = IMiddleware<class ITimeLine, EMiddleware::TimeLine>;
-	
 	/**
 	* @brief ITimeLine of RenderPass.
 	*/
