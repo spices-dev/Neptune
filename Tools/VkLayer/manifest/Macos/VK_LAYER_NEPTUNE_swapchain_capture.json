@@ -16,7 +16,7 @@
                     "label": "Save Path",
                     "description": "Directory where captured swapchain images are saved.",
                     "type": "SAVE_FOLDER",
-                    "default": "./swapchain_capture"
+                    "default": "cache/swapchain_capture"
                 },
                 {
                     "key": "capture_every_n_frames",

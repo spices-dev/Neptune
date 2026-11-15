@@ -14,7 +14,16 @@ namespace Neptune::Vulkan::Layer {
 
     Sample::Sample(ELayerState state)
         : Layer("VK_LAYER_NEPTUNE_sample", state)
-    {}
+    {
+        NEPTUNE_PROFILE_ZONE
+
+        {
+            static const char* data = "welcome";
+
+            AddLayerSetting("welcome", data);
+        }
+
+    }
 
 }
 

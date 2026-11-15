@@ -142,3 +142,9 @@ khronos_shader_object.force_enable                           = false
 khronos_shader_object.disable_pipeline_pre_caching           = false
 
 khronos_synchronization2.force_enable                        = false
+
+neptune_sample.welcome                                       = welcome
+
+neptune_swapchain_capture.save_path                          = cache/swapchain_capture
+neptune_swapchain_capture.capture_every_n_frames             = 60
+neptune_swapchain_capture.max_captures                       = 0
