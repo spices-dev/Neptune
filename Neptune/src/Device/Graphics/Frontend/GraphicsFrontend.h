@@ -6,7 +6,6 @@
 
 #pragma once
 #include "Core/Core.h"
-#include "Core.h"
 #include "Core/NonCopyable.h"
 #include "RHI/RHI.h"
 #include "Enum.h"

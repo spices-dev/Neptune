@@ -1,7 +1,5 @@
 solution.DefineCStaticLibrary("Glad", function()
 
-    systemversion "latest"
-
 	files
 	{
         "include/glad/glad.h",

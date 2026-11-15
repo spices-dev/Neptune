@@ -88,7 +88,13 @@ module.DefineCppStaticLibrary = function(name, callback)
         name     = name,
         kind     = "StaticLib",
         language = "C++",
-        callback = callback
+        callback = function()
+            
+            pic "On"
+              
+            callback()
+
+        end
     })
 
 end
