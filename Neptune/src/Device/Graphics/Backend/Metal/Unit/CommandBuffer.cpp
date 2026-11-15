@@ -1,4 +1,4 @@
-﻿/**
+/**
 * @file CommandBuffer.cpp.
 * @brief The CommandBuffer Class Implementation.
 * @author Spices.
@@ -21,11 +21,11 @@ namespace Neptune::Metal::Unit {
         m_Handle->release();
     }
     
-    void CommandBuffer::CreateCommandBuffer(MTLCommandQueue commandQueue)
+    void CommandBuffer::CreateCommandBuffer(MTLDevice device)
     {
         NEPTUNE_PROFILE_ZONE
         
-        m_Handle = commandQueue->newCommandBuffer();
+        m_Handle = device->newCommandBuffer();
     }
 }
 

@@ -1,4 +1,4 @@
-﻿/**
+/**
 * @file DispatchSemaphore.cpp.
 * @brief The DispatchSemaphore Class Implementation.
 * @author Spices.
@@ -32,7 +32,7 @@ namespace Neptune::Metal::Unit {
     {
         NEPTUNE_PROFILE_ZONE
         
-        dispatch_semaphore_wait(m_Handle);
+        dispatch_semaphore_wait(m_Handle, DISPATCH_TIME_FOREVER);
     }
     
     void DispatchSemaphore::Signal()

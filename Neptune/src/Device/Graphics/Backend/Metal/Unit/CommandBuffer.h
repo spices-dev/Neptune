@@ -1,4 +1,4 @@
-﻿/**
+/**
 * @file CommandBuffer.h.
 * @brief The CommandBuffer Class Definitions.
 * @author Spices.
@@ -38,9 +38,9 @@ namespace Neptune::Metal::Unit {
         /**
         * @brief Create CommandBuffer.
         * 
-        * @param[in] commandQueue MTLCommandQueue.
+        * @param[in] device MTLDevice.
         */
-        void CreateCommandBuffer(MTLCommandQueue commandQueue);
+        void CreateCommandBuffer(MTLDevice device);
     };
 }
 

@@ -1,4 +1,4 @@
-﻿/**
+/**
 * @file CommandQueue.h.
 * @brief The CommandQueue Class Definitions.
 * @author Spices.
@@ -39,8 +39,9 @@ namespace Neptune::Metal::Unit {
         * @brief Create CommandQueue.
         * 
         * @param[in] device MTLDevice.
+        * @param[in] desc MTLCommandQueueDescriptor.
         */
-        void CreateCommandQueue(MTLDevice device);
+        void CreateCommandQueue(MTLDevice device, const MTLCommandQueueDescriptor& desc);
     };
 }
 

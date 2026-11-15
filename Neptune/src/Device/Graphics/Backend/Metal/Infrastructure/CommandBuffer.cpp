@@ -1,4 +1,4 @@
-﻿/**
+/**
 * @file CommandBuffer.cpp.
 * @brief The CommandBuffer Class Implementation.
 * @author Spices.
@@ -9,7 +9,7 @@
 #ifdef NP_GRAPHICS_METAL
 
 #include "CommandBuffer.h"
-#include "CommandQueue.h"
+#include "Device.h"
 
 namespace Neptune::Metal {
 	
@@ -25,7 +25,7 @@ namespace Neptune::Metal {
     {
         NEPTUNE_PROFILE_ZONE
         
-        m_CommandBuffer.CreateCommandBuffer(GetContext().Get<ICommandQueue>()->Handle());
+        m_CommandBuffer.CreateCommandBuffer(GetContext().Get<IDevice>()->Handle());
     }
     
 }

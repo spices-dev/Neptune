@@ -24,7 +24,8 @@ namespace Neptune::Metal {
 	using MTLCommandAllocator               = MTL4::CommandAllocator*;
 	using MTLCommandBuffer                  = MTL4::CommandBuffer*;
 	using MTLCommandEncoder                 = MTL4::CommandEncoder*;
-	using MTLCommandQueue                   = MTL4::CommandQueue*;
+    using MTLCommandQueue                   = MTL4::CommandQueue*;
+	using MTLCommandQueueDescriptor         = MTL4::CommandQueueDescriptor*;
 	using MTLCommitFeedback                 = MTL4::CommitFeedback*;
 	using MTLCompiler                       = MTL4::Compiler*;
 	using MTLCompilerTask                   = MTL4::CompilerTask*;

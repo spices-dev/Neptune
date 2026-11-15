@@ -1,4 +1,4 @@
-﻿/**
+/**
 * @file CommandQueue.cpp.
 * @brief The CommandQueue Class Implementation.
 * @author Spices.
@@ -21,11 +21,11 @@ namespace Neptune::Metal::Unit {
         m_Handle->release();
     }
     
-    void CommandQueue::CreateCommandQueue(MTLDevice device)
+    void CommandQueue::CreateCommandQueue(MTLDevice device, const MTLCommandQueueDescriptor& desc)
     {
         NEPTUNE_PROFILE_ZONE
         
-        m_Handle = device->newCommandQueue4();
+        METAL_CHECK(m_Handle = device->newMTL4CommandQueue(desc, &result))
     }
 }
 

@@ -1,4 +1,4 @@
-﻿/**
+/**
 * @file CommandQueue.cpp.
 * @brief The CommandQueue Class Implementation.
 * @author Spices.
@@ -10,6 +10,7 @@
 
 #include "CommandQueue.h"
 #include "Device.h"
+#include "Device/Graphics/Backend/Metal/Unit/CommandQueueDescriptor.h"
 
 namespace Neptune::Metal {
 	
@@ -25,7 +26,10 @@ namespace Neptune::Metal {
     {
         NEPTUNE_PROFILE_ZONE
         
-        m_CommandQueue.CreateCommandQueue(GetContext().Get<IDevice>()->Handle());
+        Unit::CommandQueueDescriptor desc;
+        desc.CreateCommandQueueDescriptor();
+        
+        m_CommandQueue.CreateCommandQueue(GetContext().Get<IDevice>()->Handle(), desc.GetHandle());
     }
     
 }
