@@ -32,6 +32,21 @@ namespace Neptune::Vulkan::Extension {
         ~PresentTiming() override = default;
         
         /**
+        * @brief Build Device Feature Chain.
+        * 
+        * @param[in,out] pNext pNext Chain.
+        * @param[in] filter Feature Filter.
+        */
+        void BuildFeatureChain(void**& pNext, const std::function<bool(VkStructureType)>& filter) override;
+
+        /**
+        * @brief Combine Device Features.
+        * 
+        * @return Returns true if satisfied.
+        */
+        bool IsFeaturesSatisfied() override;
+        
+        /**
         * @brief Build Device Surface Capabilities Chain.
         * 
         * @param[in,out] pNext pNext Chain.
@@ -48,6 +63,8 @@ namespace Neptune::Vulkan::Extension {
         
     private:
         
+        VkPhysicalDevicePresentTimingFeaturesEXT m_PresentTimingFeatures { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PRESENT_TIMING_FEATURES_EXT };    // @brief PresentTimingFeatures;
+        VkPhysicalDevicePresentId2FeaturesKHR m_PresentId2Features { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PRESENT_ID_2_FEATURES_KHR };    // @brief PresentId2Features;
         VkPresentTimingSurfaceCapabilitiesEXT m_PresentTimingSurfaceCapabilities { VK_STRUCTURE_TYPE_PRESENT_TIMING_SURFACE_CAPABILITIES_EXT }; // @brief PresentTimingSurfaceCapabilities;
     };
 }

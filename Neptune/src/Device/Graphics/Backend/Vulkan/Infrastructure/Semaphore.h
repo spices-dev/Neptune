@@ -48,7 +48,7 @@ namespace Neptune::Vulkan {
 		* 
 		* @return Returns Unit Handle.
 		*/
-		const Unit::Semaphore::Handle& Handle(uint32_t id = 0) const { return m_Semaphores[id % m_Semaphores.size()]->GetHandle(); }
+		const Unit::Semaphore::Handle& Handle(uint64_t id = 0) const { return m_Semaphores[id % m_Semaphores.size()]->GetHandle(); }
 
 	private:
 

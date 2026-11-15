@@ -17,6 +17,7 @@
 #include "Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/HDR.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/PresentTiming.h"
 
 namespace Neptune::Vulkan {
 
@@ -75,6 +76,12 @@ namespace Neptune::Vulkan {
 			createInfo.clipped                     = VK_TRUE;
 			createInfo.oldSwapchain                = handle;
 
+			if (GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IPresentTiming>())
+			{
+				createInfo.flags                  |= VK_SWAPCHAIN_CREATE_PRESENT_TIMING_BIT_EXT;
+				createInfo.flags                  |= VK_SWAPCHAIN_CREATE_PRESENT_ID_2_BIT_KHR;
+			}
+			
 			m_SwapChain = CreateUP<Unit::SwapChain>();
 
 			m_SwapChain->CreateSwapchain(GetContext().Get<IDevice>()->Handle(), createInfo);
@@ -98,6 +105,25 @@ namespace Neptune::Vulkan {
 			m_SwapChain->SetHdrMetadata(meta);
 		}
 
+    	if (GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IPresentTiming>())
+    	{
+    		uint32_t queueSize = count * 2u;
+    		
+    		VULKAN_CHECK(vkSetSwapchainPresentTimingQueueSizeEXT(GetContext().Get<IDevice>()->Handle(), Handle(), queueSize))
+    		
+			m_PresentTimingState.timings.assign(queueSize, {});
+    		m_PresentTimingState.stageTimes.assign(static_cast<size_t>(queueSize) * PresentTimingState::kMaxStages, {});
+    		
+    		for (uint32_t i = 0; i < queueSize; ++i)
+    		{
+    			m_PresentTimingState.timings[i].sType             = VK_STRUCTURE_TYPE_PAST_PRESENTATION_TIMING_EXT;
+    			m_PresentTimingState.timings[i].pPresentStages    = &m_PresentTimingState.stageTimes[static_cast<size_t>(i) * PresentTimingState::kMaxStages];
+    			m_PresentTimingState.timings[i].presentStageCount = PresentTimingState::kMaxStages;
+    		}
+    		
+    		QueryTimingProperties();
+    	}
+    	
 		auto images = m_SwapChain->GetSwapchainImages();
 
 		std::ranges::for_each(images, [&](const auto& image){
@@ -160,6 +186,135 @@ namespace Neptune::Vulkan {
 		});
     }
 
+	void SwapChain::PollPresentTiming()
+	{
+    	NEPTUNE_PROFILE_ZONE
+    	
+    	VkPastPresentationTimingInfoEXT            info{};
+    	info.sType                               = VK_STRUCTURE_TYPE_PAST_PRESENTATION_TIMING_INFO_EXT;
+    	info.swapchain                           = Handle();
+    	
+    	VkPastPresentationTimingPropertiesEXT      out{};
+    	out.sType                                = VK_STRUCTURE_TYPE_PAST_PRESENTATION_TIMING_PROPERTIES_EXT;
+    	out.presentationTimingCount              = (uint32_t)m_PresentTimingState.timings.size();
+    	out.pPresentationTimings                 = m_PresentTimingState.timings.data();
+
+    	auto result = vkGetPastPresentationTimingEXT(GetContext().Get<IDevice>()->Handle(), &info, &out);
+    	if (result != VK_SUCCESS && result != VK_INCOMPLETE)
+    	{
+    		VULKAN_CHECK(result)
+    		
+    		return;
+    	}
+
+    	if (out.timeDomainsCounter != m_PresentTimingState.domainsCounter)
+    	{
+    		QueryTimeDomains();
+    	}
+    	if (out.timingPropertiesCounter != m_PresentTimingState.tpCount)
+    	{
+    		QueryTimingProperties();
+    	}
+
+    	uint32_t completed = 0;
+    	for (uint32_t i = 0; i < out.presentationTimingCount; ++i)
+    	{
+    		const auto& t = m_PresentTimingState.timings[i];
+    		if (!t.reportComplete) continue;
+
+    		++completed;
+    		
+    		if (t.timeDomainId != m_PresentTimingState.timeDomainId) continue;
+    		if (t.presentId == 0 || t.presentId <= m_PresentTimingState.lastPresentId) continue;
+
+    		for (uint32_t k = 0; k < t.presentStageCount; ++k)
+    		{
+    			if (t.pPresentStages[k].stage == m_PresentTimingState.stage && t.pPresentStages[k].time != 0)
+    			{
+    				m_PresentTimingState.lastPresentId   = t.presentId;
+    				m_PresentTimingState.lastPresentTime = t.pPresentStages[k].time;
+    				break;
+    			}
+    		}
+    	}
+    	
+    	m_PresentTimingState.pending -= std::min(m_PresentTimingState.pending, completed);
+	}
+	
+	bool SwapChain::QueryTimeDomains()
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		VkSwapchainTimeDomainPropertiesEXT         td{};
+		td.sType                                 = VK_STRUCTURE_TYPE_SWAPCHAIN_TIME_DOMAIN_PROPERTIES_EXT;
+
+		VULKAN_CHECK(vkGetSwapchainTimeDomainPropertiesEXT(GetContext().Get<IDevice>()->Handle(), Handle(), &td, nullptr))
+
+		std::vector<VkTimeDomainKHR>               domains(td.timeDomainCount);
+		std::vector<uint64_t>                      ids(td.timeDomainCount);
+		td.pTimeDomains                          = domains.data();
+		td.pTimeDomainIds                        = ids.data();
+
+		uint64_t counter = 0;
+		auto result = vkGetSwapchainTimeDomainPropertiesEXT(GetContext().Get<IDevice>()->Handle(), Handle(), &td, &counter);
+		if (result != VK_SUCCESS && result != VK_INCOMPLETE)
+		{
+			VULKAN_CHECK(result)
+			
+			return false;
+		}
+
+		for (uint32_t i = 0; i < td.timeDomainCount; ++i)
+		{
+			if (domains[i] == VK_TIME_DOMAIN_SWAPCHAIN_LOCAL_EXT)
+			{
+				m_PresentTimingState.timeDomainId = ids[i];
+				m_PresentTimingState.targetStage  = 0;
+			}
+			else if (domains[i] == VK_TIME_DOMAIN_PRESENT_STAGE_LOCAL_EXT)
+			{
+				m_PresentTimingState.timeDomainId = ids[i];
+				m_PresentTimingState.targetStage  = m_PresentTimingState.stage;
+			}
+		}
+
+		m_PresentTimingState.domainsCounter  = counter;
+		m_PresentTimingState.lastPresentId   = 0;
+		m_PresentTimingState.lastPresentTime = 0;
+
+		return true;
+	}
+
+	void SwapChain::QueryTimingProperties()
+    {
+    	NEPTUNE_PROFILE_ZONE
+    	
+    	VkSwapchainTimingPropertiesEXT             p{};
+    	p.sType                                  = VK_STRUCTURE_TYPE_SWAPCHAIN_TIMING_PROPERTIES_EXT;
+
+    	uint64_t counter = 0;
+    	VULKAN_CHECK(vkGetSwapchainTimingPropertiesEXT(GetContext().Get<IDevice>()->Handle(), Handle(), &p, &counter))
+
+    	m_PresentTimingState.tpCount             = counter;
+    	m_PresentTimingState.tp                  = p;
+    }
+	
+	uint64_t SwapChain::ComputeTargetTime(uint64_t presentId) const
+    {
+    	if (!m_TargetFrameInterval || !m_PresentTimingState.lastPresentTime == 0) return 0;
+
+    	uint64_t ipd = m_TargetFrameInterval;
+    	
+    	if (m_PresentTimingState.tp.refreshInterval != 0 && m_PresentTimingState.tp.refreshInterval != UINT64_MAX)
+    	{
+    		const uint64_t n = std::max<uint64_t>(1, (ipd + m_PresentTimingState.tp.refreshInterval / 2) / m_PresentTimingState.tp.refreshInterval);
+    		
+    		ipd = n * m_PresentTimingState.tp.refreshInterval;
+    	}
+
+    	return m_PresentTimingState.lastPresentTime + (presentId - m_PresentTimingState.lastPresentId) * ipd;
+    }
+	
 	bool SwapChain::GetNextImage(VkSemaphore semaphore, uint32_t& imageIndex) const
 	{
 		NEPTUNE_PROFILE_ZONE
@@ -188,14 +343,48 @@ namespace Neptune::Vulkan {
 		return false;
 	}
 
-	bool SwapChain::Present(VkPresentInfoKHR& info) const
+	bool SwapChain::Present(VkPresentInfoKHR& info, uint64_t frameId)
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		info.pSwapchains = &Handle();
+    	info.pSwapchains                     = &Handle();
 
+    	if (GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IPresentTiming>())
+    	{
+    		QueryTimeDomains();
+		
+			VkPresentId2KHR                        id{};
+    		id.sType                             = VK_STRUCTURE_TYPE_PRESENT_ID_2_KHR;
+    		id.swapchainCount                    = 1;
+    		id.pPresentIds                       = &frameId;
+    		id.pNext                             = info.pNext;
+    		
+    		VkPresentTimingInfoEXT                 time{};
+    		time.sType                           = VK_STRUCTURE_TYPE_PRESENT_TIMING_INFO_EXT;
+    		time.flags                           = VK_PRESENT_TIMING_INFO_PRESENT_AT_NEAREST_REFRESH_CYCLE_BIT_EXT;
+    		time.targetTime                      = ComputeTargetTime(frameId);
+    		time.timeDomainId                    = m_PresentTimingState.timeDomainId;
+    		time.presentStageQueries             = m_PresentTimingState.pending < m_PresentTimingState.queueSize ? m_PresentTimingState.stage : 0;
+    		time.targetTimeDomainPresentStage    = m_PresentTimingState.targetStage;
+    		
+    		VkPresentTimingsInfoEXT                times{};
+    		times.sType                          = VK_STRUCTURE_TYPE_PRESENT_TIMINGS_INFO_EXT;
+    		times.swapchainCount                 = 1;
+    		times.pTimingInfos                   = &time;
+    		times.pNext                          = &id;
+    		 
+    		info.pNext                           = &times;
+    	}
+    	
 		const auto result = vkQueuePresentKHR(GetContext().Get<IPresentQueue>()->Handle(), &info);
 
+    	if (result == VK_ERROR_PRESENT_TIMING_QUEUE_FULL_EXT)
+    	{
+    		PollPresentTiming();
+    		
+    		return true;
+    	}
+    	
 		if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR)
 		{
 			return false;
@@ -203,6 +392,13 @@ namespace Neptune::Vulkan {
         
         VULKAN_CHECK(result)
 
+    	if (m_PresentTimingState.pending < m_PresentTimingState.queueSize)
+    	{
+    		++m_PresentTimingState.pending;
+    	}
+    	
+    	PollPresentTiming();
+    	
 		return true;
 	}
 }

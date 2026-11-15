@@ -48,7 +48,7 @@ namespace Neptune::Vulkan {
 		* 
 		* @return Returns Unit Handle.
 		*/
-		const Unit::CommandBuffer::Handle& Handle(uint32_t id = 0) const { return m_CommandBuffers[id % m_CommandBuffers.size()]->GetHandle(); }
+		const Unit::CommandBuffer::Handle& Handle(uint64_t id = 0) const { return m_CommandBuffers[id % m_CommandBuffers.size()]->GetHandle(); }
 
 		/**
 		* @brief Get Unit Handle Interface.
@@ -57,7 +57,7 @@ namespace Neptune::Vulkan {
 		*
 		* @return Returns Unit Handle Interface.
 		*/
-		const SP<Unit::CommandBuffer>& IHandle(uint32_t id = 0) const { return m_CommandBuffers[id % m_CommandBuffers.size()]; }
+		const SP<Unit::CommandBuffer>& IHandle(uint64_t id = 0) const { return m_CommandBuffers[id % m_CommandBuffers.size()]; }
 
 		/**
 		* @brief Begin CommandBuffer.
@@ -65,14 +65,14 @@ namespace Neptune::Vulkan {
 		* @param[in] info VkCommandBufferBeginInfo.
 		* @param[in] id Handle id.
 		*/
-		void Begin(const VkCommandBufferBeginInfo& info, uint32_t id = 0) const;
+		void Begin(const VkCommandBufferBeginInfo& info, uint64_t id = 0) const;
 
 		/**
 		* @brief End CommandBuffer.
 		*
 		* @param[in] id Handle id.
 		*/
-		void End(uint32_t id = 0) const;
+		void End(uint64_t id = 0) const;
 
 	private:
 

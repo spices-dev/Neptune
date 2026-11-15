@@ -117,7 +117,7 @@ namespace Neptune::RHI {
 		/**
 		* @brief Interface of Set Transfer CommandList Context.
 		*/
-		void SetTransferCmdList() { RHICmdList2::m_Impl->SetTransferCmdList(); }
+		void SetTransferCmdList() const { RHICmdList2::m_Impl->SetTransferCmdList(); }
 		
 		/**
 		* @brief Interface of Set VideoDecode CommandList Context.

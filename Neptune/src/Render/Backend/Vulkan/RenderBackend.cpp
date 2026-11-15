@@ -199,7 +199,7 @@ namespace Neptune::Vulkan {
 			presentInfo.pImageIndices            = &clock.m_ImageIndex;
 			presentInfo.pResults                 = nullptr;
 
-			if (!context.Get<ISwapChain>()->Present(presentInfo))
+			if (!context.Get<ISwapChain>()->Present(presentInfo, clock.m_FrameId))
 			{
 				RecreateSwapChain();
 			}

@@ -48,7 +48,7 @@ namespace Neptune::RHI {
 		/**
 		* @brief Destructor Function.
 		*/
-		virtual ~Impl() = default;
+		~Impl() override = default;
 
 		/***********************************************************************************/
 

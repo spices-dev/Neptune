@@ -15,6 +15,32 @@
 
 namespace Neptune::Vulkan {
 
+	/**
+	* @brief Runtime state of VK_EXT_present_timing for one swapchain.
+	*/
+	struct PresentTimingState
+	{
+		uint64_t                timeDomainId      = 0;
+		VkPresentStageFlagsEXT  targetStage       = 0;       // @brief Non-zero only when a stage-local time domain is used.
+		
+		uint64_t                domainsCounter    = 0;
+		VkPresentStageFlagsEXT  stage             = VK_PRESENT_STAGE_QUEUE_OPERATIONS_END_BIT_EXT;
+
+		uint32_t                queueSize         = 0;       // @brief Size of the swapchain internal result queue.
+		uint32_t                pending           = 0;       // @brief Presents which still occupy a result slot.
+
+		uint64_t                           tpCount      = 0;
+		VkSwapchainTimingPropertiesEXT     tp{};
+
+		// Latest completed result, used as baseline for scheduling.
+		uint64_t                lastPresentId     = 0;
+		uint64_t                lastPresentTime   = 0;
+
+		static constexpr uint32_t kMaxStages = 4;
+		std::vector<VkPastPresentationTimingEXT> timings;
+		std::vector<VkPresentStageTimeEXT>       stageTimes;
+	};
+	
 	using ISwapChain = IInfrastructure<class SwapChain, EInfrastructure::SwapChain>;
 
 	/**
@@ -79,10 +105,11 @@ namespace Neptune::Vulkan {
 		* @brief Present to surface.
 		*
 		* @param[in] info VkPresentInfoKHR.
+		* @param[in] frameId FrameId.
 		*
 		* @return Returns true if succeeded.
 		*/
-		bool Present(VkPresentInfoKHR& info) const;
+		bool Present(VkPresentInfoKHR& info, uint64_t frameId);
 
 	private:
 
@@ -94,10 +121,17 @@ namespace Neptune::Vulkan {
 		*/
 		void Create(uint32_t count, Unit::SwapChain::Handle handle = VK_NULL_HANDLE);
 
+		void PollPresentTiming();
+		bool QueryTimeDomains();
+		void QueryTimingProperties();
+		uint64_t ComputeTargetTime(uint64_t presentId) const;
+		
 	private:
 
 		UP<Unit::SwapChain> m_SwapChain;                     // @brief This SwapChain.
 		std::vector<UP<Resource::Image>> m_SwapChainImage;   // @brief Container of SwapChainImage.
+		PresentTimingState m_PresentTimingState;             // @brief PresentTimingState.
+		uint64_t m_TargetFrameInterval = 0;                  // @brief Target image present duration in ns.
 
 	};
 
