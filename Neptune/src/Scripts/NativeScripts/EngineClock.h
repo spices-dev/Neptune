@@ -48,6 +48,6 @@ namespace Neptune {
 
 		Scene* m_Scene = nullptr;            // @brief Scene.
 		Data::Clock* m_Clock = nullptr;      // @brief Clock.
-		UP<class Timer> m_Timer = nullptr;   // @brief Timer.
+		UP<class Timer> m_Timer;             // @brief Timer.
 	};
 }

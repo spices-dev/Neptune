@@ -380,8 +380,6 @@ namespace Neptune::Vulkan {
 
     	if (result == VK_ERROR_PRESENT_TIMING_QUEUE_FULL_EXT)
     	{
-    		PollPresentTiming();
-    		
     		return true;
     	}
     	
@@ -392,13 +390,16 @@ namespace Neptune::Vulkan {
         
         VULKAN_CHECK(result)
 
-    	if (m_PresentTimingState.pending < m_PresentTimingState.queueSize)
-    	{
-    		++m_PresentTimingState.pending;
-    	}
-    	
-    	PollPresentTiming();
-    	
+        if (GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IPresentTiming>())
+        {
+            if (m_PresentTimingState.pending < m_PresentTimingState.queueSize)
+            {
+                ++m_PresentTimingState.pending;
+            }
+            
+            PollPresentTiming();
+        }
+        
 		return true;
 	}
 }

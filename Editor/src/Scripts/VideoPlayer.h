@@ -50,7 +50,7 @@ namespace Neptune::Editor {
 	private:
 
 		std::filesystem::path m_InFile;                    // @brief Video File
-		UP<Video::Demuxer> m_Demuxer = nullptr;            // @brief Demuxer
-		UP<Video::Decoder> m_Decoder = nullptr;            // @brief Decoder
+        UP<Video::Demuxer> m_Demuxer;                      // @brief Demuxer
+		UP<Video::Decoder> m_Decoder;                      // @brief Decoder
 	};
 }
