@@ -96,8 +96,25 @@ namespace Neptune::WebGPU {
 	*/
 	void HandleWaitResult(WGPUWaitStatus result);
 
-	#define WEBGPU_CHECK(expr) { auto expr_value = expr; if (expr_value != WGPUStatus_Success) { std::invoke(HandleResultDelegate::GetHandler(), expr_value); NEPTUNE_BREAK } }
-	#define WEBGPU_WAIT_CHECK(expr) { auto expr_value = expr; if (expr_value != WGPUWaitStatus_Success) { std::invoke(HandleResultDelegate::GetWaitHandler(), expr_value); NEPTUNE_BREAK } }
+	#define WEBGPU_CHECK(expr)                                                          \
+	do {                                                                                \
+		auto expr_value = expr;                                                         \
+		if (expr_value != WGPUStatus_Success)                                           \
+		{                                                                               \
+			std::invoke(HandleResultDelegate::GetHandler(), expr_value);                \
+			NEPTUNE_BREAK                                                               \
+		}                                                                               \
+	} while (0);
+	
+	#define WEBGPU_WAIT_CHECK(expr)                                                     \
+	do {                                                                                \
+		auto expr_value = expr;                                                         \
+		if (expr_value != WGPUWaitStatus_Success)                                       \
+		{                                                                               \
+			std::invoke(HandleResultDelegate::GetWaitHandler(), expr_value);            \
+			NEPTUNE_BREAK                                                               \
+		}                                                                               \
+	} while (0);
 }
 
 #endif

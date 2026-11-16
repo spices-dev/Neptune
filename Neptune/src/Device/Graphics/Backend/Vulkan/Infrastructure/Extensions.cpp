@@ -129,7 +129,7 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		std::function filter = [](VkStructureType){ return true; };
+		auto filter = [](VkStructureType){ return true; };
 		
 		m_Context->View([&](const auto e, const auto& extension) {
 
@@ -147,7 +147,7 @@ namespace Neptune::Vulkan {
 		
 		std::unordered_set<VkStructureType> linked;
 		
-		std::function filter = [&](VkStructureType type) {
+		auto filter = [&](VkStructureType type) {
 			
 			if (linked.contains(type)) return false;
 			
@@ -170,7 +170,7 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		std::function filter = [](VkStructureType){ return true; };
+		auto filter = [](VkStructureType){ return true; };
 		
 		m_Context->View([&](const auto e, const auto& extension) {
 
@@ -186,7 +186,7 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		std::function filter = [](VkStructureType){ return true; };
+		auto filter = [](VkStructureType){ return true; };
 		
 		m_Context->View([&](const auto e, const auto& extension) {
 

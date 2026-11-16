@@ -109,7 +109,15 @@ namespace Neptune::Vulkan {
 	*/
 	void HandleResult(VkResult result, VkPhysicalDevice physicalDevice, VkDevice device, bool deviceFaultValid, bool memoryBudget);
 
-	#define VULKAN_CHECK(expr)  { auto expr_value = expr; if (expr_value != VK_SUCCESS) { std::invoke(HandleResultDelegate::GetHandler(), expr_value); NEPTUNE_BREAK } }
+	#define VULKAN_CHECK(expr)                                                        \
+	do {                                                                              \
+		auto expr_value = expr;                                                       \
+		if (expr_value != VK_SUCCESS)                                                 \
+		{                                                                             \
+			std::invoke(HandleResultDelegate::GetHandler(), expr_value);              \
+			NEPTUNE_BREAK                                                             \
+		}                                                                             \
+	} while (0);
 }
 
 #endif

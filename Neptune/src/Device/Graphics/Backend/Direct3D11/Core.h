@@ -62,7 +62,15 @@ namespace Neptune::Direct3D11 {
 	*/
 	void HandleResult(HRESULT result);
 
-	#define DIRECT3D11_CHECK(expr)  { auto expr_value = expr; if (FAILED(expr_value)) { std::invoke(HandleResultDelegate::GetHandler(), expr_value); NEPTUNE_BREAK } }
+	#define DIRECT3D11_CHECK(expr)                                                \
+	do {                                                                          \
+		auto expr_value = expr;                                                   \
+		if (FAILED(expr_value))                                                   \
+		{                                                                         \
+			std::invoke(HandleResultDelegate::GetHandler(), expr_value);          \
+			NEPTUNE_BREAK                                                         \
+		}                                                                         \
+	} while (0);
 }
 
 #endif
