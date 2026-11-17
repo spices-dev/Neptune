@@ -8,6 +8,8 @@
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Common/Concept.h"
 
+#include <utility>
+
 namespace Neptune::Graphic::Common {
 
 	/**
@@ -44,11 +46,8 @@ namespace Neptune::Graphic::Common {
 		* @param[in] other Unit.
 		*/
 		Unit(Unit&& other) noexcept
-		{
-			SetHandle(other.GetHandle());
-			
-			other.ResetHandle();
-		}
+			: m_Handle(std::exchange(other.m_Handle), {})
+		{}
 
 		/**
 		* @brief Move Assignment Operation.
@@ -61,9 +60,7 @@ namespace Neptune::Graphic::Common {
 		{
 			if (this != &other)
 			{
-				SetHandle(other.GetHandle());
-			
-				other.ResetHandle();
+				std::swap(m_Handle, other.m_Handle);
 			}
 			
 			return *this;

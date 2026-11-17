@@ -17,6 +17,10 @@ namespace Neptune {
     T(const T&) = delete;               \
     T& operator=(const T&) = delete;    \
 
+#define DEFAULT_MOVE(T)                 \
+    T(T&&) = default;                   \
+    T& operator=(T&&) = default;        \
+    
     /**
     * @brief SharedPointer.
     *

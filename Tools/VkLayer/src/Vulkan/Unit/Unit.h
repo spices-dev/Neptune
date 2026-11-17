@@ -62,7 +62,7 @@ namespace Neptune::Vulkan::Unit {
         /**
         * @brief Destructor Function.
         */
-        virtual ~Unit() { ResetHandle(); }
+        virtual ~Unit() { ResetHandle(); ResetLife(); }
 
         /**
         * @brief Move Constructor Function.
@@ -70,13 +70,9 @@ namespace Neptune::Vulkan::Unit {
         * @param[in] other Unit.
         */
         Unit(Unit&& other) noexcept
-        {
-            SetHandle(other.GetHandle());
-            SetLife(other.m_Life);
-            
-            other.ResetHandle();
-            other.ResetLife();
-        }
+            : m_Handle(std::exchange(other.m_Handle), {})
+            , m_Life(std::exchange(other.m_Life), {})
+        {}
 
         /**
         * @brief Move Assignment Operation.
@@ -89,11 +85,8 @@ namespace Neptune::Vulkan::Unit {
         {
             if (this != &other)
             {
-                SetHandle(other.GetHandle());
-                SetLife(other.m_Life);
-			
-                other.ResetHandle();
-                other.ResetLife();
+                std::swap(m_Handle, other.m_Handle);
+                std::swap(m_Life, other.m_Life);
             }
             
             return *this;

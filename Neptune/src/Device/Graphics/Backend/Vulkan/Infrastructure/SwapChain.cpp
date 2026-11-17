@@ -18,6 +18,7 @@
 #include "Device/Graphics/Backend/Vulkan/Extension/HDR.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/PresentTiming.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/SwapChainMaintenance1.h"
 
 namespace Neptune::Vulkan {
 
@@ -184,6 +185,24 @@ namespace Neptune::Vulkan {
 
 			m_SwapChainImage.emplace_back(std::move(swapChainImage));
 		});
+    	
+    	VkFenceCreateInfo                       fenceInfo{};
+    	fenceInfo.sType                       = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+    	fenceInfo.flags                       = VK_FENCE_CREATE_SIGNALED_BIT;
+    	
+    	if (GetContext().Get<IExtensions>()->GetContext()->Get<Extension::ISwapChainMaintenance1>())
+    	{
+    		for (size_t i = 0; i < m_SwapChainImage.size(); ++i)
+    		{
+    			auto fence = CreateUP<Resource::SwapChainFence>(GetContext());
+
+    			fence->CreateSwapChainFence(fenceInfo);
+ 
+    			fence->ResetFence();
+    			
+    			m_SwapChainImageFence.emplace_back(std::move(fence));
+    		}
+    	}
     }
 
 	void SwapChain::PollPresentTiming()
@@ -347,19 +366,36 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 
-    	info.pSwapchains                     = &Handle();
+    	info.pSwapchains                         = &Handle();
 
+    	if (GetContext().Get<IExtensions>()->GetContext()->Get<Extension::ISwapChainMaintenance1>())
+    	{
+    		auto& fence = m_SwapChainImageFence[*info.pImageIndices];
+    		
+    		fence->WaitReset();
+    		
+    		VkSwapchainPresentFenceInfoKHR         fenceInfo{};
+    		fenceInfo.sType                      = VK_STRUCTURE_TYPE_SWAPCHAIN_PRESENT_FENCE_INFO_KHR;
+    		fenceInfo.swapchainCount             = info.swapchainCount;
+    		fenceInfo.pFences                    = &fence->Handle();
+    		fenceInfo.pNext                      = info.pNext;
+    		
+    		info.pNext                           = &fenceInfo;
+    	}
+    	
+    	VkPresentId2KHR                            id{};
+    	VkPresentTimingInfoEXT                     time{};
+    	VkPresentTimingsInfoEXT                    times{};
+    	
     	if (GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IPresentTiming>())
     	{
     		QueryTimeDomains();
-		
-			VkPresentId2KHR                        id{};
+    		
     		id.sType                             = VK_STRUCTURE_TYPE_PRESENT_ID_2_KHR;
     		id.swapchainCount                    = 1;
     		id.pPresentIds                       = &frameId;
     		id.pNext                             = info.pNext;
     		
-    		VkPresentTimingInfoEXT                 time{};
     		time.sType                           = VK_STRUCTURE_TYPE_PRESENT_TIMING_INFO_EXT;
     		time.flags                           = VK_PRESENT_TIMING_INFO_PRESENT_AT_NEAREST_REFRESH_CYCLE_BIT_EXT;
     		time.targetTime                      = ComputeTargetTime(frameId);
@@ -367,7 +403,6 @@ namespace Neptune::Vulkan {
     		time.presentStageQueries             = m_PresentTimingState.pending < m_PresentTimingState.queueSize ? m_PresentTimingState.stage : 0;
     		time.targetTimeDomainPresentStage    = m_PresentTimingState.targetStage;
     		
-    		VkPresentTimingsInfoEXT                times{};
     		times.sType                          = VK_STRUCTURE_TYPE_PRESENT_TIMINGS_INFO_EXT;
     		times.swapchainCount                 = 1;
     		times.pTimingInfos                   = &time;

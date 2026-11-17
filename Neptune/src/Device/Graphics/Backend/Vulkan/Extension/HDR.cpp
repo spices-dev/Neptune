@@ -15,10 +15,10 @@ namespace Neptune::Vulkan::Extension {
     namespace {
         
         std::unordered_map<Graphic::EHDRSurface, VkSurfaceFormatKHR> s_HDRSurface = {
-            { Graphic::EHDRSurface::PQ,     { VK_FORMAT_A2R10G10B10_UNORM_PACK32, VK_COLOR_SPACE_HDR10_ST2084_EXT } },
-            { Graphic::EHDRSurface::HLG,    { VK_FORMAT_A2R10G10B10_UNORM_PACK32, VK_COLOR_SPACE_BT2020_LINEAR_EXT } },
-            { Graphic::EHDRSurface::P3,     { VK_FORMAT_A2R10G10B10_UNORM_PACK32, VK_COLOR_SPACE_DISPLAY_P3_LINEAR_EXT } },
-            { Graphic::EHDRSurface::ExSRGB, { VK_FORMAT_R16G16B16A16_SFLOAT, VK_COLOR_SPACE_EXTENDED_SRGB_NONLINEAR_EXT } },
+            { Graphic::EHDRSurface::PQ,     { VK_FORMAT_A2B10G10R10_UNORM_PACK32, VK_COLOR_SPACE_HDR10_ST2084_EXT } },
+            { Graphic::EHDRSurface::HLG,    { VK_FORMAT_A2B10G10R10_UNORM_PACK32, VK_COLOR_SPACE_BT2020_LINEAR_EXT } },
+            { Graphic::EHDRSurface::P3,     { VK_FORMAT_A2B10G10R10_UNORM_PACK32, VK_COLOR_SPACE_DISPLAY_P3_LINEAR_EXT } },
+            { Graphic::EHDRSurface::ExSRGB, { VK_FORMAT_R16G16B16A16_SFLOAT, VK_COLOR_SPACE_EXTENDED_SRGB_LINEAR_EXT } },
         };
         
     }

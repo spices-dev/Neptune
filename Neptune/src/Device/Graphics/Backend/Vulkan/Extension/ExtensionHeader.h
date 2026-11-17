@@ -15,6 +15,7 @@
 #include "OpticalFlow.h"
 #include "RayTracing.h"
 #include "SwapChain.h"
+#include "SwapChainMaintenance1.h"
 #include "VideoDecode.h"
 #include "VideoEncode.h"
 #include "SamplerYcbcrConversion.h"

@@ -12,6 +12,7 @@
 #include "Infrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/SwapChain.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/Image.h"
+#include "Device/Graphics/Backend/Vulkan/Resource/SwapChainFence.h"
 
 namespace Neptune::Vulkan {
 
@@ -127,11 +128,12 @@ namespace Neptune::Vulkan {
 		uint64_t ComputeTargetTime(uint64_t presentId) const;
 		
 	private:
-
-		UP<Unit::SwapChain> m_SwapChain;                     // @brief This SwapChain.
-		std::vector<UP<Resource::Image>> m_SwapChainImage;   // @brief Container of SwapChainImage.
-		PresentTimingState m_PresentTimingState;             // @brief PresentTimingState.
-		uint64_t m_TargetFrameInterval = 0;                  // @brief Target image present duration in ns.
+		
+		UP<Unit::SwapChain>                        m_SwapChain;                     // @brief This SwapChain.
+		std::vector<UP<Resource::Image>>           m_SwapChainImage;                // @brief Container of SwapChainImage.
+		std::vector<UP<Resource::SwapChainFence>>  m_SwapChainImageFence;           // @brief Container of SwapChainFence.
+		PresentTimingState                         m_PresentTimingState;            // @brief PresentTimingState.
+		uint64_t                                   m_TargetFrameInterval = 0;       // @brief Target image present duration in ns.
 
 	};
 

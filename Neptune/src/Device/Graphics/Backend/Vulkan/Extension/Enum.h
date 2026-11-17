@@ -23,6 +23,7 @@ namespace Neptune::Vulkan {
         OpticalFlow,                                // @brief OpticalFlow.
         RayTracing,                                 // @brief RayTracing.
         SwapChain,                                  // @brief SwapChain.
+        SwapChainMaintenance1,                      // @brief SwapChainMaintenance1.
         VideoDecode,                                // @brief VideoDecode.
         VideoEncode,                                // @brief VideoEncode.
         SamplerYcbcrConversion,                     // @brief SamplerYcbcrConversion.
@@ -84,6 +85,7 @@ namespace Neptune::Vulkan {
             case OpticalFlow:                     return "OpticalFlow";
             case RayTracing:                      return "RayTracing";
             case SwapChain:                       return "SwapChain";
+            case SwapChainMaintenance1:           return "SwapChainMaintenance1";
             case VideoDecode:                     return "VideoDecode";
             case VideoEncode:                     return "VideoEncode";
             case SamplerYcbcrConversion:          return "SamplerYcbcrConversion";

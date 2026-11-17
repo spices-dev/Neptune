@@ -61,6 +61,7 @@ namespace Neptune::Vulkan {
 		m_Context->Registry<Extension::IHDR>                              (Extension::EExtensionState::Extent);          // @brief Done.
 		m_Context->Registry<Extension::IOpticalFlow>                      (Extension::EExtensionState::Extent);          // @brief Done.
 		m_Context->Registry<Extension::IRayTracing>                       (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::ISwapChainMaintenance1>            (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IVideoDecode>                      (Extension::EExtensionState::Extent);          // @brief Done.
 		m_Context->Registry<Extension::IVideoEncode>                      (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::ISamplerYcbcrConversion>           (Extension::EExtensionState::Extent);
