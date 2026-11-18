@@ -136,6 +136,10 @@ namespace Neptune {
         std::ranges::for_each(m_RenderPasses, [&](const auto& renderPass) {
             renderPass->OnCollectRHI(scene, *m_CmdList);
         });
+        
+        m_CmdList->Translate();
+        
+        m_CmdList->Reset();
     }
 
     void RenderFrontend::RecreateSwapChain() const

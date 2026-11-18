@@ -7,6 +7,7 @@
 #pragma once
 #include "Core/Core.h"
 #include "RHI.h"
+#include "CmdStream.h"
 #include "Device/Graphics/Frontend/Memory.h"
 
 #include <glm/vec2.hpp>
@@ -50,6 +51,13 @@ namespace Neptune::RHI {
 		*/
 		~Impl() override = default;
 
+		/**
+		* @brief Translate CmdStream.
+		* 
+		* @param[in] stream CmdStream.
+		*/
+		void Translate(const CmdStream& stream);
+		
 		/***********************************************************************************/
 
 		/********************************** Context ****************************************/
@@ -241,63 +249,73 @@ namespace Neptune::RHI {
 		~CmdList() override = default;
 
 		/**
+		* @brief Reset CmdStream.
+		*/
+		void Reset() { m_Stream.Reset(); }
+		
+		/**
+		* @brief Translate CmdStream.
+		*/
+		void Translate() const { RHICmdList::m_Impl->Translate(m_Stream); }
+		
+		/**
 		* @brief Interface of Set Graphic CommandList Context.
 		*
 		* @param[in] clock Clock.
 		*/
-		void SetGraphicCmdList(const Data::Clock& clock) const { RHICmdList::m_Impl->SetGraphicCmdList(clock); }
+		void SetGraphicCmdList(const Data::Clock& clock);
 
 		/**
 		* @brief Interface of Set Graphic Compute Context.
 		*
 		* @param[in] clock Clock.
 		*/
-		void SetComputeCmdList(const Data::Clock& clock) const { RHICmdList::m_Impl->SetComputeCmdList(clock); }
+		void SetComputeCmdList(const Data::Clock& clock);
 		
 		/**
 		* @brief Interface of Get Current CommandList.
 		* 
 		* @return Returns Current CommandList.
 		*/
-		void* GetCommandList() const { return RHICmdList::m_Impl->GetCommandList(); }
+		void* GetCommandList() const;
 		
 		/**
 		* @brief Interface of Set RenderPass Reference.
 		*
 		* @param[in] renderPass RenderPass.
 		*/
-		void SetRenderPass(const SP<RenderPass>& renderPass) const { RHICmdList::m_Impl->SetRenderPass(renderPass); }
+		void SetRenderPass(const SP<RenderPass>& renderPass);
 
 		/**
 		* @brief Interface of BeginRenderPass.
 		*/
-		void CmdBeginRenderPass() const { RHICmdList::m_Impl->CmdBeginRenderPass(); }
+		void CmdBeginRenderPass();
 
 		/**
 		* @brief Interface of EndRenderPass.
 		*/
-		void CmdEndRenderPass() const { RHICmdList::m_Impl->CmdEndRenderPass(); }
+		void CmdEndRenderPass();
 
 		/**
 		* @brief Interface of BindDescriptor.
 		*
 		* @param[in] descriptorList DescriptorList.
 		*/
-		void CmdBindDescriptor(const SP<DescriptorList>& descriptorList) const { RHICmdList::m_Impl->CmdBindDescriptor(descriptorList); }
+		void CmdBindDescriptor(const SP<DescriptorList>& descriptorList);
 
 		/**
 		* @brief Interface of BindPipeline.
 		*
 		* @param[in] pipeline Pipeline.
 		*/
-		void CmdBindPipeline(const SP<Pipeline>& pipeline) const { RHICmdList::m_Impl->CmdBindPipeline(pipeline); }
+		void CmdBindPipeline(const SP<Pipeline>& pipeline);
 
 		/**
 		* @brief Bind IndexBuffer.
 		*
 		* @param[in] buffer IndexBuffer.
 		*/
-		void CmdBindIndexBuffer(const SP<IndexBuffer>& buffer) const { RHICmdList::m_Impl->CmdBindIndexBuffer(buffer); }
+		void CmdBindIndexBuffer(const SP<IndexBuffer>& buffer);
 
 		/**
 		* @brief Interface of Update ShaderConstant.
@@ -306,7 +324,7 @@ namespace Neptune::RHI {
 		* @param[in] size ShaderConstant size.
 		* @param[in] offset ShaderConstant offset.
 		*/
-		void CmdUpdateShaderConstant(const void* data, uint32_t size, uint32_t offset = 0) const { RHICmdList::m_Impl->CmdUpdateShaderConstant(data, size, offset); }
+		void CmdUpdateShaderConstant(const void* data, uint32_t size, uint32_t offset = 0);
 		
 		/**
 		* @brief Interface of FillBuffer.
@@ -316,7 +334,7 @@ namespace Neptune::RHI {
 		* @param[in] size size.
 		* @param[in] data data.
 		*/
-		void CmdFillBuffer(const SP<Buffer>& buffer, uint64_t dstOffset, uint64_t size, uint32_t data) const { RHICmdList::m_Impl->CmdFillBuffer(buffer, dstOffset, size, data); }
+		void CmdFillBuffer(const SP<Buffer>& buffer, uint64_t dstOffset, uint64_t size, uint32_t data);
 		
 		/**
 		* @brief Interface of Draw.
@@ -326,7 +344,7 @@ namespace Neptune::RHI {
 		* @param[in] firstVertex .
 		* @param[in] firstInstance .
 		*/
-		void CmdDraw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance) const { RHICmdList::m_Impl->CmdDraw(vertexCount, instanceCount, firstVertex, firstInstance); }
+		void CmdDraw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex, uint32_t firstInstance);
 
 		/**
 		* @brief Interface of DrawIndexed.
@@ -337,7 +355,7 @@ namespace Neptune::RHI {
 		* @param[in] vertexOffset .
 		* @param[in] firstInstance .
 		*/
-		void CmdDrawIndexed(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance) const { RHICmdList::m_Impl->CmdDrawIndexed(indexCount, instanceCount, firstIndex, vertexOffset, firstInstance); }
+		void CmdDrawIndexed(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance);
 
 		/**
 		* @brief Interface of DrawIndexedIndirect.
@@ -347,7 +365,7 @@ namespace Neptune::RHI {
 		* @param[in] drawCount .
 		* @param[in] stride .
 		*/
-		void CmdDrawIndexedIndirect(const SP<Buffer>& buffer, uint64_t offset, uint32_t drawCount, uint32_t stride) const { RHICmdList::m_Impl->CmdDrawIndexedIndirect(buffer, offset, drawCount, stride); }
+		void CmdDrawIndexedIndirect(const SP<Buffer>& buffer, uint64_t offset, uint32_t drawCount, uint32_t stride);
 		
 		/**
 		* @brief Interface of DrawIndirect.
@@ -357,7 +375,7 @@ namespace Neptune::RHI {
 		* @param[in] drawCount .
 		* @param[in] stride .
 		*/
-		void CmdDrawIndirect(const SP<Buffer>& buffer, uint64_t offset, uint32_t drawCount, uint32_t stride) const { RHICmdList::m_Impl->CmdDrawIndirect(buffer, offset, drawCount, stride); }
+		void CmdDrawIndirect(const SP<Buffer>& buffer, uint64_t offset, uint32_t drawCount, uint32_t stride);
 		
 		/**
 		* @brief Interface of Dispatch.
@@ -366,7 +384,7 @@ namespace Neptune::RHI {
 		* @param[in] groupCountY .
 		* @param[in] groupCountZ .
 		*/
-		void CmdDispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ) const { RHICmdList::m_Impl->CmdDispatch(groupCountX, groupCountY, groupCountZ); }
+		void CmdDispatch(uint32_t groupCountX, uint32_t groupCountY, uint32_t groupCountZ);
 		
 		/**
 		* @brief Interface of CmdDispatchIndirect.
@@ -374,7 +392,7 @@ namespace Neptune::RHI {
 		* @param[in] buffer  Buffer.
 		* @param[in] offset .
 		*/
-		void CmdDispatchIndirect(const SP<Buffer>& buffer, uint64_t offset) const { RHICmdList::m_Impl->CmdDispatchIndirect(buffer, offset); }
+		void CmdDispatchIndirect(const SP<Buffer>& buffer, uint64_t offset);
 		
 		/**
 		* @brief Interface of Insert Barrier.
@@ -382,20 +400,31 @@ namespace Neptune::RHI {
 		* @param[in] renderTarget RenderTarget.
 		* @param[in] desc MemoryBarrierDesc.
 		*/
-		void CmdInsertBarrier(const SP<RenderTarget>& renderTarget, const Graphic::ImageBarrierDesc& desc) const { RHICmdList::m_Impl->CmdInsertBarrier(renderTarget, desc); }
+		void CmdInsertBarrier(const SP<RenderTarget>& renderTarget, const Graphic::ImageBarrierDesc& desc);
 		
 		/**
 		* @brief Interface of Insert Barrier.
 		* 
 		* @param[in] desc MemoryBarrierDesc.
 		*/
-		void CmdInsertBarrier(const Graphic::MemoryBarrierDesc& desc) const { RHICmdList::m_Impl->CmdInsertBarrier(desc); }
+		void CmdInsertBarrier(const Graphic::MemoryBarrierDesc& desc);
 		
 		/**
 		* @brief Interface of SetViewport.
 		*
 		* @param[in] viewPortSize .
 		*/
-		void CmdSetViewport(const glm::uvec2& viewPortSize) const { RHICmdList::m_Impl->CmdSetViewport(viewPortSize); }
+		void CmdSetViewport(const glm::uvec2& viewPortSize);
+		
+		/**
+		* @brief Interface of Execute Native Function.
+		*
+		* @param[in] fn Native Function.
+		*/
+		void CmdExecuteNative(std::function<void(void*)> fn);
+		
+	private:
+		
+		CmdStream m_Stream;  // @brief CmdStream.
 	};
 }

@@ -780,7 +780,7 @@ namespace Neptune::Vulkan {
 		
 		if (surface->GetImplement() != WindowImplement::Simulate) return;
 
-		dynamic_cast<Display::Surface*>(surface)->Create(m_PhysicalDevice.GetHandle());
+		assert(dynamic_cast<Display::Surface*>(surface)->Create(m_PhysicalDevice.GetHandle()));
 	}
 }
 
