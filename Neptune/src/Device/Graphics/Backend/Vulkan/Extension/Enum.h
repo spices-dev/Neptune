@@ -65,6 +65,7 @@ namespace Neptune::Vulkan {
         DeviceAddressBindingReport,                 // @brief DeviceAddressBindingReport.
         HostImageCopy,                              // @brief HostImageCopy.
         PushDescriptor,                             // @brief PushDescriptor.
+        Display,                                    // @brief Display.
 
         Count
     };
@@ -127,6 +128,7 @@ namespace Neptune::Vulkan {
             case DeviceAddressBindingReport:      return "DeviceAddressBindingReport";
             case HostImageCopy:                   return "HostImageCopy";
             case PushDescriptor:                  return "PushDescriptor";
+            case Display:                         return "Display";
             default:                              return "NonNamed";
         }
     }

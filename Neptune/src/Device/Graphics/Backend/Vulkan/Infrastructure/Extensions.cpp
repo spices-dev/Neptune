@@ -100,6 +100,7 @@ namespace Neptune::Vulkan {
 		m_Context->Registry<Extension::IDeviceGroup>                      (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IHostImageCopy>                    (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IPushDescriptor>                   (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IDisplay>                          (Extension::EExtensionState::Extent);
 	}
 	
 	SP<Extensions> Extensions::Copy() const

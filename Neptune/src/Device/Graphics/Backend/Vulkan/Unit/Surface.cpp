@@ -27,6 +27,15 @@ namespace Neptune::Vulkan::Unit {
 
 		m_Instance = instance;
 	}
+	
+	void Surface::CreateSurface(VkInstance instance, const VkDisplaySurfaceCreateInfoKHR& info)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_Instance = instance;
+		
+		VULKAN_CHECK(vkCreateDisplayPlaneSurfaceKHR(instance, &info, GetAllocator(), &m_Handle))
+	}
 }
 
 #endif
