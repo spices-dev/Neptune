@@ -26,9 +26,10 @@ namespace Neptune::Vulkan::AndroidNative {
 		*
 		* @param[in] context Context.
 		* @param[in] e EInfrastructure.
+		* @param[in] implement WindowImplement.
 		* @param[in] window Native window.
 		*/
-		Surface(Context& context, EInfrastructure e, void* window);
+		Surface(Context& context, EInfrastructure e, WindowImplement implement, void* window);
 
 		/**
 		* @brief Destructor Function.

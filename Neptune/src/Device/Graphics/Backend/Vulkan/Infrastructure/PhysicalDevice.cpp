@@ -12,9 +12,11 @@
 #include "Device.h"
 #include "Instance.h"
 #include "Surface.h"
+#include "Surface/Display/Surface.h"
 #include "Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/HDR.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/Display.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/IGetSurfaceCapabilities.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/IGetPhysicalDeviceProperties.h"
 #include "Device/Graphics/Backend/Vulkan/Converter.h"
@@ -70,6 +72,8 @@ namespace Neptune::Vulkan {
 		
 		m_PhysicalDevice.SetHandle(best);
 		
+		CreateDisplaySurface();
+		
 		PropertiesQuery();
     }
 
@@ -78,20 +82,29 @@ namespace Neptune::Vulkan {
 		NEPTUNE_PROFILE_ZONE
 
 		auto extensions = GetContext().Get<IExtensions>()->Copy();
-		
-		auto* surface = GetContext().Has<ISurface>() ? GetContext().Get<ISurface>()->Handle() : nullptr;
 
-		if(!IsExtensionMeetDemand          (extensions.get(), device         )) return nullptr;
+		if(!IsExtensionMeetDemand          (extensions.get(), device        )) return nullptr;
+ 
+		if(!IsPropertyMeetDemand           (extensions.get(), device        )) return nullptr;
+ 
+		if(!IsFeatureMeetDemand            (extensions.get(), device        )) return nullptr;
+		
+		UP<Display::Surface> displaySurface = nullptr;
+		
+		Unit::Surface::Handle handle = VK_NULL_HANDLE;
+		
+		if (!GetSurfaceHandle(extensions, device, displaySurface, handle))
+		{
+			NEPTUNE_LOG_CORE(E) << "Infrastructure Required: [ Display Surface ], Which is not satisfied";
+			
+			return nullptr;
+		}
+		
+		if(!IsQueueMeetDemand              (extensions.get(), device, handle)) return nullptr;
+
+		if(!IsSurfaceCapabilityMeetDemand  (extensions.get(), device, handle)) return nullptr;
   
-		if(!IsPropertyMeetDemand           (extensions.get(), device         )) return nullptr;
-  
-		if(!IsFeatureMeetDemand            (extensions.get(), device         )) return nullptr;
-  
-		if(!IsQueueMeetDemand              (extensions.get(), device, surface)) return nullptr;
-		  
-		if(!IsSurfaceCapabilityMeetDemand  (extensions.get(), device, surface)) return nullptr;
-  
-		if(!IsSurfaceFormatMeetDemand      (extensions.get(), device, surface)) return nullptr;
+		if(!IsSurfaceFormatMeetDemand      (extensions.get(), device, handle)) return nullptr;
 		
 		return extensions;
 	}
@@ -729,6 +742,45 @@ namespace Neptune::Vulkan {
 		});
 
 		return formats;
+	}
+
+	bool PhysicalDevice::GetSurfaceHandle(const SP<Extensions>& extensions, const VkPhysicalDevice& device, UP<Display::Surface>& displaySurface, VkSurfaceKHR& handle) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		if (!GetContext().Has<ISurface>()) return true;
+		
+		auto* surface = GetContext().Get<ISurface>();
+		
+		if (surface->GetImplement() != WindowImplement::Simulate)
+		{
+			handle = surface->Handle();
+			
+			return true;
+		}
+
+		if (!extensions->GetContext()->Get<Extension::IDisplay>()) return false;
+		
+		displaySurface = CreateUP<Display::Surface>(GetContext(), EInfrastructure::Surface, WindowImplement::Simulate);
+		
+		if (!displaySurface->Create(device)) return false;
+
+		handle = displaySurface->Handle();
+		
+		return true;
+	}
+	
+	void PhysicalDevice::CreateDisplaySurface() const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		if (!GetContext().Has<ISurface>()) return;
+		
+		auto* surface = GetContext().Get<ISurface>();
+		
+		if (surface->GetImplement() != WindowImplement::Simulate) return;
+
+		dynamic_cast<Display::Surface*>(surface)->Create(m_PhysicalDevice.GetHandle());
 	}
 }
 

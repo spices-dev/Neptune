@@ -42,8 +42,9 @@ namespace Neptune::Vulkan {
 		*
 		* @param[in] context Context.
 		* @param[in] e EInfrastructure.
+		* @param[in] implement WindowImplement.
 		*/
-		Surface(Context& context, EInfrastructure e) : Infrastructure(context, e) {}
+		Surface(Context& context, EInfrastructure e, WindowImplement implement) : Infrastructure(context, e), m_Implement(implement) {}
 		
 		/**
 		* @brief Destructor Function.
@@ -57,10 +58,17 @@ namespace Neptune::Vulkan {
 		*/
 		const Unit::Surface::Handle& Handle() const { return m_Surface.GetHandle(); }
 
+		/**
+		* @brief Get WindowImplement.
+		*
+		* @return Returns WindowImplement.
+		*/
+		WindowImplement GetImplement() const { return m_Implement; }
+		
 	protected:
 
-		Unit::Surface m_Surface; // @brief This Surface.
-
+		Unit::Surface   m_Surface;    // @brief This Surface.
+		WindowImplement m_Implement;  // @brief WindowImplement
 	};
 	
 }

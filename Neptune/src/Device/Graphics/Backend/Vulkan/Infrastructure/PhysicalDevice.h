@@ -16,6 +16,11 @@
 
 namespace Neptune::Vulkan {
 
+	namespace Display {
+		
+		class Surface;
+	}
+	
 	/**
 	* @brief SwapChain Property.
 	*/
@@ -227,6 +232,23 @@ namespace Neptune::Vulkan {
 		*/
 		std::vector<VkFormat> GetVideoFormats(VkImageUsageFlags imageUsage, const std::vector<VkVideoProfileInfoKHR>& videoProfile);
 
+		/**
+		* @brief Get Window/Display Surface Handle.
+		* 
+		* @param[in] extensions Extensions.
+		* @param[in] device VkPhysicalDevice.
+		* @param[out] displaySurface Display::Surface.
+		* @param[out] handle VkSurfaceKHR.
+		* 
+		* @return Returns false in DisplaySurface Check.
+		*/
+		bool GetSurfaceHandle(const SP<Extensions>& extensions, const VkPhysicalDevice& device, UP<Display::Surface>& displaySurface, VkSurfaceKHR& handle) const;
+		
+		/**
+		* @brief Create Display Surface if needed.
+		*/
+		void CreateDisplaySurface() const;
+		
 	private:
 
 		Unit::PhysicalDevice        m_PhysicalDevice;              // @brief This PhysicalDevice.

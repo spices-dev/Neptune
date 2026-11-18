@@ -25,6 +25,8 @@ namespace Neptune {
         MacOSNative,
         AndroidNative,
 
+        Simulate,
+        
         Count,
 
         Default = GLFW

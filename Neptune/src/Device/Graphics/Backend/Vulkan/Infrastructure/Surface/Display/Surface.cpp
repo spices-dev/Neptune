@@ -1,6 +1,6 @@
-﻿/**
-* @file Display.cpp.
-* @brief The Display Class Implementation.
+/**
+* @file Surface.cpp.
+* @brief The Surface Class Implementation.
 * @author Spices.
 */
 
@@ -8,20 +8,22 @@
 
 #ifdef NP_GRAPHICS_VULKAN
 
-#include "Display.h"
-#include "Device/Graphics/Backend/Vulkan/Infrastructure/PhysicalDevice.h"
+#include "Surface.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Instance.h"
 
-namespace Neptune::Vulkan::Resource {
+namespace Neptune::Vulkan::Display {
 
-    void Display::CreateDisplay()
+    Surface::Surface(Context& context, EInfrastructure e, WindowImplement implement)
+        : Vulkan::Surface(context, e, implement)
+    {}
+
+    bool Surface::Create(VkPhysicalDevice physicalDevice)
     {
         NEPTUNE_PROFILE_ZONE
         
-        auto physicalDevice = GetContext().Get<IPhysicalDevice>()->Handle();
-        
         uint32_t displayCount = 0;
         VULKAN_CHECK(vkGetPhysicalDeviceDisplayPropertiesKHR(physicalDevice, &displayCount, nullptr))
+        if (!displayCount) return false;
         
         std::vector<VkDisplayPropertiesKHR> displays(displayCount);
         VULKAN_CHECK(vkGetPhysicalDeviceDisplayPropertiesKHR(physicalDevice, &displayCount, displays.data()))
@@ -30,6 +32,7 @@ namespace Neptune::Vulkan::Resource {
 
         uint32_t modeCount = 0;
         VULKAN_CHECK(vkGetDisplayModePropertiesKHR(physicalDevice, display, &modeCount, nullptr))
+        if (!modeCount) return false;
         
         std::vector<VkDisplayModePropertiesKHR> modes(modeCount);
         VULKAN_CHECK(vkGetDisplayModePropertiesKHR(physicalDevice, display, &modeCount, modes.data()))
@@ -39,6 +42,7 @@ namespace Neptune::Vulkan::Resource {
         
         uint32_t planeCount = 0;
         VULKAN_CHECK(vkGetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice, &planeCount, nullptr))
+        if (!planeCount) return false;
         
         std::vector<VkDisplayPlanePropertiesKHR> planes(planeCount);
         VULKAN_CHECK(vkGetPhysicalDeviceDisplayPlanePropertiesKHR(physicalDevice, &planeCount, planes.data()))
@@ -62,6 +66,8 @@ namespace Neptune::Vulkan::Resource {
             if (planeIndex != UINT32_MAX) break;
         }
         
+        if (planeIndex == UINT32_MAX) return false;
+        
         VkDisplaySurfaceCreateInfoKHR       info{};
         info.sType                        = VK_STRUCTURE_TYPE_DISPLAY_SURFACE_CREATE_INFO_KHR;
         info.displayMode                  = mode;
@@ -74,7 +80,7 @@ namespace Neptune::Vulkan::Resource {
         
         m_Surface.CreateSurface(GetContext().Get<IInstance>()->Handle(), info);
     }
-    
+
 }
 
 #endif

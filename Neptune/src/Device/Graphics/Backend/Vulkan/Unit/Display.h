@@ -35,6 +35,13 @@ namespace Neptune::Vulkan::Unit {
         */
         ~Display() override;
 
+        /**
+        * @brief Acquire Display.
+        * 
+        * @param[in] physicalDevice VkPhysicalDevice.
+        */
+        void AcquireDisplay(VkPhysicalDevice physicalDevice);
+        
     private:
 
         VkPhysicalDevice m_Device = VK_NULL_HANDLE;       // @brief VkPhysicalDevice.

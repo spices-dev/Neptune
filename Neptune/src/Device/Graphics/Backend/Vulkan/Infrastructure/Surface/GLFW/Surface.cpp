@@ -15,8 +15,8 @@
 
 namespace Neptune::Vulkan::GLFW {
 
-    Surface::Surface(Context& context, EInfrastructure e, void* window)
-        : Vulkan::Surface(context, e)
+    Surface::Surface(Context& context, EInfrastructure e, WindowImplement implement, void* window)
+        : Vulkan::Surface(context, e, implement)
     {
         NEPTUNE_PROFILE_ZONE
 

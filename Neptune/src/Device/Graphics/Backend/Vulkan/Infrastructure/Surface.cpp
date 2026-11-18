@@ -9,7 +9,10 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "Surface.h"
+#include "Extensions.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/Display.h"
 #include "Window/Window.h"
+#include "Surface/Display/Surface.h"
 
 #ifdef NP_WINDOW_GLFW
 #include "Surface/GLFW/Surface.h"
@@ -29,13 +32,14 @@ namespace Neptune::Vulkan {
         {
             
 #ifdef NP_WINDOW_GLFW
-            case WindowImplement::GLFW: return CreateUP<GLFW::Surface>(context, e, window);
+            case WindowImplement::GLFW: return CreateUP<GLFW::Surface>(context, e, implement, window);
 #endif
             
 #ifdef NP_WINDOW_ANDROIDNATIVE
-            case WindowImplement::AndroidNative: return CreateUP<AndroidNative::Surface>(context, e, window);
+            case WindowImplement::AndroidNative: return CreateUP<AndroidNative::Surface>(context, e, implement, window);
 #endif
             
+            case WindowImplement::Simulate: return CreateUP<Display::Surface>(context, e, implement);
             default:
             {
                 NEPTUNE_LOG_CORE(E) << "Surface Create with WindowImplement that not supported.";

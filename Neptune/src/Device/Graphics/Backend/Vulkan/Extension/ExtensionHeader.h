@@ -59,5 +59,7 @@
 #include "HostImageCopy.h"
 #include "PushDescriptor.h"
 #include "Display.h"
+#include "DisplayControl.h"
+#include "FullScreen.h"
 
 #endif

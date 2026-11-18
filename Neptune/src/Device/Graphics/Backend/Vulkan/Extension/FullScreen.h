@@ -1,0 +1,36 @@
+﻿/**
+* @file FullScreen.h.
+* @brief The FullScreen Class Definitions.
+* @author Spices.
+*/
+
+#pragma once
+
+#ifdef NP_GRAPHICS_VULKAN
+
+#include "Core/Core.h"
+#include "Context.h"
+
+namespace Neptune::Vulkan::Extension {
+
+    using IFullScreen = IExtension<class FullScreen, EExtension::FullScreen>;
+    
+    class FullScreen : public Extension
+    {
+    public:
+
+        /**
+        * @brief Constructor Function.
+        *
+        * @param[in] state EExtensionState.
+        */
+        explicit FullScreen(EExtensionState state = EExtensionState::Core);
+
+        /**
+        * @brief Destructor Function.
+        */
+        ~FullScreen() override = default;
+    };
+}
+
+#endif

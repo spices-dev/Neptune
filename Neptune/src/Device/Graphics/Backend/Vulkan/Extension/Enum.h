@@ -66,6 +66,8 @@ namespace Neptune::Vulkan {
         HostImageCopy,                              // @brief HostImageCopy.
         PushDescriptor,                             // @brief PushDescriptor.
         Display,                                    // @brief Display.
+        DisplayControl,                             // @brief DisplayControl.
+        FullScreen,                                 // @brief FullScreen.
 
         Count
     };
@@ -129,6 +131,8 @@ namespace Neptune::Vulkan {
             case HostImageCopy:                   return "HostImageCopy";
             case PushDescriptor:                  return "PushDescriptor";
             case Display:                         return "Display";
+            case DisplayControl:                  return "DisplayControl";
+            case FullScreen:                      return "FullScreen";
             default:                              return "NonNamed";
         }
     }
