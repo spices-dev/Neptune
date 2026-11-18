@@ -13,8 +13,26 @@ namespace Neptune::RHI {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
+		std::vector<Graphic::ImageBarrierDesc>  imageBarrierBatch;
+		std::vector<Graphic::MemoryBarrierDesc> memoryBarrierBatch;
+		
+		const auto flushBarriers = [&]() {
+			
+			if (imageBarrierBatch.empty() && memoryBarrierBatch.empty()) return;
+			
+			CmdInsertBarrier(memoryBarrierBatch, imageBarrierBatch);
+			
+			imageBarrierBatch.clear();
+			memoryBarrierBatch.clear();
+		};
+		
 		for (const auto& cmd : stream.Commands())
 		{
+			if (cmd.m_Op != ECmd::InsertImageBarrier && cmd.m_Op != ECmd::InsertMemoryBarrier)
+			{
+				flushBarriers();
+			}
+			
 			switch (cmd.m_Op)
 			{
 				case ECmd::SetGraphicCmdList:
@@ -99,12 +117,12 @@ namespace Neptune::RHI {
 				}
 				case ECmd::InsertImageBarrier:
 				{
-					CmdInsertBarrier(stream.Ref<RenderTarget>(cmd.m_ImageBarrier.ref), stream.ImageBarrier(cmd.m_ImageBarrier.desc));
+					imageBarrierBatch.emplace_back(stream.ImageBarrier(cmd.m_Barrier.desc));
 					break;
 				}
 				case ECmd::InsertMemoryBarrier:
 				{
-					CmdInsertBarrier(stream.MemoryBarrier(cmd.m_MemoryBarrier.desc));
+					memoryBarrierBatch.emplace_back(stream.MemoryBarrier(cmd.m_Barrier.desc));
 					break;
 				}
 				case ECmd::SetViewport:
@@ -127,6 +145,8 @@ namespace Neptune::RHI {
 				}
 			}
 		}
+		
+		flushBarriers();
 	}
 
 	void CmdList::SetGraphicCmdList(const Data::Clock& clock)
@@ -224,18 +244,31 @@ namespace Neptune::RHI {
 		m_Stream.Push(ECmd::DispatchIndirect).m_DispatchIndirect = { ref, offset };
 	}
 
-	void CmdList::CmdInsertBarrier(const SP<RenderTarget>& renderTarget, const Graphic::ImageBarrierDesc& desc)
+	void CmdList::CmdInsertBarrier(const Graphic::ImageBarrierDesc& desc)
 	{
-		const auto ref = m_Stream.Keep(renderTarget);
+		const auto ref = m_Stream.Keep(desc.renderTarget);
 			
-		m_Stream.Push(ECmd::InsertImageBarrier).m_ImageBarrier = { ref, m_Stream.PushImageBarrier(desc) };
+		m_Stream.Push(ECmd::InsertImageBarrier).m_Barrier = { m_Stream.PushImageBarrier(desc) };
 	}
 
 	void CmdList::CmdInsertBarrier(const Graphic::MemoryBarrierDesc& desc)
 	{
-		m_Stream.Push(ECmd::InsertMemoryBarrier).m_MemoryBarrier = { m_Stream.PushMemoryBarrier(desc) };
+		m_Stream.Push(ECmd::InsertMemoryBarrier).m_Barrier = { m_Stream.PushMemoryBarrier(desc) };
 	}
 
+	void CmdList::CmdInsertBarrier(const std::vector<Graphic::MemoryBarrierDesc>& memoryBatch, const std::vector<Graphic::ImageBarrierDesc>& imageBatch)
+	{
+		for (const auto& desc : memoryBatch)
+		{
+			m_Stream.Push(ECmd::InsertMemoryBarrier).m_Barrier = { m_Stream.PushMemoryBarrier(desc) };
+		}
+		
+		for (const auto& desc : imageBatch)
+		{
+			m_Stream.Push(ECmd::InsertImageBarrier).m_Barrier = { m_Stream.PushImageBarrier(desc) };
+		}
+	}
+	
 	void CmdList::CmdSetViewport(const glm::uvec2& viewPortSize)
 	{
 		m_Stream.Push(ECmd::SetViewport).m_Viewport = { viewPortSize.x, viewPortSize.y };

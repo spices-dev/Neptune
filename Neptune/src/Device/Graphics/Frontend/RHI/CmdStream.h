@@ -74,8 +74,7 @@ namespace Neptune::RHI {
 			struct { uint32_t ref; uint64_t offset; uint32_t drawCount, stride; }                                     m_Indirect;               // @brief DrawIndirect
 			struct { uint32_t x, y, z; }                                                                              m_Dispatch;               // @brief Dispatch
 			struct { uint32_t ref; uint64_t offset; }                                                                 m_DispatchIndirect;       // @brief DispatchIndirect
-			struct { uint32_t ref; uint32_t desc; }                                                                   m_ImageBarrier;           // @brief ImageBarrier
-			struct { uint32_t desc; }                                                                                 m_MemoryBarrier;          // @brief MemoryBarrier
+			struct { uint32_t desc; }                                                                                 m_Barrier;                // @brief Barrier
 			struct { uint32_t width, height; }                                                                        m_Viewport;               // @brief Viewport
 			struct { uint32_t native; }                                                                               m_Native;                 // @brief Native Reference
 		};

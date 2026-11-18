@@ -182,11 +182,11 @@ namespace Neptune::Vulkan {
 		m_Indirect->CmdDispatchIndirect(m_CommandBuffer, buffer->GetRHIImpl<Buffer>(), offset);
 	}
 	
-	void CmdList::CmdInsertBarrier(const SP<RHI::RenderTarget>& renderTarget, const Graphic::ImageBarrierDesc& desc) const
+	void CmdList::CmdInsertBarrier(const Graphic::ImageBarrierDesc& desc) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		CmdInsertBarrier(renderTarget->GetRHIImpl<RenderTarget>()->Handle(), desc);
+		CmdInsertBarrier(desc.renderTarget->GetRHIImpl<RenderTarget>()->Handle(), desc);
 	}
 	
 	void CmdList::CmdInsertBarrier(const Graphic::MemoryBarrierDesc& desc) const
@@ -202,7 +202,52 @@ namespace Neptune::Vulkan {
 		
 		m_Synchronization->InsertBarrier(m_CommandBuffer.get(), barrier);
 	}
-	
+
+	void CmdList::CmdInsertBarrier(const std::vector<Graphic::MemoryBarrierDesc>& memoryBatch, const std::vector<Graphic::ImageBarrierDesc>& imageBatch) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		std::vector<VkMemoryBarrier2>       memoryBatch2;
+		std::vector<VkImageMemoryBarrier2>  imageBatch2;
+		std::vector<VkBufferMemoryBarrier2> bufferBatch2;
+		
+		for (const auto& desc : memoryBatch)
+		{
+			VkMemoryBarrier2                  barrier{};
+			barrier.sType                   = VK_STRUCTURE_TYPE_MEMORY_BARRIER_2;
+			barrier.srcAccessMask           = ToVkAccessFlags(desc.srcAccess);
+			barrier.dstAccessMask           = ToVkAccessFlags(desc.dstAccess);
+			barrier.srcStageMask            = ToVkPipelineStageFlags(desc.srcStage);
+			barrier.dstStageMask            = ToVkPipelineStageFlags(desc.dstStage);
+			
+			memoryBatch2.emplace_back(barrier);
+		}
+		
+		for (const auto& desc : imageBatch)
+		{
+			VkImageMemoryBarrier2                       barrier{};
+			barrier.sType                             = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2;
+			barrier.srcAccessMask                     = ToVkAccessFlags(desc.memoryDesc.srcAccess);
+			barrier.dstAccessMask                     = ToVkAccessFlags(desc.memoryDesc.dstAccess);
+			barrier.srcStageMask                      = ToVkPipelineStageFlags(desc.memoryDesc.srcStage);
+			barrier.dstStageMask                      = ToVkPipelineStageFlags(desc.memoryDesc.dstStage);
+			barrier.oldLayout                         = m_ImageLayout->From(ToVkImageLayout(desc.srcLayout));
+			barrier.newLayout                         = m_ImageLayout->From(ToVkImageLayout(desc.dstLayout));
+			barrier.srcQueueFamilyIndex               = GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
+			barrier.dstQueueFamilyIndex               = GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
+			barrier.image                             = desc.renderTarget->GetRHIImpl<RenderTarget>()->Handle();
+			barrier.subresourceRange.aspectMask       = ToVkImageAspectFlags(desc.aspect);
+			barrier.subresourceRange.baseMipLevel     = desc.baseMipLevel;
+			barrier.subresourceRange.levelCount       = desc.levelCount;
+			barrier.subresourceRange.baseArrayLayer   = desc.baseArrayLayer;
+			barrier.subresourceRange.layerCount       = desc.layerCount;
+			
+			imageBatch2.emplace_back(barrier);
+		}
+		
+		m_Synchronization->InsertBarrier(m_CommandBuffer.get(), memoryBatch2, imageBatch2, bufferBatch2);
+	}
+
 	void CmdList::CmdSetViewport(const glm::uvec2& viewPortSize) const
 	{
 		NEPTUNE_PROFILE_ZONE

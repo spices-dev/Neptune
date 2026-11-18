@@ -9,6 +9,12 @@
 #include "Core/Container/BitSet.h"
 #include "Enum.h"
 
+namespace Neptune::RHI {
+    
+    class RenderTarget;
+    class Buffer;
+}
+
 namespace Neptune::Graphic {
     
     /**
@@ -28,14 +34,23 @@ namespace Neptune::Graphic {
     */
     struct ImageBarrierDesc
     {
-        MemoryBarrierDesc memoryDesc;                                   // @brief MemoryBarrierDesc.
-        EImageLayout      srcLayout;                                    // @brief src EImageLayout.
-        EImageLayout      dstLayout;                                    // @brief dst EImageLayout.
-        EImageAspect      aspect           = EImageAspect::Color;       // @brief EImageAspect.
-        uint32_t          baseMipLevel     = 0;                         // @brief baseMipLevel.
-        uint32_t          levelCount       = 1;                         // @brief levelCount.
-        uint32_t          baseArrayLayer   = 0;                         // @brief baseArrayLayer.
-        uint32_t          layerCount       = 1;                         // @brief layerCount.
+        MemoryBarrierDesc     memoryDesc;                                   // @brief MemoryBarrierDesc.
+        SP<RHI::RenderTarget> renderTarget;                                 // @brief RenderTarget.
+        EImageLayout          srcLayout;                                    // @brief src EImageLayout.
+        EImageLayout          dstLayout;                                    // @brief dst EImageLayout.
+        EImageAspect          aspect           = EImageAspect::Color;       // @brief EImageAspect.
+        uint32_t              baseMipLevel     = 0;                         // @brief baseMipLevel.
+        uint32_t              levelCount       = 1;                         // @brief levelCount.
+        uint32_t              baseArrayLayer   = 0;                         // @brief baseArrayLayer.
+        uint32_t              layerCount       = 1;                         // @brief layerCount.
     };
 
+    /**
+    * @brief BufferBarrier Description.
+    */
+    struct BufferBarrierDesc
+    {
+        MemoryBarrierDesc     memoryDesc;                                   // @brief MemoryBarrierDesc.
+        SP<RHI::Buffer>       buffer;                                       // @brief Buffer.
+    };
 }

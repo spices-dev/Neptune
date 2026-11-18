@@ -48,6 +48,22 @@ namespace Neptune::Vulkan::Middleware {
 		
 		commandBuffer->CmdPipelineBarrier2(info);
 	}
+
+	void Synchronization2::InsertBarrier(const Unit::CommandBuffer* commandBuffer, const std::vector<VkMemoryBarrier2>& memoryBatch, const std::vector<VkImageMemoryBarrier2>& imageBatch, const std::vector<VkBufferMemoryBarrier2>& bufferBatch) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		VkDependencyInfo                          info{};
+		info.sType                              = VK_STRUCTURE_TYPE_DEPENDENCY_INFO;
+		info.memoryBarrierCount                 = static_cast<uint32_t>(memoryBatch.size());
+		info.pMemoryBarriers                    = memoryBatch.data();
+		info.imageMemoryBarrierCount            = static_cast<uint32_t>(imageBatch.size());
+		info.pImageMemoryBarriers               = imageBatch.data();
+		info.bufferMemoryBarrierCount           = static_cast<uint32_t>(bufferBatch.size());
+		info.pBufferMemoryBarriers              = bufferBatch.data();
+		
+		commandBuffer->CmdPipelineBarrier2(info);
+	}
 }
 
 #endif

@@ -65,6 +65,16 @@ namespace Neptune::Vulkan::Middleware {
 		* @param[in] barrier VkMemoryBarrier2.
 		*/
 		virtual void InsertBarrier(const Unit::CommandBuffer* commandBuffer, const VkMemoryBarrier2& barrier) const = 0;
+		
+		/**
+		* @brief Interface of Insert Batch Barrier.
+		* 
+		* @param[in] commandBuffer CommandBuffer.
+		* @param[in] memoryBatch VkMemoryBarrier2.
+		* @param[in] imageBatch VkImageMemoryBarrier2.
+		* @param[in] bufferBatch VkBufferMemoryBarrier2.
+		*/
+		virtual void InsertBarrier(const Unit::CommandBuffer* commandBuffer, const std::vector<VkMemoryBarrier2>& memoryBatch, const std::vector<VkImageMemoryBarrier2>& imageBatch, const std::vector<VkBufferMemoryBarrier2>& bufferBatch) const = 0;
 	};
 }
 

@@ -192,10 +192,9 @@ namespace Neptune::Vulkan {
 		/**
 		* @brief Interface of Insert Barrier.
 		* 
-		* @param[in] renderTarget RenderTarget.
 		* @param[in] desc MemoryBarrierDesc.
 		*/
-		void CmdInsertBarrier(const SP<RHI::RenderTarget>& renderTarget, const Graphic::ImageBarrierDesc& desc) const override;
+		void CmdInsertBarrier(const Graphic::ImageBarrierDesc& desc) const override;
 		
 		/**
 		* @brief Interface of Insert Barrier.
@@ -203,6 +202,14 @@ namespace Neptune::Vulkan {
 		* @param[in] desc MemoryBarrierDesc.
 		*/
 		void CmdInsertBarrier(const Graphic::MemoryBarrierDesc& desc) const override;
+		
+		/**
+		* @brief Interface of Insert Barrier.
+		* 
+		* @param[in] memoryBatch MemoryBarrierDesc.
+		* @param[in] imageBatch MemoryBarrierDesc.
+		*/
+		void CmdInsertBarrier(const std::vector<Graphic::MemoryBarrierDesc>& memoryBatch, const std::vector<Graphic::ImageBarrierDesc>& imageBatch) const override;
 		
 		/**
 		* @brief Interface of SetViewport.

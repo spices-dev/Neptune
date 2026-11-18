@@ -107,7 +107,7 @@ namespace Neptune::OpenGL {
 		NEPTUNE_PROFILE_ZONE
 	}
 
-	void CmdList::CmdInsertBarrier(const SP<RHI::RenderTarget>& renderTarget, const Graphic::ImageBarrierDesc& desc) const
+	void CmdList::CmdInsertBarrier(const Graphic::ImageBarrierDesc& desc) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
@@ -124,7 +124,12 @@ namespace Neptune::OpenGL {
 
 		glMemoryBarrier(barrierBits);
 	}
-	
+
+	void CmdList::CmdInsertBarrier(const std::vector<Graphic::MemoryBarrierDesc>& memoryBatch, const std::vector<Graphic::ImageBarrierDesc>& imageBatch) const
+	{
+		NEPTUNE_PROFILE_ZONE
+	}
+
 	void CmdList::CmdSetViewport(const glm::uvec2& viewPortSize) const
 	{
 		NEPTUNE_PROFILE_ZONE

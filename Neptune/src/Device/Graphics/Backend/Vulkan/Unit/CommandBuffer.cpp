@@ -317,25 +317,32 @@ namespace Neptune::Vulkan::Unit {
 		vkCmdDispatchIndirect(m_Handle, buffer, offset);
 	}
 	
-	void CommandBuffer::CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const VkMemoryBarrier& barrier) const
+	void CommandBuffer::CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const std::vector<VkMemoryBarrier>& barrier) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		vkCmdPipelineBarrier(m_Handle, srcStage, dstStage, flags, 1, &barrier, 0, nullptr, 0, nullptr);
+		vkCmdPipelineBarrier(m_Handle, srcStage, dstStage, flags, static_cast<uint32_t>(barrier.size()), barrier.data(), 0, nullptr, 0, nullptr);
 	}
 	
-	void CommandBuffer::CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const VkBufferMemoryBarrier& barrier) const
+	void CommandBuffer::CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const std::vector<VkBufferMemoryBarrier>& barrier) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		vkCmdPipelineBarrier(m_Handle, srcStage, dstStage, flags, 0, nullptr, 1, &barrier, 0, nullptr);
+		vkCmdPipelineBarrier(m_Handle, srcStage, dstStage, flags, 0, nullptr, static_cast<uint32_t>(barrier.size()), barrier.data(), 0, nullptr);
 	}
 	
-	void CommandBuffer::CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const VkImageMemoryBarrier& barrier) const
+	void CommandBuffer::CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const std::vector<VkImageMemoryBarrier>& barrier) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		vkCmdPipelineBarrier(m_Handle, srcStage, dstStage, flags, 0, nullptr, 0, nullptr, 1, &barrier);
+		vkCmdPipelineBarrier(m_Handle, srcStage, dstStage, flags, 0, nullptr, 0, nullptr, static_cast<uint32_t>(barrier.size()), barrier.data());
+	}
+	
+	void CommandBuffer::CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const std::vector<VkMemoryBarrier>& memoryBatch, const std::vector<VkImageMemoryBarrier>& imageBatch, const std::vector<VkBufferMemoryBarrier>& bufferBatch) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		vkCmdPipelineBarrier(m_Handle, srcStage, dstStage, flags, static_cast<uint32_t>(memoryBatch.size()), memoryBatch.data(), static_cast<uint32_t>(bufferBatch.size()), bufferBatch.data(), static_cast<uint32_t>(imageBatch.size()), imageBatch.data());
 	}
 	
 	void CommandBuffer::CmdPipelineBarrier2(const VkDependencyInfo& info) const

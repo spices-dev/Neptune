@@ -417,7 +417,7 @@ namespace Neptune::Vulkan::Unit {
 		* @param[in] flags VkDependencyFlags.
 		* @param[in] barrier barrier.
 		*/
-		void CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const VkMemoryBarrier& barrier) const;
+		void CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const std::vector<VkMemoryBarrier>& barrier) const;
 		
 		/**
 		* @brief Buffer PipelineBarrier.
@@ -427,7 +427,7 @@ namespace Neptune::Vulkan::Unit {
 		* @param[in] flags VkDependencyFlags.
 		* @param[in] barrier VkBufferMemoryBarrier.
 		*/
-		void CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const VkBufferMemoryBarrier& barrier) const;
+		void CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const std::vector<VkBufferMemoryBarrier>& barrier) const;
 		
 		/**
 		* @brief Image PipelineBarrier.
@@ -437,7 +437,19 @@ namespace Neptune::Vulkan::Unit {
 		* @param[in] flags VkDependencyFlags.
 		* @param[in] barrier VkImageMemoryBarrier.
 		*/
-		void CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const VkImageMemoryBarrier& barrier) const;
+		void CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const std::vector<VkImageMemoryBarrier>& barrier) const;
+		
+		/**
+		* @brief Image PipelineBarrier.
+		* 
+		* @param[in] srcStage VkPipelineStageFlags.
+		* @param[in] dstStage VkPipelineStageFlags.
+		* @param[in] flags VkDependencyFlags.
+		* @param[in] memoryBatch VkMemoryBarrier.
+		* @param[in] imageBatch VkImageMemoryBarrier.
+		* @param[in] bufferBatch VkBufferMemoryBarrier.
+		*/
+		void CmdPipelineBarrier(VkPipelineStageFlags srcStage, VkPipelineStageFlags dstStage, VkDependencyFlags flags, const std::vector<VkMemoryBarrier>& memoryBatch, const std::vector<VkImageMemoryBarrier>& imageBatch, const std::vector<VkBufferMemoryBarrier>& bufferBatch) const;
 		
 		/**
 		* @brief PipelineBarrier2.
