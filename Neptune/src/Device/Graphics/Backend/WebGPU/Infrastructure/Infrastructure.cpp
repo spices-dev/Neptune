@@ -22,6 +22,7 @@ namespace Neptune::WebGPU {
 		
         switch (GetEInfrastructure())
         {
+        	case GarbageCollection:                                   return "GarbageCollection";
 			case Extensions:                                          return "Extensions";
 			case Instance:                                            return "Instance";
 			case DebugUtilsObject:                                    return "DebugUtilsObject";
@@ -33,7 +34,6 @@ namespace Neptune::WebGPU {
 			case ComputeTimeLine:                                     return "ComputeTimeLine";
 			case GraphicCommandEncoder:                               return "GraphicCommandEncoder";
 			case ComputeCommandEncoder:                               return "ComputeCommandEncoder";
-			case GarbageCollection:                                   return "GarbageCollection";
 			case AccessibleInfrastructures:                           return "AccessibleInfrastructures";
             default:                                                  return "NonNamed";
         }

@@ -340,6 +340,11 @@ namespace Neptune::Vulkan {
 
 		const auto result = m_SwapChain->GetNextImage(semaphore, imageIndex);
 
+    	if (GetContext().Get<IExtensions>()->GetContext()->Get<Extension::ISwapChainMaintenance1>())
+    	{
+    		m_SwapChainImageFence[imageIndex]->WaitReset();
+    	}
+    	
 		if (result == VK_SUCCESS)
 		{
 			return true;
@@ -370,14 +375,10 @@ namespace Neptune::Vulkan {
 
     	if (GetContext().Get<IExtensions>()->GetContext()->Get<Extension::ISwapChainMaintenance1>())
     	{
-    		auto& fence = m_SwapChainImageFence[*info.pImageIndices];
-    		
-    		fence->WaitReset();
-    		
     		VkSwapchainPresentFenceInfoKHR         fenceInfo{};
     		fenceInfo.sType                      = VK_STRUCTURE_TYPE_SWAPCHAIN_PRESENT_FENCE_INFO_KHR;
     		fenceInfo.swapchainCount             = info.swapchainCount;
-    		fenceInfo.pFences                    = &fence->Handle();
+    		fenceInfo.pFences                    = &m_SwapChainImageFence[*info.pImageIndices]->Handle();
     		fenceInfo.pNext                      = info.pNext;
     		
     		info.pNext                           = &fenceInfo;

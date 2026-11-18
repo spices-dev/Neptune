@@ -33,13 +33,13 @@ namespace Neptune::Metal {
         m_Context = CreateUP<Context>();
         
         m_Context->Registry<IFrameAutoreleasePool>();
+        m_Context->Registry<IGarbageCollection>();
         m_Context->Registry<IDevice>();
         m_Context->Registry<ILayer>(MaxFrameInFlight);
         m_Context->Registry<ICommandQueue>();
         m_Context->Registry<ICommandBuffer>();
         m_Context->Registry<IGraphicDispatchSemaphore>(MaxFrameInFlight);
         
-        m_Context->Registry<IGarbageCollection>();
         m_Context->Registry<IAccessibleInfrastructures>();
     }
 

@@ -18,12 +18,12 @@ namespace Neptune::OpenGL {
     enum class EInfrastructure : uint8_t
     {
         WindowContext = 0,                   // @brief Window/Context.
+        GarbageCollection,                   // @brief GarbageCollection.
         Extensions,                          // @brief Extensions.
         DebugUtilsObject,                    // @brief Label/Name Functors.
 
         TimeLine,                            // @brief Main Thread TimeLine.
         
-        GarbageCollection,                   // @brief GarbageCollection.
         AccessibleInfrastructures,           // @brief AccessibleInfrastructures.
 
         Count

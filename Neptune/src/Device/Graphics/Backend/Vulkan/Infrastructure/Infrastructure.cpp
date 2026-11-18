@@ -23,6 +23,7 @@ namespace Neptune::Vulkan {
         switch (GetEInfrastructure())
         {
             case Functions:                          return "Functions";
+			case GarbageCollection:                  return "GarbageCollection";
             case Layers:                             return "Layers";
             case Extensions:                         return "Extensions";
             case Instance:                           return "Instance";
@@ -67,7 +68,6 @@ namespace Neptune::Vulkan {
             case DescriptorPool:                     return "DescriptorPool";
         	
             case Middlewares:                        return "Middlewares";
-            case GarbageCollection:                  return "GarbageCollection";
             case AccessibleInfrastructures:          return "AccessibleInfrastructures";
 
             default:                                 return "NonNamed";

@@ -18,6 +18,7 @@ namespace Neptune::Vulkan {
     enum class EInfrastructure : uint8_t
     {
         Functions = 0,                       // @brief Functors.
+        GarbageCollection,                   // @brief GarbageCollection.
         Layers,                              // @brief Layers.
         Extensions,                          // @brief Extensions.
         Instance,                            // @brief Instance.
@@ -62,7 +63,6 @@ namespace Neptune::Vulkan {
         DescriptorPool,                      // @brief DescriptorPool.
         
         Middlewares,                         // @brief Middlewares.
-        GarbageCollection,                   // @brief GarbageCollection.
         AccessibleInfrastructures,           // @brief AccessibleInfrastructures.
 
         Count
@@ -84,24 +84,24 @@ namespace Neptune::Graphic::Common {
         { Vulkan::EInfrastructure::GraphicQueue,                  { Vulkan::EInfrastructure::Device } },
         { Vulkan::EInfrastructure::PresentQueue,                  { Vulkan::EInfrastructure::Device } },
         { Vulkan::EInfrastructure::ComputeQueue,                  { Vulkan::EInfrastructure::Device } },
-        { Vulkan::EInfrastructure::GraphicThreadQueue,            { Vulkan::EInfrastructure::Device } },
-        { Vulkan::EInfrastructure::ComputeThreadQueue,            { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::GraphicThreadQueue,            { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::GraphicQueue } },
+        { Vulkan::EInfrastructure::ComputeThreadQueue,            { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::ComputeQueue } },
         { Vulkan::EInfrastructure::TransferThreadQueue,           { Vulkan::EInfrastructure::Device } },
         { Vulkan::EInfrastructure::VideoEncodeThreadQueue,        { Vulkan::EInfrastructure::Device } },
         { Vulkan::EInfrastructure::VideoDecodeThreadQueue,        { Vulkan::EInfrastructure::Device } },
         { Vulkan::EInfrastructure::OpticalFlowThreadQueue,        { Vulkan::EInfrastructure::Device } },
-        { Vulkan::EInfrastructure::MemoryAllocator,               { Vulkan::EInfrastructure::Instance } },
-        { Vulkan::EInfrastructure::SwapChain,                     { Vulkan::EInfrastructure::Device } },
-        { Vulkan::EInfrastructure::GraphicTimeLine,               { Vulkan::EInfrastructure::Device } },
-        { Vulkan::EInfrastructure::ComputeTimeLine,               { Vulkan::EInfrastructure::Device } },
-        { Vulkan::EInfrastructure::GraphicImageSemaphore,         { Vulkan::EInfrastructure::Device } },
-        { Vulkan::EInfrastructure::GraphicQueueSemaphore,         { Vulkan::EInfrastructure::Device } },
-        { Vulkan::EInfrastructure::GraphicCommandPool,            { Vulkan::EInfrastructure::Device } },
-        { Vulkan::EInfrastructure::GraphicCommandBuffer,          { Vulkan::EInfrastructure::Device } },
-        { Vulkan::EInfrastructure::ComputeCommandPool,            { Vulkan::EInfrastructure::Device } },
-        { Vulkan::EInfrastructure::ComputeCommandBuffer,          { Vulkan::EInfrastructure::Device } },
-        { Vulkan::EInfrastructure::GraphicThreadCommandPool,      { Vulkan::EInfrastructure::Device } },
-        { Vulkan::EInfrastructure::ComputeThreadCommandPool,      { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::MemoryAllocator,               { Vulkan::EInfrastructure::Device } },
+        { Vulkan::EInfrastructure::SwapChain,                     { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::Surface, Vulkan::EInfrastructure::PresentQueue, Vulkan::EInfrastructure::GarbageCollection } },
+        { Vulkan::EInfrastructure::GraphicTimeLine,               { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::GraphicQueue } },
+        { Vulkan::EInfrastructure::ComputeTimeLine,               { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::ComputeQueue } },
+        { Vulkan::EInfrastructure::GraphicImageSemaphore,         { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::SwapChain } },
+        { Vulkan::EInfrastructure::GraphicQueueSemaphore,         { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::GraphicQueue } },
+        { Vulkan::EInfrastructure::GraphicCommandPool,            { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::GraphicQueue } },
+        { Vulkan::EInfrastructure::GraphicCommandBuffer,          { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::GraphicCommandPool } },
+        { Vulkan::EInfrastructure::ComputeCommandPool,            { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::ComputeQueue } },
+        { Vulkan::EInfrastructure::ComputeCommandBuffer,          { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::ComputeCommandPool } },
+        { Vulkan::EInfrastructure::GraphicThreadCommandPool,      { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::GraphicQueue } },
+        { Vulkan::EInfrastructure::ComputeThreadCommandPool,      { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::ComputeQueue } },
         { Vulkan::EInfrastructure::TransferThreadCommandPool,     { Vulkan::EInfrastructure::Device } },
         { Vulkan::EInfrastructure::VideoEncodeThreadCommandPool,  { Vulkan::EInfrastructure::Device } },
         { Vulkan::EInfrastructure::OpticalFlowThreadCommandPool,  { Vulkan::EInfrastructure::Device } },

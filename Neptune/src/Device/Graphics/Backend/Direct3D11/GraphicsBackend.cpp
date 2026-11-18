@@ -31,6 +31,7 @@ namespace Neptune::Direct3D11 {
 
         m_Context = CreateUP<Context>();
 
+        m_Context->Registry<IGarbageCollection>();
         m_Context->Registry<IDebugUtilsObject>();
         m_Context->Registry<IDeviceContext>();
         m_Context->Registry<IFactory>();
@@ -42,7 +43,6 @@ namespace Neptune::Direct3D11 {
         m_Context->Registry<IGraphicCommandList>(MaxFrameInFlight);
         m_Context->Registry<IComputeCommandList>(MaxFrameInFlight);
         
-        m_Context->Registry<IGarbageCollection>();
         m_Context->Registry<IAccessibleInfrastructures>();
     }
 

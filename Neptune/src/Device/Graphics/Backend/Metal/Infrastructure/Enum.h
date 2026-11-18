@@ -18,12 +18,12 @@ namespace Neptune::Metal {
     enum class EInfrastructure : uint8_t
     {
         FrameAutoreleasePool,                // @brief FrameAutoreleasePool.
+        GarbageCollection,                   // @brief GarbageCollection.
         Device,                              // @brief LogicalDevice.
         Layer,                               // @brief Layer.
         CommandQueue,                        // @brief CommandQueue.
         CommandBuffer,                       // @brief CommandBuffer.
         GraphicDispatchSemaphore,            // @brief GraphicDispatchSemaphore.
-        GarbageCollection,                   // @brief GarbageCollection.
         AccessibleInfrastructures,           // @brief AccessibleInfrastructures.
         
         Count

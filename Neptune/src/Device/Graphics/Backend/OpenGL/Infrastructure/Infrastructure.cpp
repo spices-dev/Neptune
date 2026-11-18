@@ -23,9 +23,9 @@ namespace Neptune::OpenGL {
         switch (GetEInfrastructure())
         {
             case WindowContext:                      return "WindowContext";
+			case GarbageCollection:                  return "GarbageCollection";
             case DebugUtilsObject:                   return "DebugUtilsObject";
             case TimeLine:                           return "TimeLine";
-            case GarbageCollection:                  return "GarbageCollection";
             case AccessibleInfrastructures:          return "AccessibleInfrastructures";
 
             default:                                 return "NonNamed";

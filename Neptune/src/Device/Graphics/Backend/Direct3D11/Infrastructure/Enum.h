@@ -17,6 +17,7 @@ namespace Neptune::Direct3D11 {
     */
     enum class EInfrastructure : uint8_t
     {
+        GarbageCollection,                   // @brief GarbageCollection.
         DebugUtilsObject,                    // @brief Label/Name Functors.
         DeviceContext,                       // @brief Device Immediate Context.
         Factory,                             // @brief DXGI Factory.
@@ -33,7 +34,6 @@ namespace Neptune::Direct3D11 {
         GraphicThreadCommandList,            // @brief Sub Thread Graphic CommandList.
         ComputeThreadCommandList,            // @brief Sub Thread Compute CommandList.
         
-        GarbageCollection,                   // @brief GarbageCollection.
         AccessibleInfrastructures,           // @brief AccessibleInfrastructures.
 
         Count

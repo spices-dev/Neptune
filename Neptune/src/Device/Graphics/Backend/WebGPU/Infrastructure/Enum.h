@@ -17,7 +17,8 @@ namespace Neptune::WebGPU {
     */
     enum class EInfrastructure : uint8_t
     {
-        Extensions = 0,                      // @brief Extensions.
+        GarbageCollection = 0,               // @brief GarbageCollection.
+        Extensions,                          // @brief Extensions.
         Instance,                            // @brief Instance.
         DebugUtilsObject,                    // @brief Label/Name Functors.
         Adapter,                             // @brief Adapter.
@@ -32,7 +33,6 @@ namespace Neptune::WebGPU {
         GraphicCommandEncoder,               // @brief GraphicCommandEncoder.
         ComputeCommandEncoder,               // @brief ComputeCommandEncoder.
         
-        GarbageCollection,                   // @brief GarbageCollection.
         AccessibleInfrastructures,           // @brief AccessibleInfrastructures.
         
         Count

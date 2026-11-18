@@ -31,6 +31,7 @@ namespace Neptune::Direct3D12 {
     	
         m_Context = CreateUP<Context>();
 
+        m_Context->Registry<IGarbageCollection>();
         m_Context->Registry<IExtensions>();
         
 #ifdef NEPTUNE_DEBUG
@@ -56,7 +57,6 @@ namespace Neptune::Direct3D12 {
         m_Context->Registry<ISRVDescriptorHeap>();
         m_Context->Registry<IUAVDescriptorHeap>();
         
-        m_Context->Registry<IGarbageCollection>();
         m_Context->Registry<IAccessibleInfrastructures>();
     }
 

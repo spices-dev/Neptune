@@ -22,6 +22,7 @@ namespace Neptune::Direct3D12 {
 	    
         switch (GetEInfrastructure())
         {
+			case GarbageCollection:                  return "GarbageCollection";
             case Extensions:                         return "Extensions";
             case DebugUtilsObject:                   return "DebugUtilsObject";
             case Factory:                            return "Factory";
@@ -37,7 +38,6 @@ namespace Neptune::Direct3D12 {
             case DSVDescriptorHeap:                  return "DSVDescriptorHeap";
             case SRVDescriptorHeap:                  return "SRVDescriptorHeap";
             case UAVDescriptorHeap:                  return "UAVDescriptorHeap";
-            case GarbageCollection:                  return "GarbageCollection";
             case AccessibleInfrastructures:          return "AccessibleInfrastructures";
 
             default:                                 return "NonNamed";

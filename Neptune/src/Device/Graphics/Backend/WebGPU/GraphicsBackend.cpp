@@ -33,6 +33,7 @@ namespace Neptune::WebGPU {
 
         m_Context = CreateUP<Context>();
         
+        m_Context->Registry<IGarbageCollection>();
         m_Context->Registry<IExtensions>();
         m_Context->Registry<IInstance>();
         m_Context->Registry<IDebugUtilsObject>();
@@ -47,7 +48,6 @@ namespace Neptune::WebGPU {
         m_Context->Registry<IGraphicCommandEncoder>();
         m_Context->Registry<IComputeCommandEncoder>();
         
-        m_Context->Registry<IGarbageCollection>();
         m_Context->Registry<IAccessibleInfrastructures>();
     }
 

@@ -46,6 +46,7 @@ namespace Neptune::Vulkan {
 		m_Context = CreateUP<Context>();
 
 		m_Context->Registry<IFunctions>();
+		m_Context->Registry<IGarbageCollection>();
 		m_Context->Registry<ILayers>();
 		m_Context->Registry<IExtensions>(window);
 		m_Context->Registry<IInstance>();
@@ -112,7 +113,6 @@ namespace Neptune::Vulkan {
 		m_Context->Registry<IVideoDecodeThreadCommandPool>();
 		m_Context->Registry<IOpticalFlowThreadCommandPool>();
 		
-		m_Context->Registry<IGarbageCollection>();
 		m_Context->Registry<IAccessibleInfrastructures>();
 	}
 

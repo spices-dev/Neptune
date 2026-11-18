@@ -23,12 +23,12 @@ namespace Neptune::Metal {
         switch (GetEInfrastructure())
         {
 	        case FrameAutoreleasePool:               return "FrameAutoreleasePool";
+			case GarbageCollection:                  return "GarbageCollection";
 	        case Device:                             return "Device";
 	        case Layer:                              return "Layer";
 	        case CommandQueue:                       return "CommandQueue";
 	        case CommandBuffer:                      return "CommandBuffer";
 	        case GraphicDispatchSemaphore:           return "GraphicDispatchSemaphore";
-	        case GarbageCollection:                  return "GarbageCollection";
 	        case AccessibleInfrastructures:          return "AccessibleInfrastructures";
             default:                                 return "NonNamed";
         }
