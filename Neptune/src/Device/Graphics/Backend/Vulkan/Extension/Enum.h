@@ -69,6 +69,7 @@ namespace Neptune::Vulkan {
         DisplayControl,                             // @brief DisplayControl.
         FullScreen,                                 // @brief FullScreen.
         HeadlessSurface,                            // @brief HeadlessSurface.
+        ToolingInfo,                                // @brief ToolingInfo.
 
         Count
     };
@@ -135,6 +136,7 @@ namespace Neptune::Vulkan {
             case DisplayControl:                  return "DisplayControl";
             case FullScreen:                      return "FullScreen";
             case HeadlessSurface:                 return "HeadlessSurface";
+            case ToolingInfo:                     return "ToolingInfo";
             default:                              return "NonNamed";
         }
     }

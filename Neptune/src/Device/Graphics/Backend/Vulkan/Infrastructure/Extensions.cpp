@@ -104,6 +104,7 @@ namespace Neptune::Vulkan {
 		m_Context->Registry<Extension::IDisplayControl>                   (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IFullScreen>                       (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IHeadlessSurface>                  (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IToolingInfo>                      (Extension::EExtensionState::Extent);
 	}
 	
 	SP<Extensions> Extensions::Copy() const

@@ -79,6 +79,8 @@ namespace Neptune::Vulkan::Display {
         info.imageExtent                  = extent;
         
         m_Surface.CreateDisplaySurface(GetContext().Get<IInstance>()->Handle(), info);
+        
+        return true;
     }
 
 }

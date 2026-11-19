@@ -17,6 +17,7 @@
 #include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/HDR.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Display.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/ToolingInfo.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/IGetSurfaceCapabilities.h"
 #include "Device/Graphics/Backend/Vulkan/Middleware/IGetPhysicalDeviceProperties.h"
 #include "Device/Graphics/Backend/Vulkan/Converter.h"
@@ -123,15 +124,28 @@ namespace Neptune::Vulkan {
 			vkGetPhysicalDeviceProperties(devices[i], &props);
 			
 			ss <<"\n" << "Device [ " << i << " ]: " << "\n"
-				<< "    Name:            " << props.deviceName << "\n"
-				<< "    Type:            " << Vulkan::ToString(props.deviceType) << "\n"
-				<< "    DeviceID:        " << props.deviceID << "\n"
-				<< "    VendorID:        " << props.vendorID << "\n"
-				<< "    DriverVersion:   " << props.driverVersion << "\n"
-				<< "    API Version:     " << VK_VERSION_MAJOR(props.apiVersion) << "." << VK_VERSION_MINOR(props.apiVersion) << "." << VK_VERSION_PATCH(props.apiVersion);
+				<< "    Name:                  " << props.deviceName << "\n"
+				<< "    Type:                  " << Vulkan::ToString(props.deviceType) << "\n"
+				<< "    DeviceID:              " << props.deviceID << "\n"
+				<< "    VendorID:              " << props.vendorID << "\n"
+				<< "    DriverVersion:         " << props.driverVersion << "\n"
+				<< "    API Version:           " << VK_VERSION_MAJOR(props.apiVersion) << "." << VK_VERSION_MINOR(props.apiVersion) << "." << VK_VERSION_PATCH(props.apiVersion) << "\n";
+			
+			if (!GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IToolingInfo>()) continue;
+			
+			uint32_t count = 0;
+			VULKAN_CHECK(vkGetPhysicalDeviceToolProperties(devices[i], &count, nullptr))
+			
+			std::vector<VkPhysicalDeviceToolProperties> tools(count);
+			vkGetPhysicalDeviceToolProperties(devices[i], &count, tools.data());
+			
+			for (uint32_t j = 0; j < count; ++j)
+			{
+				ss << "    Attached Layer[ " << j << " ]:   " << "name: " << tools[j].name << ", version: " << tools[j].version <<  ", layer: " << tools[j].layer << "\n";
+			}
 		}
 		
-		ss << "\n" << "Device Selected first.";
+		ss << "Device Selected first.";
 		
 		NEPTUNE_LOG_CORE(I) << ss.str();
 		
