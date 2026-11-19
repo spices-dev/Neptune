@@ -19,6 +19,7 @@
 #include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/PresentTiming.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/SwapChainMaintenance1.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/FrameBoundary.h"
 
 namespace Neptune::Vulkan {
 
@@ -373,9 +374,22 @@ namespace Neptune::Vulkan {
 
     	info.pSwapchains                         = &Handle();
 
+    	VkFrameBoundaryEXT                         boundary{};
+    	if (GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IFrameBoundary>())
+		{
+    		boundary.sType                       = VK_STRUCTURE_TYPE_FRAME_BOUNDARY_EXT;
+			boundary.flags                       = VK_FRAME_BOUNDARY_FRAME_END_BIT_EXT;
+			boundary.frameID                     = frameId;
+			boundary.imageCount                  = 1;
+			boundary.pImages                     = &m_SwapChainImage[*info.pImageIndices]->Handle();
+    		boundary.pNext                       = info.pNext;
+    		
+    		info.pNext                           = &boundary;
+		}
+    	
+    	VkSwapchainPresentFenceInfoKHR            fenceInfo{};
     	if (GetContext().Get<IExtensions>()->GetContext()->Get<Extension::ISwapChainMaintenance1>())
     	{
-    		VkSwapchainPresentFenceInfoKHR         fenceInfo{};
     		fenceInfo.sType                      = VK_STRUCTURE_TYPE_SWAPCHAIN_PRESENT_FENCE_INFO_KHR;
     		fenceInfo.swapchainCount             = info.swapchainCount;
     		fenceInfo.pFences                    = &m_SwapChainImageFence[*info.pImageIndices]->Handle();
@@ -387,7 +401,6 @@ namespace Neptune::Vulkan {
     	VkPresentId2KHR                            id{};
     	VkPresentTimingInfoEXT                     time{};
     	VkPresentTimingsInfoEXT                    times{};
-    	
     	if (GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IPresentTiming>())
     	{
     		QueryTimeDomains();

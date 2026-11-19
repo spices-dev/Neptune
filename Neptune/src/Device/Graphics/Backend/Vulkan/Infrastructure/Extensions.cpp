@@ -100,11 +100,12 @@ namespace Neptune::Vulkan {
 		m_Context->Registry<Extension::IDeviceGroup>                      (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IHostImageCopy>                    (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IPushDescriptor>                   (Extension::EExtensionState::Extent);
-		m_Context->Registry<Extension::IDisplay>                          (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IDisplay>                          (Extension::EExtensionState::Extent);          // @brief Done.
 		m_Context->Registry<Extension::IDisplayControl>                   (Extension::EExtensionState::Extent);
 		m_Context->Registry<Extension::IFullScreen>                       (Extension::EExtensionState::Extent);
-		m_Context->Registry<Extension::IHeadlessSurface>                  (Extension::EExtensionState::Extent);
-		m_Context->Registry<Extension::IToolingInfo>                      (Extension::EExtensionState::Extent);
+		m_Context->Registry<Extension::IHeadlessSurface>                  (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context->Registry<Extension::IToolingInfo>                      (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context->Registry<Extension::IFrameBoundary>                    (Extension::EExtensionState::Extent);          // @brief Done.
 	}
 	
 	SP<Extensions> Extensions::Copy() const

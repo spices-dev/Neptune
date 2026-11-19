@@ -70,6 +70,7 @@ namespace Neptune::Vulkan {
         FullScreen,                                 // @brief FullScreen.
         HeadlessSurface,                            // @brief HeadlessSurface.
         ToolingInfo,                                // @brief ToolingInfo.
+        FrameBoundary,                              // @brief FrameBoundary.
 
         Count
     };
@@ -137,6 +138,7 @@ namespace Neptune::Vulkan {
             case FullScreen:                      return "FullScreen";
             case HeadlessSurface:                 return "HeadlessSurface";
             case ToolingInfo:                     return "ToolingInfo";
+            case FrameBoundary:                   return "FrameBoundary";
             default:                              return "NonNamed";
         }
     }

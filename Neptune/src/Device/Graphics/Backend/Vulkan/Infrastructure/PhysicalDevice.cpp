@@ -137,7 +137,7 @@ namespace Neptune::Vulkan {
 			VULKAN_CHECK(vkGetPhysicalDeviceToolProperties(devices[i], &count, nullptr))
 			
 			std::vector<VkPhysicalDeviceToolProperties> tools(count);
-			vkGetPhysicalDeviceToolProperties(devices[i], &count, tools.data());
+			VULKAN_CHECK(vkGetPhysicalDeviceToolProperties(devices[i], &count, tools.data()))
 			
 			for (uint32_t j = 0; j < count; ++j)
 			{

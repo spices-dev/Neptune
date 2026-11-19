@@ -63,5 +63,6 @@
 #include "FullScreen.h"
 #include "HeadlessSurface.h"
 #include "ToolingInfo.h"
+#include "FrameBoundary.h"
 
 #endif
