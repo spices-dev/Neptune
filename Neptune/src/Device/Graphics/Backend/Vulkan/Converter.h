@@ -181,6 +181,51 @@ namespace Neptune::Vulkan {
 	VkBufferUsageFlags ToVkBufferUsageFlags(const Container::BitSet<Graphic::EBufferUsage>& set);
 	
 	/**
+	* @brief Convert Graphic::MemoryBarrierDesc to VkMemoryBarrier2.
+	*
+	* @param[in] desc Graphic::MemoryBarrierDesc.
+	*
+	* @return Returns VkMemoryBarrier2.
+	*/
+	VkMemoryBarrier2 ToVkMemoryBarrier2(const Graphic::MemoryBarrierDesc& desc);
+	
+	/**
+	* @brief Convert Graphic::ImageBarrierDesc to VkImageMemoryBarrier2.
+	*
+	* @param[in] desc Graphic::ImageBarrierDesc.
+	*
+	* @return Returns VkImageMemoryBarrier2.
+	*/
+	VkImageMemoryBarrier2 ToVkImageMemoryBarrier2(const Graphic::ImageBarrierDesc& desc);
+	
+	/**
+	* @brief Convert VkMemoryBarrier2 to VkMemoryBarrier.
+	*
+	* @param[in] barrier2 VkMemoryBarrier2.
+	*
+	* @return Returns VkMemoryBarrier.
+	*/
+	VkMemoryBarrier ToVkMemoryBarrier(const VkMemoryBarrier2& barrier2);
+	
+	/**
+	* @brief Convert VkImageMemoryBarrier2 to VkImageMemoryBarrier.
+	*
+	* @param[in] barrier2 VkImageMemoryBarrier2.
+	*
+	* @return Returns VkImageMemoryBarrier.
+	*/
+	VkImageMemoryBarrier ToVkImageMemoryBarrier(const VkImageMemoryBarrier2& barrier2);
+	
+	/**
+	* @brief Convert VkBufferMemoryBarrier2 to VkBufferMemoryBarrier.
+	*
+	* @param[in] barrier2 VkBufferMemoryBarrier2.
+	*
+	* @return Returns VkBufferMemoryBarrier.
+	*/
+	VkBufferMemoryBarrier ToVkBufferMemoryBarrier(const VkBufferMemoryBarrier2& barrier2);
+	
+	/**
 	* @brief Convert VkMemoryHeapFlags to std::string.
 	*
 	* @param[in] flag VkMemoryHeapFlags.

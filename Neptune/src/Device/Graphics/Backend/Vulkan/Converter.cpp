@@ -9,6 +9,7 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "Converter.h"
+#include "Device/Graphics/Backend/Vulkan/RHI/RenderTarget.h"
 
 namespace Neptune::Vulkan {
 
@@ -334,6 +335,89 @@ namespace Neptune::Vulkan {
 		return flag;
 	}
 
+	VkImageMemoryBarrier2 ToVkImageMemoryBarrier2(const Graphic::ImageBarrierDesc& desc)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		VkImageMemoryBarrier2                       barrier{};
+		barrier.sType                             = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2;
+		barrier.srcAccessMask                     = ToVkAccessFlags(desc.memoryDesc.srcAccess);
+		barrier.dstAccessMask                     = ToVkAccessFlags(desc.memoryDesc.dstAccess);
+		barrier.srcStageMask                      = ToVkPipelineStageFlags(desc.memoryDesc.srcStage);
+		barrier.dstStageMask                      = ToVkPipelineStageFlags(desc.memoryDesc.dstStage);
+		barrier.oldLayout                         = ToVkImageLayout(desc.srcLayout);
+		barrier.newLayout                         = ToVkImageLayout(desc.dstLayout);
+		barrier.image                             = desc.renderTarget ? desc.renderTarget->GetRHIImpl<RenderTarget>()->Handle() : nullptr;
+		barrier.subresourceRange.aspectMask       = ToVkImageAspectFlags(desc.aspect);
+		barrier.subresourceRange.baseMipLevel     = desc.baseMipLevel;
+		barrier.subresourceRange.levelCount       = desc.levelCount;
+		barrier.subresourceRange.baseArrayLayer   = desc.baseArrayLayer;
+		barrier.subresourceRange.layerCount       = desc.layerCount;
+		
+		return barrier;
+	}
+
+	VkMemoryBarrier2 ToVkMemoryBarrier2(const Graphic::MemoryBarrierDesc& desc)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		VkMemoryBarrier2                  barrier{};
+		barrier.sType                   = VK_STRUCTURE_TYPE_MEMORY_BARRIER_2;
+		barrier.srcAccessMask           = ToVkAccessFlags(desc.srcAccess);
+		barrier.dstAccessMask           = ToVkAccessFlags(desc.dstAccess);
+		barrier.srcStageMask            = ToVkPipelineStageFlags(desc.srcStage);
+		barrier.dstStageMask            = ToVkPipelineStageFlags(desc.dstStage);
+		
+		return barrier;
+	}
+
+	VkImageMemoryBarrier ToVkImageMemoryBarrier(const VkImageMemoryBarrier2& barrier2)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		VkImageMemoryBarrier              barrier{};
+		barrier.sType                   = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+		barrier.srcAccessMask           = ToVkAccessFlags(barrier2.srcAccessMask);
+		barrier.dstAccessMask           = ToVkAccessFlags(barrier2.dstAccessMask);
+		barrier.srcQueueFamilyIndex     = barrier2.srcQueueFamilyIndex;
+		barrier.dstQueueFamilyIndex     = barrier2.dstQueueFamilyIndex;
+		barrier.image                   = barrier2.image;
+		barrier.subresourceRange        = barrier2.subresourceRange;
+		barrier.oldLayout               = barrier2.oldLayout;
+		barrier.newLayout               = barrier2.newLayout;
+		
+		return barrier;
+	}
+
+	VkBufferMemoryBarrier ToVkBufferMemoryBarrier(const VkBufferMemoryBarrier2& barrier2)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		VkBufferMemoryBarrier             barrier{};
+		barrier.sType                   = VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER;
+		barrier.srcAccessMask           = ToVkAccessFlags(barrier2.srcAccessMask);
+		barrier.dstAccessMask           = ToVkAccessFlags(barrier2.dstAccessMask);
+		barrier.srcQueueFamilyIndex     = barrier2.srcQueueFamilyIndex;
+		barrier.dstQueueFamilyIndex     = barrier2.dstQueueFamilyIndex;
+		barrier.buffer                  = barrier2.buffer;
+		barrier.offset                  = barrier2.offset;
+		barrier.size                    = barrier2.size;
+		
+		return barrier;
+	}
+
+	VkMemoryBarrier ToVkMemoryBarrier(const VkMemoryBarrier2& barrier2)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		VkMemoryBarrier                   barrier{};
+		barrier.sType                   = VK_STRUCTURE_TYPE_MEMORY_BARRIER;
+		barrier.srcAccessMask           = ToVkAccessFlags(barrier2.srcAccessMask);
+		barrier.dstAccessMask           = ToVkAccessFlags(barrier2.dstAccessMask);
+		
+		return barrier;
+	}
+	
 	std::string ToString(VkMemoryHeapFlags flag)
 	{
 		NEPTUNE_PROFILE_ZONE

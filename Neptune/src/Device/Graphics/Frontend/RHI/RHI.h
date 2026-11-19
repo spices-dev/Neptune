@@ -152,11 +152,15 @@ namespace Neptune::RHI {
 				}
 				
 				NEPTUNE_ASSERT(false)
+				
+				return nullptr;
 			}
 			
 			NEPTUNE_LOG_CORE(E) << "RHIDelegate not in scope.";
 			
 			NEPTUNE_ASSERT(false)
+			
+			return nullptr;
 		}
 		
 	protected:

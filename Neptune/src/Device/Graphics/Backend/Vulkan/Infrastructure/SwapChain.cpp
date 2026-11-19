@@ -320,7 +320,7 @@ namespace Neptune::Vulkan {
 	
 	uint64_t SwapChain::ComputeTargetTime(uint64_t presentId) const
     {
-    	if (!m_TargetFrameInterval || !m_PresentTimingState.lastPresentTime == 0) return 0;
+    	if (!m_TargetFrameInterval || m_PresentTimingState.lastPresentTime == 0) return 0;
 
     	uint64_t ipd = m_TargetFrameInterval;
     	

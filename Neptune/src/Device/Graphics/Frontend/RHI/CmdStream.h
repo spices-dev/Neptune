@@ -224,7 +224,7 @@ namespace Neptune::RHI {
 		* @return Returns Reference.
 		*/
 		template<typename T>
-		SP<T> Ref(uint32_t index) const { return std::static_pointer_cast<T>(m_Refs[index]); }
+		const SP<T>& Ref(uint32_t index) const { return std::static_pointer_cast<T>(m_Refs[index]); }
 		
 		/**
 		* @brief Get Blob.

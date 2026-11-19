@@ -193,14 +193,7 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		VkMemoryBarrier2                  barrier{};
-		barrier.sType                   = VK_STRUCTURE_TYPE_MEMORY_BARRIER_2;
-		barrier.srcAccessMask           = ToVkAccessFlags(desc.srcAccess);
-		barrier.dstAccessMask           = ToVkAccessFlags(desc.dstAccess);
-		barrier.srcStageMask            = ToVkPipelineStageFlags(desc.srcStage);
-		barrier.dstStageMask            = ToVkPipelineStageFlags(desc.dstStage);
-		
-		m_Synchronization->InsertBarrier(m_CommandBuffer.get(), barrier);
+		m_Synchronization->InsertBarrier(m_CommandBuffer.get(), ToVkMemoryBarrier2(desc));
 	}
 
 	void CmdList::CmdInsertBarrier(const std::vector<Graphic::MemoryBarrierDesc>& memoryBatch, const std::vector<Graphic::ImageBarrierDesc>& imageBatch) const
@@ -211,38 +204,24 @@ namespace Neptune::Vulkan {
 		std::vector<VkImageMemoryBarrier2>  imageBatch2;
 		std::vector<VkBufferMemoryBarrier2> bufferBatch2;
 		
+		memoryBatch2.reserve(memoryBatch.size());
+		imageBatch2.reserve(imageBatch.size());
+		
 		for (const auto& desc : memoryBatch)
 		{
-			VkMemoryBarrier2                  barrier{};
-			barrier.sType                   = VK_STRUCTURE_TYPE_MEMORY_BARRIER_2;
-			barrier.srcAccessMask           = ToVkAccessFlags(desc.srcAccess);
-			barrier.dstAccessMask           = ToVkAccessFlags(desc.dstAccess);
-			barrier.srcStageMask            = ToVkPipelineStageFlags(desc.srcStage);
-			barrier.dstStageMask            = ToVkPipelineStageFlags(desc.dstStage);
-			
-			memoryBatch2.emplace_back(barrier);
+			memoryBatch2.emplace_back(ToVkMemoryBarrier2(desc));
 		}
 		
 		for (const auto& desc : imageBatch)
 		{
-			VkImageMemoryBarrier2                       barrier{};
-			barrier.sType                             = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2;
-			barrier.srcAccessMask                     = ToVkAccessFlags(desc.memoryDesc.srcAccess);
-			barrier.dstAccessMask                     = ToVkAccessFlags(desc.memoryDesc.dstAccess);
-			barrier.srcStageMask                      = ToVkPipelineStageFlags(desc.memoryDesc.srcStage);
-			barrier.dstStageMask                      = ToVkPipelineStageFlags(desc.memoryDesc.dstStage);
-			barrier.oldLayout                         = m_ImageLayout->From(ToVkImageLayout(desc.srcLayout));
-			barrier.newLayout                         = m_ImageLayout->From(ToVkImageLayout(desc.dstLayout));
-			barrier.srcQueueFamilyIndex               = GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
-			barrier.dstQueueFamilyIndex               = GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
-			barrier.image                             = desc.renderTarget->GetRHIImpl<RenderTarget>()->Handle();
-			barrier.subresourceRange.aspectMask       = ToVkImageAspectFlags(desc.aspect);
-			barrier.subresourceRange.baseMipLevel     = desc.baseMipLevel;
-			barrier.subresourceRange.levelCount       = desc.levelCount;
-			barrier.subresourceRange.baseArrayLayer   = desc.baseArrayLayer;
-			barrier.subresourceRange.layerCount       = desc.layerCount;
+			auto barrier2                             = ToVkImageMemoryBarrier2(desc);
+		
+			barrier2.oldLayout                        = m_ImageLayout->From(barrier2.oldLayout);
+			barrier2.newLayout                        = m_ImageLayout->From(barrier2.newLayout);
+			barrier2.srcQueueFamilyIndex              = GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
+			barrier2.dstQueueFamilyIndex              = GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
 			
-			imageBatch2.emplace_back(barrier);
+			imageBatch2.emplace_back(barrier2);
 		}
 		
 		m_Synchronization->InsertBarrier(m_CommandBuffer.get(), memoryBatch2, imageBatch2, bufferBatch2);
@@ -312,24 +291,15 @@ namespace Neptune::Vulkan {
 	{
 		NEPTUNE_PROFILE_ZONE
 		
-		VkImageMemoryBarrier2                       barrier{};
-		barrier.sType                             = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER_2;
-		barrier.srcAccessMask                     = ToVkAccessFlags(desc.memoryDesc.srcAccess);
-		barrier.dstAccessMask                     = ToVkAccessFlags(desc.memoryDesc.dstAccess);
-		barrier.srcStageMask                      = ToVkPipelineStageFlags(desc.memoryDesc.srcStage);
-		barrier.dstStageMask                      = ToVkPipelineStageFlags(desc.memoryDesc.dstStage);
-		barrier.oldLayout                         = m_ImageLayout->From(ToVkImageLayout(desc.srcLayout));
-		barrier.newLayout                         = m_ImageLayout->From(ToVkImageLayout(desc.dstLayout));
-		barrier.srcQueueFamilyIndex               = GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
-		barrier.dstQueueFamilyIndex               = GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
-		barrier.image                             = image;
-		barrier.subresourceRange.aspectMask       = ToVkImageAspectFlags(desc.aspect);
-		barrier.subresourceRange.baseMipLevel     = desc.baseMipLevel;
-		barrier.subresourceRange.levelCount       = desc.levelCount;
-		barrier.subresourceRange.baseArrayLayer   = desc.baseArrayLayer;
-		barrier.subresourceRange.layerCount       = desc.layerCount;
+		auto barrier2                             = ToVkImageMemoryBarrier2(desc);
 
-		m_Synchronization->InsertBarrier(m_CommandBuffer.get(), barrier);
+		barrier2.image                            = image;
+		barrier2.oldLayout                        = m_ImageLayout->From(barrier2.oldLayout);
+		barrier2.newLayout                        = m_ImageLayout->From(barrier2.newLayout);
+		barrier2.srcQueueFamilyIndex              = GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
+		barrier2.dstQueueFamilyIndex              = GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IQueue>()->GetQueueFamily(VK_QUEUE_GRAPHICS_BIT);
+
+		m_Synchronization->InsertBarrier(m_CommandBuffer.get(), barrier2);
 	}
 
 	void CmdList::CmdBeginQuery(uint32_t index) const

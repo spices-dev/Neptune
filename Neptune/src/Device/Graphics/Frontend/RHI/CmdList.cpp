@@ -246,8 +246,6 @@ namespace Neptune::RHI {
 
 	void CmdList::CmdInsertBarrier(const Graphic::ImageBarrierDesc& desc)
 	{
-		const auto ref = m_Stream.Keep(desc.renderTarget);
-			
 		m_Stream.Push(ECmd::InsertImageBarrier).m_Barrier = { m_Stream.PushImageBarrier(desc) };
 	}
 
