@@ -43,12 +43,20 @@ namespace Neptune::Vulkan::Unit {
 		void SetInstance(VkInstance instance);
 
 		/**
-		* @brief Create Surface.
+		* @brief Create DisplaySurface.
 		*
 		* @param[in] instance VkInstance.
 		* @param[in] info VkDisplaySurfaceCreateInfoKHR.
 		*/
-		void CreateSurface(VkInstance instance, const VkDisplaySurfaceCreateInfoKHR& info);
+		void CreateDisplaySurface(VkInstance instance, const VkDisplaySurfaceCreateInfoKHR& info);
+		
+		/**
+		* @brief Create HeadlessSurface.
+		*
+		* @param[in] instance VkInstance.
+		* @param[in] info VkHeadlessSurfaceCreateInfoEXT.
+		*/
+		void CreateHeadlessSurface(VkInstance instance, const VkHeadlessSurfaceCreateInfoEXT& info);
 		
 	private:
 

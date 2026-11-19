@@ -28,13 +28,22 @@ namespace Neptune::Vulkan::Unit {
 		m_Instance = instance;
 	}
 	
-	void Surface::CreateSurface(VkInstance instance, const VkDisplaySurfaceCreateInfoKHR& info)
+	void Surface::CreateDisplaySurface(VkInstance instance, const VkDisplaySurfaceCreateInfoKHR& info)
 	{
 		NEPTUNE_PROFILE_ZONE
 		
 		m_Instance = instance;
 		
 		VULKAN_CHECK(vkCreateDisplayPlaneSurfaceKHR(instance, &info, GetAllocator(), &m_Handle))
+	}
+	
+	void Surface::CreateHeadlessSurface(VkInstance instance, const VkHeadlessSurfaceCreateInfoEXT& info)
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		m_Instance = instance;
+		
+		VULKAN_CHECK(vkCreateHeadlessSurfaceEXT(instance, &info, GetAllocator(), &m_Handle))
 	}
 }
 

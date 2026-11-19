@@ -78,7 +78,7 @@ namespace Neptune::Vulkan::Display {
         info.alphaMode                    = VK_DISPLAY_PLANE_ALPHA_OPAQUE_BIT_KHR;
         info.imageExtent                  = extent;
         
-        m_Surface.CreateSurface(GetContext().Get<IInstance>()->Handle(), info);
+        m_Surface.CreateDisplaySurface(GetContext().Get<IInstance>()->Handle(), info);
     }
 
 }

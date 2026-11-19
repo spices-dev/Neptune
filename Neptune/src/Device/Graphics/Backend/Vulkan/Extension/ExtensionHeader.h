@@ -61,5 +61,6 @@
 #include "Display.h"
 #include "DisplayControl.h"
 #include "FullScreen.h"
+#include "HeadlessSurface.h"
 
 #endif

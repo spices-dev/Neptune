@@ -13,6 +13,7 @@
 #include "Device/Graphics/Backend/Vulkan/Extension/Display.h"
 #include "Window/Window.h"
 #include "Surface/Display/Surface.h"
+#include "Surface/Headless/Surface.h"
 
 #ifdef NP_WINDOW_GLFW
 #include "Surface/GLFW/Surface.h"
@@ -40,6 +41,7 @@ namespace Neptune::Vulkan {
 #endif
             
             case WindowImplement::Simulate: return CreateUP<Display::Surface>(context, e, implement);
+            case WindowImplement::Headless: return CreateUP<Headless::Surface>(context, e, implement);
             default:
             {
                 NEPTUNE_LOG_CORE(E) << "Surface Create with WindowImplement that not supported.";

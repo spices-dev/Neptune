@@ -26,6 +26,7 @@ namespace Neptune {
         AndroidNative,
 
         Simulate,
+        Headless,
         
         Count,
 
