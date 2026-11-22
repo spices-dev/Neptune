@@ -11,6 +11,10 @@
 #include "GLFW/InputImpl.h"
 #endif
 
+#ifdef NP_WINDOW_SDL
+#include "SDL/InputImpl.h"
+#endif
+
 #include "None/InputImpl.h"
 
 namespace Neptune {
@@ -24,14 +28,23 @@ namespace Neptune {
     {
         switch (implement)
         {
+#if defined(NP_WINDOW_GLFW) || defined(NP_WINDOW_EMSCRIPTENGLFW)
             case WindowImplement::GLFW:
             case WindowImplement::emscripten_glfw:
-#if defined(NP_WINDOW_GLFW) || defined(NP_WINDOW_EMSCRIPTENGLFW)
             {
                 s_Instance = CreateUP<GLFW::InputImpl>();
                 break;
             }
 #endif
+            
+#ifdef NP_WINDOW_SDL
+            case WindowImplement::SDL:
+            {
+                s_Instance = CreateUP<SDL::InputImpl>();
+                break;
+            }
+#endif
+            
             default:
             {
                 s_Instance = CreateUP<InputNone::InputImpl>();

@@ -112,4 +112,52 @@ namespace Neptune::imgui {
 
 #endif
     
+#ifdef NP_WINDOW_SDL
+    
+    /**
+    * @brief SDL APIInterface.
+    */
+    class SDLInterface : public WindowInterface
+    {
+    public:
+        
+        /**
+        * @brief Destructor Function.
+        */
+        ~SDLInterface() override = default;
+        
+        /**
+        * @brief Interface of Initialize.
+        * 
+        * @param[in] e RenderBackendEnum.
+        */
+        void OnInitialize(RenderBackendEnum e) const override;
+
+        /**
+        * @brief Interface of ShutDown.
+        */
+        void OnShutDown() const override;
+
+        /**
+        * @brief Interface of Begin a frame.
+        */
+        void BeginFrame() const override;
+        
+        /**
+        * @brief Interface of Get Handle.
+        *
+        * @return Returns Window Handle.
+        */
+        void* Handle() const override;
+        
+        /**
+        * @brief Interface of Make Current Window.
+        *
+        * @param[in] window Window.
+        */
+        void MakeCurrent(void* window) const override;
+    };
+
+#endif
+    
 }

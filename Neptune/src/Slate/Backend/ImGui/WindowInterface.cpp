@@ -13,6 +13,11 @@
 #include "GLFW/glfw3.h"
 #endif
 
+#ifdef NP_WINDOW_SDL
+#include <backends/imgui_impl_sdl3.h>
+#include <SDL3/SDL.h>
+#endif
+
 namespace Neptune::imgui {
 
 	UP<WindowInterface> CreateWindowInterface(WindowImplement implement)
@@ -26,6 +31,9 @@ namespace Neptune::imgui {
 #endif
 #ifdef NP_WINDOW_EMSCRIPTENGLFW
 			case WindowImplement::emscripten_glfw: return CreateUP<GLFWInterface>();
+#endif
+#ifdef NP_WINDOW_SDL
+			case WindowImplement::SDL: return CreateUP<SDLInterface>();
 #endif
 			default:
 			{
@@ -104,6 +112,79 @@ namespace Neptune::imgui {
 		NEPTUNE_PROFILE_ZONE
 		
 		glfwMakeContextCurrent(static_cast<GLFWwindow*>(window));
+	}
+	
+#endif
+	
+#ifdef NP_WINDOW_SDL
+	
+	void SDLInterface::OnInitialize(RenderBackendEnum e) const
+	{
+		NEPTUNE_PROFILE_ZONE
+
+		switch (e)
+		{
+			case RenderBackendEnum::OpenGL:
+			{
+				ImGui_ImplSDL3_InitForOpenGL(static_cast<SDL_Window*>(Window::Instance().NativeWindow()), SDL_GL_GetCurrentContext());
+				break;
+			}
+			case RenderBackendEnum::Vulkan:
+			{
+				ImGui_ImplSDL3_InitForVulkan(static_cast<SDL_Window*>(Window::Instance().NativeWindow()));
+				break;
+			}
+			case RenderBackendEnum::Direct3D11:
+			case RenderBackendEnum::Direct3D12:
+			{
+				ImGui_ImplSDL3_InitForD3D(static_cast<SDL_Window*>(Window::Instance().NativeWindow()));
+				break;
+			}
+			case RenderBackendEnum::Metal:
+			{
+				ImGui_ImplSDL3_InitForMetal(static_cast<SDL_Window*>(Window::Instance().NativeWindow()));
+				break;
+			}
+			case RenderBackendEnum::WebGL:
+			case RenderBackendEnum::WebGPU:
+			{
+				ImGui_ImplSDL3_InitForOther(static_cast<SDL_Window*>(Window::Instance().NativeWindow()));
+				break;
+			}
+			default:
+			{
+				NEPTUNE_LOG_CORE(E) << "Unsupported RenderBackendEnum in SDL3Interface::OnInitialize.";
+				break;
+			}
+		}
+	}
+
+	void SDLInterface::OnShutDown() const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		ImGui_ImplSDL3_Shutdown();
+	}
+
+	void SDLInterface::BeginFrame() const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		ImGui_ImplSDL3_NewFrame();
+	}
+	
+	void* SDLInterface::Handle() const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		return SDL_GL_GetCurrentContext();
+	}
+	
+	void SDLInterface::MakeCurrent(void* window) const
+	{
+		NEPTUNE_PROFILE_ZONE
+		
+		SDL_GL_MakeCurrent(static_cast<SDL_Window*>(window), SDL_GL_GetCurrentContext());
 	}
 	
 #endif
