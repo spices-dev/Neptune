@@ -12,6 +12,7 @@ local module                          = {
     ["emscripten_glfw"]               = loadfile(current_dir .. "emscripten-glfw.lua")(),                              -- Third Party: emscripten-glfw
     ["emdawnwebgpu"]                  = loadfile(current_dir .. "emdawnwebgpu.lua")(),                                 -- Third Party: emdawnwebgpu
     ["GLFW"]                          = loadfile(current_dir .. "GLFW.lua")(),                                         -- Third Party: GLFW
+    ["SDL"]                           = loadfile(current_dir .. "SDL.lua")(),                                          -- Third Party: SDL
     ["Vulkan"]                        = loadfile(current_dir .. "Vulkan.lua")(),                                       -- Third Party: Vulkan
     ["glm"]                           = loadfile(current_dir .. "glm.lua")(),                                          -- Third Party: glm
     ["vma"]                           = loadfile(current_dir .. "vma.lua")(),                                          -- Third Party: vma

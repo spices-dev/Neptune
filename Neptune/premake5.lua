@@ -65,6 +65,7 @@ solution.DefineCppStaticLibrary("Neptune", function()
 	-- The Solution Additional External Include Folder.
 	externalincludedirs
 	{
+		vendor.SDL.includes,                                  -- Library: SDL Source Folder.
 		vendor.glm.includes,                                  -- Library: glm Source Folder.
 		vendor.vma.includes,                                  -- Library: vma Source Folder.
 		vendor.stb_image.includes,                            -- Library: stb_image Source Folder.
