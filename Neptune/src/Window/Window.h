@@ -70,16 +70,11 @@ namespace Neptune {
         virtual ~Window() = default;
 
         /**
-        * @brief Interface of determine if window is still active.
-        *
+        * @brief Interface of window poll events.
+        * 
         * @return Returns true if window is active.
         */
-        virtual bool IsWindowActive() const = 0;
-
-        /**
-        * @brief Interface of window poll events.
-        */
-        virtual void PollEvents() const = 0;
+        virtual bool PollEvents() const = 0;
 
         /**
         * @brief Interface of window get extent.

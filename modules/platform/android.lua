@@ -57,6 +57,7 @@ module.GetWindowFeatures = function()
     local list = {}
 
     table.insert(list, "NP_WINDOW_ANDROIDNATIVE")      -- Window: Android Native.
+    table.insert(list, "NP_WINDOW_SDL")                -- Window: SDL.
 
     return list
 

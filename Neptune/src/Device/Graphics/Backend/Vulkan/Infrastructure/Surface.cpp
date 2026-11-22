@@ -19,6 +19,10 @@
 #include "Surface/GLFW/Surface.h"
 #endif
 
+#ifdef NP_WINDOW_SDL
+#include "Surface/SDL/Surface.h"
+#endif
+
 #ifdef NP_WINDOW_ANDROIDNATIVE
 #include "Surface/AndroidNative/Surface.h"
 #endif
@@ -34,6 +38,10 @@ namespace Neptune::Vulkan {
             
 #ifdef NP_WINDOW_GLFW
             case WindowImplement::GLFW: return CreateUP<GLFW::Surface>(context, e, implement, window);
+#endif
+            
+#ifdef NP_WINDOW_SDL
+            case WindowImplement::SDL: return CreateUP<SDL::Surface>(context, e, implement, window);
 #endif
             
 #ifdef NP_WINDOW_ANDROIDNATIVE

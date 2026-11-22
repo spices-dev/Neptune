@@ -32,17 +32,11 @@ namespace Neptune::AndroidNative {
 
     WindowImpl::~WindowImpl() = default;
     
-    bool WindowImpl::IsWindowActive() const
+    bool WindowImpl::PollEvents() const
     {
         NEPTUNE_PROFILE_ZONE
-
-        return false;
+        
         //return !m_App->destroyRequested;
-    }
-
-    void WindowImpl::PollEvents() const
-    {
-        NEPTUNE_PROFILE_ZONE
         
         /*int events;
         android_poll_source* source;

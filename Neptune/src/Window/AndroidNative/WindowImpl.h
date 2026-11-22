@@ -40,16 +40,11 @@ namespace Neptune::AndroidNative {
         ~WindowImpl() override;
 
         /**
-        * @brief Interface of determine if window is still active.
+        * @brief Interface of window poll events.
         * 
         * @return Returns true if window is active.
         */
-        bool IsWindowActive() const override;
-
-        /**
-        * @brief Interface of window poll events.
-        */
-        void PollEvents() const override;
+        bool PollEvents() const override;
 
         /**
         * @brief Interface of window get extent.

@@ -71,6 +71,7 @@ module.GetWindowFeatures = function()
 
     table.insert(list, "NP_WINDOW_GLFW")               -- Window: GLFW.
     table.insert(list, "GLFW_INCLUDE_NONE")            -- Exclude <GL/gl.h>, we provide glad.
+    table.insert(list, "NP_WINDOW_SDL")                -- Window: SDL.
 
     return list
 

@@ -16,6 +16,10 @@
 #include "Window/GLFW/WindowImpl.h"
 #endif
 
+#ifdef NP_WINDOW_SDL
+#include "Window/SDL/WindowImpl.h"
+#endif
+
 #ifdef NP_WINDOW_ANDROIDNATIVE
 #include "Window/AndroidNative/WindowImpl.h"
 #endif
@@ -49,6 +53,14 @@ namespace Neptune {
             }
 #endif
 
+#ifdef NP_WINDOW_SDL
+            case WindowImplement::SDL:
+            {
+                S_Instance = CreateUP<SDL::WindowImpl>(initInfo, implement, backend, payload);
+                break;
+            }
+#endif
+            
 #ifdef NP_WINDOW_ANDROIDNATIVE
             case WindowImplement::AndroidNative:
             {

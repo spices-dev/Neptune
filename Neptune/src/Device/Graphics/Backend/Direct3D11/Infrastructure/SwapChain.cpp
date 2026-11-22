@@ -12,7 +12,14 @@
 #include "Factory.h"
 #include "Device.h"
 #include "DebugUtilsObject.h"
+
+#ifdef NP_WINDOW_GLFW
 #include "SwapChain/GLFW/SwapChain.h"
+#endif
+
+#ifdef NP_WINDOW_SDL
+#include "SwapChain/SDL/SwapChain.h"
+#endif
 
 namespace Neptune::Direct3D11 {
 
@@ -22,7 +29,14 @@ namespace Neptune::Direct3D11 {
 
         switch (implement)
         {
+#ifdef NP_WINDOW_GLFW
             case WindowImplement::GLFW: return CreateUP<GLFW::SwapChain>(context, e, count, window);
+#endif
+        	
+#ifdef NP_WINDOW_SDL
+			case WindowImplement::SDL: return CreateUP<SDL::SwapChain>(context, e, count, window);
+#endif
+        	
             default:
             {
                 NEPTUNE_LOG_CORE(E) << "SwapChain Create with WindowImplement that not supported.";

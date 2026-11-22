@@ -6,7 +6,7 @@
 
 #pragma once
 
-#ifdef NP_GRAPHICS_DIRECT3D12
+#if defined(NP_GRAPHICS_DIRECT3D12) && defined(NP_WINDOW_GLFW)
 
 #include "Core/Core.h"
 #include "Device/Graphics/Backend/Direct3D12/Infrastructure/SwapChain.h"

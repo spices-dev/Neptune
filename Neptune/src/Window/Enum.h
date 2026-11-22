@@ -17,8 +17,7 @@ namespace Neptune {
         None = 0,
         GLFW,
         emscripten_glfw,
-        SDL2,
-        SDL3,
+        SDL,
         
         WindowsNative,
         LinuxNative,

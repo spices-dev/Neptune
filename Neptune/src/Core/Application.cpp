@@ -94,11 +94,9 @@ namespace Neptune {
 
         const auto& window = Window::Instance();
 
-        while(window.IsWindowActive())
+        while(window.PollEvents())
         {
             NEPTUNE_PROFILE_ZONEN("MainLoop")
-
-            window.PollEvents();
 
             m_SystemManager->Run();
 

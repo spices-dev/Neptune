@@ -13,6 +13,10 @@
 #include "WindowContext/GLFW/WindowContext.h"
 #endif
 
+#ifdef NP_WINDOW_SDL
+#include "WindowContext/SDL/WindowContext.h"
+#endif
+
 namespace Neptune::OpenGL {
 
     UP<WindowContext> WindowContext::Create(Context& context, EInfrastructure e, WindowImplement implement, void* window)
@@ -24,6 +28,11 @@ namespace Neptune::OpenGL {
 #ifdef NP_WINDOW_GLFW
             case WindowImplement::GLFW: return CreateUP<GLFW::WindowContext>(context, e, window);
 #endif
+            
+#ifdef NP_WINDOW_SDL
+            case WindowImplement::SDL: return CreateUP<SDL::WindowContext>(context, e, window);
+#endif
+            
             default:
             {
                 NEPTUNE_LOG_CORE(E) << "WindowContext Create with WindowImplement that not supported.";

@@ -6,7 +6,7 @@
 
 #include "Pchheader.h"
 
-#ifdef NP_GRAPHICS_DIRECT3D11
+#if defined(NP_GRAPHICS_DIRECT3D11) && defined(NP_WINDOW_GLFW)
 
 #include "SwapChain.h"
 

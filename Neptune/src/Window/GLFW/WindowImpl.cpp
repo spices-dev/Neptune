@@ -84,18 +84,15 @@ namespace Neptune::GLFW {
         glfwTerminate();
     }
 
-    bool WindowImpl::IsWindowActive() const
+    bool WindowImpl::PollEvents() const
     {
         NEPTUNE_PROFILE_ZONE
 
-        return !glfwWindowShouldClose(m_Windows);
-    }
-
-    void WindowImpl::PollEvents() const
-    {
-        NEPTUNE_PROFILE_ZONE
-
+        if (glfwWindowShouldClose(m_Windows)) return false;
+        
         glfwPollEvents();
+        
+        return true;
     }
 
     glm::uvec2 WindowImpl::Extent() const
