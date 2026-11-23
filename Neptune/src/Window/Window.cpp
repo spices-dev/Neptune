@@ -78,7 +78,7 @@ namespace Neptune {
         NEPTUNE_LOG_CORE(I) << "Window Created.";
     }
 
-    const Window& Window::Instance()
+    Window& Window::Instance()
     {
         NEPTUNE_PROFILE_ZONE
 
@@ -104,4 +104,11 @@ namespace Neptune {
         Input::Create(implement);
     }
 
+    void Window::UpdateEventDelegate(const std::function<void(EventDelegate&)>& fn)
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        std::invoke(fn, m_EventDelegate);
+    }
+    
 }

@@ -9,6 +9,8 @@
 #ifdef NP_WINDOW_SDL
 
 #include "InputImpl.h"
+#include "KeyCodes.h"
+#include "MouseButtonCodes.h"
 
 #include <SDL3/SDL.h>
 
@@ -18,14 +20,26 @@ namespace Neptune::SDL {
     {
         const bool* state = SDL_GetKeyboardState(nullptr);
 
-        return state[keycode];
+        auto sdlKey = Key::ToSDLKeycode(static_cast<KeyCode>(keycode));
+        if (sdlKey == SDLK_UNKNOWN)
+        {
+            return false;
+        }
+        
+        auto sc = SDL_GetScancodeFromKey(sdlKey, nullptr); 
+        if (sc == SDL_SCANCODE_UNKNOWN)
+        {
+            return false;
+        }
+        
+        return state[sc];
     }
 
     bool InputImpl::IsMouseButtonPressedImpl(const int& button)
     {
         const auto flags = SDL_GetMouseState(nullptr, nullptr);
 
-        return (flags & SDL_BUTTON_MASK(button)) != 0;
+        return (flags & SDL_BUTTON_MASK(Mouse::ToSDLButton(static_cast<MouseCode>(button)))) != 0;
     }
 
     std::pair<float, float> InputImpl::GetMousePositionImpl()

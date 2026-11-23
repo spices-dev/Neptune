@@ -13,6 +13,8 @@
 #include "Core/Event/WindowEvent.h"
 #include "Core/Event/KeyEvent.h"
 #include "Core/Event/MouseEvent.h"
+#include "Core/Input/SDL/KeyCodes.h"
+#include "Core/Input/SDL/MouseButtonCodes.h"
 
 #include <SDL3/SDL.h>
 
@@ -66,7 +68,7 @@ namespace Neptune::SDL {
         {
             ProcessEvent(e);
             
-            if (e.type == SDL_EVENT_QUIT) 
+            if (e.type == SDL_EVENT_QUIT)
             {
                 return false;
             }
@@ -118,6 +120,8 @@ namespace Neptune::SDL {
     {
         NEPTUNE_PROFILE_ZONE
         
+        m_EventDelegate.onSlateEvent.Broadcast(&e);
+        
         switch (e.type)
         {
             // Window resize event Callback.
@@ -145,7 +149,7 @@ namespace Neptune::SDL {
             // Key event Callback.
             case SDL_EVENT_KEY_DOWN:
             {
-                KeyPressedEvent event(static_cast<KeyCode>(e.key.key), e.key.repeat ? 1 : 0);
+                KeyPressedEvent event(Key::FromSDLKeycode(e.key.key), e.key.repeat ? 1 : 0);
                 
                 Dispatch(event);
                 
@@ -153,7 +157,7 @@ namespace Neptune::SDL {
             }
             case SDL_EVENT_KEY_UP:
             {
-                KeyReleasedEvent event(static_cast<KeyCode>(e.key.key));
+                KeyReleasedEvent event(Key::FromSDLKeycode(e.key.key));
                 
                 Dispatch(event);
                 
@@ -166,7 +170,7 @@ namespace Neptune::SDL {
                 
                 while (*p)
                 {
-                    KeyTypedEvent event(static_cast<KeyCode>(*p));
+                    KeyTypedEvent event(Key::FromSDLKeycode(*p));
                     
                     Dispatch(event);
                     
@@ -178,7 +182,7 @@ namespace Neptune::SDL {
             // Mouse Button event Callback.
             case SDL_EVENT_MOUSE_BUTTON_DOWN:
             {
-                MouseButtonPressedEvent event(static_cast<MouseCode>(e.button.button));
+                MouseButtonPressedEvent event(Mouse::FromSDLButton(e.button.button));
                 
                 Dispatch(event);
                 
@@ -186,7 +190,7 @@ namespace Neptune::SDL {
             }
             case SDL_EVENT_MOUSE_BUTTON_UP:
             {
-                MouseButtonReleasedEvent event(static_cast<MouseCode>(e.button.button));
+                MouseButtonReleasedEvent event(Mouse::FromSDLButton(e.button.button));
                 
                 Dispatch(event);
                 

@@ -157,6 +157,14 @@ namespace Neptune::imgui {
 				break;
 			}
 		}
+		
+		Window::Instance().UpdateEventDelegate([](EventDelegate& delegate) {
+			
+			delegate.onSlateEvent.Bind([](const std::any& event) {
+				
+				ImGui_ImplSDL3_ProcessEvent(std::any_cast<const SDL_Event*>(event));
+			});
+		});
 	}
 
 	void SDLInterface::OnShutDown() const

@@ -10,6 +10,7 @@
 #include "Core/NonCopyable.h"
 #include "Enum.h"
 #include "Render/Frontend/Enum.h"
+#include "EventDelegate.h"
 
 #include <glm/ext/vector_uint2.hpp>
 
@@ -48,7 +49,7 @@ namespace Neptune {
         *
         * @return Returns Window reference.
         */
-        static const Window& Instance();
+        static Window& Instance();
 
         /**
         * @brief Destroy Window Instance.
@@ -95,6 +96,13 @@ namespace Neptune {
         */
         virtual void* NativeWindow() const = 0;
 
+        /**
+        * @brief Update EventDelegate.
+        *
+        * @param[in] fn .
+        */
+        void UpdateEventDelegate(const std::function<void(EventDelegate&)>& fn);
+        
     public:
 
         /**
@@ -107,5 +115,6 @@ namespace Neptune {
     protected:
 
         WindowImplement m_WindowImplement;    // @brief Window implement.
+        EventDelegate   m_EventDelegate;      // @brief Slate Event Delegate.
     };
 }

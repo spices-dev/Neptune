@@ -10,6 +10,7 @@
 #include "Render/Frontend/RenderFrontend.h"
 #include "World/World/World.h"
 #include "World/Scene/Scene.h"
+#include "Window/Window.h"
 #include "World/Component/ScriptComponent.h"
 #include "Core/Event/EngineEvent.h"
 #include "Slate/Frontend/SlateFrontend.h"
@@ -28,11 +29,11 @@ namespace Neptune {
         NEPTUNE_PROFILE_ZONE
 
 #ifdef NP_PLATFORM_ANDROID
-        m_SlateFrontend = SlateFrontend::Create(SlateBackendEnum::ImGui, RenderBackendEnum::Vulkan, WindowImplement::AndroidNative);
+        m_SlateFrontend = SlateFrontend::Create(SlateBackendEnum::ImGui, RenderBackendEnum::Vulkan, Window::Instance().Implement());
 #elif defined(NP_PLATFORM_EMSCRIPTEN)
-        m_SlateFrontend = SlateFrontend::Create(SlateBackendEnum::ImGui, RenderBackendEnum::WebGPU, WindowImplement::emscripten_glfw);
+        m_SlateFrontend = SlateFrontend::Create(SlateBackendEnum::ImGui, RenderBackendEnum::WebGPU, Window::Instance().Implement());
 #else
-        m_SlateFrontend = SlateFrontend::Create(SlateBackendEnum::ImGui, RenderBackendEnum::Vulkan, WindowImplement::GLFW);
+        m_SlateFrontend = SlateFrontend::Create(SlateBackendEnum::ImGui, RenderBackendEnum::Vulkan, Window::Instance().Implement());
 #endif
 
     }
