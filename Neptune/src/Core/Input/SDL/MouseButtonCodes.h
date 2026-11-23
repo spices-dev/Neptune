@@ -17,7 +17,14 @@ namespace Neptune::SDL {
     
     namespace Mouse {
         
-        inline MouseCode FromSDLButton(Uint8 button)
+        /**
+        * @brief Convert SDLButton to MouseCode.
+        * 
+        * @param button SDLButton.
+        * 
+        * @return Returns MouseCode.
+        */
+        inline MouseCode ToMouseCode(Uint8 button)
         {
             switch (button)
             {
@@ -30,6 +37,13 @@ namespace Neptune::SDL {
             }
         }
         
+        /**
+        * @brief Convert MouseCode to SDLButton.
+        * 
+        * @param button MouseCode.
+        * 
+        * @return Returns SDLButton.
+        */
         inline Uint8 ToSDLButton(MouseCode button)
         {
             switch (button)

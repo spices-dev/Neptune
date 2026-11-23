@@ -16,7 +16,14 @@ namespace Neptune::SDL {
     
     namespace Key {
         
-        inline KeyCode FromSDLKeycode(SDL_Keycode key)
+        /**
+        * @brief Convert SDL_Keycode to KeyCode.
+        * 
+        * @param key SDL_Keycode.
+        * 
+        * @return Returns KeyCode.
+        */
+        inline KeyCode ToKeyCode(SDL_Keycode key)
         {
             if (key >= SDLK_A && key <= SDLK_Z)
             {
@@ -90,6 +97,13 @@ namespace Neptune::SDL {
             }
         }
         
+        /**
+        * @brief Convert KeyCode to SDL_Keycode.
+        * 
+        * @param key KeyCode.
+        * 
+        * @return Returns SDL_Keycode.
+        */
         inline SDL_Keycode ToSDLKeycode(KeyCode key)
         {
             if (key >= A && key <= Z)

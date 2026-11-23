@@ -20,6 +20,51 @@
 
 namespace Neptune::SDL {
 
+    namespace {
+        
+        /**
+        * @brief Hit Test.
+        * 
+        * @param window SDL_Window.
+        * @param area SDL_Point.
+        * @param data Unused.
+        * 
+        * @return Returns SDL_HitTestResult.
+        */
+        SDL_HitTestResult HitTestCallback(SDL_Window* window, const SDL_Point* area, void* data)
+        {
+            constexpr int titleBarHeight = 32;
+            constexpr int border         = 6;
+
+            int w, h;
+            SDL_GetWindowSize(window, &w, &h);
+
+            const int x = area->x;
+            const int y = area->y;
+            
+            const bool left   = x < border;
+            const bool right  = x >= w - border;
+            const bool top    = y < border;
+            const bool bottom = y >= h - border;
+
+            if (top && left)     return SDL_HITTEST_RESIZE_TOPLEFT;
+            if (top && right)    return SDL_HITTEST_RESIZE_TOPRIGHT;
+            if (bottom && left)  return SDL_HITTEST_RESIZE_BOTTOMLEFT;
+            if (bottom && right) return SDL_HITTEST_RESIZE_BOTTOMRIGHT;
+            if (top)             return SDL_HITTEST_RESIZE_TOP;
+            if (bottom)          return SDL_HITTEST_RESIZE_BOTTOM;
+            if (left)            return SDL_HITTEST_RESIZE_LEFT;
+            if (right)           return SDL_HITTEST_RESIZE_RIGHT;
+            
+            if (y < titleBarHeight)
+            {
+                return SDL_HITTEST_DRAGGABLE;
+            }
+
+            return SDL_HITTEST_NORMAL;
+        }
+    }
+    
     WindowImpl::WindowImpl(const WindowInfo& initInfo, WindowImplement implement, RenderBackendEnum backend, void* payload)
         : Window(implement)
         , EventProducer(EventType::Count)
@@ -34,12 +79,14 @@ namespace Neptune::SDL {
         
         auto flag = m_APIInterface->Hint();
         
-        m_Windows = SDL_CreateWindow(initInfo.name.c_str(), initInfo.width, initInfo.height, flag | SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY);
+        m_Windows = SDL_CreateWindow(initInfo.name.c_str(), initInfo.width, initInfo.height, flag | SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_BORDERLESS);
         if(!m_Windows) 
         {
             NEPTUNE_LOG_CORE(C) << "Window Create Failed: " << SDL_GetError();
             SDL_Quit();
         }
+        
+        SDL_SetWindowHitTest(m_Windows, HitTestCallback, nullptr);
         
         m_APIInterface->APILoad(m_Windows);
     }
@@ -149,7 +196,7 @@ namespace Neptune::SDL {
             // Key event Callback.
             case SDL_EVENT_KEY_DOWN:
             {
-                KeyPressedEvent event(Key::FromSDLKeycode(e.key.key), e.key.repeat ? 1 : 0);
+                KeyPressedEvent event(Key::ToKeyCode(e.key.key), e.key.repeat ? 1 : 0);
                 
                 Dispatch(event);
                 
@@ -157,7 +204,7 @@ namespace Neptune::SDL {
             }
             case SDL_EVENT_KEY_UP:
             {
-                KeyReleasedEvent event(Key::FromSDLKeycode(e.key.key));
+                KeyReleasedEvent event(Key::ToKeyCode(e.key.key));
                 
                 Dispatch(event);
                 
@@ -170,7 +217,7 @@ namespace Neptune::SDL {
                 
                 while (*p)
                 {
-                    KeyTypedEvent event(Key::FromSDLKeycode(*p));
+                    KeyTypedEvent event(Key::ToKeyCode(*p));
                     
                     Dispatch(event);
                     
@@ -182,7 +229,7 @@ namespace Neptune::SDL {
             // Mouse Button event Callback.
             case SDL_EVENT_MOUSE_BUTTON_DOWN:
             {
-                MouseButtonPressedEvent event(Mouse::FromSDLButton(e.button.button));
+                MouseButtonPressedEvent event(Mouse::ToSDLButton(e.button.button));
                 
                 Dispatch(event);
                 
@@ -190,7 +237,7 @@ namespace Neptune::SDL {
             }
             case SDL_EVENT_MOUSE_BUTTON_UP:
             {
-                MouseButtonReleasedEvent event(Mouse::FromSDLButton(e.button.button));
+                MouseButtonReleasedEvent event(Mouse::ToSDLButton(e.button.button));
                 
                 Dispatch(event);
                 
