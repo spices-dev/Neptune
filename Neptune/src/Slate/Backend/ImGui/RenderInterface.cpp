@@ -116,11 +116,7 @@ namespace Neptune::imgui {
 
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-		}
+		ImGui::RenderPlatformWindowsDefault();
 	}
 	
 #endif
@@ -236,11 +232,7 @@ namespace Neptune::imgui {
 
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-		}
+		ImGui::RenderPlatformWindowsDefault();
 	}
 	
 #endif
@@ -298,11 +290,7 @@ namespace Neptune::imgui {
 		
 		ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), static_cast<ID3D12GraphicsCommandList*>(payload));
 
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-		}
+		ImGui::RenderPlatformWindowsDefault();
 	}
 
 #endif
@@ -348,11 +336,7 @@ namespace Neptune::imgui {
 		
 		ImGui_ImplMetal_RenderDrawData(ImGui::GetDrawData(), commandBuffer, commandBuffer->renderCommandEncoder(static_cast<MTL::RenderPassDescriptor*>(m_RenderPassDescriptor)));
 
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-		}
+		ImGui::RenderPlatformWindowsDefault();
 	}
 
 #endif
@@ -400,11 +384,7 @@ namespace Neptune::imgui {
 		
 		ImGui_ImplWGPU_RenderDrawData(ImGui::GetDrawData(), static_cast<WGPURenderPassEncoder>(payload));
 
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-		}
+		ImGui::RenderPlatformWindowsDefault();
 	}
 	
 #endif
