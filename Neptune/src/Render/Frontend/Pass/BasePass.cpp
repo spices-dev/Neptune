@@ -110,7 +110,7 @@ namespace Neptune::Render {
 		m_Pipeline->BuildGraphicPipeline();
 	}
 
-	void BasePass::OnCollectRHI(Scene* scene, RHI::CmdList& cmdList)
+	void BasePass::OnRecord(Scene* scene, RHI::CmdList& cmdList)
 	{
 		NEPTUNE_PROFILE_ZONE
 		

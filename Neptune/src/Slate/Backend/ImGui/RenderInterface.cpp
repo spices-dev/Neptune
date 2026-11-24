@@ -108,7 +108,7 @@ namespace Neptune::imgui {
 		ImGui_ImplOpenGL3_NewFrame();
 	}
 
-	void OpenGLInterface::SubmitFrameRHI(void* payload) const
+	void OpenGLInterface::OnRecord(void* payload) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
@@ -183,7 +183,7 @@ namespace Neptune::imgui {
 		ImGui_ImplVulkan_NewFrame();
 	}
 
-	void VulkanInterface::SubmitFrameRHI(void* payload) const
+	void VulkanInterface::OnRecord(void* payload) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
@@ -232,7 +232,7 @@ namespace Neptune::imgui {
 		ImGui_ImplDX11_NewFrame();
 	}
 	
-	void Direct3D11Interface::SubmitFrameRHI(void* payload) const
+	void Direct3D11Interface::OnRecord(void* payload) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
@@ -294,7 +294,7 @@ namespace Neptune::imgui {
 		ImGui_ImplDX12_NewFrame();
 	}
 	
-	void Direct3D12Interface::SubmitFrameRHI(void* payload) const
+	void Direct3D12Interface::OnRecord(void* payload) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
@@ -342,7 +342,7 @@ namespace Neptune::imgui {
 		ImGui_ImplMetal_NewFrame(static_cast<MTL::RenderPassDescriptor*>(m_RenderPassDescriptor));
 	}
 	
-	void MetalInterface::SubmitFrameRHI(void* payload) const
+	void MetalInterface::OnRecord(void* payload) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		
@@ -396,7 +396,7 @@ namespace Neptune::imgui {
 		ImGui_ImplWGPU_NewFrame();
 	}
 
-	void WebGPUInterface::SubmitFrameRHI(void* payload) const
+	void WebGPUInterface::OnRecord(void* payload) const
 	{
 		NEPTUNE_PROFILE_ZONE
 		

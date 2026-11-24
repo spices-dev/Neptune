@@ -32,7 +32,7 @@ namespace Neptune::Render {
 		}
 	}
 
-	void PrePass::OnCollectRHI(Scene* scene, RHI::CmdList& cmdList)
+	void PrePass::OnRecord(Scene* scene, RHI::CmdList& cmdList)
 	{
 		NEPTUNE_PROFILE_ZONE
 		

@@ -124,13 +124,13 @@ namespace Neptune::imgui {
         ImGui::Render();
     }
     
-    void SlateBackend::SubmitFrameRHI(void* payload) const
+    void SlateBackend::OnRecord(void* payload) const
     {
         NEPTUNE_PROFILE_ZONE
         
         const auto last = m_WindowInterface->Handle();
         
-        m_RenderInterface->SubmitFrameRHI(payload);
+        m_RenderInterface->OnRecord(payload);
         
         const auto now = m_WindowInterface->Handle();
         

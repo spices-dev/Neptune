@@ -78,7 +78,7 @@ namespace Neptune::Render {
 		m_Pipeline->BuildGraphicPipeline();
 	}
 
-	void FPSPass::OnCollectRHI(Scene* scene, RHI::CmdList& cmdList)
+	void FPSPass::OnRecord(Scene* scene, RHI::CmdList& cmdList)
 	{
 		NEPTUNE_PROFILE_ZONE
 

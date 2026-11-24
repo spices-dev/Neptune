@@ -75,11 +75,11 @@ namespace Neptune::Render {
 		virtual void OnConstruct() = 0;
 
 		/**
-		* @brief Interface of CollectRHI.
+		* @brief Interface of Record RHI.
 		*
 		* @param[in] scene Scene.
 		* @param[in] cmdList RHI::CmdList.
 		*/
-		virtual void OnCollectRHI(Scene* scene, RHI::CmdList& cmdList) = 0;
+		virtual void OnRecord(Scene* scene, RHI::CmdList& cmdList) = 0;
 	};
 }

@@ -24,7 +24,7 @@ namespace Neptune::Render {
 		m_RenderPass->Build();
 	}
 
-	void SlatePass::OnCollectRHI(Scene* scene, RHI::CmdList& cmdList)
+	void SlatePass::OnRecord(Scene* scene, RHI::CmdList& cmdList)
 	{
 		NEPTUNE_PROFILE_ZONE
 

@@ -41,12 +41,12 @@ namespace Neptune::Render {
 		void OnConstruct() override;
 
 		/**
-		* @brief Interface of CollectRHI.
+		* @brief Interface of Record RHI.
 		* 
 		* @param[in] scene Scene.
 		* @param[in] cmdList RHI::CmdList.
 		*/
-		void OnCollectRHI(Scene* scene, RHI::CmdList& cmdList) override;
+		void OnRecord(Scene* scene, RHI::CmdList& cmdList) override;
 
 		/**
 		* @brief Get RenderPass.

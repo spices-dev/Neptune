@@ -66,13 +66,13 @@ namespace Neptune {
         virtual void EndFrame() const = 0;
 
 		/**
-		* @brief Interface of Submit Frame RHI.
+		* @brief Interface of Record RHI.
 		* 
 		* @param[in] payload RenderFrontend Payload.
 		* 
-		* @note Order: BeginFrame -> EndFrame -> SubmitFrameRHI
+		* @note Order: BeginFrame -> EndFrame -> OnRecord
 		*/
-		virtual void SubmitFrameRHI(void* payload = nullptr) const = 0;
+		virtual void OnRecord(void* payload = nullptr) const = 0;
 		
     protected:
 

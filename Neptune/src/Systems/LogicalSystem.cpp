@@ -111,7 +111,7 @@ namespace Neptune {
 
             m_SlateFrontend->OnInitialize(renderSystem->GetRenderFrontend()->AccessInfrastructure());
             
-            renderSystem->GetRenderFrontend()->GetRenderDelegate().onDrawSlate.Bind([p = m_SlateFrontend.get()](void* payload){ p->SubmitFrameRHI(payload); });
+            renderSystem->GetRenderFrontend()->GetRenderDelegate().onDrawSlate.Bind([p = m_SlateFrontend.get()](void* payload){ p->OnRecord(payload); });
         }
 
         if (e.Has(EngineEventBit::ShutdownSlateFrontend))

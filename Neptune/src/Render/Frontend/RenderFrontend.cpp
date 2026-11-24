@@ -134,7 +134,8 @@ namespace Neptune {
         NEPTUNE_PROFILE_ZONE
 
         std::ranges::for_each(m_RenderPasses, [&](const auto& renderPass) {
-            renderPass->OnCollectRHI(scene, *m_CmdList);
+            
+            renderPass->OnRecord(scene, *m_CmdList);
         });
         
         m_CmdList->Translate();

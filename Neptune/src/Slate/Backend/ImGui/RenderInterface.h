@@ -41,11 +41,11 @@ namespace Neptune::imgui {
         virtual void BeginFrame() const = 0;
         
         /**
-        * @brief Interface of Submit Frame RHI.
+        * @brief Interface of Record RHI.
         * 
         * @param[in] payload RenderFrontend Payload.
         */
-        virtual void SubmitFrameRHI(void* payload = nullptr) const = 0;
+        virtual void OnRecord(void* payload = nullptr) const = 0;
     };
 
     /**
@@ -89,11 +89,11 @@ namespace Neptune::imgui {
         void BeginFrame() const override;
 
         /**
-        * @brief Interface of Submit Frame RHI.
+        * @brief Interface of Record RHI.
         * 
         * @param[in] payload RenderFrontend Payload.
         */
-        void SubmitFrameRHI(void* payload = nullptr) const override;
+        void OnRecord(void* payload = nullptr) const override;
         
     };
 
@@ -131,11 +131,11 @@ namespace Neptune::imgui {
         void BeginFrame() const override;
 
         /**
-        * @brief Interface of Submit Frame RHI.
+        * @brief Interface of Record RHI.
         * 
         * @param[in] payload RenderFrontend Payload.
         */
-        void SubmitFrameRHI(void* payload = nullptr) const override;
+        void OnRecord(void* payload = nullptr) const override;
         
     };
 
@@ -173,11 +173,11 @@ namespace Neptune::imgui {
         void BeginFrame() const override;
 
         /**
-        * @brief Interface of Submit Frame RHI.
+        * @brief Interface of Record RHI.
         * 
         * @param[in] payload RenderFrontend Payload.
         */
-        void SubmitFrameRHI(void* payload = nullptr) const override;
+        void OnRecord(void* payload = nullptr) const override;
         
     };
     
@@ -215,11 +215,11 @@ namespace Neptune::imgui {
         void BeginFrame() const override;
 
         /**
-        * @brief Interface of Submit Frame RHI.
+        * @brief Interface of Record RHI.
         * 
         * @param[in] payload RenderFrontend Payload.
         */
-        void SubmitFrameRHI(void* payload = nullptr) const override;
+        void OnRecord(void* payload = nullptr) const override;
         
     };
     
@@ -257,11 +257,11 @@ namespace Neptune::imgui {
         void BeginFrame() const override;
 
         /**
-        * @brief Interface of Submit Frame RHI.
+        * @brief Interface of Record RHI.
         * 
         * @param[in] payload RenderFrontend Payload.
         */
-        void SubmitFrameRHI(void* payload = nullptr) const override;
+        void OnRecord(void* payload = nullptr) const override;
         
     private:
         
@@ -302,11 +302,11 @@ namespace Neptune::imgui {
         void BeginFrame() const override;
 
         /**
-        * @brief Interface of Submit Frame RHI.
+        * @brief Interface of Record RHI.
         * 
         * @param[in] payload RenderFrontend Payload.
         */
-        void SubmitFrameRHI(void* payload = nullptr) const override;
+        void OnRecord(void* payload = nullptr) const override;
         
     };
     

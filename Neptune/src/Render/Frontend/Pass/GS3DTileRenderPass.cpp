@@ -233,7 +233,7 @@ namespace Neptune::Render {
 		}
 	}
 
-	void GS3DTileRenderPass::OnCollectRHI(Scene* scene, RHI::CmdList& cmdList)
+	void GS3DTileRenderPass::OnRecord(Scene* scene, RHI::CmdList& cmdList)
 	{
 		NEPTUNE_PROFILE_ZONE
 

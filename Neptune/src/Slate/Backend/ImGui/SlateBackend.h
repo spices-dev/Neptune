@@ -57,11 +57,11 @@ namespace Neptune::imgui {
         void EndFrame() const override;
 
 		/**
-		* @brief Interface of Submit Frame RHI.
+		* @brief Interface of Record RHI.
 		* 
 		* @param[in] payload RenderFrontend Payload.
 		*/
-		void SubmitFrameRHI(void* payload = nullptr) const override;
+		void OnRecord(void* payload = nullptr) const override;
 
 	private:
 
