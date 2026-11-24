@@ -20,6 +20,7 @@
 #include "Device/Graphics/Backend/Vulkan/Extension/PresentTiming.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/SwapChainMaintenance1.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/FrameBoundary.h"
+#include "Device/Graphics/Backend/Vulkan/Extension/IncrementalPresent.h"
 
 namespace Neptune::Vulkan {
 
@@ -374,6 +375,26 @@ namespace Neptune::Vulkan {
 
     	info.pSwapchains                         = &Handle();
 
+    	VkPresentRegionsKHR                        regions{};
+    	VkPresentRegionKHR                         region{};
+    	VkRectLayerKHR                             rect{};
+    	if (GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IIncrementalPresent>())
+		{
+    		rect.offset                          = { 0, 0 };
+			rect.extent                          = { 0, 0 };
+			rect.layer                           = 0;
+    		
+    		region.rectangleCount                = 1;
+			region.pRectangles                   = &rect;
+    		
+    		regions.sType                        = VK_STRUCTURE_TYPE_PRESENT_REGIONS_KHR;
+		 	regions.swapchainCount               = 1;
+		 	regions.pRegions                     = &region;
+    		regions.pNext                        = info.pNext;
+    		
+    		info.pNext                           = &regions;
+		}
+    	
     	VkFrameBoundaryEXT                         boundary{};
     	if (GetContext().Get<IExtensions>()->GetContext()->Get<Extension::IFrameBoundary>())
 		{

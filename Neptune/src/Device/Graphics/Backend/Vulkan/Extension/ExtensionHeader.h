@@ -64,5 +64,6 @@
 #include "HeadlessSurface.h"
 #include "ToolingInfo.h"
 #include "FrameBoundary.h"
+#include "IncrementalPresent.h"
 
 #endif

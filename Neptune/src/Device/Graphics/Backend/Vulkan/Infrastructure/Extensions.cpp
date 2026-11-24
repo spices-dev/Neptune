@@ -106,6 +106,7 @@ namespace Neptune::Vulkan {
 		m_Context->Registry<Extension::IHeadlessSurface>                  (Extension::EExtensionState::Extent);          // @brief Done.
 		m_Context->Registry<Extension::IToolingInfo>                      (Extension::EExtensionState::Extent);          // @brief Done.
 		m_Context->Registry<Extension::IFrameBoundary>                    (Extension::EExtensionState::Extent);          // @brief Done.
+		m_Context->Registry<Extension::IIncrementalPresent>               (Extension::EExtensionState::Extent);
 	}
 	
 	SP<Extensions> Extensions::Copy() const

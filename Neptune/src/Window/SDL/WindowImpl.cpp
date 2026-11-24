@@ -77,6 +77,12 @@ namespace Neptune::SDL {
             NEPTUNE_LOG_CORE(C) << "SDL Init Failed: " << SDL_GetError();
         }
         
+        NEPTUNE_LOG_CORE(I) << "SDL Info: " 
+            << SDL_VERSIONNUM_MAJOR(SDL_GetVersion()) << "."
+            << SDL_VERSIONNUM_MINOR(SDL_GetVersion()) << "."
+            << SDL_VERSIONNUM_MICRO(SDL_GetVersion()) << " | "
+            << SDL_GetCurrentVideoDriver();
+        
         auto flag = m_APIInterface->Hint();
         
         m_Windows = SDL_CreateWindow(initInfo.name.c_str(), initInfo.width, initInfo.height, flag | SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY | SDL_WINDOW_BORDERLESS);

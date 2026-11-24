@@ -71,6 +71,7 @@ namespace Neptune::Vulkan {
         HeadlessSurface,                            // @brief HeadlessSurface.
         ToolingInfo,                                // @brief ToolingInfo.
         FrameBoundary,                              // @brief FrameBoundary.
+        IncrementalPresent,                         // @brief IncrementalPresent.
 
         Count
     };
@@ -139,6 +140,7 @@ namespace Neptune::Vulkan {
             case HeadlessSurface:                 return "HeadlessSurface";
             case ToolingInfo:                     return "ToolingInfo";
             case FrameBoundary:                   return "FrameBoundary";
+            case IncrementalPresent:              return "IncrementalPresent";
             default:                              return "NonNamed";
         }
     }
