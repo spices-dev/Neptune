@@ -71,6 +71,8 @@ namespace Neptune {
             world.OnLayout();
             
             m_SlateFrontend->EndFrame();
+            
+            m_SlateFrontend->UpdateMultiWindow();
         }
     }
 

@@ -191,11 +191,7 @@ namespace Neptune::imgui {
 
 		ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), static_cast<VkCommandBuffer>(payload));
 
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-		}
+		ImGui::RenderPlatformWindowsDefault();
 	}
 	
 #endif

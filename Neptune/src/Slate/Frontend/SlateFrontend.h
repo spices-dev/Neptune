@@ -64,6 +64,11 @@ namespace Neptune {
         * @brief Interface of End a frame.
         */
         virtual void EndFrame() const = 0;
+		
+		/**
+		* @brief Interface of Update Multi Window.
+		*/
+        virtual void UpdateMultiWindow() const = 0;
 
 		/**
 		* @brief Interface of Record RHI.

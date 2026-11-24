@@ -57,6 +57,11 @@ namespace Neptune::imgui {
         void EndFrame() const override;
 
 		/**
+		* @brief Interface of Update Multi Window.
+		*/
+		void UpdateMultiWindow() const override;
+		
+		/**
 		* @brief Interface of Record RHI.
 		* 
 		* @param[in] payload RenderFrontend Payload.

@@ -124,6 +124,13 @@ namespace Neptune::imgui {
         ImGui::Render();
     }
     
+    void SlateBackend::UpdateMultiWindow() const
+    {
+        NEPTUNE_PROFILE_ZONE
+        
+        ImGui::UpdatePlatformWindows();
+    }
+
     void SlateBackend::OnRecord(void* payload) const
     {
         NEPTUNE_PROFILE_ZONE
