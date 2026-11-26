@@ -20,4 +20,25 @@ namespace Neptune {
         Count
     };
 
+    /**
+    * @brief Enum of Presenter.
+    */
+    enum class EPresenter : uint8_t
+    {
+        P0 = 0,             // @brief Position 0, and so on.
+        P1,
+        P2,
+        P3,
+        P4,
+        P5,
+        P6,
+        P7,
+        P8,
+        P9,
+        
+        // ....
+        
+        Count,
+    };
+    
 }

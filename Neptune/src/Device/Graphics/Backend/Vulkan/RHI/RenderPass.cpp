@@ -38,11 +38,11 @@ namespace Neptune::Vulkan {
 		m_RenderPass->Build(count);
 	}
 
-	void RenderPass::BeginRenderPass(const Unit::CommandBuffer* commandBuffer, uint32_t frameBufferIndex) const
+	void RenderPass::BeginRenderPass(const Unit::CommandBuffer* commandBuffer) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
-		m_RenderPass->BeginRenderPass(commandBuffer, frameBufferIndex);
+		m_RenderPass->BeginRenderPass(commandBuffer);
 	}
 
 	void RenderPass::EndRenderPass(const Unit::CommandBuffer* commandBuffer) const

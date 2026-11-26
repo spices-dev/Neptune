@@ -36,9 +36,7 @@ namespace Neptune::Vulkan {
 
     	m_GraphicsBackend->OnInitialize(&window);
 		
-		GetContext().Registry<ISwapChain>(SwapChainImageCount);
-
-		GetContext().Registry<IGraphicImageSemaphore>(MaxFrameInFlight);
+		GetContext().Registry<IPresenter>()->Create(EPresenter::P0, SwapChainImageCount);
 
 		RenderFrontend::OnInitialize();
 	}
@@ -72,9 +70,11 @@ namespace Neptune::Vulkan {
 		}
 
 		{
-			if (!context.Get<ISwapChain>()->GetNextImage(context.Get<IGraphicImageSemaphore>()->Handle(clock.m_FrameId), clock.m_ImageIndex))
+			auto result = context.Get<IPresenter>()->GetNextImage(clock.m_FrameId);
+			
+			for (auto& e : result)
 			{
-				RecreateSwapChain();
+				RecreateSwapChain(e);
 			}
 		}
 
@@ -144,10 +144,7 @@ namespace Neptune::Vulkan {
 		{
 			DEBUGUTILS_BEGINQUEUELABEL(context.Get<IGraphicQueue>()->Handle(), "MainGraphicQueue")
 
-			VkSemaphoreSubmitInfo                  waitInfo0{};
-			waitInfo0.sType                      = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
-			waitInfo0.stageMask                  = VK_PIPELINE_STAGE_2_VERTEX_SHADER_BIT;
-			waitInfo0.semaphore                  = context.Get<IGraphicImageSemaphore>()->Handle(clock.m_FrameId);
+			auto waitInfo = context.Get<IPresenter>()->GetWaitInfo(clock.m_FrameId);
 			
 			VkSemaphoreSubmitInfo                  waitInfo1{};
 			waitInfo1.sType                      = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
@@ -155,7 +152,7 @@ namespace Neptune::Vulkan {
 			waitInfo1.semaphore                  = context.Get<IComputeTimeLine>()->Semaphore(clock.m_FrameId);
 			waitInfo1.value                      = clock.m_FrameId;
 			
-			VkSemaphoreSubmitInfo waitInfo[]     = { waitInfo0, waitInfo1 };
+			waitInfo.emplace_back(waitInfo1);
 			
 			VkSemaphoreSubmitInfo                  signalInfo0{};
 			signalInfo0.sType                    = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
@@ -166,7 +163,7 @@ namespace Neptune::Vulkan {
 			VkSemaphoreSubmitInfo                  signalInfo1{};
 			signalInfo1.sType                    = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
 			signalInfo1.stageMask                = VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT;
-			signalInfo1.semaphore                = context.Get<IGraphicQueueSemaphore>()->Handle(clock.m_ImageIndex);
+			signalInfo1.semaphore                = context.Get<IGraphicQueueSemaphore>()->Handle(clock.m_FrameId);
 			
 			VkSemaphoreSubmitInfo signalInfo[]   = { signalInfo0, signalInfo1 };
 			
@@ -176,8 +173,8 @@ namespace Neptune::Vulkan {
 
 			VkSubmitInfo2                          submitInfo{};
 			submitInfo.sType                     = VK_STRUCTURE_TYPE_SUBMIT_INFO_2;
-			submitInfo.waitSemaphoreInfoCount    = 2;
-			submitInfo.pWaitSemaphoreInfos       = waitInfo;
+			submitInfo.waitSemaphoreInfoCount    = waitInfo.size();
+			submitInfo.pWaitSemaphoreInfos       = waitInfo.data();
 			submitInfo.commandBufferInfoCount    = 1;
 			submitInfo.pCommandBufferInfos       = &commandInfo;
 			submitInfo.signalSemaphoreInfoCount  = 2;
@@ -194,14 +191,14 @@ namespace Neptune::Vulkan {
 			VkPresentInfoKHR                       presentInfo{};
 			presentInfo.sType                    = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 			presentInfo.waitSemaphoreCount       = 1;
-			presentInfo.pWaitSemaphores          = &context.Get<IGraphicQueueSemaphore>()->Handle(clock.m_ImageIndex);
-			presentInfo.swapchainCount           = 1;
-			presentInfo.pImageIndices            = &clock.m_ImageIndex;
+			presentInfo.pWaitSemaphores          = &context.Get<IGraphicQueueSemaphore>()->Handle(clock.m_FrameId);
 			presentInfo.pResults                 = nullptr;
 
-			if (!context.Get<ISwapChain>()->Present(presentInfo, clock.m_FrameId))
+			auto result = context.Get<IPresenter>()->Present(presentInfo, clock.m_FrameId);
+			
+			for (auto& e : result)
 			{
-				RecreateSwapChain();
+				RecreateSwapChain(e);
 			}
 
 			DEBUGUTILS_ENDQUEUELABEL(context.Get<IPresentQueue>()->Handle())
@@ -243,15 +240,15 @@ namespace Neptune::Vulkan {
 		return context;
 	}
 
-	void RenderBackend::RecreateSwapChain() const
+	void RenderBackend::RecreateSwapChain(EPresenter position) const
 	{
 		NEPTUNE_PROFILE_ZONE
 
 		GetContext().Get<IGraphicQueue>()->Wait();
 
-		GetContext().Registry<ISwapChain>(SwapChainImageCount, GetContext().Get<ISwapChain>()->Handle());
+		GetContext().Get<IPresenter>()->Create(position, SwapChainImageCount, GetContext().Get<IPresenter>()->Handle(position));
 
-		RenderFrontend::RecreateSwapChain();
+		RenderFrontend::RecreateSwapChain(position);
 	}
 	
 }

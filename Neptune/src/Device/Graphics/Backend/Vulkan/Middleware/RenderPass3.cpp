@@ -13,7 +13,7 @@
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Device.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/PhysicalDevice.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Extensions.h"
-#include "Device/Graphics/Backend/Vulkan/Infrastructure/SwapChain.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Presenter.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderTarget.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/CommandBuffer.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Middlewares.h"
@@ -177,17 +177,17 @@ namespace Neptune::Vulkan::Middleware {
 		StoreExtent({ renderTarget->GetWidth(), renderTarget->GetHeight() });
 	}
 
-	void RenderPass3::BeginRenderPass(const Unit::CommandBuffer* commandBuffer, uint32_t frameBufferIndex)
+	void RenderPass3::BeginRenderPass(const Unit::CommandBuffer* commandBuffer)
 	{
 		NEPTUNE_PROFILE_ZONE
 		
 		if (m_SwapChainImageIndex)
 		{
-			m_AttachmentInfos[*m_SwapChainImageIndex].imageView = GetContext().Get<ISwapChain>()->GetView(frameBufferIndex);
+			m_AttachmentInfos[*m_SwapChainImageIndex].imageView = GetContext().Get<IPresenter>()->GetView(EPresenter::P0);
 			
-			m_AttachmentInBarriers[*m_SwapChainImageIndex].image = GetContext().Get<ISwapChain>()->GetImage(frameBufferIndex);
+			m_AttachmentInBarriers[*m_SwapChainImageIndex].image = GetContext().Get<IPresenter>()->GetImage(EPresenter::P0);
 
-			m_AttachmentOutBarriers[*m_SwapChainImageIndex].image = GetContext().Get<ISwapChain>()->GetImage(frameBufferIndex);
+			m_AttachmentOutBarriers[*m_SwapChainImageIndex].image = GetContext().Get<IPresenter>()->GetImage(EPresenter::P0);
 		}
 		
 		std::ranges::for_each(m_AttachmentInBarriers, [&](const auto& barrier) {

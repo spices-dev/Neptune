@@ -9,12 +9,11 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "Core/Core.h"
-#include "Infrastructure.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/SwapChain.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/Image.h"
 #include "Device/Graphics/Backend/Vulkan/Resource/SwapChainFence.h"
 
-namespace Neptune::Vulkan {
+namespace Neptune::Vulkan::Resource {
 
 	/**
 	* @brief Runtime state of VK_EXT_present_timing for one swapchain.
@@ -41,14 +40,12 @@ namespace Neptune::Vulkan {
 		std::vector<VkPastPresentationTimingEXT> timings;
 		std::vector<VkPresentStageTimeEXT>       stageTimes;
 	};
-	
-	using ISwapChain = IInfrastructure<class SwapChain, EInfrastructure::SwapChain>;
 
 	/**
 	* @brief Vulkan::SwapChain Class.
 	* This class defines the Vulkan::SwapChain behaves.
 	*/
-	class SwapChain : public Infrastructure
+	class SwapChain : public ContextAccessor
 	{
 	public:
 
@@ -56,11 +53,10 @@ namespace Neptune::Vulkan {
 		* @brief Constructor Function.
 		*
 		* @param[in] context Context.
-		* @param[in] e EInfrastructure.
 		* @param[in] count SwapChain image Count.
 		* @param[in] handle Old SwapChain Handle.
 		*/
-		SwapChain(Context& context, EInfrastructure e, uint32_t count, Unit::SwapChain::Handle handle = VK_NULL_HANDLE);
+		SwapChain(Context& context, uint32_t count, Unit::SwapChain::Handle handle = VK_NULL_HANDLE);
 
 		/**
 		* @brief Destructor Function.

@@ -1,4 +1,4 @@
-/**
+﻿/**
 * @file SwapChain.cpp.
 * @brief The SwapChain Class Implementation.
 * @author Spices.
@@ -9,12 +9,12 @@
 #ifdef NP_GRAPHICS_VULKAN
 
 #include "SwapChain.h"
-#include "Device.h"
-#include "Surface.h"
-#include "PhysicalDevice.h"
-#include "Queue.h"
-#include "DebugUtilsObject.h"
-#include "Extensions.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Device.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Surface.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/PhysicalDevice.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Queue.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/DebugUtilsObject.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Extensions.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/HDR.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/Queue.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/PresentTiming.h"
@@ -22,10 +22,10 @@
 #include "Device/Graphics/Backend/Vulkan/Extension/FrameBoundary.h"
 #include "Device/Graphics/Backend/Vulkan/Extension/IncrementalPresent.h"
 
-namespace Neptune::Vulkan {
+namespace Neptune::Vulkan::Resource {
 
-    SwapChain::SwapChain(Context& context, EInfrastructure e, uint32_t count, Unit::SwapChain::Handle handle)
-        : Infrastructure(context, e)
+    SwapChain::SwapChain(Context& context, uint32_t count, Unit::SwapChain::Handle handle)
+        : ContextAccessor(context)
     {
 		NEPTUNE_PROFILE_ZONE
 
@@ -89,7 +89,7 @@ namespace Neptune::Vulkan {
 
 			m_SwapChain->CreateSwapchain(GetContext().Get<IDevice>()->Handle(), createInfo);
 
-			DEBUGUTILS_SETOBJECTNAME(*m_SwapChain, ToString())
+			DEBUGUTILS_SETOBJECTNAME(*m_SwapChain, "SwapChain")
 		}
     	
 		if (GetContext().Get<IExtensions>()->GetContext()->Has<Extension::IHDR>())

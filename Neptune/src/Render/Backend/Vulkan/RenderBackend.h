@@ -94,8 +94,10 @@ namespace Neptune::Vulkan {
         
         /**
         * @brief Recreate SwapChain.
+        * 
+        * @param[in] position EPresenter.
         */
-        void RecreateSwapChain() const override;
+        void RecreateSwapChain(EPresenter position) const override;
 
     private:
 

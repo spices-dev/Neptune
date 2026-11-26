@@ -96,7 +96,7 @@ namespace Neptune::Vulkan {
 		m_Context->Registry<IGraphicTimeLine>(MaxFrameInFlight);
 		m_Context->Registry<IComputeTimeLine>(MaxFrameInFlight);
 		
-		m_Context->Registry<IGraphicQueueSemaphore>(SwapChainImageCount);
+		m_Context->Registry<IGraphicQueueSemaphore>(2u * SwapChainImageCount);
 
 		m_Context->Registry<IGraphicCommandPool>();
 		m_Context->Registry<IGraphicCommandBuffer>(MaxFrameInFlight);

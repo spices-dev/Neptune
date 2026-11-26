@@ -44,12 +44,11 @@ namespace Neptune::Vulkan {
             case OpticalFlowThreadQueue:             return "OpticalFlowThreadQueue";
                                                                       
             case MemoryAllocator:                    return "MemoryAllocator";
-            case SwapChain:                          return "SwapChain";
+            case Presenter:                          return "Presenter";
         	
             case GraphicTimeLine:                    return "GraphicTimeLine";
             case ComputeTimeLine:                    return "ComputeTimeLine";
                                                      
-            case GraphicImageSemaphore:              return "GraphicImageSemaphore";
             case GraphicQueueSemaphore:              return "GraphicQueueSemaphore";
                                                      
             case GraphicCommandPool:                 return "GraphicCommandPool";

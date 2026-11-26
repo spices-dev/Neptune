@@ -143,13 +143,13 @@ namespace Neptune {
         m_CmdList->Reset();
     }
 
-    void RenderFrontend::RecreateSwapChain() const
+    void RenderFrontend::RecreateSwapChain(EPresenter position) const
     {
         NEPTUNE_PROFILE_ZONE
 
         const auto extent = Window::Instance().Extent();
 
-        WindowResizeOverEvent event(extent.x, extent.y);
+        WindowResizeOverEvent event(position, extent.x, extent.y);
 
         Dispatch(event);
     }

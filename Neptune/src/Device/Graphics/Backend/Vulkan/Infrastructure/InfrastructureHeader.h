@@ -17,7 +17,7 @@
 #include "Device.h"
 #include "MemoryAllocator.h"
 #include "ThreadQueue.h"
-#include "SwapChain.h"
+#include "Presenter.h"
 #include "Semaphore.h"
 #include "DebugUtilsObject.h"
 #include "CommandPool.h"

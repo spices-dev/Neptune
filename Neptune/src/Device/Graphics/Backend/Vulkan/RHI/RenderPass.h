@@ -63,9 +63,8 @@ namespace Neptune::Vulkan {
 		* @brief Begin RenderPass.
 		*
 		* @param[in] commandBuffer CommandBuffer.
-		* @param[in] frameBufferIndex .
 		*/
-		void BeginRenderPass(const Unit::CommandBuffer* commandBuffer, uint32_t frameBufferIndex) const;
+		void BeginRenderPass(const Unit::CommandBuffer* commandBuffer) const;
 
 		/**
 		* @brief Interface of End RenderPass.

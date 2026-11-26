@@ -291,8 +291,6 @@ namespace Neptune::Vulkan {
 
 	protected:
 
-		uint32_t                             m_ImageIndex     = 0;                                     // @brief Image index.
-
 		SP<Unit::CommandBuffer>              m_CommandBuffer  = nullptr;                               // @brief CommandBuffer reference.
 		const RenderPass*                    m_RenderPass     = nullptr;                               // @brief RenderPass reference.
 		const Resource::QueryPool*           m_QueryPool      = nullptr;                               // @brief QueryPool reference.

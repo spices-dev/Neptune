@@ -16,8 +16,7 @@
 
 namespace Neptune::Vulkan {
 
-	using IGraphicImageSemaphore     = IInfrastructure<class Semaphore, EInfrastructure::GraphicImageSemaphore>;
-	using IGraphicQueueSemaphore     = IInfrastructure<class Semaphore, EInfrastructure::GraphicQueueSemaphore>;
+	using IGraphicQueueSemaphore = IInfrastructure<class Semaphore, EInfrastructure::GraphicQueueSemaphore>;
 
 	/**
 	* @brief Vulkan::Semaphore Class.

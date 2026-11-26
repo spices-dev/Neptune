@@ -14,7 +14,7 @@
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Device.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/PhysicalDevice.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/DebugUtilsObject.h"
-#include "Device/Graphics/Backend/Vulkan/Infrastructure/SwapChain.h"
+#include "Device/Graphics/Backend/Vulkan/Infrastructure/Presenter.h"
 #include "Device/Graphics/Backend/Vulkan/RHI/RenderTarget.h"
 #include "Device/Graphics/Backend/Vulkan/Unit/CommandBuffer.h"
 #include "Device/Graphics/Backend/Vulkan/Infrastructure/Middlewares.h"
@@ -176,7 +176,7 @@ namespace Neptune::Vulkan::Middleware {
 
 			if (swapChainInUsed)
 			{
-				imageViews.insert(imageViews.begin(), GetContext().Get<ISwapChain>()->GetView(i));
+				imageViews.insert(imageViews.begin(), GetContext().Get<IPresenter>()->IHandle(EPresenter::P0).GetView(i));
 			}
 
 			VkFramebufferCreateInfo						  info{};
@@ -198,14 +198,14 @@ namespace Neptune::Vulkan::Middleware {
 		}
 	}
 
-	void RenderPass2::BeginRenderPass(const Unit::CommandBuffer* commandBuffer, uint32_t frameBufferIndex)
+	void RenderPass2::BeginRenderPass(const Unit::CommandBuffer* commandBuffer)
 	{
 		NEPTUNE_PROFILE_ZONE
 		
 		VkRenderPassBeginInfo                         info{};
 		info.sType                                  = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
 		info.renderPass                             = Handle();
-		info.framebuffer                            = m_FrameBuffers[frameBufferIndex]->GetHandle();
+		info.framebuffer                            = m_FrameBuffers[GetContext().Get<IPresenter>()->ImageIndex(EPresenter::P0)]->GetHandle();
 		info.renderArea.offset                      = { 0, 0 };
 		info.renderArea.extent                      = m_Extent.value();
 		info.clearValueCount                        = static_cast<uint32_t>(m_ClearValues.size());

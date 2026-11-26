@@ -7,6 +7,7 @@
 #pragma once
 #include "Core/Core.h"
 #include "Event.h"
+#include "Slate/Frontend/Enum.h"
 
 namespace Neptune {
 
@@ -125,11 +126,13 @@ namespace Neptune {
         /**
         * @brief Constructor Function.
         * 
-        * @param[in] width New Viewport Size.
-        * @param[in] height New Viewport Size.
+        * @param[in] position EPresenter.
+        * @param[in] width New Window Size.
+        * @param[in] height New Window Size.
         */
-        WindowResizeOverEvent(uint32_t width, uint32_t height)
-            : m_Width(width)
+        WindowResizeOverEvent(EPresenter position, uint32_t width, uint32_t height)
+            : m_EPresenter(position)
+            , m_Width(width)
             , m_Height(height)
         {}
 
@@ -138,6 +141,13 @@ namespace Neptune {
         */
         ~WindowResizeOverEvent() override = default;
 
+        /**
+        * @brief Get New Windows EPresenter.
+        * 
+        * @return Returns Windows EPresenter.
+        */
+        [[nodiscard]] const EPresenter& GetEPresenter() const { return m_EPresenter; }
+        
         /**
         * @brief Get New Windows Width.
         * 
@@ -160,7 +170,7 @@ namespace Neptune {
         std::string ToString() const override
         {
             std::stringstream ss;
-            ss << "WindowResizeOverEvent: " << m_Width << ", " << m_Height;
+            ss << "WindowResizeOverEvent: " << static_cast<uint8_t>(m_EPresenter) << ", " << m_Width << ", " << m_Height;
 
             return ss.str();
         }
@@ -177,14 +187,8 @@ namespace Neptune {
 
     private:
 
-        /**
-        * @brief New Windows Width.
-        */
-        uint32_t m_Width;
-
-        /**
-        * @brief New Windows Height.
-        */
-        uint32_t m_Height;
+        EPresenter m_EPresenter;   // @brief EPresenter.
+        uint32_t   m_Width;        // @brief New Windows Width.
+        uint32_t   m_Height;       // @brief New Windows Height.
     };
 }

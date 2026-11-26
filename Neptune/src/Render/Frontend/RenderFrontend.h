@@ -13,6 +13,7 @@
 #include "Device/Graphics/Frontend/RHI/RHI.h"
 #include "Device/Graphics/Frontend/AInfrastructure/AccessibleInfrastructure.h"
 #include "Enum.h"
+#include "Slate/Frontend/Enum.h"
 
 #include <vector>
 #include <any>
@@ -131,8 +132,10 @@ namespace Neptune {
 
         /**
         * @brief Recreate SwapChain.
+        * 
+        * @param[in] position EPresenter.
         */
-        virtual void RecreateSwapChain() const;
+        virtual void RecreateSwapChain(EPresenter position) const;
 
     private:
 

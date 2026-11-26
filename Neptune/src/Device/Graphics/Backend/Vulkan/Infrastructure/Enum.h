@@ -39,12 +39,11 @@ namespace Neptune::Vulkan {
         OpticalFlowThreadQueue,              // @brief Sub Thread OpticalFlow Queue.
                                              
         MemoryAllocator,                     // @brief VMA.
-        SwapChain,                           // @brief SwapChain.
+        Presenter,                           // @brief Presenter.
 
         GraphicTimeLine,                     // @brief GraphicTimeLine.
         ComputeTimeLine,                     // @brief ComputeTimeLine.
         
-        GraphicImageSemaphore,               // @brief Main Thread Graphic ImageSemaphore.
         GraphicQueueSemaphore,               // @brief Main Thread Graphic QueueSemaphore.
                                              
         GraphicCommandPool,                  // @brief Main Thread Graphic CommandPool.
@@ -91,10 +90,9 @@ namespace Neptune::Graphic::Common {
         { Vulkan::EInfrastructure::VideoDecodeThreadQueue,        { Vulkan::EInfrastructure::Device } },
         { Vulkan::EInfrastructure::OpticalFlowThreadQueue,        { Vulkan::EInfrastructure::Device } },
         { Vulkan::EInfrastructure::MemoryAllocator,               { Vulkan::EInfrastructure::Device } },
-        { Vulkan::EInfrastructure::SwapChain,                     { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::Surface, Vulkan::EInfrastructure::PresentQueue, Vulkan::EInfrastructure::GarbageCollection } },
+        { Vulkan::EInfrastructure::Presenter,                     { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::Surface, Vulkan::EInfrastructure::PresentQueue, Vulkan::EInfrastructure::GarbageCollection } },
         { Vulkan::EInfrastructure::GraphicTimeLine,               { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::GraphicQueue } },
         { Vulkan::EInfrastructure::ComputeTimeLine,               { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::ComputeQueue } },
-        { Vulkan::EInfrastructure::GraphicImageSemaphore,         { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::SwapChain } },
         { Vulkan::EInfrastructure::GraphicQueueSemaphore,         { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::GraphicQueue } },
         { Vulkan::EInfrastructure::GraphicCommandPool,            { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::GraphicQueue } },
         { Vulkan::EInfrastructure::GraphicCommandBuffer,          { Vulkan::EInfrastructure::Device, Vulkan::EInfrastructure::GraphicCommandPool } },
